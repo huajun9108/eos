@@ -36,6 +36,9 @@
     @import "./styles/mobile.scss"
     @import "./styles/index.scss"
     @import "./styles/z-login.scss"
+
     @import "./styles/area.scss"
     @import "./styles/accountinfo.scss"
+
+    @import "./styles/z-top.scss"
 </style>

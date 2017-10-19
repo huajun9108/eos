@@ -1,6 +1,6 @@
 <template>
     <div class="list">
-       kpi显示
+       kpi显示  lossCate  lossInto
     </div>
 </template>
 <script type="text/javascript">

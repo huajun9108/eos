@@ -4,7 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueRouter from 'vue-router';
-
+import $ from './assets/js/jquery-1.10.1.min'
+import './assets/bootstrap/js/bootstrap.min.js'
+import './assets/bootstrap/css/bootstrap.min.css'
+import './assets/icomoon/style.css'
 const qs = require ('qs')
 import axios from 'axios'
 

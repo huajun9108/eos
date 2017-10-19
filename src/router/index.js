@@ -5,7 +5,7 @@ Vue.use(VueRouter);
 import App from "../App"
 import Area from "../views/area.vue";
 import Account from "../views/account.vue";
-import Kpi from "../views/kpi.vue";
+import Dictionary from "../views/dictionary.vue";
 import LossCate from "../views/lossCate.vue";
 import Index from "../views/index.vue";
 import LossInto from "../views/lossInto.vue";
@@ -35,9 +35,9 @@ var routes=[
                 name:"account"
             },
             {
-                path:"kpi",
-                component:Kpi,
-                name:"kpi"
+                path:"dictionary",
+                component:Dictionary,
+                name:"dictionary"
             },
             {
                 path:"losscate",

@@ -1,36 +1,35 @@
 <template>
     <div id="top">
-        <ul>
-            <li>
-                <router-link :to="{name:'area'}">
-                    区域
-                </router-link>
-            </li>
-            <li>
-                <router-link :to="{name:'account'}">
-                    个人账户设置
-                </router-link></li>
-            <li>
-                <router-link :to="{name:'kpi'}">
-                    kpi
-                </router-link>
-            </li>
-            <li>
-                <router-link :to="{name:'lossCategory'}">
-                    loss1
-                </router-link>
-            </li>
-            <li>
-                <router-link :to="{name:'lossInto'}">
-                    loss2
-                </router-link>
-            </li>
-            <li>
+        <div class="top-con">
+            <div class="logo">
+                <img src="../assets/images/logo.png" />
+                <span>卓越运营系统</span>
+            </div>
+            <ul class="nav">
+                <li>
+                    <router-link :to="{name:'area'}">
+                        区域
+                    </router-link>
+                </li>
+                <li>
+                    <router-link :to="{name:'account'}">
+                        个人账户设置
+                    </router-link></li>
+                <li>
+                    <router-link :to="{name:'dictionary'}">
+                        字典设置
+                    </router-link>
+                </li>
+            </ul>
+            <div class="exit">
+                <select v-model="selectLan">
+				    <option v-for="(lan,idx) in lans" :value="lan.value" :key="idx">{{lan.name}}</option>
+			    </select>
                 <router-link :to="{name:'login'}">
                     退出
                 </router-link>
-            </li>
-       </ul>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -38,18 +37,27 @@
 import {mapState} from "vuex"
 export default {
     data(){
-        return{
-           
-        currentIdx:0
-
+        return{     
+            lan:true,
+            lans:[
+                {name:"中文",value:"CH"},
+                {name:"英文",value:"EN"}
+            ],
+            selectLan:"CH"
+                
+            
         }
        
     },
-    // methods:{
-    //     changeIdx(n){
-    //         this.currentIdx=n
-    //     }
-    // },
+    methods:{
+        changeLan(){
+            this.lan = !this.lan;
+        },
+        choose(e){
+            this.$refs.lan.innerHTML = e.target.innerHTML;
+            this.lan = !this.lan;
+        }
+    },
     computed:{
     ...mapState([
         "footList"
@@ -57,6 +65,6 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
    
 </style>

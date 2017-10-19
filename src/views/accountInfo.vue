@@ -16,7 +16,7 @@
         上司
     </div>
     <h1>可见菜单</h1>
-    <div v-for="(city,idx) in showList">
+    <div v-for="(city,idx) in showList" :key="idx">
         
         <input  type="checkbox" :id="city.name" :value="city.name" v-model="checkLists">
         <label :for="city.name" >{{city.name}}</label>
@@ -25,7 +25,6 @@
     <h2>{{checkLists}}</h2>
     <div>
         可视区域
-        <h1>{{selectCity}}</h1>
     </div>     
 </div>
 </template>

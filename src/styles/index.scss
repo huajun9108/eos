@@ -38,16 +38,7 @@ html,body,#app{
         top:0;
         left:0;
         z-index:10;
-        width:100%;
-        height:P(90);
-        background: #ffffff;
-        border-bottom:1px solid #b2b2b2;
-        line-height:P(90);
-        ul{
-            li{
-                float:left;
-            }
-        }
+        background: #122b54;
     }
     .main-content{
         flex: 1;

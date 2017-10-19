@@ -3,17 +3,15 @@
         <etop></etop>
         <div class="main-content">
             <router-view></router-view>            
-        </div> 
-        <ebottom></ebottom>        
+        </div>  
     </div>
 </template>
 <script type="text/javascript">
     import Top from "../components/top.vue";
-    import Bottom from "../components/bottom.vue";
+    // import Bottom from "../components/bottom.vue";
     export default {
         components:{
             etop:Top,
-            ebottom:Bottom
         }
     }
 </script>

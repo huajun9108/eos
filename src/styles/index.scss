@@ -1,0 +1,59 @@
+@import "./mobile";
+
+p{
+    padding:0;
+    margin:0;
+}
+html,body,#app{
+    width:100%;
+    height:100%;
+    font-family:$yh;
+}
+
+.content ,.view{
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+}
+.bom{
+    position: fixed;
+    left:0;
+    bottom: 0;
+    width:100%;
+    height:P(98);
+    line-height:P(98);
+    background: #f45633;
+    z-index:10;
+    border-top:1px solid #b2b2b2;
+    text-align:center;
+    font-size: P(30);
+    color:#fff;
+}
+
+.container{
+    width:100%;
+    height:100%;
+    #top{
+        top:0;
+        left:0;
+        z-index:10;
+        width:100%;
+        height:P(90);
+        background: #ffffff;
+        border-bottom:1px solid #b2b2b2;
+        line-height:P(90);
+        ul{
+            li{
+                float:left;
+            }
+        }
+    }
+    .main-content{
+        flex: 1;
+        
+    } 
+    #bottom{
+        height: 90px
+    }    
+}

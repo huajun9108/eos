@@ -15,7 +15,7 @@
     <table class="table table-hover table-bordered text-center">
         <thead>
         <tr>
-            <td><input type="checkbox" v-model="check"/></td>
+            <td><input type="checkbox" v-model="ckAll"/></td>
             <td>编号</td>
             <td>用户账号</td>
             <td>姓名</td>
@@ -116,27 +116,27 @@ import {mapState,mapActions} from "vuex";
             ...mapState([
                 'userAll'
                 ]),
-			// ckAll:{
+			ckAll:{
 				
-			// 	//  只要有一个为false就是 没有全选 返回  false
-			// 	//  getter
-			// 	get(){
-			// 		var flag = true;
-			// 		this.user.forEach(item=>{
-			// 			if(!item.check){
-			// 				flag = false;
-			// 			}
-			// 		});
-			// 		return flag;
-			// 	},
-			// 	set(newValue){
-			// 		//  set 这个计算属性值改变时触发
-			// 		console.log(newValue);
-			// 		this.user.forEach(item=>{
-			// 			item.check = newValue;
-			// 		})
-			// 	}
-			// }
+				//  只要有一个为false就是 没有全选 返回  false
+				//  getter
+				get(){
+					var flag = true;
+					this.userAll.forEach(item=>{
+						if(!item.check){
+							flag = false;
+						}
+					});
+					return flag;
+				},
+				set(newValue){
+					//  set 这个计算属性值改变时触发
+					console.log(newValue);
+					this.userAll.forEach(item=>{
+						item.check = newValue;
+					})
+				}
+			}
         },
         methods:{
         

@@ -1,5 +1,21 @@
 <template>
-<div class="area">
+<div class="area_container">
+	<div class="area_content">
+		<div class="area_setting col-md-3">
+			<br>
+			<span class="area_setting_title">区域范围</span>
+			<hr class="area_setting_line">
+      <ul id="area_tree" class="area_tree_class ztree">
+      </ul>
+		</div>
+		<div class="area_other col-md-9">
+      <div class="area_other_content">
+      </div>
+		</div>
+	</div>
+
+</div>
+<!-- <div class="area">
 	<div class="area_left">
 		区域图表设置
     <hr>
@@ -9,7 +25,7 @@
 		<div class="area_content">
 		</div>
 	</div>
-</div>
+</div> -->
 </template>
 <script type="text/javascript">
 import {
@@ -29,7 +45,7 @@ export default {
 				view: {
 					addHoverDom: this.addHoverDom,
 					removeHoverDom: this.removeHoverDom,
-					selectedMulti: false
+					selectedMulti: false,
 				},
 				data: {
 					simpleData: {
@@ -207,7 +223,7 @@ export default {
 			sObj.after(addStr);
 			var btn = $("#addBtn_" + treeNode.tId);
 			if (btn) btn.bind("click", function() {
-				var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+				var zTree = $.fn.zTree.getZTreeObj("area_tree");
 				zTree.addNodes(treeNode, {
 					id: (100 + newCount),
 					pId: treeNode.id,
@@ -225,7 +241,7 @@ export default {
 
 	},
 	mounted() {
-		$.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
+		$.fn.zTree.init($("#area_tree"), this.setting, this.zNodes);
 	}
 }
 </script>

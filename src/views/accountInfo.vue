@@ -1,53 +1,53 @@
 <template>
-<div class="account">
-    <div class="accountinfo_top">
-      账户设置
+<div class="accountinfo_container">
+  <div class="accountinfo_interface col-md-7">
+    <br>
+    <div class="accountinfo_title">
+      <span>客户设置</span>
       <hr>
     </div>
 
-    <div class="accountinfo_body">
-    <div class="accountinfo_left">
-    <div>
-        <label for="username">用户名</label>
-        <input type="text" name="username" placeholder="用户名">
-        <hr>
-    </div>
-    <div>
-      <label for="password">密码</label>
-      <input type="text" name="password" placeholder="密码">
-      <hr>
-    </div>
-    <div>
-      <label for="position">职位</label>
-      <input type="text" name="position" placeholder="职位">
-      <hr>
-    </div>
-    <div>
-      <label for="boss">直线上司</label>
-      <input type="text" name="boss" placeholder="直线上司">
-      <hr>
-    </div>
-
-    <div>
-      <span>有效菜单</span>
-      <div v-for="(city,idx) in showList">
-          <input  type="checkbox" :id="city.name" :value="city.name" v-model="checkLists">
-          <label :for="city.name" >{{city.name}}</label>
+    <div class="accountinfo_setting">
+      <div class="setting_left">
+        <div class="accountinfo_username">
+          <input class="input_accountinfo" type="text" name="" value="" placeholder="用户名">
+          <hr>
+        </div>
+        <div class="accountinfo_password">
+          <input class="input_accountinfo" type="text" name="" value="" placeholder="密码">
+          <hr>
+        </div>
+        <div class="accountinfo_position">
+          <input class="input_accountinfo" type="text" name="" value="" placeholder="职位">
+          <hr>
+        </div>
+        <div class="accountinfo_boss">
+          <input class="input_accountinfo" type="text" name="" value="" placeholder="直线上司">
+          <hr>
+        </div>
+        <div class="accountinfo_effectivemenu">
+          <div class="menu_container">
+            <div class="menu_title">
+              有效菜单
+            </div>
+            <div class="menu_option">
+              <div class="input_menuoption" v-for="(city,idx) in showList">
+                  <input type="checkbox" :id="city.name" :value="city.name" v-model="checkLists">
+                  <label :for="city.name" >{{city.name}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <h2>{{checkLists}}</h2>
-    </div>
-    </div>
-
-    <div class="accountinfo_right">
-        可视区域
+      <div class="accountinfo_areacontainer">
+        <div class="visablearea_title">
+          可视区域范围
+        </div>
         <ul id="treeDemo" class="ztree"></ul>
-    </div>
-  </div>
+      </div>
+      </div>
 
-    <div class="accountinfo_bottom">
-      <button type="button">确认</button>
-      <button type="button">删除</button>
-    </div>
+  </div>
 </div>
 </template>
 

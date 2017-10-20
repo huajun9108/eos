@@ -129,7 +129,7 @@ import {mapState,mapActions} from "vuex";
                 // 'fireData',
                 ]),
 			checkB:{
-				
+
 				get(){
 					var flag=true;
 					this.userOpt.forEach((item,idx)=>{
@@ -145,13 +145,13 @@ import {mapState,mapActions} from "vuex";
 						item.check=newV
 					})
 				}
-				
+
 			}
         },
         methods:{
-        
+
         ...mapActions([
-            
+
             ]),
             showPage(pageIndex, $event, forceRefresh){
             if (pageIndex > 0) {
@@ -248,12 +248,12 @@ import {mapState,mapActions} from "vuex";
         // this.gethomeData();
         // this.getfireData();
         this.showPage(this.pageCurrent, null, true);
-        
+
     }
 }
 </script>
 <style lang="scss" scoped>
 
-    
-    
+
+
 </style>

@@ -1,20 +1,30 @@
 @import "./mobile.scss";
-.area_left{
-	float: left;
-	width: 30%;
-	height: 100%;
-}
 
-.area_right {
-	flot: left;
-	width:70%;
+.area_container{
+	width: 100%;
 	height: 100%;
-	margin-left: 30%;
-}
-
-.area_content {
-	margin: 5px;
-	width: 80%;
-	height: 500px;
-	border: 1px solid black;
+	.area_content{
+		width: 100%;
+		height: 100%;
+		.area_setting{
+			padding-left: 50px;;;
+			background-color: #f2f2f2;
+			height: 100%;
+			.area_setting_title{
+				font-weight: bolder;
+				font-size: 12px;
+			}
+			.area_setting_line{
+				color: red;
+			}
+		}
+		.area_other{
+			height: 100%;
+			.area_other_content{
+				margin: 40px;
+				border: 1px solid #bdbdbd;
+				height: 90%;
+			}
+		}
+	}
 }

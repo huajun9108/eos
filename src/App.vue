@@ -41,4 +41,5 @@
     @import "./styles/accountinfo.scss"
 
     @import "./styles/z-top.scss"
+    @import "./styles/z-account.scss"
 </style>

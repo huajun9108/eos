@@ -8,10 +8,10 @@
             </div>
             <div class="userinfo">
                 <div>
-                    <i class="iconfont icon-User-name"></i><input type="text" placeholder="请输入用户名" ref="tel" v-model="user"/>
+                    <i class="iconfont icon-User-name"></i><input type="text" placeholder="请输入用户名" ref="user" v-model="user" @change="btnBac"/>
                 </div>
                 <div>
-                    <i class="iconfont icon-password"></i><input v-bind:type="seen?'password':'text'" placeholder="请输入密码" v-model="pwd" ref="pwd"/>
+                    <i class="iconfont icon-password"></i><input v-bind:type="seen?'password':'text'" placeholder="请输入密码" v-model="pwd" ref="pwd" @change="btnBac"/>
                     <i :class="seen?'iconfont icon-eye_x':'iconfont icon-eye'" @click="changeSeen"></i>
                 </div>
                 <input type="button" @click="tologin" class="btn" value="登  录" ref="btn"/>
@@ -52,17 +52,15 @@ export default{
         },
         
         tologin(){
-            var regUser = /^\s*$/g;
-            var regPwd = /^[a-zA-Z0-9]{6,20}$/;
-            if(this.user=="" || regUser.test(this.user)){
+            if(this.empty(this.user)){
                 this.$refs.hint.setAttribute("class","hint show")
                 this.$refs.tip.innerHTML="用户名不能为空"
                  setTimeout(()=>{
                     this.$refs.hint.setAttribute("class","hint fadeOut hide")
                 },3000) 
-            }else if(!regPwd.test(this.pwd)){
+            }else if(this.empty(this.pwd)){
                 this.$refs.hint.setAttribute("class","hint show")
-                this.$refs.tip.innerHTML="密码格式6-20位,英文数字组合"
+                this.$refs.tip.innerHTML="密码不为空"
                  setTimeout(()=>{
                     this.$refs.hint.setAttribute("class","hint fadeOut hide")
                 },3000) 
@@ -71,6 +69,19 @@ export default{
                 this.login({user:this.user,pwd:this.pwd})
             }
         },
+        btnBac(){
+            if(!this.empty(this.user)&&!this.empty(this.pwd)){
+               this.$refs.btn.style.background="#1b3867"
+            }else{
+                 this.$refs.btn.style.background="#bfcdda"
+            }
+        },
+        empty(val){
+            var reg= /^\s+$/gi;
+            if (reg.test(val ) || val.length==0) {
+                return true;
+            };
+        }
        
     },
     watch:{
@@ -83,14 +94,14 @@ export default{
             if(newVal.status==2){
                 this.$refs.hint.setAttribute("class","hint show")
                 this.$refs.tip.innerHTML="账号或密码错误"
-                //  setTimeout(()=>{
-                //     this.$refs.hint.setAttribute("class","hint fadeOut hide")
-                // },3000) 
+                 setTimeout(()=>{
+                    this.$refs.hint.setAttribute("class","hint fadeOut hide")
+                },3000) 
             }else{
                 localStorage.setItem("user",this.user);
                 this.$router.push({name:"area"})
             }
-        }
+        },
     }
 }
 

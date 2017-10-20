@@ -15,7 +15,7 @@
     <table class="table table-hover table-bordered text-center">
         <thead>
         <tr>
-            <td><input type="checkbox" v-model="ckAll"/></td>
+            <td><input type="checkbox" v-model="checkedAll" @change="changeState"/></td>
             <td>编号</td>
             <td>用户账号</td>
             <td>姓名</td>
@@ -29,7 +29,7 @@
         </thead>
         <tbody>
             <tr v-for="(item,idx) in userAll" :key="idx">
-                <td><input type="checkbox" ></td>
+                <td><input type="checkbox" v-model="checkModel"></td>
                 <td>{{idx+1}}</td>
                 <td>{{item.username}}</td>
                 <td>{{item.userabbname}}</td>
@@ -39,7 +39,7 @@
                 <td>{{item.userleader}}</td>
                 <td>{{item.userleader}}</td>
                 <td class="icon-edit" :data="item.userid" @click="goAccountInfo"></td>
-                <td class="icon-delete_2"></td>
+                <td class="icon-delete_2" :data="item.userid" @click="del({id:idx,userId:item.userid})"></td>
             </tr>
         </tbody>
     </table>
@@ -91,6 +91,8 @@ import {mapState,mapActions} from "vuex";
     export default {
         data(){
             return{
+                checkedAll:false,
+                checkModel:[],
                 selectCity:"overview",
                 fDisabled:false,
                 lDisabled:false,
@@ -116,32 +118,12 @@ import {mapState,mapActions} from "vuex";
             ...mapState([
                 'userAll'
                 ]),
-			ckAll:{
-				
-				//  只要有一个为false就是 没有全选 返回  false
-				//  getter
-				get(){
-					var flag = true;
-					this.userAll.forEach(item=>{
-						if(!item.check){
-							flag = false;
-						}
-					});
-					return flag;
-				},
-				set(newValue){
-					//  set 这个计算属性值改变时触发
-					console.log(newValue);
-					this.userAll.forEach(item=>{
-						item.check = newValue;
-					})
-				}
-			}
         },
         methods:{
 
         ...mapActions([
-            'getUser'
+            'getUser',
+            'delUser'
             ]),
             goAccountInfo(e){
                 console.log(e.target.attributes["data"].value)
@@ -149,6 +131,13 @@ import {mapState,mapActions} from "vuex";
             },
             add(){
                 this.$router.push({name:'accountInfo'})
+            },
+            del(obj){
+                this.userAll.splice(obj.id,1);  //
+                this.delUser({userId:obj.userId})
+            },
+            changeState(){
+
             },
             showPage(pageIndex, $event, forceRefresh){
             if (pageIndex > 0) {
@@ -216,28 +205,24 @@ import {mapState,mapActions} from "vuex";
                 console.log("showPagesStart:" + this.showPagesStart + ",showPageEnd:" + this.showPageEnd + ",pageIndex:" + pageIndex);
             }
             },
-        // checkAll:{
-        //     //  只要有一个为false就是 没有全选 返回  false
-        //     //  getter
-        //     get(){
-        //         var flag = true;
-        //         this.userAll.forEach(item=>{
-        //             if(!item.check){
-        //                 flag = false;
-        //             }
-        //         });
-        //         return flag;
-        //     },
-        //     set(newValue){
-        //         //  set 这个计算属性值改变时触发
-        //         console.log(newValue);
-        //         this.userAll.forEach(item=>{
-        //             item.check = newValue;
-        //         })
-        //     }
-        // }
     },
     watch:{
+        userAll:{
+			handler:function(newValue,oldValue){
+				console.log(newValue[0].count)
+			},
+				deep:true
+        },
+        checkModel:{
+            handler(){
+                if(this.checkModel.length==this.userAll.length){
+                    this.checkedAll=true
+                }else{
+                    this.checkedAll=false   
+                }
+            },
+            deep:true
+        }
     },
 
     mounted(){

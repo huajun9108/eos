@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-    <div class="container">
+    <div class="main-container">
         <!-- <etop></etop> -->
         <!-- <div class="content"> -->
             <router-view></router-view>

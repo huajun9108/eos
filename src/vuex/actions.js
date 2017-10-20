@@ -42,4 +42,15 @@ export default{
             commit("selectUserById",json)    
         })
     },
+    delUser({commit},obj){
+        axios.get("/user/deleteUserById",{params:{
+            userId: obj.userId
+            }}
+        ).then(res=>{
+            console.log(res.data.data)
+            return res.data.data
+        }).then(json=>{
+            commit("delUser",json)
+        })
+    }
 }

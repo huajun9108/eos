@@ -13,4 +13,7 @@ export default{
         state.user=json
         console.log(state.user)
     },
+    delUser(state,json){
+        state.userId=json
+    }
 }

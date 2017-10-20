@@ -4,6 +4,7 @@
 	height: 100%;
 	.accountinfo_interface{
 		border:1px solid #d0d0d0;
+		border-radius: 2px;
 		height: auto;
 		margin:5% 20% 0% 20%;
 		.accountinfo_title{
@@ -13,6 +14,8 @@
 			font-size: 12px;
 		}
 		.accountinfo_setting{
+			height: auto;
+			overflow:hidden;
 	    .setting_left{
 				float: left;
 				margin-left: 2%;
@@ -21,6 +24,7 @@
 						line-height: 40px;
 						width: 90%;
 						border:1px solid #bdbdbd;
+						border-radius: 2px;
 				}
 				.accountinfo_effectivemenu{
 					.menu_container{
@@ -42,6 +46,7 @@
 				.accountinfo_areacontainer{
 					margin-left: 2%;
 					border: 1px solid #bdbdbd;
+					border-radius: 2px;
 					float:left;
 					width: 67%;
 					.visablearea_title{

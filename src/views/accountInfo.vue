@@ -10,22 +10,27 @@
     <div class="accountinfo_setting">
       <div class="setting_left">
         <div class="accountinfo_username">
+          <i class="icon-User-name"></i>
           <input class="input_accountinfo" type="text" name="" value="" placeholder="用户名">
           <hr>
         </div>
         <div class="accountinfo_password">
+          <i class="icon-password"></i>
           <input class="input_accountinfo" type="text" name="" value="" placeholder="密码">
           <hr>
         </div>
         <div class="accountinfo_position">
+          <i class="icon-position"></i>
           <input class="input_accountinfo" type="text" name="" value="" placeholder="职位">
           <hr>
         </div>
         <div class="accountinfo_boss">
+          <i class="icon-superior"></i>
           <input class="input_accountinfo" type="text" name="" value="" placeholder="直线上司">
           <hr>
         </div>
         <div class="accountinfo_effectivemenu">
+          <i class="icon-Effective-menu"></i>
           <div class="menu_container">
             <div class="menu_title">
               有效菜单
@@ -41,10 +46,15 @@
       </div>
       <div class="accountinfo_areacontainer">
         <div class="visablearea_title">
+          <i class="icon-Viewing-area"></i>
           可视区域范围
         </div>
         <ul id="treeDemo" class="ztree"></ul>
       </div>
+      </div>
+      <div class="accountinfo_button text-right">
+          <span class="button_confirm">确认</span>
+          <button type="button" name="button">取消</button>
       </div>
 
   </div>

@@ -3,7 +3,7 @@ import axios from "axios"
 import qs from 'qs'
 
 
-axios.defaults.baseURL = "http://116.196.113.167:3001"; 
+axios.defaults.baseURL = "http://116.196.113.167:3001";
 
 
 
@@ -18,7 +18,7 @@ export default{
             return res.data
         }).then(json=>{
             commit("login",json)
-            
+
         })
     },
     getUser({commit},obj){
@@ -28,7 +28,7 @@ export default{
             return res.data.data
         })
         .then(json=>{
-            commit("getUser",json)    
+            commit("getUser",json)
         })
     },
     selectUserById ({commit},obj){
@@ -39,7 +39,7 @@ export default{
             console.log(res.data.data)
             return res.data.data
         }).then(json=>{
-            commit("selectUserById",json)    
+            commit("selectUserById",json)
         })
     },
 }

@@ -54,7 +54,7 @@
       </div>
       <div class="accountinfo_button text-right">
           <span class="button_confirm">确认</span>
-          <button type="button" name="button">取消</button>
+          <span class="button_cancel">取消</span>
       </div>
 
   </div>
@@ -77,7 +77,7 @@ var cityListTwo = [
 			{name:"target",value:"target"},
 			{name:"loss",value:"loss"},
 			{name:"projects",value:"projects"},
-            {name:"saving",value:"saving"},
+      {name:"saving",value:"saving"},
 			{name:"data",value:"data"},
 			{name:"account",value:"account"},
 		];
@@ -270,7 +270,7 @@ var cityListTwo = [
         methods:{
 
         ...mapActions([
-            // 'getinterestData',
+            'selectUserById'
             // 'changeIndex',
             // 'gethomeData',
             // 'getfireData',
@@ -319,9 +319,7 @@ var cityListTwo = [
     },
 
     mounted(){
-        // this.getinterestData()
-        // this.gethomeData();
-        // this.getfireData();
+        this.selectUserById({userId:this.$route.query.userid})
         $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
     }
 }

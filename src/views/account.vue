@@ -1,10 +1,21 @@
 <template>
 <div class="account">
-    <div class=""></div>
-    <table class="table table-bordered">
+    <br/>
+    <div class="fixed-table-toolbar oper">
+        <span class="add" @click="add">
+            <i class="icon-add"></i>
+            新建
+        </span>
+        <span class="delA">
+            <i class="icon-delete"></i>
+            批量删除
+        </span>
+    </div>
+    <br/>
+    <table class="table table-hover table-bordered text-center">
         <thead>
         <tr>
-            <td><input type="checkbox" v-model="checkB"/></td>
+            <td><input type="checkbox" v-model="check"/></td>
             <td>编号</td>
             <td>用户账号</td>
             <td>姓名</td>
@@ -17,31 +28,30 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(user,idx) in userOpt" :key="idx">
-                <td><input type="checkbox" v-model="user.check"></td>
+            <tr v-for="(item,idx) in userAll" :key="idx">
+                <td><input type="checkbox" ></td>
                 <td>{{idx+1}}</td>
-                <td>{{user.account}}</td>
-                <td>{{user.name}}</td>
-                <td>{{user.pwd}}</td>
-                <td>{{user.position}}</td>
-                <td>{{user.leader}}</td>
-                <td>{{user.effMenu}}</td>
-                <td>{{user.viewArea}}</td>
-                <td>
-                    <router-link :to="{name:'accountInfo'}">{{user.edit}}</router-link></td>
-                <td>{{user.del}}</td>
+                <td>{{item.username}}</td>
+                <td>{{item.userabbname}}</td>
+                <td>{{item.userpsd}}</td>
+                <td>{{item.userjob}}</td>
+                <td>{{item.userleader}}</td>
+                <td>{{item.userleader}}</td>
+                <td>{{item.userleader}}</td>
+                <td class="icon-edit" :data="item.userid" @click="goAccountInfo"></td>
+                <td class="icon-delete_2"></td>
             </tr>
         </tbody>
     </table>
     <div class="pager" id="pager">
-          <span class="form-inline">
+          <!-- <span class="form-inline">
             <select class="form-control" v-model="pagesize" v-on:change="showPage(pageCurrent,$event,true)" number>
               <option value="10">10</option>
               <option value="20">20</option>
               <option value="30">30</option>
               <option value="40">40</option>
             </select>
-          </span>
+          </span> -->
           <span v-for="(item,idx) in pageCount+1" :key="idx">
             <span v-if="item==1" class="btn btn-default" v-on:click="showPage(1,$event)" :class="{'disabled':fDisabled}">
               首页
@@ -82,24 +92,6 @@ import {mapState,mapActions} from "vuex";
         data(){
             return{
                 selectCity:"overview",
-                userOpt:[
-                    {check:false,account:"123",name:"张全蛋",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"222",name:"张三",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"333",name:"lili",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"456",name:"sansan",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"234",name:"zhuzhu",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"789",name:"lala",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"111",name:"qqq",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"2222",name:"www",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"44445",name:"Qqq",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"6678",name:"qqqq",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"654",name:"qqq",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"334",name:"qqq",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"44445",name:"Qqq",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"6678",name:"qqqq",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"654",name:"qqq",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                    {check:false,account:"334",name:"qqq",position:"ceo",leader:"coo",effMenu:"overview",edit:"编辑",del:"删除",pwd:111,viewArea:"上海"},
-                ],
                 fDisabled:false,
                 lDisabled:false,
                 //总项目数
@@ -122,37 +114,42 @@ import {mapState,mapActions} from "vuex";
         },
         computed:{
             ...mapState([
-                // 'interestData',
-                // 'staySwiper',
-                // 'currentIndex',
-                // 'homeData',
-                // 'fireData',
+                'userAll'
                 ]),
-			checkB:{
+			// ckAll:{
 
-				get(){
-					var flag=true;
-					this.userOpt.forEach((item,idx)=>{
-						if(!item.check){
-							flag=false
-						}
-					});
-					return flag
-				},
-				set(newV){
-					console.log(newV)
-					this.userOpt.forEach((item,idx)=>{
-						item.check=newV
-					})
-				}
-
-			}
+			// 	//  只要有一个为false就是 没有全选 返回  false
+			// 	//  getter
+			// 	get(){
+			// 		var flag = true;
+			// 		this.user.forEach(item=>{
+			// 			if(!item.check){
+			// 				flag = false;
+			// 			}
+			// 		});
+			// 		return flag;
+			// 	},
+			// 	set(newValue){
+			// 		//  set 这个计算属性值改变时触发
+			// 		console.log(newValue);
+			// 		this.user.forEach(item=>{
+			// 			item.check = newValue;
+			// 		})
+			// 	}
+			// }
         },
         methods:{
 
         ...mapActions([
-
+            'getUser'
             ]),
+            goAccountInfo(e){
+                console.log(e.target.attributes["data"].value)
+                this.$router.push({name:'accountInfo',query:{userid:e.target.attributes["data"].value}})
+            },
+            add(){
+                this.$router.push({name:'accountInfo'})
+            },
             showPage(pageIndex, $event, forceRefresh){
             if (pageIndex > 0) {
                 if (pageIndex > this.pageCount) {
@@ -219,32 +216,32 @@ import {mapState,mapActions} from "vuex";
                 console.log("showPagesStart:" + this.showPagesStart + ",showPageEnd:" + this.showPageEnd + ",pageIndex:" + pageIndex);
             }
             },
-        checkAll:{
-            //  只要有一个为false就是 没有全选 返回  false
-            //  getter
-            get(){
-                var flag = true;
-                this.userOpt.forEach(item=>{
-                    if(!item.check){
-                        flag = false;
-                    }
-                });
-                return flag;
-            },
-            set(newValue){
-                //  set 这个计算属性值改变时触发
-                console.log(newValue);
-                this.userOpt.forEach(item=>{
-                    item.check = newValue;
-                })
-            }
-        }
+        // checkAll:{
+        //     //  只要有一个为false就是 没有全选 返回  false
+        //     //  getter
+        //     get(){
+        //         var flag = true;
+        //         this.userAll.forEach(item=>{
+        //             if(!item.check){
+        //                 flag = false;
+        //             }
+        //         });
+        //         return flag;
+        //     },
+        //     set(newValue){
+        //         //  set 这个计算属性值改变时触发
+        //         console.log(newValue);
+        //         this.userAll.forEach(item=>{
+        //             item.check = newValue;
+        //         })
+        //     }
+        // }
     },
     watch:{
     },
 
     mounted(){
-        // this.getinterestData()
+        this.getUser()
         // this.gethomeData();
         // this.getfireData();
         this.showPage(this.pageCurrent, null, true);

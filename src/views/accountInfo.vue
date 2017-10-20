@@ -263,11 +263,8 @@ var cityListTwo = [
         },
         computed:{
             ...mapState([
-                // 'interestData',
-                // 'staySwiper',
-                // 'currentIndex',
-                // 'homeData',
-                // 'fireData',
+                "user"
+
                 ])
         },
         methods:{

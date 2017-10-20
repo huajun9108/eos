@@ -139,7 +139,7 @@ import {mapState,mapActions} from "vuex";
 			}
         },
         methods:{
-        
+
         ...mapActions([
             'getUser'
             ]),
@@ -245,12 +245,12 @@ import {mapState,mapActions} from "vuex";
         // this.gethomeData();
         // this.getfireData();
         this.showPage(this.pageCurrent, null, true);
-        
+
     }
 }
 </script>
 <style lang="scss" scoped>
 
-    
-    
+
+
 </style>

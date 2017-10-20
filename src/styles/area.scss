@@ -1,0 +1,30 @@
+@import "./mobile.scss";
+
+.area_container{
+	width: 100%;
+	height: 100%;
+	.area_content{
+		width: 100%;
+		height: 100%;
+		.area_setting{
+			padding-left: 50px;;;
+			background-color: #f2f2f2;
+			height: 100%;
+			.area_setting_title{
+				font-weight: bolder;
+				font-size: 12px;
+			}
+			.area_setting_line{
+				color: red;
+			}
+		}
+		.area_other{
+			height: 100%;
+			.area_other_content{
+				margin: 40px;
+				border: 1px solid #bdbdbd;
+				height: 90%;
+			}
+		}
+	}
+}

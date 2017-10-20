@@ -35,4 +35,5 @@
     @import "./styles/index.scss"
     @import "./styles/z-login.scss"
     @import "./styles/z-top.scss"
+    @import "./styles/z-account.scss"
 </style>

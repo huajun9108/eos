@@ -49,26 +49,19 @@ var cityListTwo = [
         data(){
             return{
                 checkLists:"",
-                showList:cityListTwo
+                showList:cityListTwo,
             }
         },
         computed:{
             ...mapState([
-                // 'interestData',
-                // 'staySwiper',
-                // 'currentIndex',
-                // 'homeData',
-                // 'fireData',
+                "user"
+               
                 ])
         },
         methods:{
         
         ...mapActions([
-            // 'getinterestData',
-            // 'changeIndex',
-            // 'gethomeData',
-            // 'getfireData',
-            // 'gethomeList'
+            "selectUserById"
             ])
     },
     watch:{
@@ -93,9 +86,8 @@ var cityListTwo = [
     },
 
     mounted(){
-        // this.getinterestData()
-        // this.gethomeData();
-        // this.getfireData();
+        this.selectUserById({userId:this.$route.query.userid})
+        
     
     }
 }

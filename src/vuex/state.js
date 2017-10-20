@@ -5,5 +5,7 @@
 export default{
     pwdInput:"",
     loginResult:"",
+    userAll:"",
+    user:"",
 
 }

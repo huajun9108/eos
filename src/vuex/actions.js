@@ -81,7 +81,7 @@ export default{
                 return res.data
         }).then(json=>{
             commit("login",json)
-    
+
         })
     },
 }

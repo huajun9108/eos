@@ -230,7 +230,7 @@ export default {
 	},
 	mounted() {
 		$.fn.zTree.init($("#area_tree"), this.setting, this.zNodes);
-		this.selectGroupAll()
+		// this.selectGroupAll()
 	}
 }
 </script>

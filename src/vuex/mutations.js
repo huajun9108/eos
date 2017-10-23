@@ -12,7 +12,7 @@ export default{
     delUser(state,json){
         state.userId=json
     },
-    selectGroupAll(state,json){
-        state.groupAll=json
-    }
+    // selectGroupAll(state,json){
+    //     state.groupAll=json
+    // }
 }

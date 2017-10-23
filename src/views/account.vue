@@ -6,7 +6,7 @@
             <i class="icon-add"></i>
             新建
         </span>
-        <span class="delA" @click="delAll">
+        <span class="delA" @click="dellALL" >
             <i class="icon-delete"></i>
             批量删除
         </span>
@@ -15,7 +15,7 @@
     <table class="table table-hover table-bordered text-center">
         <thead>
         <tr>
-            <td><input type="checkbox" v-model="checked" @click="checkedAll"/></td>
+            <td><input type="checkbox" v-model="checkedAll"/></td>
             <td>编号</td>
             <td>用户账号</td>
             <td>姓名</td>
@@ -29,7 +29,7 @@
         </thead>
         <tbody>
             <tr v-for="(item,idx) in userAll" :key="idx">
-                <td><input type="checkbox" v-model="checkModel" :value="item.userid"></td>
+                <td><input type="checkbox" v-model="item.check" :value="item.userid"></td>
                 <td>{{idx+1}}</td>
                 <td>{{item.username}}</td>
                 <td>{{item.userabbname}}</td>
@@ -87,12 +87,17 @@
 </template>
 
 <script type="text/javascript">
+import axios from "axios"
+import qs from 'qs'
+import $ from 'jquery'
+window.$ = $;
 import {mapState,mapActions} from "vuex";
     export default {
         data(){
             return{
-                selectArr: [],
-                checked:false,
+                userAll:[],
+                selected: [],
+                // checkedAll:"",
                 checkModel:[],
                 selectCity:"overview",
                 fDisabled:false,
@@ -113,25 +118,39 @@ import {mapState,mapActions} from "vuex";
                 showPageEnd: 100,
                 //分页数据
                 arrayData: [],
-                // userAll:[
-                //     {username:111,userid:1,userabbname:"test",userpsd:"test",userjob:"it",},
-                //     {username:111,userid:2,userabbname:"test",userpsd:"test",userjob:"it",},
-                //     {username:111,userid:3,userabbname:"test",userpsd:"test",userjob:"it",},
-                //     {username:111,userid:4,userabbname:"test",userpsd:"test",userjob:"it",}
-                // ]
             }
         },
         computed:{
             ...mapState([
-                'userAll'
                 ]),
+            checkedAll:{
+				
+				//  只要有一个为false就是 没有全选 返回  false
+				//  getter
+				get(){
+					var flag = true;
+					this.userAll.forEach(item=>{
+						if(!item.check){
+							flag = false;
+						}
+					});
+					return flag;
+				},
+				set(newValue){
+					//  set 这个计算属性值改变时触发
+					console.log(newValue);
+					this.userAll.forEach(item=>{
+						item.check = newValue;
+					})
+				}
+			}
         },
         methods:{
 
         ...mapActions([
-            'getUser',
             'delUser'
             ]),
+            
             goAccountInfo(obj){
                 this.$router.push({name:'accountInfo',query:{userid:obj.userId}})
             },
@@ -139,33 +158,47 @@ import {mapState,mapActions} from "vuex";
                 this.$router.push({name:'accountInfo'})
             },
             del(obj){
-                this.userAll.splice(obj.id,1);  //
-                this.delUser({userId:obj.userId})
-            },
-            checkedAll: function() {
-                let that = this;
-                console.log(that.checkModel);
-                if (this.checked) {//实现反选
-                that.checkModel = [];
-                }else{//实现全选
-                that.checkModel = [];
-                that.userAll.forEach(function(item) {
-                   that.checkModel.push(item.userid);
-                });
+                if(confirm("确定要删除吗?")){
+                    this.userAll.splice(obj.id,1);  //
+                    this.delUser({userId:obj.userId})
+                }else{
+
                 }
+                
             },
-            delAll() {
-                let arr = [];
-                var len = this.userAll.length;
-                for (var i = 0; i < len; i++) {
-                    if (this.selectArr.indexOf(i)>=0) {
-                    console.log(this.selectArr.indexOf(i))
-                    }else{
-                    arr.push(this.userAll[i])
-                    }
-                }
-                this.userAll = arr;
-                this.selectArr = []
+            dellALL(){
+                console.log(1)
+                 var that = this;
+                 for (var i = that.userAll.length - 1;i >= 0;i--) {
+                     var index = that.userAll[i];
+                     if (index.check) {
+                         that.userAll.splice(i,1);
+                     }
+                 }
+            },
+            removeUsers() {
+                this.$confirm('此操作将永久删除 ' + this.selected.length + ' 个用户, 是否继续?', '提示', { type: 'warning' })
+                    .then(() => {
+                        console.log(this.selected);
+                        var ids = [];
+                        //提取选中项的id
+                        $.each(this.selected,(i, user)=> {
+                            ids.push(user.id);
+                            });
+                        // 向请求服务端删除
+                    //     var resource = this.$resource(this.url);
+                    //     resource.remove({ids: ids.join(",") })
+                    //         .then((response) => {
+                    //             this.$message.success('删除了' + this.selected.length + '个用户!');
+                    //             this.getUsers();
+                    //         })
+                    //         .catch((response) => {
+                    //             this.$message.error('删除失败!');
+                    //     });
+                    // })
+                    // .catch(() => {
+                    // this.$Message('已取消操作!');
+                    });
             },
             showPage(pageIndex, $event, forceRefresh){
             if (pageIndex > 0) {
@@ -235,20 +268,22 @@ import {mapState,mapActions} from "vuex";
             },
     },
     watch:{
-        checkModel:{
-            handler(val, oldVal){
-                if(this.checkModel.length==this.userAll.length){
-                    this.checked=true
-                }else{
-                    this.checked=false   
-                }
+       userAll:{
+            handler:function(newValue,oldValue){
+                console.log(newValue[0].count)
             },
             deep:true
         }
     },
-
     mounted(){
-        this.getUser()
+         axios.get("/user/selectUserAll",{}
+        ).then(res=>{
+            console.log(res.data.data)
+            return this.userAll=res.data.data
+        }).catch(error=>{
+            console.log(error);
+        })
+        
         this.showPage(this.pageCurrent, null, true);
 
     }

@@ -11,7 +11,7 @@
                     <i class="iconfont icon-User-name"></i><input type="text" placeholder="请输入用户名" ref="user" v-model="user" @input="btnBac"/>
                 </div>
                 <div>
-                    <i class="iconfont icon-password"></i><input v-bind:type="seen?'password':'text'" placeholder="请输入密码" v-model="pwd" ref="pwd" @input="btnBac"/>
+                    <i class="iconfont icon-password"></i><input v-bind:type="seen?'password':'text'" placeholder="请输入密码" v-model='pwd' ref="pwd" @input="btnBac"/>
                     <i :class="seen?'iconfont icon-eye_x':'iconfont icon-eye'" @click="changeSeen"></i>
                 </div>
                 <input type="button" @keyup.13="tologin()" @click="tologin" class="btn" value="登  录" ref="btn" />

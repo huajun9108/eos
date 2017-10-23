@@ -149,6 +149,7 @@ export default {
 		  return result;
 		},
     zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
+			
 		}
 	},
 	watch: {

@@ -4,7 +4,6 @@
 //获取state  store.state.count
 export default{
     loginResult:"",
-    userAll:"",
     groupAll:""
 
 }

@@ -11,22 +11,27 @@
       <div class="setting_left">
         <div class="accountinfo_username">
           <i class="icon-User-name"></i>
-          <input class="input_accountinfo" type="text" name="" :value="user ? user.username : ''" placeholder="用户名">
+          <input class="input_accountinfo" type="text" :value="user ? user.username : ''" placeholder="用户名" ref="name">
+          <hr>
+        </div>
+				<div class="accountinfo_name">
+          <i class="icon-User-name"></i>
+          <input class="input_accountinfo" type="text"  :value="user ? user.userabbname : ''" placeholder="姓名" ref="abbname">
           <hr>
         </div>
         <div class="accountinfo_password">
           <i class="icon-password"></i>
-          <input class="input_accountinfo" type="text" name="" :value="user ? user.userpsd : ''" placeholder="密码">
+          <input class="input_accountinfo" type="text" :value="user ? user.userpsd : ''" placeholder="密码" ref="pwd">
           <hr>
         </div>
         <div class="accountinfo_position">
           <i class="icon-position"></i>
-          <input class="input_accountinfo" type="text" name="" :value="user? user.userjob : ''" placeholder="职位">
+          <input class="input_accountinfo" type="text"  :value="user? user.userjob : ''" placeholder="职位"  ref="job">
           <hr>
         </div>
         <div class="accountinfo_boss dropdown">
           <i class="icon-superior"></i>
-          <input class="input_accountinfo" type="text" name="" :value="user? user.userleader : ''" placeholder="直线上司">
+          <input class="input_accountinfo" type="text"  :value="user? user.userleader : ''" placeholder="直线上司"  ref="leader">
           <hr>
         </div>
         <div class="accountinfo_effectivemenu">
@@ -53,7 +58,7 @@
       </div>
       </div>
       <div class="accountinfo_button text-right">
-          <span class="button_confirm" @click="confirmClick">确认</span>
+          <span class="button_confirm" @click="userExist">确认</span>
           <span class="button_cancel">取消</span>
       </div>
   </div>
@@ -189,9 +194,15 @@ var cityListTwo = [
                 ])
         },
         methods:{
-
+					
         ...mapActions([
-          ]),
+					]),
+					empty(val){
+            var reg= /^\s+$/gi;
+            if (reg.test(val ) || val.length==0) {
+                return true;
+            };
+        	},
           addHoverDom: function(treeId, treeNode) {
       			var sObj = $("#" + treeNode.tId + "_span");
       			if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
@@ -211,8 +222,85 @@ var cityListTwo = [
       		},
       		removeHoverDom: function(treeId, treeNode) {
       			$("#addBtn_" + treeNode.tId).unbind().remove();
-      		},
-          confirmClick: function() {
+					},
+					userExist(){
+							var username = this.$refs.name.value;
+							var abbname = this.$refs.abbname.value;
+							var pwd = this.$refs.pwd.value;
+							var job = this.$refs.job.value;
+							var leader = this.$refs.leader.value;
+							if(this.$route.query.userid){
+								this.update({
+									"userId":this.$route.query.userid,
+									"userName": username,
+									"userPsd": pwd,
+									"userAbbName":abbname,
+									"userJob":job,
+									"userLeader":leader})
+							}else{
+
+								this.confirmClick({
+									"userName": username,
+									"userPsd": pwd,
+									"userAbbName":abbname,
+									"userJob":job,
+									"userLeader":leader})
+							}
+					},
+					update(obj) {
+							var username = this.$refs.name.value;
+							var abbname = this.$refs.abbname.value;
+							var pwd = this.$refs.pwd.value;
+							var job = this.$refs.job.value;
+							var leader = this.$refs.leader.value;
+						if(this.empty(username)||this.empty(abbname)||this.empty(pwd)||this.empty(job)){
+							alert("输入不能为空")
+						}else{
+								axios.post("/user/updateUserById ",qs.stringify({
+									"userId":obj.userId,
+									"userName":  obj.userName,
+									"userPsd": obj.userPsd,
+									"userAbbName":obj.userAbbName,
+									"userJob":obj.userJob,
+									"userLeader":obj.userLeader
+							})
+							).then(res=>{
+										console.log(res.data)
+										return res.data
+							}).catch(error=>{
+								console.log(error);
+				
+							})
+						}
+
+					},
+          confirmClick(obj){
+							var username = this.$refs.name.value;
+							var abbname = this.$refs.abbname.value;
+							var pwd = this.$refs.pwd.value;
+							var job = this.$refs.job.value;
+							var leader = this.$refs.leader.value;
+						if(this.empty(name)||this.empty(username)||this.empty(name)||this.empty(username)){
+							alert("输入不能为空")
+						}else{
+							axios.post("/user/addUserOne",qs.stringify({
+            	"userName": obj.userName,
+							"userPsd": obj.userPsd,
+							"userAbbName":obj.userAbbName,
+							"userJob":obj.userJob,
+							"userLeader":obj.userLeader
+						
+        		})
+       	 		).then(res=>{
+                console.log(res.data)
+                return res.data
+        		}).catch(error=>{
+            	console.log(error);
+    
+        		})
+
+						}
+						
 
           }
     },

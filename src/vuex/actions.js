@@ -42,13 +42,46 @@ export default{
             commit("delUser",json)
         })
     },
-    selectGroupAll ({commit},obj){
-        axios.get("/groupset/selectGroupAll",{}
+    // selectGroupAll ({commit},obj){
+    //     axios.get("/groupset/selectGroupAll",{}
+    //     ).then(res=>{
+    //         console.log(res.data.data)
+    //         return res.data.data.data
+    //     }).then(json=>{
+    //         commit("selectGroupAll",json)
+    //     })
+    // },
+    updateGroupById({commit},obj){
+        axios.get("/groupset/updateGroupById ",qs.stringify({
+            "groupName":""
+        })
+        ).then(res=>{
+            console.log(res.data.data)
+            return res.data.data
+        }).then(json=>{
+            commit("updateGroupById",json)
+        })
+    },
+    selectFactoryAll({commit},obj){
+        axios.get("/factorySet/selectFactoryAll",{}
         ).then(res=>{
             console.log(res.data.data)
             return res.data.data.data
         }).then(json=>{
-            commit("selectGroupAll",json)
+            commit("factorySet",json)
+        })
+    },
+    addUser({commit},obj){
+        axios.post("/user/addUserOne",qs.stringify({
+            "username": obj.user,
+            "password": obj.pwd
+        })
+        ).then(res=>{
+                console.log(res.data)
+                return res.data
+        }).then(json=>{
+            commit("login",json)
+
         })
     },
 }

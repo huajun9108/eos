@@ -1,9 +1,9 @@
 <template>
 <div class="accountinfo_container">
-  <div class="accountinfo_interface col-md-7">
+  <div class="accountinfo_interface">
     <br>
     <div class="accountinfo_title">
-      <span>客户设置</span>
+      <span>帐户设置</span>
       <hr>
     </div>
 
@@ -11,22 +11,22 @@
       <div class="setting_left">
         <div class="accountinfo_username">
           <i class="icon-User-name"></i>
-          <input class="input_accountinfo" type="text" name="" value="" placeholder="用户名">
+          <input class="input_accountinfo" type="text" name="" :value="user.username ? user.username : ''" placeholder="用户名">
           <hr>
         </div>
         <div class="accountinfo_password">
           <i class="icon-password"></i>
-          <input class="input_accountinfo" type="text" name="" value="" placeholder="密码">
+          <input class="input_accountinfo" type="text" name="" :value="user.userpsd ? user.userpsd : ''" placeholder="密码">
           <hr>
         </div>
         <div class="accountinfo_position">
           <i class="icon-position"></i>
-          <input class="input_accountinfo" type="text" name="" value="" placeholder="职位">
+          <input class="input_accountinfo" type="text" name="" :value="user.userjob? user.userjob : ''" placeholder="职位">
           <hr>
         </div>
-        <div class="accountinfo_boss">
+        <div class="accountinfo_boss dropdown">
           <i class="icon-superior"></i>
-          <input class="input_accountinfo" type="text" name="" value="" placeholder="直线上司">
+          <input class="input_accountinfo" type="text" name="" :value="user.userleader? user.userleader : ''" placeholder="直线上司">
           <hr>
         </div>
         <div class="accountinfo_effectivemenu">
@@ -53,11 +53,11 @@
       </div>
       </div>
       <div class="accountinfo_button text-right">
-          <span class="button_confirm">确认</span>
+          <span class="button_confirm" @click="confirmClick">确认</span>
           <span class="button_cancel">取消</span>
       </div>
-
   </div>
+
 </div>
 </template>
 
@@ -65,21 +65,25 @@
 import {mapState,mapActions} from "vuex";
 import Bottom from "../components/bottom.vue";
 import "../assets/js/jquery-1.4.4.min.js"
+
 import "../assets/js/jquery.ztree.core.js"
 import "../assets/js/jquery.ztree.excheck.js"
 import "../assets/js/jquery.ztree.exedit.js"
+
+import axios from 'axios';
+import qs from 'qs'
 
 var newCount = 1;
 
 var cityListTwo = [
 			{name:"overview",value:"overview"},
+			{name:"saving book",value:"saving book"},
 			{name:"performance",value:"performance"},
+			{name:"data input",value:"data input"},
 			{name:"target",value:"target"},
-			{name:"loss",value:"loss"},
-			{name:"projects",value:"projects"},
-      {name:"saving",value:"saving"},
-			{name:"data",value:"data"},
-			{name:"account",value:"account"},
+      {name:"account",value:"account"},
+			{name:"loss mapping",value:"loss mapping"},
+			{name:"improvement project",value:"improvement project"},
 		];
     export default {
         components:{
@@ -87,6 +91,9 @@ var cityListTwo = [
         },
         data(){
             return{
+                user: "",
+                selectedLeader: "",
+                leaderList: [],
                 checkLists:"",
                 showList:cityListTwo,
                 setting: {
@@ -263,18 +270,11 @@ var cityListTwo = [
         },
         computed:{
             ...mapState([
-                "user"
-
                 ])
         },
         methods:{
 
         ...mapActions([
-            'selectUserById'
-            // 'changeIndex',
-            // 'gethomeData',
-            // 'getfireData',
-            // 'gethomeList'
           ]),
           addHoverDom: function(treeId, treeNode) {
       			var sObj = $("#" + treeNode.tId + "_span");
@@ -296,30 +296,29 @@ var cityListTwo = [
       		removeHoverDom: function(treeId, treeNode) {
       			$("#addBtn_" + treeNode.tId).unbind().remove();
       		},
+          confirmClick: function() {
+
+          }
     },
     watch:{
-        // homeData(newValue){
-        //     console.log(newValue)
-        //     this.$nextTick(()=>{
-        //         var myswiper = new Swiper("#swiper",{
-        //            	pagination:".swiper-pagination",
-        //            	paginationClickable:true,//为true时，点击分页器的指示点分页器会控制Swiper切换。
-		// 	        paginationType:"bullets",  //'bullets' 圆点'fraction'分式 'progress'进度条'custom' 自定义
-		// 	        paginationHide:false,
-		// 	        paginationElement:"div",
-		// 	        paginationBulletRender:function(index, className){
-		// 	            var txt=["精品民宿","兴趣培养","灵感空间"]
-		// 	            var unicode=["&#xe669;","&#xe62c;","&#xe506;"]
-		// 	            return"<div class="+className+"><i class='iconfont'>"+unicode[index]+"</i><span>"+txt[index]+"</span></div>"
-		// 	        }//渲染分页器小
-        //         })
 
-        //     })
-        // },
     },
 
     mounted(){
-        this.selectUserById({userId:this.$route.query.userid})
+      if(this.$route.query.userid){
+      axios.post("/user/selectUserById ",qs.stringify({
+          "userId":this.$route.query.userid,
+      })
+      ).then(res=>{
+          console.log(res.data.data)
+          return this.user=res.data.data
+      }).catch(error=>{
+          console.log(error);
+      })
+    }else{
+      this.user=""
+    }
+
         $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
     }
 }

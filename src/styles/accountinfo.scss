@@ -4,9 +4,11 @@
 	height: 100%;
 
 	.accountinfo_interface {
+		margin-left: 10%;
 		border: 1px solid #d0d0d0;
 		border-radius: 2px;
-		height: auto;
+		height: 100%;
+		width: 80%;
 
 		.accountinfo_title {
 			margin-left: 2%;
@@ -18,11 +20,13 @@
 		.accountinfo_setting {
 			height: auto;
 			overflow: hidden;
+			height: 80%;
 
 			.setting_left {
 				float: left;
 				margin-left: 2%;
 				width: 27%;
+				height: 100%;
 
 				.input_accountinfo {
 					line-height: 40px;
@@ -33,8 +37,12 @@
 
 				.accountinfo_effectivemenu {
 					.menu_container {
+						width:90%;
+						display: inline-block;
+						border: 1px solid black;
+						border-radius: 2px;
 						.menu_title {
-							width: 90%;
+							width: 100%;
 							background-color: #e9e9e9;
 							font-size: 12px;
 							font-weight: bold;
@@ -44,6 +52,12 @@
 							.input_menuoption {
 								float: left;
 								width: 50%;
+							}
+							.input_menuoption:nth-child(7) {
+								width: 100%;
+							}
+							.input_menuoption:nth-child(8) {
+								width: 100%;
 							}
 						}
 					}
@@ -56,17 +70,19 @@
 				border-radius: 2px;
 				float: left;
 				width: 67%;
+				height: 100%;
 
 				.visablearea_title {
 					background-color: #e9e9e9;
 					font-size: 12px;
 					font-weight: bold;
+					padding-left: 7%;
 				}
 			}
-
-
 		}
+
 		.accountinfo_button{
+			margin-top: 10px;
 			.button_confirm{
 				display: inline-block;
 				background-color: #1b3867;
@@ -88,5 +104,6 @@
 				margin-right: 2%;
 			}
 		}
+
 	}
 }

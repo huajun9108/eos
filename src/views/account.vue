@@ -103,19 +103,19 @@ import {mapState,mapActions} from "vuex";
                 fDisabled:false,
                 lDisabled:false,
                 //总项目数
-                totalCount: 200,
+                totalCount: 7,
                 //分页数
-                pageCount: 20,
+                pageCount: 1,
                 //当前页面
                 pageCurrent: 1,
                 //分页大小
-                pagesize:10,
+                pagesize:1,
                 //显示分页按钮数
-                showPages: 5,
+                showPages: 2,
                 //开始显示的分页按钮
                 showPagesStart: 1,
                 //结束显示的分页按钮
-                showPageEnd: 100,
+                showPageEnd: 7,
                 //分页数据
                 arrayData: [],
             }

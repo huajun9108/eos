@@ -45,8 +45,8 @@ export default{
     selectGroupAll ({commit},obj){
         axios.get("/groupset/selectGroupAll",{}
         ).then(res=>{
-            console.log(res.data)
-            return res.data.data
+            console.log(res.data.data)
+            return res.data.data.data
         }).then(json=>{
             commit("selectGroupAll",json)
         })

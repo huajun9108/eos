@@ -115,155 +115,72 @@ var cityListTwo = [
           					enable: true
           				}
           			},
-          			zNodes: [{
-          					id: 1,
-          					pId: 0,
-          					name: "pNode 1",
-          					open: true
-          				},
-          				{
-          					id: 11,
-          					pId: 1,
-          					name: "pNode 11"
-          				},
-          				{
-          					id: 111,
-          					pId: 11,
-          					name: " sNode 111"
-          				},
-          				{
-          					id: 112,
-          					pId: 11,
-          					name: "sNode 112"
-          				},
-          				{
-          					id: 113,
-          					pId: 11,
-          					name: "sNode 113"
-          				},
-          				{
-          					id: 114,
-          					pId: 11,
-          					name: "sNode 114"
-          				},
-          				{
-          					id: 12,
-          					pId: 1,
-          					name: "pNode 12"
-          				},
-          				{
-          					id: 121,
-          					pId: 12,
-          					name: "sNode 121"
-          				},
-          				{
-          					id: 122,
-          					pId: 12,
-          					name: "sNode 122"
-          				},
-          				{
-          					id: 123,
-          					pId: 12,
-          					name: "sNode 123"
-          				},
-          				{
-          					id: 124,
-          					pId: 12,
-          					name: "sNode 124"
-          				},
-          				{
-          					id: 13,
-          					pId: 1,
-          					name: "pNode 13",
-          					isParent: true
-          				},
-          				{
-          					id: 2,
-          					pId: 0,
-          					name: "pNode 2"
-          				},
-          				{
-          					id: 21,
-          					pId: 2,
-          					name: "pNode 21",
-          					open: true
-          				},
-          				{
-          					id: 211,
-          					pId: 21,
-          					name: "sNode 211"
-          				},
-          				{
-          					id: 212,
-          					pId: 21,
-          					name: "sNode 212"
-          				},
-          				{
-          					id: 213,
-          					pId: 21,
-          					name: "sNode 213"
-          				},
-          				{
-          					id: 214,
-          					pId: 21,
-          					name: "sNode 214"
-          				},
-          				{
-          					id: 22,
-          					pId: 2,
-          					name: "pNode 22"
-          				},
-          				{
-          					id: 221,
-          					pId: 22,
-          					name: "sNode 221"
-          				},
-          				{
-          					id: 222,
-          					pId: 22,
-          					name: "sNode 222"
-          				},
-          				{
-          					id: 223,
-          					pId: 22,
-          					name: "sNode 223"
-          				},
-          				{
-          					id: 224,
-          					pId: 22,
-          					name: "sNode 224"
-          				},
-          				{
-          					id: 23,
-          					pId: 2,
-          					name: "pNode 23"
-          				},
-          				{
-          					id: 231,
-          					pId: 23,
-          					name: "sNode 231"
-          				},
-          				{
-          					id: 232,
-          					pId: 23,
-          					name: "sNode 232"
-          				},
-          				{
-          					id: 233,
-          					pId: 23,
-          					name: "sNode 233"
-          				},
-          				{
-          					id: 234,
-          					pId: 23,
-          					name: "sNode 234"
-          				},
-          				{
-          					id: 3,
-          					pId: 0,
-          					name: "pNode 3",
-          					isParent: true
-          				}
+          			zNodes: [
+                  { id:1,pid:0,name:"大良造菜单",open:true,nocheck:false,
+                          children: [
+                              { id:11,pid:1,name:"当前项目"},
+                              { id:12,pid:1,name:"工程管理",open:true,
+                                  children: [
+                                      { id:121,pid:12,name:"我的工程"},
+                                      { id:122,pid:12,name:"施工调度"},
+                                      { id:1211,pid:12,name:"材料竞价"}
+                                  ]
+                              },
+                              { id:13,pid:1,name:"录入管理",open:true,
+                                  children: [
+                                      { id:131,pid:13,name:"用工录入"},
+                                      { id:132,pid:13,name:"商家录入"},
+                                      { id:1314,pid:13,name:"机构列表"}
+                                  ]
+                              },
+                              { id:14,pid:1,name:"审核管理",open:true,
+                                  children: [
+                                      { id:141,pid:14,name:"用工审核"},
+                                      { id:142,pid:14,name:"商家审核"},
+                                      { id:145,pid:14,name:"机构审核"}
+                                  ]
+                              },
+                              { id:15,pid:1,name:"公司管理",open:true,
+                                  children: [
+                                      { id:1517,pid:15,name:"我的工程案例"},
+                                      { id:1518,pid:15,name:"联系人设置"},
+                                      { id:1519,pid:15,name:"广告设置"}
+                                  ]
+                              },
+                              { id:16,pid:1,name:"业务管理",open:true,
+                                  children: [
+                                      { id:164,pid:16,name:"合同范本"},
+                                      { id:165,pid:16,name:"合同列表"},
+                                      { id:166,pid:16,name:"需求调度"}
+                                  ]
+                              },
+                              { id:17,pid:1,name:"订单管理",open:true,
+                                  children: [
+                                      { id:171,pid:17,name:"商品订单"},
+                                      { id:172,pid:17,name:"用工订单"},
+                                      { id:175,pid:17,name:"供应菜单"}
+                                  ]
+                              },
+                              { id:18,pid:1,name:"我的功能",open:true,
+                                  children: [
+                                      { id:181,pid:18,name:"免费设计"},
+                                      { id:182,pid:18,name:"装修报价"},
+                                      { id:1817,pid:18,name:"项目用工"}
+                                  ]
+                              },
+                              { id:19,pid:1,name:"分润管理",open:true,
+                                  children: [
+                                      { id:191,pid:19,name:"分润列表"}
+                                  ]
+                              },
+                              { id:110,pid:1,name:"运营管理",open:true,
+                                  children: [
+                                      { id:1101,pid:110,name:"代理列表"},
+                                      { id:1102,pid:110,name:"代售商品"}
+                                  ]
+                              },
+                          ]
+                      }
           			],
             }
         },
@@ -300,11 +217,11 @@ var cityListTwo = [
           }
     },
     watch:{
- 
+
     },
 
     mounted(){
-			 
+
 			if(this.$route.query.userid){
 				axios.post("/user/selectUserById ",qs.stringify({
             "userId":this.$route.query.userid,
@@ -318,7 +235,7 @@ var cityListTwo = [
 			}else{
 				this.user=""
 			}
-        
+
         $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
     }
 }

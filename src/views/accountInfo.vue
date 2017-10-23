@@ -11,7 +11,7 @@
       <div class="setting_left">
         <div class="accountinfo_username">
           <i class="icon-User-name"></i>
-          <input class="input_accountinfo" type="text" name="" value="" placeholder="用户名">
+          <input class="input_accountinfo" type="text" name=""  :value="user?user.username:''" placeholder="用户名">
           <hr>
         </div>
         <div class="accountinfo_password">
@@ -62,6 +62,10 @@
 </template>
 
 <script type="text/javascript">
+
+import axios from "axios"
+import qs from 'qs'
+
 import {mapState,mapActions} from "vuex";
 import Bottom from "../components/bottom.vue";
 import "../assets/js/jquery-1.4.4.min.js"
@@ -87,6 +91,7 @@ var cityListTwo = [
         },
         data(){
             return{
+								user:"",
                 checkLists:"",
                 showList:cityListTwo,
                 setting: {
@@ -263,7 +268,7 @@ var cityListTwo = [
         },
         computed:{
             ...mapState([
-                "user"
+                // "user"
 
                 ])
         },
@@ -298,28 +303,25 @@ var cityListTwo = [
       		},
     },
     watch:{
-        // homeData(newValue){
-        //     console.log(newValue)
-        //     this.$nextTick(()=>{
-        //         var myswiper = new Swiper("#swiper",{
-        //            	pagination:".swiper-pagination",
-        //            	paginationClickable:true,//为true时，点击分页器的指示点分页器会控制Swiper切换。
-		// 	        paginationType:"bullets",  //'bullets' 圆点'fraction'分式 'progress'进度条'custom' 自定义
-		// 	        paginationHide:false,
-		// 	        paginationElement:"div",
-		// 	        paginationBulletRender:function(index, className){
-		// 	            var txt=["精品民宿","兴趣培养","灵感空间"]
-		// 	            var unicode=["&#xe669;","&#xe62c;","&#xe506;"]
-		// 	            return"<div class="+className+"><i class='iconfont'>"+unicode[index]+"</i><span>"+txt[index]+"</span></div>"
-		// 	        }//渲染分页器小
-        //         })
-
-        //     })
-        // },
+ 
     },
 
     mounted(){
-        this.selectUserById({userId:this.$route.query.userid})
+			 
+			if(this.$route.query.userid){
+				axios.post("/user/selectUserById ",qs.stringify({
+            "userId":this.$route.query.userid,
+        })
+        ).then(res=>{
+            console.log(res.data.data)
+            return this.user=res.data.data
+        }).catch(error=>{
+            console.log(error);
+        })
+			}else{
+				this.user=""
+			}
+        
         $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
     }
 }

@@ -9,11 +9,10 @@ export default{
     getUser(state,json){
         state.userAll=json
     },
-    selectUserById (state,json){
-        state.user=json
-        console.log(state.user)
-    },
     delUser(state,json){
         state.userId=json
+    },
+    selectGroupAll(state,json){
+        state.groupAll=json
     }
 }

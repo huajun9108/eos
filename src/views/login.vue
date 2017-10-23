@@ -8,13 +8,13 @@
             </div>
             <div class="userinfo">
                 <div>
-                    <i class="iconfont icon-User-name"></i><input type="text" placeholder="请输入用户名" ref="user" v-model="user" @change="btnBac"/>
+                    <i class="iconfont icon-User-name"></i><input type="text" placeholder="请输入用户名" ref="user" v-model="user" @input="btnBac"/>
                 </div>
                 <div>
-                    <i class="iconfont icon-password"></i><input v-bind:type="seen?'password':'text'" placeholder="请输入密码" v-model="pwd" ref="pwd" @change="btnBac"/>
+                    <i class="iconfont icon-password"></i><input v-bind:type="seen?'password':'text'" placeholder="请输入密码" v-model="pwd" ref="pwd" @input="btnBac"/>
                     <i :class="seen?'iconfont icon-eye_x':'iconfont icon-eye'" @click="changeSeen"></i>
                 </div>
-                <input type="button" @click="tologin" class="btn" value="登  录" ref="btn"/>
+                <input type="button" @keyup.13="tologin()" @click="tologin" class="btn" value="登  录" ref="btn" />
                 <div class="hint hide" ref="hint">
                     <i class="iconfont icon-hint"></i><span class="tips" ref="tip"/></span>
                 </div>
@@ -38,7 +38,6 @@ export default{
     },
     computed:{
         ...mapState([
-            // 'pwdInput',
             'loginResult'
         ]),
     },
@@ -47,7 +46,6 @@ export default{
             'login'
         ]),
         changeSeen(){
-            this.$refs.pwd.value=this.pwdInput
             this.seen = !this.seen;
         },
         
@@ -84,11 +82,16 @@ export default{
         }
        
     },
+    created () {
+        let that = this;
+        document.onkeydown = function(){
+            var key = window.event.keyCode
+            if(key==13){
+                that.tologin();
+            }
+        }    
+    },
     watch:{
-        // pwdInput(newVal){
-        //     this.$refs.pwd.value=newVal
-        //     console.log(newVal)
-        // },
         loginResult(newVal){
             console.log(newVal.status)
             if(newVal.status==2){

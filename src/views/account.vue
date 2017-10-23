@@ -6,7 +6,7 @@
             <i class="icon-add"></i>
             新建
         </span>
-        <span class="delA">
+        <span class="delA" @click="delAll">
             <i class="icon-delete"></i>
             批量删除
         </span>
@@ -15,7 +15,7 @@
     <table class="table table-hover table-bordered text-center">
         <thead>
         <tr>
-            <td><input type="checkbox" v-model="checkedAll" @change="changeState"/></td>
+            <td><input type="checkbox" v-model="checked" @click="checkedAll"/></td>
             <td>编号</td>
             <td>用户账号</td>
             <td>姓名</td>
@@ -29,7 +29,7 @@
         </thead>
         <tbody>
             <tr v-for="(item,idx) in userAll" :key="idx">
-                <td><input type="checkbox" v-model="checkModel"></td>
+                <td><input type="checkbox" v-model="checkModel" :value="item.userid"></td>
                 <td>{{idx+1}}</td>
                 <td>{{item.username}}</td>
                 <td>{{item.userabbname}}</td>
@@ -38,12 +38,12 @@
                 <td>{{item.userleader}}</td>
                 <td>{{item.userleader}}</td>
                 <td>{{item.userleader}}</td>
-                <td class="icon-edit" :data="item.userid" @click="goAccountInfo"></td>
+                <td class="icon-edit" :data="item.userid" @click="goAccountInfo({userId:item.userid})"></td>
                 <td class="icon-delete_2" :data="item.userid" @click="del({id:idx,userId:item.userid})"></td>
             </tr>
         </tbody>
     </table>
-    <div class="pager" id="pager">
+    <div class="pager pull-right" id="pager">
           <!-- <span class="form-inline">
             <select class="form-control" v-model="pagesize" v-on:change="showPage(pageCurrent,$event,true)" number>
               <option value="10">10</option>
@@ -82,7 +82,7 @@
             </span>
           </span>
           <span>{{pageCurrent}}/{{pageCount}}</span>
-        </div>
+    </div>
 </div>
 </template>
 
@@ -91,7 +91,8 @@ import {mapState,mapActions} from "vuex";
     export default {
         data(){
             return{
-                checkedAll:false,
+                selectArr: [],
+                checked:false,
                 checkModel:[],
                 selectCity:"overview",
                 fDisabled:false,
@@ -103,15 +104,21 @@ import {mapState,mapActions} from "vuex";
                 //当前页面
                 pageCurrent: 1,
                 //分页大小
-                pagesize: 10,
+                pagesize:10,
                 //显示分页按钮数
-                showPages: 11,
+                showPages: 5,
                 //开始显示的分页按钮
                 showPagesStart: 1,
                 //结束显示的分页按钮
                 showPageEnd: 100,
                 //分页数据
-                arrayData: []
+                arrayData: [],
+                // userAll:[
+                //     {username:111,userid:1,userabbname:"test",userpsd:"test",userjob:"it",},
+                //     {username:111,userid:2,userabbname:"test",userpsd:"test",userjob:"it",},
+                //     {username:111,userid:3,userabbname:"test",userpsd:"test",userjob:"it",},
+                //     {username:111,userid:4,userabbname:"test",userpsd:"test",userjob:"it",}
+                // ]
             }
         },
         computed:{
@@ -125,9 +132,8 @@ import {mapState,mapActions} from "vuex";
             'getUser',
             'delUser'
             ]),
-            goAccountInfo(e){
-                console.log(e.target.attributes["data"].value)
-                this.$router.push({name:'accountInfo',query:{userid:e.target.attributes["data"].value}})
+            goAccountInfo(obj){
+                this.$router.push({name:'accountInfo',query:{userid:obj.userId}})
             },
             add(){
                 this.$router.push({name:'accountInfo'})
@@ -136,8 +142,30 @@ import {mapState,mapActions} from "vuex";
                 this.userAll.splice(obj.id,1);  //
                 this.delUser({userId:obj.userId})
             },
-            changeState(){
-
+            checkedAll: function() {
+                let that = this;
+                console.log(that.checkModel);
+                if (this.checked) {//实现反选
+                that.checkModel = [];
+                }else{//实现全选
+                that.checkModel = [];
+                that.userAll.forEach(function(item) {
+                   that.checkModel.push(item.userid);
+                });
+                }
+            },
+            delAll() {
+                let arr = [];
+                var len = this.userAll.length;
+                for (var i = 0; i < len; i++) {
+                    if (this.selectArr.indexOf(i)>=0) {
+                    console.log(this.selectArr.indexOf(i))
+                    }else{
+                    arr.push(this.userAll[i])
+                    }
+                }
+                this.userAll = arr;
+                this.selectArr = []
             },
             showPage(pageIndex, $event, forceRefresh){
             if (pageIndex > 0) {
@@ -207,18 +235,12 @@ import {mapState,mapActions} from "vuex";
             },
     },
     watch:{
-        userAll:{
-			handler:function(newValue,oldValue){
-				console.log(newValue[0].count)
-			},
-				deep:true
-        },
         checkModel:{
-            handler(){
+            handler(val, oldVal){
                 if(this.checkModel.length==this.userAll.length){
-                    this.checkedAll=true
+                    this.checked=true
                 }else{
-                    this.checkedAll=false   
+                    this.checked=false   
                 }
             },
             deep:true
@@ -227,8 +249,6 @@ import {mapState,mapActions} from "vuex";
 
     mounted(){
         this.getUser()
-        // this.gethomeData();
-        // this.getfireData();
         this.showPage(this.pageCurrent, null, true);
 
     }

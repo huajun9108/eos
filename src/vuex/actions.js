@@ -31,17 +31,6 @@ export default{
             commit("getUser",json)
         })
     },
-    selectUserById ({commit},obj){
-        axios.post("/user/selectUserById ",qs.stringify({
-            "userId":obj.userId,
-        })
-        ).then(res=>{
-            console.log(res.data.data)
-            return res.data.data
-        }).then(json=>{
-            commit("selectUserById",json)
-        })
-    },
     delUser({commit},obj){
         axios.get("/user/deleteUserById",{params:{
             userId: obj.userId
@@ -52,5 +41,14 @@ export default{
         }).then(json=>{
             commit("delUser",json)
         })
-    }
+    },
+    selectGroupAll ({commit},obj){
+        axios.get("/groupset/selectGroupAll",{}
+        ).then(res=>{
+            console.log(res.data)
+            return res.data.data
+        }).then(json=>{
+            commit("selectGroupAll",json)
+        })
+    },
 }

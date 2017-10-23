@@ -15,23 +15,9 @@
 	</div>
 
 </div>
-<!-- <div class="area">
-	<div class="area_left">
-		区域图表设置
-    <hr>
-		<ul id="treeDemo" class="ztree"></ul>
-	</div>
-	<div class="area_right">
-		<div class="area_content">
-		</div>
-	</div>
-</div> -->
 </template>
 <script type="text/javascript">
-import {
-	mapState,
-	mapActions
-} from "vuex"
+import {mapState,mapActions} from "vuex"
 import "../assets/js/jquery-1.4.4.min.js"
 import "../assets/js/jquery.ztree.core.js"
 import "../assets/js/jquery.ztree.excheck.js"
@@ -210,11 +196,13 @@ export default {
 	},
 	computed: {
 		...mapState([
-
+			"groupAll"
 		])
 	},
 	methods: {
-		...mapActions([]),
+		...mapActions([
+			"selectGroupAll"
+		]),
 		addHoverDom: function(treeId, treeNode) {
 			var sObj = $("#" + treeNode.tId + "_span");
 			if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
@@ -242,6 +230,7 @@ export default {
 	},
 	mounted() {
 		$.fn.zTree.init($("#area_tree"), this.setting, this.zNodes);
+		this.selectGroupAll()
 	}
 }
 </script>

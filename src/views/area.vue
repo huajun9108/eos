@@ -117,12 +117,12 @@ export default {
 	},
 	computed: {
 		...mapState([
-			"groupAll"
+			// "groupAll"
 		])
 	},
 	methods: {
 		...mapActions([
-			"selectGroupAll"
+			// "selectGroupAll"
 		]),
 		addHoverDom: function(treeId, treeNode) {
 			var sObj = $("#" + treeNode.tId + "_span");
@@ -158,7 +158,7 @@ export default {
 	},
 	mounted() {
 		$.fn.zTree.init($("#area_tree"), this.setting, this.zNodes);
-		this.selectGroupAll()
+		// this.selectGroupAll()
 	}
 }
 </script>

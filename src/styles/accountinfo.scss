@@ -1,109 +1,108 @@
 @import "./mobile.scss";
-
 .accountinfo_container {
-	height: 100%;
-
-	.accountinfo_interface {
-		margin-left: 10%;
-		border: 1px solid #d0d0d0;
-		border-radius: 2px;
-		height: 100%;
-		width: 80%;
-
-		.accountinfo_title {
-			margin-left: 2%;
-			margin-right: 2%;
-			font-weight: bold;
-			font-size: 12px;
-		}
-
-		.accountinfo_setting {
-			height: auto;
-			overflow: hidden;
-			height: 80%;
-
-			.setting_left {
-				float: left;
-				margin-left: 2%;
-				width: 27%;
-				height: 100%;
-
-				.input_accountinfo {
-					line-height: 40px;
-					width: 90%;
-					border: 1px solid #bdbdbd;
-					border-radius: 2px;
-				}
-
-				.accountinfo_effectivemenu {
-					.menu_container {
-						width:90%;
-						display: inline-block;
-						border: 1px solid black;
-						border-radius: 2px;
-						.menu_title {
-							width: 100%;
-							background-color: #e9e9e9;
-							font-size: 12px;
-							font-weight: bold;
-						}
-
-						.menu_option {
-							.input_menuoption {
-								float: left;
-								width: 50%;
-							}
-							.input_menuoption:nth-child(7) {
-								width: 100%;
-							}
-							.input_menuoption:nth-child(8) {
-								width: 100%;
-							}
-						}
-					}
-				}
-			}
-
-			.accountinfo_areacontainer {
-				margin-left: 2%;
-				border: 1px solid #bdbdbd;
-				border-radius: 2px;
-				float: left;
-				width: 67%;
-				height: 100%;
-
-				.visablearea_title {
-					background-color: #e9e9e9;
-					font-size: 12px;
-					font-weight: bold;
-					padding-left: 7%;
-				}
-			}
-		}
-
-		.accountinfo_button{
-			margin-top: 10px;
-			.button_confirm{
-				display: inline-block;
-				background-color: #1b3867;
-				border-radius: P(10);
-				width: P(105);
-				line-height: P(27);
-				color: #fff;
-				text-align: center;
-			}
-			.button_cancel{
-				display: inline-block;
-				background-color: #c2c2c2;
-				border-radius: P(10);
-				width: P(105);
-				line-height: P(27);
-				color: #fff;
-				text-align: center;
-				margin-bottom: P(10);
-				margin-right: 2%;
-			}
-		}
-
-	}
+    height: 100%;
+    .accountinfo_interface {
+        margin-left: 10%;
+        border: 1px solid #d0d0d0;
+        border-radius: 2px;
+        height: 100%;
+        width: 80%;
+        .accountinfo_title {
+            margin-left: 2%;
+            margin-right: 2%;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .accountinfo_setting {
+            height: auto;
+            overflow: hidden;
+            height: 80%;
+            i {
+                color: #1b3867;
+            }
+            .setting_left {
+                float: left;
+                margin-left: 2%;
+                width: 27%;
+                height: 100%;
+                .input_accountinfo {
+                    line-height: 40px;
+                    width: 90%;
+                    border: 1px solid #bdbdbd;
+                    border-radius: 2px;
+                    box-sizing: border-box;
+                    padding-left: 10px;
+                }
+                .accountinfo_effectivemenu {
+                    .menu_container {
+                        width: 90%;
+                        display: inline-block;
+                        border: 1px solid #bdbdbd;
+                        border-radius: 2px;
+                        .menu_title {
+                            width: 100%;
+                            background-color: #e9e9e9;
+                            font-size: 12px;
+                            font-weight: bold;
+                            line-height: 38px;
+                            box-sizing: border-box;
+                            padding-left: 10px;
+                        }
+                        .menu_option {
+                            .input_menuoption {
+                                float: left;
+                                width: 50%;
+                                box-sizing: border-box;
+                                padding-left: 10px;
+                            }
+                            .input_menuoption:nth-child(7) {
+                                width: 100%;
+                            }
+                            .input_menuoption:nth-child(8) {
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+            .accountinfo_areacontainer {
+                margin-left: 2%;
+                border: 1px solid #bdbdbd;
+                border-radius: 2px;
+                float: left;
+                width: 67%;
+                height: 100%;
+                .visablearea_title {
+                    background-color: #e9e9e9;
+                    font-size: 12px;
+                    font-weight: bold;
+                    padding-left: 7%;
+                    line-height: 38px;
+                }
+            }
+        }
+        .accountinfo_button {
+            margin-top: 10px;
+            .button_confirm {
+                display: inline-block;
+                background-color: #1b3867;
+                border-radius: P(10);
+                width: P(105);
+                line-height: P(27);
+                color: #fff;
+                text-align: center;
+            }
+            .button_cancel {
+                display: inline-block;
+                background-color: #c2c2c2;
+                border-radius: P(10);
+                width: P(105);
+                line-height: P(27);
+                color: #fff;
+                text-align: center;
+                margin-bottom: P(10);
+                margin-right: 2%;
+            }
+        }
+    }
 }

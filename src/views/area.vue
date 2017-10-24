@@ -4,7 +4,7 @@
 		<div class="area_setting col-md-3">
 			<br>
 			<span class="area_setting_title">区域范围</span>
-			<hr class="area_setting_line">
+			<hr>
       <ul id="area_tree" class="area_tree_class ztree">
       </ul>
 		</div>
@@ -44,92 +44,26 @@ export default {
 				},
 				edit: {
 					enable: true,
-		      removeTitle: '删除'
+		      removeTitle: '删除',
+					renameTitle: '编辑'
 				}
 			},
-			zNodes: [
-				{ id:1,pid:0,name:"集团设置",open:true,nocheck:false,
-                children: [
-                    { id:11,pid:1,name:"工厂设置"},
-                    { id:12,pid:1,name:"工厂设置",open:true,
-                        children: [
-                            { id:121,pid:12,name:"车间设置"},
-                            { id:122,pid:12,name:"车间设置"},
-                            { id:1211,pid:12,name:"车间设置"}
-                        ]
-                    },
-                    { id:13,pid:1,name:"工厂设置",open:true,
-                        children: [
-                            { id:131,pid:13,name:"用工录入"},
-                            { id:132,pid:13,name:"商家录入"},
-                            { id:1314,pid:13,name:"机构列表"}
-                        ]
-                    },
-                    { id:14,pid:1,name:"工厂设置",open:true,
-                        children: [
-                            { id:141,pid:14,name:"用工审核"},
-                            { id:142,pid:14,name:"商家审核"},
-                            { id:145,pid:14,name:"机构审核"}
-                        ]
-                    },
-                    { id:15,pid:1,name:"工厂设置",open:true,
-                        children: [
-                            { id:1517,pid:15,name:"我的工程案例"},
-                            { id:1518,pid:15,name:"联系人设置"},
-                            { id:1519,pid:15,name:"广告设置"}
-                        ]
-                    },
-                    { id:16,pid:1,name:"工厂设置",open:true,
-                        children: [
-                            { id:164,pid:16,name:"合同范本"},
-                            { id:165,pid:16,name:"合同列表"},
-                            { id:166,pid:16,name:"需求调度"}
-                        ]
-                    },
-                    { id:17,pid:1,name:"工厂设置",open:true,
-                        children: [
-                            { id:171,pid:17,name:"商品订单"},
-                            { id:172,pid:17,name:"用工订单"},
-                            { id:175,pid:17,name:"供应菜单"}
-                        ]
-                    },
-                    { id:18,pid:1,name:"工厂设置",open:true,
-                        children: [
-                            { id:181,pid:18,name:"免费设计"},
-                            { id:182,pid:18,name:"装修报价"},
-                            { id:1817,pid:18,name:"项目用工"}
-                        ]
-                    },
-                    { id:19,pid:1,name:"工厂设置",open:true,
-                        children: [
-                            { id:191,pid:19,name:"分润列表"}
-                        ]
-                    },
-                    { id:110,pid:1,name:"工厂设置",open:true,
-                        children: [
-                            { id:1101,pid:110,name:"代理列表"},
-                            { id:1102,pid:110,name:"代售商品"}
-                        ]
-                    },
-                ]
-            }
-			],
 		}
 	},
 	computed: {
 		...mapState([
-			// "groupAll"
+			"groupAll"
 		])
 	},
 	methods: {
 		...mapActions([
-			// "selectGroupAll"
+			"selectAreaAll"
 		]),
 		addHoverDom: function(treeId, treeNode) {
 			var sObj = $("#" + treeNode.tId + "_span");
 			if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
 			var addStr = "<span class='button add' id='addBtn_" + treeNode.tId +
-				"' title='add node' onfocus='this.blur();'></span>";
+				"' title='增加' onfocus='this.blur();'></span>";
 			sObj.after(addStr);
 			var btn = $("#addBtn_" + treeNode.tId);
 			if (btn) btn.bind("click", function() {
@@ -137,7 +71,7 @@ export default {
 				zTree.addNodes(treeNode, {
 					id: (100 + newCount),
 					pId: treeNode.id,
-					name: "new node" + (newCount++)
+					name: "新建结点" + (newCount++)
 				});
 				return false;
 			});
@@ -179,11 +113,10 @@ export default {
 		}
 	},
 	watch: {
-
+		groupAll: function() { $.fn.zTree.init($("#area_tree"), this.setting, this.groupAll); }
 	},
 	mounted() {
-		$.fn.zTree.init($("#area_tree"), this.setting, this.zNodes);
-		// this.selectGroupAll()
+		this.selectAreaAll()
 	}
 }
 </script>

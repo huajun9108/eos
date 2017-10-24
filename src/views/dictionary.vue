@@ -1,11 +1,35 @@
 <template>
     <div class="dictionary">
-       <div class="kpi">
+      <div class="kpiContainer">
+        <div class="title">
+            KPI
+        </div>
+        <div class="kpiContent">
+          <ul id="treeKpi" class="kpiTree ztree"></ul>
+        </div>
+      </div>
+      <div class="categoryContainer">
+        <div class="title">
+          loss category
+        </div>
+        <div class="categoryContent">
+          <ul id="treeCategory" class="categoryTree ztree"></ul>
+        </div>
+      </div>
+      <div class="savingDictionaryContainer">
+        <div class="title">
+          loss saving into dictionary
+        </div>
+        <div class="savingDictionaryContent">
+
+        </div>
+      </div>
+       <!-- <div class="kpi">
          <ul id="treeKpi" class="kpi_tree ztree"></ul>
        </div>
        <div class="loss">
          <ul id="treeLoss" class="loss_tree ztree"></ul>
-       </div>
+       </div> -->
     </div>
 </template>
 <script type="text/javascript">
@@ -21,8 +45,14 @@
       					}
       				},
               view: {
-                showLine: true
-              }
+                addHoverDom: this.addHoverDom,
+                removeHoverDom: this.removeHoverDom
+              },
+              edit: {
+      					enable: true,
+      		      removeTitle: '删除',
+      					renameTitle: '编辑'
+      				}
             },
             zNodesKpi: [
               { id: 1, pId: 0, name: "Volume", open: true },
@@ -143,7 +173,27 @@
                 // 'getcountryData',
                 // 'getlocalshop',
                 // 'getcountryshop'
-                ])
+              ]),
+              addHoverDom: function(treeId, treeNode) {
+          			var sObj = $("#" + treeNode.tId + "_span");
+          			if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+          			var addStr = "<span class='button add' id='addBtn_" + treeNode.tId +
+          				"' title='增加' onfocus='this.blur();'></span>";
+          			sObj.after(addStr);
+          			var btn = $("#addBtn_" + treeNode.tId);
+          			if (btn) btn.bind("click", function() {
+          				var zTree = $.fn.zTree.getZTreeObj("#treeCategory");
+          				zTree.addNodes(treeNode, {
+          					id: (100 + newCount),
+          					pId: treeNode.id,
+          					name: "new node" + (newCount++)
+          				});
+          				return false;
+          			});
+          		},
+          		removeHoverDom: function(treeId, treeNode) {
+          			$("#addBtn_" + treeNode.tId).unbind().remove();
+          		},
     },
     watch:{
 
@@ -153,7 +203,7 @@
 
     mounted(){
       $.fn.zTree.init($("#treeKpi"), this.setting, this.zNodesKpi);
-      $.fn.zTree.init($("#treeLoss"), this.setting, this.zNodesLoss);
+      $.fn.zTree.init($("#treeCategory"), this.setting, this.zNodesLoss);
         // this.getlocalData()
         // this.getpopularData()
         // this.getcountryData()

@@ -227,13 +227,17 @@ website:    http://code.google.com/p/jquerytree/
   display: inline-block;
 }
 .ztree li span.button.roots_open::before {
-  content: "\f078";
+  content: "\e905";
+  font-family: icomoon;
+  color: #6e6e6e;
   padding-top: 15px;
   padding-left: 2px;
   display: inline-block;
 }
 .ztree li span.button.roots_close::before {
-  content: "\f054";
+  content: "\e906";
+  font-family: icomoon;
+  color: #6e6e6e;
   padding-top: 15px;
   padding-left: 2px;
   display: inline-block;

@@ -15,5 +15,8 @@ export default {
     },
     updateUserById(state, json) {
 
+    },
+    selectAreaAll(state, json) {
+        state.groupAll = json
     }
 }

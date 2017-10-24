@@ -43,7 +43,8 @@ export default {
 					}
 				},
 				edit: {
-					enable: true
+					enable: true,
+		      removeTitle: '删除'
 				}
 			},
 			zNodes: [
@@ -149,11 +150,35 @@ export default {
 		  return result;
 		},
     zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
-			
+			var zTree = $.fn.zTree.getZTreeObj("area_tree");
+			var oldName = treeNode.name;
+      // if(isCancel)
+			// {
+			// 	setTimeout(function() {
+			// 		zTree.cancelEditName();
+			// 	}, 10);
+			// }
+
+			if(!isCancel && newName.length == 0) {
+				alert("名称不能为空！");
+				setTimeout(function() {
+					zTree.editName(treeNode);
+				}, 10);
+				return false;
+			}
+
+			if(oldName !== newName){
+				if(!confirm("确认修改？")){
+					setTimeout(function() {
+						zTree.cancelEditName(oldName);
+					}, 10);
+					return false;
+				}
+			}
+
 		}
 	},
 	watch: {
-
 
 	},
 	mounted() {

@@ -1,25 +1,57 @@
 @import "./mobile.scss";
-.account{
+.account {
     margin: 0 auto;
-    .oper{
+    .oper {
         font-size: P(12);
         color: #FFF;
-        span{
+        span {
             display: inline-block;
             width: P(86);
             background: #122b54;
             line-height: P(26);
             border-radius: P(13);
             text-align: center;
-            i{
-                color: #ff6600;
+            i {
+                color: #ff9c00;
                 display: inline-block;
                 line-height: P(26);
             }
         }
-        .delA{
+        .delA {
             margin-left: P(10);
         }
-        
+    }
+    .table {
+        color: #040404;
+    }
+    .table-bordered>thead>tr>td,
+    .table-bordered>tbody>tr>td,
+    .table-bordered {
+        border: 1px solid #9ba3a9;
+    }
+    .table-bordered>thead>tr>td {
+        border-bottom: 0
+    }
+    .table>tbody>tr>td,
+    .table>thead>tr>td {
+        vertical-align: middle;
+    }
+    .table-hover>tbody>tr:hover {
+        background-color: #f2f2f2
+    }
+    .table-hover>tbody>tr>.icon-edit:hover {
+        color: #3498db
+    }
+    .table-hover>tbody>tr>.icon-delete_2:hover {
+        color: #ff9c00
+    }
+    #pager {
+        .btn-default {
+            color: #131313;
+        }
+        .active {
+            color: #fff;
+            background-color: #1b3867;
+        }
     }
 }

@@ -35,6 +35,7 @@
 <script type="text/javascript">
 
     import {mapState,mapActions} from "vuex"
+    var newCount = 1;
     export default {
         data() {
           return {
@@ -182,7 +183,7 @@
           			sObj.after(addStr);
           			var btn = $("#addBtn_" + treeNode.tId);
           			if (btn) btn.bind("click", function() {
-          				var zTree = $.fn.zTree.getZTreeObj("#treeCategory");
+          				var zTree = $.fn.zTree.getZTreeObj("treeCategory");
           				zTree.addNodes(treeNode, {
           					id: (100 + newCount),
           					pId: treeNode.id,

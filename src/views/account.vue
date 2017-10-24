@@ -102,6 +102,7 @@ export default {
   },
   data() {
     return {
+      validmenu:[],
       userAll: [],
       selected: [],
       // checkedAll:"",
@@ -272,7 +273,6 @@ export default {
     
   },
   mounted() {
-      var that = this;
     axios
       .get("/user/selectUserAll", {})
       .then(res => {
@@ -281,7 +281,9 @@ export default {
         }));
         return (
             res.data.data.forEach(item=>{
-            that.userAll=item.workshop
+            this.userAll.push(item.user)
+            this.validmenu.push(item.validmenu)
+            // console.log ('userAll -> ' + JSON.stringify (this.userAll))
         })
         );
       })

@@ -81,14 +81,14 @@ import "../assets/js/jquery.ztree.exedit.js";
 var newCount = 1;
 
 var cityListTwo = [
-  { name: "overview", value: "overview" },
-  { name: "saving book", value: "saving book" },
-  { name: "performance", value: "performance" },
-  { name: "data input", value: "data input" },
-  { name: "target", value: "target" },
-  { name: "account", value: "account" },
-  { name: "loss mapping", value: "loss mapping" },
-  { name: "improvement project", value: "improvement project" }
+  { name: "overview", value: "overview", check:true},
+  { name: "saving book", value: "saving book",check:true },
+  { name: "performance", value: "performance" ,check:false},
+  { name: "data input", value: "data input" ,check:false},
+  { name: "target", value: "target" ,check:true},
+  { name: "account", value: "account" ,check:true},
+  { name: "loss mapping", value: "loss mapping" ,check:true},
+  { name: "improvement project", value: "improvement project",check:true }
 ];
 export default {
   components: {
@@ -99,6 +99,7 @@ export default {
       user: "",
       checkLists: "",
       showList: cityListTwo,
+      validmenu:[],
       setting: {
         view: {
           addHoverDom: this.addHoverDom,
@@ -338,8 +339,14 @@ export default {
           })
         )
         .then(res => {
-          console.log(res.data.data);
-          return (this.user = res.data.data);
+            // res.data.forEach(item=>{
+            //     return (this.user = res.data.data);
+            // })
+          console.log(res.data.data.validmenu);
+          return this.user = res.data.data.user
+          
+          this.validmenu=res.data.data.validmenu;
+          
         })
         .catch(error => {
           console.log(error);

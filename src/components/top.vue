@@ -8,12 +8,12 @@
             <ul class="nav">
                 <li>
                     <router-link :to="{name:'area'}">
-                        区域
+                        区域范围设置
                     </router-link>
                 </li>
                 <li>
                     <router-link :to="{name:'account'}">
-                        个人账户设置
+                        个人账号设置
                     </router-link></li>
                 <li>
                     <router-link :to="{name:'dictionary'}">

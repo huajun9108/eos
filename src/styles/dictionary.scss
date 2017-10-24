@@ -1,10 +1,55 @@
 @import "./mobile.scss";
 
-.kpi{
-	float: left;
-}
+// .kpi{
+// 	float: left;
+// }
+//
+// .loss{
+// 	float: left;
+// 	margin-left: 20%;
+// }
 
-.loss{
-	float: left;
-	margin-left: 20%;
+.dictionary{
+	height: 100%;
+	width: 100%;
+	.title{
+		background: #e4e7e9;
+		height: 35px;
+		text-align: center;
+		padding-top: 5px;
+		font-family: "宋体";
+		font-weight: bold;
+		font-size: 18px;
+	}
+	.kpiContainer{
+		width: 20%;
+		height: 100%;
+		float: left;
+		overflow: auto;
+		border-bottom: 1px solid black;
+		.kpiContent{
+			border-left: 1px solid black;
+		}
+	}
+
+	.categoryContainer{
+		width: 40%;
+		height: 100%;
+		float: left;
+		overflow: auto;
+		border-bottom: 1px solid black;
+	}
+
+	.savingDictionaryContainer{
+		width: 40%;
+		height: 100%;
+		float: left;
+		overflow: auto;
+		border-bottom: 1px solid black;
+		.savingDictionaryContent{
+			height: 100%;
+			border-right: 1px solid black;
+		}
+	}
+	// background: black;
 }

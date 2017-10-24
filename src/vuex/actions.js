@@ -84,4 +84,13 @@ export default{
 
         })
     },
+    selectAreaAll({commit}, obj){
+      axios.get("/groupset/selectAreaAll",{}
+    ).then(res=>{
+        console.log(res.data)
+        return res.data
+    }).then(json=>{
+        commit("selectAreaAll",json)
+    })
+    }
 }

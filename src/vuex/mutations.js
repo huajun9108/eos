@@ -12,7 +12,8 @@ export default{
     delUser(state,json){
         state.userId=json
     },
-    // selectGroupAll(state,json){
-    //     state.groupAll=json
-    // }
+
+    selectAreaAll(state,json){
+        state.groupAll=json
+    }
 }

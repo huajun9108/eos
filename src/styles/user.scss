@@ -1,0 +1,57 @@
+@import "./mobile.scss";
+#user {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    #left-nav {
+        float: left;
+        height: 100%;
+        background: #122b54;
+        .logo {
+            width: 90%;
+            margin: 50px auto;
+            img {
+                width: 100%;
+                margin: auto
+            }
+        }
+        .nav-left {
+            margin: 100px auto;
+            ul {
+                width: 100%;
+                overflow: hidden;
+                a {
+                    display: block;
+                    line-height: P(70);
+                    width: 100%;
+                    box-sizing: border-box;
+                    padding: 16px 0;
+                    li {
+                        overflow: hidden;
+                        box-sizing: border-box;
+                        padding-left: P(42);
+                        width: 100%;
+                        display: block;
+                        color: #d5d7dc;
+                        line-height: P(38);
+                        font-size: P(22);
+                        span {}
+                    }
+                }
+                .router-link-active {
+                    background: #164380;
+                    li {
+                        font-size: P(24);
+                        font-weight: bold;
+                        border-left: P(6) solid #62e3ff
+                    }
+                }
+            }
+        }
+    }
+    #right-con {
+        width: 100%;
+        float: left;
+        flex: 1
+    }
+}

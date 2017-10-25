@@ -39,4 +39,5 @@
     @import "./styles/z-top.scss"
     @import "./styles/z-account.scss"
     @import "./styles/dictionary.scss"
+    @import "./styles/user.scss"
 </style>

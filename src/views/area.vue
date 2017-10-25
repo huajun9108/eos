@@ -95,14 +95,15 @@ export default {
 		removeHoverDom: function(treeId, treeNode) {
 			$("#addBtn_" + treeNode.tId).unbind().remove();
 		},
-		zTreeBeforeRemove: function(treeId, treeNode){
-			return Ewin.confirm({
+		zTreeBeforeRemove: function(){
+		 	if(Ewin.confirm({
 				message: "确认要删除选择的数据吗？"
-			}).on(function(e){
-				return e;
-			});
+			})){
+				
+			}
+			
 		},
-    zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
+   		 zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
 			var zTree = $.fn.zTree.getZTreeObj("area_tree");
 			var oldName = treeNode.name;
 

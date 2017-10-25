@@ -96,11 +96,14 @@ export default {
 			$("#addBtn_" + treeNode.tId).unbind().remove();
 		},
 		zTreeBeforeRemove: function(treeId, treeNode){
-			return Ewin.confirm({
-				message: "确认要删除选择的数据吗？"
-			}).on(function(e){
-				return e;
-			});
+			console.log(Ewin.confirm({
+							message: "确认要删除选择的数据吗？"
+						}).on(function(e) {
+							return e;
+			}))
+			// var result = confirm("清除");
+			// console.log(result);
+			// return result;
 		},
     zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
 			var zTree = $.fn.zTree.getZTreeObj("area_tree");

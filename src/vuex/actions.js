@@ -12,7 +12,6 @@ export default {
             "username": obj.user,
             "password": obj.pwd
         })).then(res => {
-            console.log(res.data)
             return res.data
         }).then(json => {
             commit("login", json)
@@ -21,7 +20,6 @@ export default {
     },
     getUser({ commit }, obj) {
         axios.get("/user/selectUserAll", {}).then(res => {
-                console.log(res.data.data)
                 return res.data.data
             })
             .then(json => {
@@ -34,7 +32,6 @@ export default {
                 userId: obj.userId
             }
         }).then(res => {
-            console.log(res.data.data)
             return res.data.data
         }).then(json => {
             commit("delUser", json)
@@ -53,7 +50,6 @@ export default {
         axios.get("/groupset/updateGroupById ", qs.stringify({
             "groupName": ""
         })).then(res => {
-            console.log(res.data.data)
             return res.data.data
         }).then(json => {
             commit("updateGroupById", json)
@@ -61,7 +57,6 @@ export default {
     },
     selectFactoryAll({ commit }, obj) {
         axios.get("/factorySet/selectFactoryAll", {}).then(res => {
-            console.log(res.data.data)
             return res.data.data.data
         }).then(json => {
             commit("factorySet", json)
@@ -73,9 +68,9 @@ export default {
             "userPsd": obj.userPsd,
             "userAbbName": obj.userAbbName,
             "userJob": obj.userJob,
-            "userLeader": obj.userLeader
+            "userLeader": obj.userLeader,
+            "validMenu":obj.validMenu
         })).then(res => {
-            console.log(res.data)
             return res.data
         }).then(json => {
             commit("addUser", json)
@@ -91,9 +86,9 @@ export default {
             "userPsd": obj.userPsd,
             "userAbbName": obj.userAbbName,
             "userJob": obj.userJob,
-            "userLeader": obj.userLeader
+            "userLeader": obj.userLeader,
+            "validMenu":obj.validMenu
         })).then(res => {
-            console.log(res.data)
             return res.data
         }).then(json => {
             commit("updateUserById", json)
@@ -105,10 +100,21 @@ export default {
     },
     selectAreaAll({ commit }, obj) {
         axios.get("/groupset/selectAreaAll", {}).then(res => {
-            console.log(res.data)
             return res.data
         }).then(json => {
             commit("selectAreaAll", json)
         })
-    }
+    },
+    selectUserById({ commit }, obj) {
+        axios.post("/user/selectUserById", qs.stringify({
+            "userId": obj.userid
+        })).then(res => {
+            return res.data.data
+        }).then(json => {
+            commit("selectUserById", json)
+
+        })
+    },
+
+ 
 }

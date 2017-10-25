@@ -1,6 +1,6 @@
 <template>
 <div class="account">
-    <br/>
+  <br/>
     <div class="fixed-table-toolbar oper">
         <span class="add" @click="add">
             <i class="icon-add"></i>
@@ -45,47 +45,7 @@
             </tr>
         </tbody>
     </table>
-    <v-pagination :total="total" :current.sync="current" class="pull-right"></v-pagination>
-    <!-- <div class="pager pull-right" id="pager"> -->
-          <!-- <span class="form-inline">
-            <select class="form-control" v-model="pagesize" v-on:change="showPage(pageCurrent,$event,true)" number>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="40">40</option>
-            </select>
-          </span> -->
-          <!-- <span v-for="(item,idx) in pageCount+1" :key="idx">
-            <span v-if="item==1" class="btn btn-sm btn-default" v-on:click="showPage(1,$event)" :class="{'disabled':fDisabled}">
-              首页
-            </span>
-            <span v-if="item==1" class="btn btn-sm btn-default" v-on:click="showPage(pageCurrent-1,$event)" :class="{'disabled':fDisabled}">
-              上一页
-            </span>
-            <span v-if="item==1" class="btn btn-sm btn-default" v-on:click="showPage(item,$event)">
-              {{item}}
-            </span>
-            <span v-if="item==1&&item<showPagesStart-1" class="btn btn-sm btn-default disabled">
-              ...
-            </span>
-            <span v-if="item>1&&item<=pageCount-1&&item>=showPagesStart&&item<=showPageEnd&&item<=pageCount" class="btn btn-sm btn-default" v-on:click="showPage(item,$event)">
-              {{item}}
-            </span>
-            <span v-if="item==pageCount&&item>showPageEnd+1" class="btn btn-sm btn-default disabled">
-              ...
-            </span>
-            <span v-if="item==pageCount" class="btn btn-sm btn-default" v-on:click="showPage(item,$event)" >
-              {{item}}
-            </span>
-            <span v-if="item==pageCount" class="btn btn-sm btn-default" v-on:click="showPage(pageCurrent+1,$event)" :class="{'disabled':lDisabled}">
-              下一页
-            </span>
-            <span v-if="item==pageCount" class="btn btn-sm btn-default" v-on:click="showPage(pageCount,$event)" :class="{'disabled':lDisabled}">
-              尾页
-            </span>
-          </span>
-          <span>{{pageCurrent}}/{{pageCount}}</span>
-    </div> -->
+    <v-pagination :total="total" :current.sync="current" class="pull-right"></v-pagination> 
 </div>
 </template>
 
@@ -94,6 +54,7 @@ import axios from "axios";
 import qs from "qs";
 import $ from "jquery";
 window.$ = $;
+import "../assets/js/tip"
 import { mapState, mapActions } from "vuex";
 import pagination from "../components/pager";
 export default {
@@ -132,7 +93,6 @@ export default {
       },
       set(newValue) {
         //  set 这个计算属性值改变时触发
-        console.log(newValue);
         this.userAll.forEach(item => {
           item.check = newValue;
         });
@@ -141,7 +101,6 @@ export default {
   },
   methods: {
     ...mapActions(["delUser"]),
-
     goAccountInfo(obj) {
       this.$router.push({ name: "accountInfo", query: { userid: obj.userId } });
     },
@@ -149,14 +108,16 @@ export default {
       this.$router.push({ name: "accountInfo" });
     },
     del(obj) {
-      if (confirm("确定要删除吗?")) {
-        this.userAll.splice(obj.id, 1); //
-        this.delUser({ userId: obj.userId });
-      } else {
-      }
+      var that= this
+      Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+          that.userAll.splice(obj.id, 1);
+          that.delUser({ userId: obj.userId });
+      });
     },
     dellALL() {
-      console.log(1);
       var that = this;
       for (var i = that.userAll.length - 1; i >= 0; i--) {
         var index = that.userAll[i];
@@ -173,7 +134,6 @@ export default {
       this.$confirm("此操作将永久删除 " + this.selected.length + " 个用户, 是否继续?", "提示", {
         type: "warning"
       }).then(() => {
-        console.log(this.selected);
         var ids = [];
         //提取选中项的id
         $.each(this.selected, (i, user) => {
@@ -276,9 +236,6 @@ export default {
     axios
       .get("/user/selectUserAll", {})
       .then(res => {
-        (res.data.data.forEach(item=>{
-            console.log(item)
-        }));
         return (
             res.data.data.forEach(item=>{
             this.userAll.push(item.user)

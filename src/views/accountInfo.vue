@@ -11,27 +11,27 @@
       <div class="setting_left">
         <div class="accountinfo_username">
           <i class="icon-User-name"></i>
-          <input class="input_accountinfo" type="text" :value="user ? user.username : ''" placeholder="用户名" ref="name">
+          <input class="input_accountinfo" type="text" :value="this.$route.query.userid ? userinfor.username : ''" placeholder="用户名" ref="name">
           <hr>
         </div>
 				<div class="accountinfo_name">
           <i class="icon-User-name"></i>
-          <input class="input_accountinfo" type="text"  :value="user ? user.userabbname : ''" placeholder="姓名" ref="abbname">
+          <input class="input_accountinfo" type="text"  :value="this.$route.query.userid? userinfor.userabbname : ''" placeholder="姓名" ref="abbname">
           <hr>
         </div>
         <div class="accountinfo_password">
           <i class="icon-password"></i>
-          <input class="input_accountinfo" type="text" :value="user ? user.userpsd : ''" placeholder="密码" ref="pwd">
+          <input class="input_accountinfo" type="text" :value="this.$route.query.userid ? userinfor.userpsd : ''" placeholder="密码" ref="pwd">
           <hr>
         </div>
         <div class="accountinfo_position">
           <i class="icon-position"></i>
-          <input class="input_accountinfo" type="text"  :value="user? user.userjob : ''" placeholder="职位"  ref="job">
+          <input class="input_accountinfo" type="text"  :value="this.$route.query.userid? userinfor.userjob : ''" placeholder="职位"  ref="job">
           <hr>
         </div>
         <div class="accountinfo_boss dropdown">
           <i class="icon-superior"></i>
-          <input class="input_accountinfo" type="text"  :value="user? user.userleader : ''" placeholder="直线上司"  ref="leader">
+          <input class="input_accountinfo" type="text"  :value="this.$route.query.userid? userinfor.userleader : ''" placeholder="直线上司"  ref="leader">
           <hr>
         </div>
         <div class="accountinfo_effectivemenu">
@@ -41,9 +41,9 @@
               有效菜单
             </div>
             <div class="menu_option">
-              <div class="input_menuoption" v-for="(city,idx) in showList" :key="idx">
-                  <input type="checkbox" :id="city.name" :value="city.name" v-model="checkLists" :class="city.check?'infor':'uninfor'">
-                  <label :for="city.name" >{{city.name}}</label>
+              <div class="input_menuoption" v-for='(option,index) in validmenuList' :key="index">
+                  <input  v-model="postOptions" :value="option.validmenuid" :id='"menu"+index' type="checkbox" class="mycheck">
+                  <label :for='"menu"+index' v-text='option.name' ></label>
               </div>
             </div>
           </div>
@@ -79,27 +79,20 @@ import "../assets/js/jquery.ztree.excheck.js";
 import "../assets/js/jquery.ztree.exedit.js";
 
 var newCount = 1;
-
-var cityListTwo = [
-  { name: "overview", value: "overview", check:true},
-  { name: "saving book", value: "saving book",check:true },
-  { name: "performance", value: "performance" ,check:false},
-  { name: "data input", value: "data input" ,check:false},
-  { name: "target", value: "target" ,check:true},
-  { name: "account", value: "account" ,check:true},
-  { name: "loss mapping", value: "loss mapping" ,check:true},
-  { name: "improvement project", value: "improvement project",check:true }
-];
+// var testOptions = [ '1','2','3','4','5' ],    // 测试数据-所有选项
+//     testOptionsRender = '3,4';                // 测试数据-已选中的选项
 export default {
+  created: function(){
+    this.getOptions()
+  },
   components: {
-    ebottom: Bottom
+    ebottom: Bottom   
   },
   data() {
     return {
-      user: "",
+      options:null,           // 初渲染所有选项
+      postOptions:null    ,    // 提交选项也是已选中选项
       checkLists: "",
-      showList: cityListTwo,
-      validmenu:[],
       setting: {
         view: {
           addHoverDom: this.addHoverDom,
@@ -229,15 +222,37 @@ export default {
     };
   },
   computed: {
-    ...mapState([])
+    ...mapState([
+      "userinfor",
+      "validmenu",
+      "validmenuList"
+    ])
   },
   methods: {
-    ...mapActions(["addUser", "updateUserById"]),
+    ...mapActions(["addUser", "updateUserById","selectUserById"]),
     empty(val) {
       var reg = /^\s+$/gi;
       if (reg.test(val) || val.length == 0) {
         return true;
       }
+    },
+    getOptions(){
+      var _this = this;
+      /* --- axios skip over --- */
+      _this.options = this.validmenuList;
+      this.postOptions =this.validmenu.split(','); 
+      
+    },
+    ArrayBlank(arr){
+        for(var i = 0 ;i<arr.length;i++){  
+           if(arr[i] == "" || typeof(arr[i]) == "undefined"){  
+                arr.splice(i,1);  
+                i= i-1;  
+                 
+           }  
+             
+        }  
+        return arr;  
     },
     addHoverDom: function(treeId, treeNode) {
       var sObj = $("#" + treeNode.tId + "_span");
@@ -271,6 +286,7 @@ export default {
       var pwd = this.$refs.pwd.value;
       var job = this.$refs.job.value;
       var leader = this.$refs.leader.value;
+      this.ArrayBlank(this.postOptions)
       if (this.$route.query.userid) {
         this.update({
           userId: this.$route.query.userid,
@@ -278,16 +294,21 @@ export default {
           userPsd: pwd,
           userAbbName: abbname,
           userJob: job,
-          userLeader: leader
+          userLeader: leader,
+          valiMmenu:this.postOptions.join(",")
         });
+        console.log(this.postOptions)
       } else {
         this.confirmClick({
           userName: username,
           userPsd: pwd,
           userAbbName: abbname,
           userJob: job,
-          userLeader: leader
+          userLeader: leader,
+          validMenu:this.postOptions.join(",")
+         
         });
+         console.log(this.postOptions)
       }
     },
     update(obj) {
@@ -327,32 +348,17 @@ export default {
       }
     }
   },
-  watch: {},
+  watch: {
+    validmenu(newVal){
+      this.getOptions()
+    }
+  },
 
   mounted() {
     if (this.$route.query.userid) {
-      axios
-        .post(
-          "/user/selectUserById ",
-          qs.stringify({
-            userId: this.$route.query.userid
-          })
-        )
-        .then(res => {
-            // res.data.forEach(item=>{
-            //     return (this.user = res.data.data);
-            // })
-          console.log(res.data.data.validmenu);
-          return this.user = res.data.data.user
-          
-          this.validmenu=res.data.data.validmenu;
-          
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      this.selectUserById({userid:this.$route.query.userid})
     } else {
-      this.user = "";
+      console.log(this.$route)
     }
 
     $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);

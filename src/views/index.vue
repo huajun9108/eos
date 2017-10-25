@@ -8,7 +8,6 @@
 </template>
 <script type="text/javascript">
     import Top from "../components/top.vue";
-    // import Bottom from "../components/bottom.vue";
     export default {
         components:{
             etop:Top,

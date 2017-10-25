@@ -1,24 +1,20 @@
 <template>
 <div id="app">
     <div class="main-container">
-        <!-- <etop></etop> -->
-        <!-- <div class="content"> -->
-            <router-view></router-view>
-        <!-- </div>  -->
-        <!-- <ebottom></ebottom>         -->
+        <router-view></router-view>
     </div>
 </div>
 </template>
 <script type="text/javascript">
     import "./libs/flexible/flexible"
     import Top from "./components/top.vue";
-    import Bottom from "./components/bottom.vue";
+    // import Bottom from "./components/bottom.vue";
     import store from './vuex/store';
 
     export default {
         components:{
             etop:Top,
-            ebottom:Bottom
+            // ebottom:Bottom
         },
         store,
         vuex: {

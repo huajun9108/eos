@@ -91,19 +91,18 @@ label {
     margin: 0;
 }
 
-.uninfor+label {
+.mycheck+label {
     box-sizing: border-box;
     background: url("./assets/images/selected.png") no-repeat left center;
-    padding: 7px 18px;
+    padding: 8px 18px;
     display: inline-block;
     position: relative;
 }
 
-.infor+label {
+.mycheck:checked+label {
     box-sizing: border-box;
     background: url("./assets/images/unselected.png") no-repeat left center;
-    padding-left: 7px;
-    padding: 18px;
+    padding: 8px 18px;
     display: inline-block;
     position: relative;
 }

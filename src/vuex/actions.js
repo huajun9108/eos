@@ -1,10 +1,7 @@
 import axios from "axios"
 import qs from 'qs'
 
-
 axios.defaults.baseURL = "http://116.196.113.167:3001";
-
-
 
 export default {
     login({ commit }, obj) {
@@ -69,7 +66,7 @@ export default {
             "userAbbName": obj.userAbbName,
             "userJob": obj.userJob,
             "userLeader": obj.userLeader,
-            "validMenu":obj.validMenu
+            "validMenu": obj.validMenu
         })).then(res => {
             return res.data
         }).then(json => {
@@ -87,7 +84,7 @@ export default {
             "userAbbName": obj.userAbbName,
             "userJob": obj.userJob,
             "userLeader": obj.userLeader,
-            "validMenu":obj.validMenu
+            "validMenu": obj.validMenu
         })).then(res => {
             return res.data
         }).then(json => {
@@ -95,11 +92,11 @@ export default {
 
         }).catch(error => {
             console.log(error);
-
         })
     },
     selectAreaAll({ commit }, obj) {
         axios.get("/groupset/selectAreaAll", {}).then(res => {
+            console.log(res.data)
             return res.data
         }).then(json => {
             commit("selectAreaAll", json)
@@ -115,6 +112,12 @@ export default {
 
         })
     },
-
- 
+    selectKPIALL({ commit }, obj) {
+        axios.get("./KPISet/selectKPIALL", {}).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("selectKPIALL", json)
+        })
+    }
 }

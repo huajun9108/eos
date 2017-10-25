@@ -24,21 +24,16 @@
 
         </div>
       </div>
-       <!-- <div class="kpi">
-         <ul id="treeKpi" class="kpi_tree ztree"></ul>
-       </div>
-       <div class="loss">
-         <ul id="treeLoss" class="loss_tree ztree"></ul>
-       </div> -->
     </div>
 </template>
 <script type="text/javascript">
 
     import {mapState,mapActions} from "vuex"
+    var newCount = 1;
     export default {
         data() {
           return {
-            setting: {
+            settingKpi: {
               data: {
       					simpleData: {
       						enable: true
@@ -52,6 +47,24 @@
       					enable: true,
       		      removeTitle: '删除',
       					renameTitle: '编辑'
+      				}
+            },
+            setting: {
+              data: {
+      					simpleData: {
+      						enable: true
+      					}
+      				},
+              view: {
+                addHoverDom: this.addHoverDom,
+                removeHoverDom: this.removeHoverDom
+              },
+              edit: {
+      					enable: true,
+      		      removeTitle: '删除',
+      					renameTitle: '编辑',
+                showRemoveBtn: this.hiddenParentBtn,
+                showRenameBtn: this.hiddenParentBtn,
       				}
             },
             zNodesKpi: [
@@ -159,6 +172,7 @@
         },
         computed:{
             ...mapState([
+              "kpiAll"
             //    'localData',
             //    'popularData',
             //    'countryData',
@@ -168,13 +182,26 @@
         },
         methods:{
             ...mapActions([
+              "selectKPIALL"
                 // 'getlocalData',
                 // 'getpopularData',
                 // 'getcountryData',
                 // 'getlocalshop',
                 // 'getcountryshop'
               ]),
+              hiddenParentBtn: function(treeId, treeNode) {
+                var level = treeNode.level;
+                if(level === 0)
+                {
+                  return false;
+                }
+                else{
+                  return true;
+                }
+              },
               addHoverDom: function(treeId, treeNode) {
+                if(treeNode.level === 0) return;
+
           			var sObj = $("#" + treeNode.tId + "_span");
           			if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
           			var addStr = "<span class='button add' id='addBtn_" + treeNode.tId +
@@ -182,7 +209,7 @@
           			sObj.after(addStr);
           			var btn = $("#addBtn_" + treeNode.tId);
           			if (btn) btn.bind("click", function() {
-          				var zTree = $.fn.zTree.getZTreeObj("#treeCategory");
+          				var zTree = $.fn.zTree.getZTreeObj("treeCategory");
           				zTree.addNodes(treeNode, {
           					id: (100 + newCount),
           					pId: treeNode.id,
@@ -196,13 +223,12 @@
           		},
     },
     watch:{
-
-
-
+        kpiAll: function() { $.fn.zTree.init($("#treeKpi"), this.setting, this.kpiAll );
+}
     },
 
     mounted(){
-      $.fn.zTree.init($("#treeKpi"), this.setting, this.zNodesKpi);
+      this.selectKPIALL();
       $.fn.zTree.init($("#treeCategory"), this.setting, this.zNodesLoss);
         // this.getlocalData()
         // this.getpopularData()

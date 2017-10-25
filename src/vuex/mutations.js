@@ -17,23 +17,22 @@ export default {
 
     },
     selectAreaAll(state, json) {
-        state.groupAll = json
+        state.areaAll = json
     },
     selectUserById(state, json) {
-        let str=""
+        let str = ""
         state.userinfor = json.user
-        json.validmenu.forEach((item)=> { 
-            if(str == null || str == ''){
-                str+=item.validmenuid
-            }else{
-                str+=","+item.validmenuid;
+        json.validmenu.forEach((item) => {
+            if (str == null || str == '') {
+                str += item.validmenuid
+            } else {
+                str += "," + item.validmenuid;
             }
-            
-            
-        }
-        
-    );
-    console.log(str)
-    return state.validmenu=str     
+        });
+        console.log(str)
+        return state.validmenu = str
     },
+    selectKPIALL(state, json) {
+        state.kpiAll = json
+    }
 }

@@ -53,8 +53,9 @@
         <div class="visablearea_title">
           <i class="icon-Viewing-area"></i>
           可视区域范围
+          <ul id="treeDemo" class="ztree"></ul>
         </div>
-        <ul id="treeDemo" class="ztree"></ul>
+
       </div>
       </div>
       <div class="accountinfo_button text-right">

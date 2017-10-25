@@ -2,8 +2,8 @@
     <div class="content">
         <etop></etop>
         <div class="main-content col-md-8 col-lg-8">
-            <router-view></router-view>            
-        </div>  
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 <script type="text/javascript">

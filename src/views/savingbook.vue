@@ -1,6 +1,6 @@
 <template>
-    <div class="losscate">
-        losscate显示
+    <div class="savingbook">
+        savingbook
     </div>
 </template>
 <script>

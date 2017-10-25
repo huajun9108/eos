@@ -34,15 +34,6 @@ export default {
             commit("delUser", json)
         })
     },
-    // selectGroupAll ({commit},obj){
-    //     axios.get("/groupset/selectGroupAll",{}
-    //     ).then(res=>{
-    //         console.log(res.data.data)
-    //         return res.data.data.data
-    //     }).then(json=>{
-    //         commit("selectGroupAll",json)
-    //     })
-    // },
     updateGroupById({ commit }, obj) {
         axios.get("/groupset/updateGroupById ", qs.stringify({
             "groupName": ""
@@ -106,6 +97,7 @@ export default {
         axios.post("/user/selectUserById", qs.stringify({
             "userId": obj.userid
         })).then(res => {
+            console.log(res.data.data)
             return res.data.data
         }).then(json => {
             commit("selectUserById", json)

@@ -105,7 +105,7 @@ export default {
 			// console.log(result);
 			// return result;
 		},
-    zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
+   		 zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
 			var zTree = $.fn.zTree.getZTreeObj("area_tree");
 			var oldName = treeNode.name;
 

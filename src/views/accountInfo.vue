@@ -91,8 +91,8 @@ export default {
   },
   data() {
     return {
-      options:null,           // 初渲染所有选项
-      postOptions:null    ,    // 提交选项也是已选中选项
+      postOptions:null,           // 初渲染所有选项
+      post:null    ,    // 提交选项也是已选中选项
       checkLists: "",
       setting: {
         view: {
@@ -226,7 +226,8 @@ export default {
     ...mapState([
       "userinfor",
       "validmenu",
-      "validmenuList"
+      "validmenuList",
+      "postOptions"
     ])
   },
   methods: {
@@ -287,7 +288,7 @@ export default {
       var pwd = this.$refs.pwd.value;
       var job = this.$refs.job.value;
       var leader = this.$refs.leader.value;
-      this.ArrayBlank(this.postOptions)
+      // this.ArrayBlank(this.postOptions)
       if (this.$route.query.userid) {
         this.update({
           userId: this.$route.query.userid,
@@ -296,9 +297,9 @@ export default {
           userAbbName: abbname,
           userJob: job,
           userLeader: leader,
-          valiMmenu:this.postOptions.join(",")
+          valiMmenu:this.post.join(",")
         });
-        console.log(this.postOptions)
+        console.log(this.post)
       } else {
         this.confirmClick({
           userName: username,

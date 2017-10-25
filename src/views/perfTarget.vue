@@ -4,15 +4,25 @@
     	<div class="oeeDashboard">
 
     	</div>
-			<div class="oEE">
+			<div class="oeeTable">
 
 			</div>
     </div>
 		<div class="defectsContainer">
+			<div class="defectsDashboard">
 
+    	</div>
+			<div class="defectsTable">
+
+			</div>
 		</div>
 		<div class="xxxContainer">
+			<div class="xxxDashboard">
 
+ 		 </div>
+ 		 <div class="xxxTable">
+ 			 
+ 		 </div>
 		</div>
   </div>
 </template>

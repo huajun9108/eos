@@ -1,55 +1,46 @@
 @import "./mobile.scss";
 
-// .kpi{
-// 	float: left;
-// }
-//
-// .loss{
-// 	float: left;
-// 	margin-left: 20%;
-// }
-
 .dictionary{
 	height: 100%;
 	width: 100%;
 	.title{
 		background: #e4e7e9;
-		height: 35px;
+		height: P(35);
 		text-align: center;
-		padding-top: 5px;
-		font-family: "宋体";
-		font-weight: bold;
-		font-size: 18px;
+		padding-top: P(10);
+		font-family: "Arial";
+		font-size: P(14);
 	}
 	.kpiContainer{
 		width: 20%;
 		height: 100%;
 		float: left;
-		overflow: auto;
-		border-bottom: 1px solid black;
 		.kpiContent{
-			border-left: 1px solid black;
+			height: 95%;
+			overflow:auto;
+			border-left: P(1) solid black;
+			border-bottom: P(1) solid black;
 		}
 	}
-
 	.categoryContainer{
 		width: 40%;
 		height: 100%;
 		float: left;
-		overflow: auto;
-		border-bottom: 1px solid black;
+		.categoryContent{
+      overflow: auto;
+			height: 95%;
+			border-bottom: P(1) solid black;
+		}
 	}
-
 	.savingDictionaryContainer{
 		width: 40%;
 		height: 100%;
 		float: left;
-		overflow: auto;
-		border-bottom: 1px solid black;
 		.savingDictionaryContent{
-			height: 100%;
-			border-right: 1px solid black;
+			overflow: auto;
+			height: 95%;
+			border-right: P(1) solid black;
+			border-bottom: P(1) solid black;
 		}
 	}
-	// background: black;
 }

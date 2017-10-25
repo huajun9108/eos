@@ -1,6 +1,20 @@
 <template>
 <div class="area_container">
+	<div class="area_nav">
+		<div class="nav_header">
+			<span class="header_title">
+				区域范围
+			</span>
+		</div>
+    <div class="nav_body">
+			<ul id="area_tree" class="area_tree_class ztree">
+			</ul>
+    </div>
+	</div>
 	<div class="area_content">
+
+	</div>
+	<!-- <div class="area_content">
 		<div class="area_setting col-md-3">
 			<br>
 			<span class="area_setting_title">区域范围</span>
@@ -12,7 +26,7 @@
       <div class="area_other_content">
       </div>
 		</div>
-	</div>
+	</div> -->
 
 </div>
 </template>
@@ -22,6 +36,7 @@ import "../assets/js/jquery-1.4.4.min.js"
 import "../assets/js/jquery.ztree.core.js"
 import "../assets/js/jquery.ztree.excheck.js"
 import "../assets/js/jquery.ztree.exedit.js"
+import "../assets/js/tip.js"
  var newCount = 1;
 export default {
 	data() {
@@ -52,7 +67,7 @@ export default {
 	},
 	computed: {
 		...mapState([
-			"groupAll"
+			"areaAll"
 		])
 	},
 	methods: {
@@ -60,6 +75,7 @@ export default {
 			"selectAreaAll"
 		]),
 		addHoverDom: function(treeId, treeNode) {
+			if(treeNode.level >= 3) return;
 			var sObj = $("#" + treeNode.tId + "_span");
 			if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
 			var addStr = "<span class='button add' id='addBtn_" + treeNode.tId +
@@ -71,7 +87,7 @@ export default {
 				zTree.addNodes(treeNode, {
 					id: (100 + newCount),
 					pId: treeNode.id,
-					name: "新建结点" + (newCount++)
+					name: "new code" + (newCount++)
 				});
 				return false;
 			});
@@ -80,18 +96,15 @@ export default {
 			$("#addBtn_" + treeNode.tId).unbind().remove();
 		},
 		zTreeBeforeRemove: function(treeId, treeNode){
-			var result = confirm("是否删除？");
-		  return result;
+			return Ewin.confirm({
+				message: "确认要删除选择的数据吗？"
+			}).on(function(e){
+				return e;
+			});
 		},
     zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
 			var zTree = $.fn.zTree.getZTreeObj("area_tree");
 			var oldName = treeNode.name;
-      // if(isCancel)
-			// {
-			// 	setTimeout(function() {
-			// 		zTree.cancelEditName();
-			// 	}, 10);
-			// }
 
 			if(!isCancel && newName.length == 0) {
 				alert("名称不能为空！");
@@ -109,11 +122,10 @@ export default {
 					return false;
 				}
 			}
-
 		}
 	},
 	watch: {
-		groupAll: function() { $.fn.zTree.init($("#area_tree"), this.setting, this.groupAll); }
+		areaAll: function() { $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll); }
 	},
 	mounted() {
 		this.selectAreaAll()

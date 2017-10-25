@@ -53,8 +53,9 @@
         <div class="visablearea_title">
           <i class="icon-Viewing-area"></i>
           可视区域范围
+          <ul id="treeDemo" class="ztree"></ul>
         </div>
-        <ul id="treeDemo" class="ztree"></ul>
+
       </div>
       </div>
       <div class="accountinfo_button text-right">
@@ -344,9 +345,9 @@ export default {
             // })
           console.log(res.data.data.validmenu);
           return this.user = res.data.data.user
-          
+
           this.validmenu=res.data.data.validmenu;
-          
+
         })
         .catch(error => {
           console.log(error);

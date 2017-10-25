@@ -17,6 +17,9 @@ export default {
 
     },
     selectAreaAll(state, json) {
-        state.groupAll = json
+        state.areaAll = json
+    },
+    selectKPIALL(state, json) {
+        state.kpiAll = json
     }
 }

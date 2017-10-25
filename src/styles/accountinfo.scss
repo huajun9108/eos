@@ -14,8 +14,7 @@
             font-size: 12px;
         }
         .accountinfo_setting {
-            height: auto;
-            overflow: hidden;
+            // height: auto;
             height: 80%;
             i {
                 color: #1b3867;
@@ -72,6 +71,7 @@
                 float: left;
                 width: 67%;
                 height: 100%;
+                overflow: scroll;
                 .visablearea_title {
                     background-color: #e9e9e9;
                     font-size: 12px;

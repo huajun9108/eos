@@ -1,31 +1,63 @@
 @import "./mobile.scss";
 
 .area_container{
-	width: 100%;
 	height: 100%;
-	.area_content{
-		width: 100%;
-		height: 100%;
-		.area_setting{
-			padding-left: 50px;;;
-			background-color: #f2f2f2;
-			height: 100%;
-			overflow: auto;
-			.area_setting_title{
-				font-weight: bolder;
-				font-size: 12px;
-			}
-			.area_setting_line{
-				color: red;
-			}
+	.area_nav{
+		float: left;
+		width: 25%;
+		background: #f2f2f2;
+	  height: 100%;
+		padding-left: P(50);
+		padding-right: P(50);
+		font-family: "微软雅黑";
+		.nav_header{
+			padding-top: P(20);
+			font-weight: bolder;
+			font-size: P(16);
+			padding-bottom: P(10);
+			border-bottom: P(1) solid #bdbdbd;
 		}
-		.area_other{
-			height: 100%;
-			.area_other_content{
-				margin: 40px;
-				border: 1px solid #bdbdbd;
-				height: 90%;
-			}
+		.nav_body{
+			padding-top: P(10);
+			font-size: P(14);
 		}
 	}
+	.area_content{
+		float: left;
+		width: 71%;
+		height: 90%;
+		margin-left: 2%;
+		margin-top: P(50);
+    border:P(1) solid #bdbdbd;
+	}
 }
+
+// .area_container{
+// 	width: 100%;
+// 	height: 100%;
+// 	.area_content{
+// 		width: 100%;
+// 		height: 100%;
+// 		.area_setting{
+// 			padding-left: 50px;
+// 			background-color: #f2f2f2;
+// 			height: 100%;
+// 			overflow: auto;
+// 			.area_setting_title{
+// 				font-weight: bolder;
+// 				font-size: 12px;
+// 			}
+// 			.area_setting_line{
+// 				color: red;
+// 			}
+// 		}
+// 		.area_other{
+// 			height: 100%;
+// 			.area_other_content{
+// 				margin: 40px;
+// 				border: 1px solid #bdbdbd;
+// 				height: 90%;
+// 			}
+// 		}
+// 	}
+// }

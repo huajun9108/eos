@@ -189,7 +189,14 @@ export default {
       var job = this.$refs.job.value;
       var leader = this.$refs.leader.value;
       var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-      var checkedNodes = zTree.getCheckedNodes(true);
+      var nodes = zTree.getCheckedNodes(true);
+      var checkedNodes=[];
+      console.log(nodes.length);
+      for(let i = 0; i < nodes.length; i++){
+        if(nodes[i].getCheckStatus().half==false){
+          checkedNodes.push(nodes[i]);
+        }
+      }
       var data = this.clone(checkedNodes, {id:1, pId:1, name:1});
       this.ArrayBlank(this.postOptions)
       if (this.$route.query.userid) {
@@ -215,7 +222,6 @@ export default {
           validArea: JSON.stringify(data),
         });
          console.log(this.postOptions);
-         console.log("hello");
          console.log(data);
       }
     },
@@ -243,17 +249,17 @@ export default {
       var pwd = this.$refs.pwd.value;
       var job = this.$refs.job.value;
       var leader = this.$refs.leader.value;
-      if (
-        this.empty(username) ||
-        this.empty(abbname) ||
-        this.empty(pwd) ||
-        this.empty(job) ||
-        this.empty(leader)
-      ) {
-        alert("输入不能为空");
-      } else {
+      // if (
+      //   this.empty(username) ||
+      //   this.empty(abbname) ||
+      //   this.empty(pwd) ||
+      //   this.empty(job) ||
+      //   this.empty(leader)
+      // ) {
+      //   alert("输入不能为空");
+      // } else {
         this.addUser(obj);
-      }
+      // }
     }
   },
   watch: {
@@ -261,7 +267,7 @@ export default {
       this.getOptions()
     },
     areaAll(){
-       $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll) 
+       $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll)
     }
   },
 
@@ -273,7 +279,6 @@ export default {
       this.selectAreaAll();
       $.fn.zTree.init($("#treeDemo"), this.setting, this.areaAll);
     }
-
   }
 };
 </script>

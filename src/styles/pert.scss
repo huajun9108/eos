@@ -1,0 +1,64 @@
+@import "./mobile.scss";
+
+.perfTargetContainer {
+	height: 100%;
+	padding: 10px 0;
+	box-sizing: border-box;
+
+	.oeeContainer {
+		height: 100%;
+		float: left;
+		border-right: 1px solid #e1e1e1;
+
+		.oeeDashboard {
+			height: 50%;
+		}
+
+		.oeeTable {
+			padding: 0 10%;
+		}
+	}
+
+	.defectsContainer {
+		height: 100%;
+		float: left;
+		border-right: 1px solid #e1e1e1;
+
+		.defectsDashboard {
+			height: 50%;
+		}
+		.defectsTable {
+			padding: 0 10%;
+		}
+	}
+
+	.xxxContainer {
+		height: 100%;
+		float: left;
+
+		.xxxDashboard {
+			height: 50%;
+		}
+		.xxxTable {
+			padding: 0 10%;
+		}
+	}
+
+	table {
+		line-height: P(45);
+		font-size: P(20);
+	}
+
+	table th {
+		background: #dbe9ff;
+		font-weight: bold;
+	}
+
+	table tr{
+	border: 1px solid black;
+  }
+
+	table td, th{
+		padding-left: 10px;
+	}
+}

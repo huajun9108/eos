@@ -1,11 +1,11 @@
 <template>
 <div class="perfTargetContainer">
-	<div class="oeeContainer">
+	<div class="oeeContainer col-md-4">
 		<div id="oeeDashboardId" class="oeeDashboard">
 
 		</div>
 		<div class="oeeTable">
-			<table>
+			<table class="table">
 				<tr>
 					<th colspan="2">oEE</th>
 				</tr>
@@ -28,12 +28,12 @@
 			</table>
 		</div>
 	</div>
-	<div class="defectsContainer">
+	<div class="defectsContainer col-md-4">
 		<div id="defectsDashboardId" class="defectsDashboard">
 
 		</div>
 		<div class="defectsTable">
-			<table>
+			<table class="table">
 				<tr>
 					<th colspan="2">Defects</th>
 				</tr>
@@ -56,12 +56,12 @@
 			</table>
 		</div>
 	</div>
-	<div class="xxxContainer">
+	<div class="xxxContainer col-md-4">
 		<div id="xxxDashboardId" class="xxxDashboard">
 
 		</div>
 		<div class="xxxTable">
-			<table>
+			<table class="table">
 				<tr>
 					<th colspan="2">xxx</th>
 				</tr>
@@ -108,12 +108,16 @@ export default {
 					name: '业务指标',
 					type: 'gauge',
 					detail: {
-						formatter: '{value}%'
+						formatter: '{value}%',
+						color: '#292929',
+						fontSize: 40,
+						offsetCenter: [0, '70%'],
 					},
 					data: [{
 						value: 50,
 					}],
 					axisLine: {
+						show: false,
 						lineStyle: {
 							width: 15,
 							color: [
@@ -126,6 +130,9 @@ export default {
 					},
 					axisTick: {
 						show: false,
+					},
+					axisLabel: {
+						// show: false,
 					}
 				}]
 			};

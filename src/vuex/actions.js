@@ -61,7 +61,7 @@ export default {
             "validArea": obj.validArea,
         })).then(res => {
             return res.data
-            console.log(res)
+
         }).then(json => {
             commit("addUser", json)
 
@@ -88,7 +88,7 @@ export default {
         })
     },
     selectAreaAll({ commit }, obj) {
-        axios.get("/groupset/selectAreaAll", {}).then(res => {
+        axios.get("/areaAllSet/showAreaAll", {}).then(res => {
             console.log(res.data)
             return res.data
         }).then(json => {
@@ -113,5 +113,17 @@ export default {
         }).then(json => {
             commit("selectKPIALL", json)
         })
-    }
+    },
+    addFactoryOne({ commit }, obj) {
+      axios.post("/workshopSet/addFactoryOne", qs.stringify({
+          "name": obj.name,
+          "pId" : obj.pId,
+      })).then(res => {
+          return res.data
+      }).then(json => {
+          commit("addFactoryOne", json)
+      }).catch(error => {
+          console.log(error);
+      })
+    },
 }

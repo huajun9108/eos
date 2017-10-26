@@ -42,4 +42,5 @@
     @import "./styles/user.scss"
     @import "./styles/overview.scss"
     @import "./styles/useraccount.scss"
+    @import "./styles/pert.scss"
 </style>

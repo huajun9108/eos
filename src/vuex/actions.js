@@ -88,7 +88,7 @@ export default {
         })
     },
     selectAreaAll({ commit }, obj) {
-        axios.get("/groupset/selectAreaAll", {}).then(res => {
+        axios.get("/areaAllSet/showAreaAll", {}).then(res => {
             console.log(res.data)
             return res.data
         }).then(json => {

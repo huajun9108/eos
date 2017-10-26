@@ -51,8 +51,9 @@
       </div>
       <div class="accountinfo_areacontainer">
         <div class="visablearea_title">
-          <i class="icon-Viewing-area"></i>
-          可视区域范围
+          <span><i class="icon-Viewing-area"></i>可视区域范围</span>
+        </div>
+        <div class="visablearea_tree">
           <ul id="treeDemo" class="ztree"></ul>
         </div>
 
@@ -87,7 +88,7 @@ export default {
     this.getOptions()
   },
   components: {
-    ebottom: Bottom   
+    ebottom: Bottom
   },
   data() {
     return {
@@ -96,8 +97,8 @@ export default {
       checkLists: "",
       setting: {
         view: {
-          addHoverDom: this.addHoverDom,
-          removeHoverDom: this.removeHoverDom,
+          // addHoverDom: this.addHoverDom,
+          // removeHoverDom: this.removeHoverDom,
           selectedMulti: false
         },
         data: {
@@ -110,9 +111,9 @@ export default {
           chkStyle: "checkbox",
           radioType: "level"
         },
-        edit: {
-          enable: true
-        }
+        // edit: {
+        //   enable: true
+        // }
       },
       zNodes: [
         {
@@ -227,11 +228,12 @@ export default {
       "userinfor",
       "validmenu",
       "validmenuList",
-      "postOptions"
+      // "postOptions",
+      "areaAll"
     ])
   },
   methods: {
-    ...mapActions(["addUser", "updateUserById","selectUserById"]),
+    ...mapActions(["addUser", "updateUserById","selectUserById","selectAreaAll"]),
     empty(val) {
       var reg = /^\s+$/gi;
       if (reg.test(val) || val.length == 0) {
@@ -242,53 +244,69 @@ export default {
       var _this = this;
       /* --- axios skip over --- */
       _this.options = this.validmenuList;
-      this.postOptions =this.validmenu.split(','); 
-      
+      this.postOptions =this.validmenu.split(',');
+
     },
     ArrayBlank(arr){
-        for(var i = 0 ;i<arr.length;i++){  
-           if(arr[i] == "" || typeof(arr[i]) == "undefined"){  
-                arr.splice(i,1);  
-                i= i-1;  
-                 
-           }  
-             
-        }  
-        return arr;  
+        for(var i = 0 ;i<arr.length;i++){
+           if(arr[i] == "" || typeof(arr[i]) == "undefined"){
+                arr.splice(i,1);
+                i= i-1;
+           }
+        }
+        return arr;
     },
-    addHoverDom: function(treeId, treeNode) {
-      var sObj = $("#" + treeNode.tId + "_span");
-      if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0)
-        return;
-      var addStr =
-        "<span class='button add' id='addBtn_" +
-        treeNode.tId +
-        "' title='add node' onfocus='this.blur();'></span>";
-      sObj.after(addStr);
-      var btn = $("#addBtn_" + treeNode.tId);
-      if (btn)
-        btn.bind("click", function() {
-          var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-          zTree.addNodes(treeNode, {
-            id: 100 + newCount,
-            pId: treeNode.id,
-            name: "new node" + newCount++
-          });
-          return false;
-        });
+    isArray: function(arr) {
+      return Object.prototype.toString.apply(arr) === "[object Array]";
     },
-    removeHoverDom: function(treeId, treeNode) {
-      $("#addBtn_" + treeNode.tId)
-        .unbind()
-        .remove();
+    clone: function(obj, attrs) {
+      if(obj === null) return null;
+      var objIsArray = this.isArray(obj);
+      var o = objIsArray ? [] : {};
+      for(var i in obj){
+        if(objIsArray || attrs[i]) {
+          o[i] = (obj[i] instanceof Date) ? newDate(obj[i].getTime()) :(typeof obj[i] === "object" ?
+          this.clone(obj[i], attrs) : obj[i]);
+        }
+      }
+      return o;
     },
+    // addHoverDom: function(treeId, treeNode) {
+    //   var sObj = $("#" + treeNode.tId + "_span");
+    //   if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0)
+    //     return;
+    //   var addStr =
+    //     "<span class='button add' id='addBtn_" +
+    //     treeNode.tId +
+    //     "' title='add node' onfocus='this.blur();'></span>";
+    //   sObj.after(addStr);
+    //   var btn = $("#addBtn_" + treeNode.tId);
+    //   if (btn)
+    //     btn.bind("click", function() {
+    //       var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    //       zTree.addNodes(treeNode, {
+    //         // id: 100 + newCount,
+    //         pId: treeNode.id,
+    //         name: "new node" + newCount++
+    //       });
+    //       return false;
+    //     });
+    // },
+    // removeHoverDom: function(treeId, treeNode) {
+    //   $("#addBtn_" + treeNode.tId)
+    //     .unbind()
+    //     .remove();
+    // },
     userExist() {
       var username = this.$refs.name.value;
       var abbname = this.$refs.abbname.value;
       var pwd = this.$refs.pwd.value;
       var job = this.$refs.job.value;
       var leader = this.$refs.leader.value;
-      // this.ArrayBlank(this.postOptions)
+      var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+      var checkedNodes = zTree.getCheckedNodes(true);
+      var data = this.clone(checkedNodes, {id:1, pId:1, name:1});
+      this.ArrayBlank(this.postOptions)
       if (this.$route.query.userid) {
         this.update({
           userId: this.$route.query.userid,
@@ -297,20 +315,23 @@ export default {
           userAbbName: abbname,
           userJob: job,
           userLeader: leader,
-          valiMmenu:this.post.join(",")
+          valiMmenu:this.postOptions.join(",")
         });
         console.log(this.post)
       } else {
+
         this.confirmClick({
           userName: username,
           userPsd: pwd,
           userAbbName: abbname,
           userJob: job,
           userLeader: leader,
-          validMenu:this.postOptions.join(",")
-         
+          validMenu:this.postOptions.join(","),
+          validArea: JSON.stringify(data),
         });
-         console.log(this.postOptions)
+         console.log(this.postOptions);
+         console.log("hello");
+         console.log(data);
       }
     },
     update(obj) {
@@ -360,10 +381,11 @@ export default {
     if (this.$route.query.userid) {
       this.selectUserById({userid:this.$route.query.userid})
     } else {
-      console.log(this.$route)
+      console.log(this.$route);
+      this.selectAreaAll();
+      $.fn.zTree.init($("#treeDemo"), this.setting, this.areaAll);
     }
 
-    $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
   }
 };
 </script>

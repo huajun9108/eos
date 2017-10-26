@@ -1,5 +1,5 @@
 <template>
-<div class="account">
+<div class="mainaccount">
   <br/>
     <div class="fixed-table-toolbar oper">
         <span class="add" @click="add">

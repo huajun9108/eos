@@ -17,5 +17,4 @@ export default {
     ],
     areaAll: "",
     kpiAll: "",
-    // postOptions: null,
 }

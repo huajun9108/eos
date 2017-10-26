@@ -1,0 +1,55 @@
+@import "./mobile.scss";
+.account {
+    box-sizing: border-box;
+    padding: 30px;
+    .acommon {
+        width: 100%;
+        height: auto;
+        h1 {
+            line-height: P(58);
+            border-bottom: 1px solid #bdbdbd;
+            font-weight: bold;
+            font-size: P(18);
+            color: #040404;
+            box-sizing: border-box;
+            padding-left: 10px
+        }
+        .information {
+            display: inline-block;
+            width: 60%;
+            div {
+                line-height: P(88);
+                border-bottom: 1px solid #bdbdbd;
+                font-size: P(18);
+                box-sizing: border-box;
+                padding-left: 10px;
+                color: #040404;
+                .bef {
+                    display: inline-block;
+                    width: 15%;
+                }
+                .in {
+                    padding-left: P(50);
+                }
+            }
+            .pwd {
+                input {
+                    border: none;
+                    color: #bdbdbd;
+                }
+                .img {
+                    float: right;
+                    padding-right: P(6)
+                }
+            }
+        }
+        .area {
+            display: inline-block;
+            width: 35%;
+            height: 100%
+        }
+    }
+    .lan {
+        margin-top: P(30);
+    }
+}

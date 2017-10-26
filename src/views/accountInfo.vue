@@ -227,11 +227,12 @@ export default {
       "userinfor",
       "validmenu",
       "validmenuList",
-      "postOptions"
+      // "postOptions",
+      "areaAll"
     ])
   },
   methods: {
-    ...mapActions(["addUser", "updateUserById","selectUserById"]),
+    ...mapActions(["addUser", "updateUserById","selectUserById","selectAreaAll"]),
     empty(val) {
       var reg = /^\s+$/gi;
       if (reg.test(val) || val.length == 0) {
@@ -288,7 +289,7 @@ export default {
       var pwd = this.$refs.pwd.value;
       var job = this.$refs.job.value;
       var leader = this.$refs.leader.value;
-      // this.ArrayBlank(this.postOptions)
+      this.ArrayBlank(this.postOptions)
       if (this.$route.query.userid) {
         this.update({
           userId: this.$route.query.userid,
@@ -297,9 +298,9 @@ export default {
           userAbbName: abbname,
           userJob: job,
           userLeader: leader,
-          valiMmenu:this.post.join(",")
+          valiMmenu:this.postOptions.join(",")
         });
-        console.log(this.post)
+        console.log(this.postOptions)
       } else {
         this.confirmClick({
           userName: username,
@@ -353,6 +354,9 @@ export default {
   watch: {
     validmenu(newVal){
       this.getOptions()
+    },
+    areaAll(){
+       $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll) 
     }
   },
 
@@ -360,10 +364,12 @@ export default {
     if (this.$route.query.userid) {
       this.selectUserById({userid:this.$route.query.userid})
     } else {
+      this.selectAreaAll()
+      // $.fn.zTree.init($("#treeDemo"), this.setting, this.areaAll);
       console.log(this.$route)
     }
 
-    $.fn.zTree.init($("#treeDemo"), this.setting, this.zNodes);
+    
   }
 };
 </script>

@@ -8,7 +8,9 @@
         </div>
         <div id="right-content">
             <div id="user-con">
-                <router-view></router-view>
+                <div id="user">
+                    <router-view></router-view>
+                </div>   
             </div>
         </div>
     </div>

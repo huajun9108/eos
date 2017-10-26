@@ -40,4 +40,6 @@
     @import "./styles/z-account.scss"
     @import "./styles/dictionary.scss"
     @import "./styles/user.scss"
+    @import "./styles/overview.scss"
+    @import "./styles/useraccount.scss"
 </style>

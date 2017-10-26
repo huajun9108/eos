@@ -1,0 +1,28 @@
+@import "./mobile.scss";
+.overul {
+    width: 40%;
+    a {
+        line-height: 34px;
+        float: left;
+        width: 50%;
+        text-align: center;
+        font-size: 18px;
+        border-top-left-radius: P(4);
+        background: #e1e1e1
+    }
+    a:last-child {
+        border-top-left-radius: 0;
+        border-top-right-radius: P(4);
+    }
+    .router-link-active {
+        color: #fff;
+        background: #164380;
+    }
+}
+
+.overcontent {
+    margin-top: P(-2);
+    width: 100%;
+    height: 100%;
+    border: P(2) solid #e1e1e1;
+}

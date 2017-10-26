@@ -35,7 +35,6 @@
                         color: #d5d7dc;
                         line-height: P(38);
                         font-size: P(22);
-                        span {}
                     }
                 }
                 .router-link-active {
@@ -43,15 +42,35 @@
                     li {
                         font-size: P(24);
                         font-weight: bold;
-                        border-left: P(6) solid #62e3ff
+                        border-left: P(6) solid #62e3ff;
+                        color: #fff;
                     }
                 }
             }
         }
     }
-    #right-con {
+    #right-content {
         width: 100%;
         float: left;
-        flex: 1
+        flex: 1;
+        #user-con {
+            width: 100%;
+            height: 100%;
+            #user {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                .common {
+                    width: 95%;
+                    height: 85%;
+                    position: absolute;
+                    margin: auto;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                }
+            }
+        }
     }
 }

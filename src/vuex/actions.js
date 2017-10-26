@@ -57,9 +57,11 @@ export default {
             "userAbbName": obj.userAbbName,
             "userJob": obj.userJob,
             "userLeader": obj.userLeader,
-            "validMenu": obj.validMenu
+            "validMenu": obj.validMenu,
+            "validArea": obj.validArea,
         })).then(res => {
             return res.data
+            console.log(res)
         }).then(json => {
             commit("addUser", json)
 

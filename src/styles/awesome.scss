@@ -113,19 +113,21 @@ website:    http://code.google.com/p/jquerytree/
   padding-top: 10px;
 }
 .ztree li span.button.chk {
-  margin: 0px;
+  margin: 0px 2px 0px 0px;
   cursor: auto;
   width: 12px;
   display: inline-block;
-  padding-top: 10px;
+  padding-top: 15px;
   padding-left: 2px;
 }
 .ztree li span.button.chk.checkbox_false_full::before {
   content: "\f096";
+  color: black;
 }
 .ztree li span.button.chk.checkbox_false_full_focus::before {
   content: "\f096";
-  color: #ffff00;
+  color: black;
+  // color: #ffff00;
 }
 .ztree li span.button.chk.checkbox_false_part::before {
   content: "\f096";
@@ -141,6 +143,7 @@ website:    http://code.google.com/p/jquerytree/
 }
 .ztree li span.button.chk.checkbox_true_full::before {
   content: "\f046";
+  color: black;
 }
 .ztree li span.button.chk.checkbox_true_full_focus::before {
   content: "\f046";
@@ -154,7 +157,8 @@ website:    http://code.google.com/p/jquerytree/
 }
 .ztree li span.button.chk.checkbox_true_full_focus::before {
   content: "\f046";
-  color: #ffff00;
+  color: black;
+  // color: #ffff00;
 }
 .ztree li span.button.chk.checkbox_true_part::before {
   content: "\f046";
@@ -298,13 +302,15 @@ website:    http://code.google.com/p/jquerytree/
 .ztree li span.button.noline_docu {
   background: none;
 }
-.ztree li span.button.ico_open::before {
-
+.ztree li span.button.ico_open {
+  display: none;
 }
-.ztree li span.button.ico_close::before {
-
+.ztree li span.button.ico_close {
+  display: none;
 }
-.ztree li span.button.ico_docu::before {
+.ztree li span.button.ico_docu {
+  display: none;
+  width: 0;
 }
 .ztree li span.button.edit {
   margin-left: 4px;

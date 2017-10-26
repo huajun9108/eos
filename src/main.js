@@ -22,7 +22,7 @@ const RouterConfig = {
 };
 const router1 = new VueRouter(RouterConfig);
 
-router1.beforeEach((to, from, next) => { 
+router1.beforeEach((to, from, next) => {
   next();
 });
 

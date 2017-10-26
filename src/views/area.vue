@@ -37,7 +37,6 @@ import "../assets/js/jquery.ztree.core.js"
 import "../assets/js/jquery.ztree.excheck.js"
 import "../assets/js/jquery.ztree.exedit.js"
 import "../assets/js/tip.js"
- var newCount = 1;
 export default {
 	data() {
 		return {
@@ -84,24 +83,26 @@ export default {
 			var btn = $("#addBtn_" + treeNode.tId);
 			if (btn) btn.bind("click", function() {
 				var zTree = $.fn.zTree.getZTreeObj("area_tree");
-				zTree.addNodes(treeNode, {
-					id: (100 + newCount),
+				var newNodes = zTree.addNodes(treeNode, {
 					pId: treeNode.id,
-					name: "new code" + (newCount++)
+					name: "new code"
 				});
+        console.log(newNodes);
 				return false;
 			});
 		},
 		removeHoverDom: function(treeId, treeNode) {
 			$("#addBtn_" + treeNode.tId).unbind().remove();
 		},
-		zTreeBeforeRemove: function(){
-		 	if(Ewin.confirm({
-				message: "确认要删除选择的数据吗？"
-			})){
-				
-			}
-			
+		zTreeBeforeRemove: function(treeId, treeNode){
+			console.log(Ewin.confirm({
+							message: "确认要删除选择的数据吗？"
+						}).on(function(e) {
+							return e;
+			}))
+			// var result = confirm("清除");
+			// console.log(result);
+			// return result;
 		},
    		 zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
 			var zTree = $.fn.zTree.getZTreeObj("area_tree");

@@ -71,7 +71,8 @@ export default {
 	},
 	methods: {
 		...mapActions([
-			"selectAreaAll"
+			"selectAreaAll",
+			"addFactoryOne",
 		]),
 		addHoverDom: function(treeId, treeNode) {
 			if(treeNode.level >= 3) return;
@@ -87,7 +88,13 @@ export default {
 					pId: treeNode.id,
 					name: "new code"
 				});
-        console.log(newNodes);
+				// console.log(newNodes[0].name, newNodes[0].pId);
+				// console.log(newNodes.length);
+				// if(newNodes.length > 0)
+				// {
+				// 	var obj = {"name":newNodes[0].name, "pId": newNodes[0].pId};
+				// 	that.addFactoryOne(obj);
+				// }
 				return false;
 			});
 		},
@@ -95,14 +102,15 @@ export default {
 			$("#addBtn_" + treeNode.tId).unbind().remove();
 		},
 		zTreeBeforeRemove: function(treeId, treeNode){
-			console.log(Ewin.confirm({
-							message: "确认要删除选择的数据吗？"
-						}).on(function(e) {
-							return e;
-			}))
-			// var result = confirm("清除");
-			// console.log(result);
-			// return result;
+			var result = confirm("清除");
+			console.log(result);
+			return result;
+			// console.log(Ewin.confirm({
+			// 				message: "确认要删除选择的数据吗？"
+			// 			}).on(function(e) {
+			// 				return e;
+			// }))
+
 		},
    		 zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
 			var zTree = $.fn.zTree.getZTreeObj("area_tree");

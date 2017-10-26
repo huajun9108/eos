@@ -29,10 +29,11 @@ export default {
                 str += "," + item.validmenuid;
             }
         });
-        console.log(str)
         return state.validmenu = str
     },
     selectKPIALL(state, json) {
         state.kpiAll = json
+    },
+    addFactoryOne(state, json) {
     }
 }

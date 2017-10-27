@@ -1,7 +1,7 @@
 <template>
   <div class="nav-left">
     <ul>
-        <router-link :to="{name:'overview'}">
+        <router-link :to="{name:'overview',params:{userid:'1'}}">
           <li>
             <span>Overview</span> 
           </li>

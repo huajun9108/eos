@@ -1,7 +1,10 @@
 //接收store 发送来的action  commit
 
 export default {
-    login(state, json) {
+    adminLogin(state, json) {
+        state.loginResult = json
+    },
+    userLogin(state, json) {
         state.loginResult = json
     },
     getUser(state, json) {
@@ -35,5 +38,14 @@ export default {
     selectKPIALL(state, json) {
         state.kpiAll = json
     },
-    addFactoryOne(state, json) {}
+    addFactoryOne(state, json) {},
+    findAndCount(state, json) {
+        // let arr = []
+        state.count = json.count
+        state.userAll = json.rows
+            // json.rows.forEach((item) => {
+            //     arr.push(item)
+            // });
+            // return state.userAll = arr
+    }
 }

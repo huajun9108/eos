@@ -4,14 +4,25 @@ import qs from 'qs'
 axios.defaults.baseURL = "http://116.196.113.167:3001";
 
 export default {
-    login({ commit }, obj) {
+    adminLogin({ commit }, obj) {
         axios.post("/admin/adminLogin", qs.stringify({
-            "username": obj.user,
-            "password": obj.pwd
+            "adminName": obj.user,
+            "adminPsd": obj.pwd
         })).then(res => {
             return res.data
         }).then(json => {
-            commit("login", json)
+            commit("adminLogin", json)
+
+        })
+    },
+    userLogin({ commit }, obj) {
+        axios.post("/user/userLogin ", qs.stringify({
+            "userName": obj.user,
+            "userPsd": obj.pwd
+        })).then(res => {
+            return res.data
+        }).then(json => {
+            commit("userLogin", json)
 
         })
     },
@@ -77,8 +88,10 @@ export default {
             "userAbbName": obj.userAbbName,
             "userJob": obj.userJob,
             "userLeader": obj.userLeader,
-            "validMenu": obj.validMenu
+            "validMenu": obj.validMenu,
+            "validArea": obj.validArea
         })).then(res => {
+            console.log(res.data)
             return res.data
         }).then(json => {
             commit("updateUserById", json)
@@ -99,7 +112,7 @@ export default {
         axios.post("/user/selectUserById", qs.stringify({
             "userId": obj.userid
         })).then(res => {
-            console.log(res.data.data.validarea)
+            console.log(res.data.data)
             return res.data.data
         }).then(json => {
             commit("selectUserById", json)
@@ -107,7 +120,7 @@ export default {
         })
     },
     selectKPIALL({ commit }, obj) {
-        axios.get("./KPISet/selectKPIALL", {}).then(res => {
+        axios.get("/KPISet/selectKPIALL", {}).then(res => {
             console.log(res.data)
             return res.data
         }).then(json => {
@@ -126,4 +139,19 @@ export default {
             console.log(error);
         })
     },
+    findAndCount({ commit }, obj) {
+        axios.get("/user/findAndCount", {
+            params: {
+                page: obj.page
+            }
+        }).then(res => {
+            console.log(res.data.data)
+            return res.data.data
+        }).then(json => {
+            commit("findAndCount", json)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
 }

@@ -229,6 +229,7 @@
 
     mounted(){
       this.selectKPIALL();
+      $.fn.zTree.init($("#treeKpi"), this.setting, this.kpiAll)
       $.fn.zTree.init($("#treeCategory"), this.setting, this.zNodesLoss);
         // this.getlocalData()
         // this.getpopularData()

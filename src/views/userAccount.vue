@@ -5,19 +5,19 @@
         <div class="info-content">
         <div class="information">
           <div class="tip">
-              <span class="bef">用户名</span><span class="in">user1</span>
+              <span class="bef">用户名</span><span class="in">{{userinfor.username}}</span>
           </div>
           <div class="tip pwd">
-             <span class="bef">密码</span><input type="password" value="xxx" ref="user" class="in"/>
+             <span class="bef">密码</span><input type="password" :value="userinfor.username" ref="user" class="in"/>
             <div class="img">
                <img src="../assets/images/edit .png">
             </div>
           </div>
           <div class="tip">
-              <span class="bef">职位</span><span class="in">某张</span>
+              <span class="bef">职位</span><span class="in">{{userinfor.userjob}}</span>
           </div>
           <div class="tip">
-              <span class="bef">直线上司</span><span class="in">AAA</span>
+              <span class="bef">直线上司</span><span class="in">{{userinfor.userjob}}</span>
           </div>
         </div>
         <div class="area">
@@ -46,8 +46,8 @@
     </div>
 </template>
 <script type="text/javascript">
-import Vue from 'vue';
 import mySwitch from 'vue-switch/switch-2.vue';
+import { mapState, mapActions } from "vuex";
 export default {
   components: {
     'my-switch': mySwitch
@@ -58,6 +58,26 @@ export default {
     }
       
   },
+  computed:{
+    ...mapState([
+      "userinfor",
+      ])
+  },
+  methods: {
+    ...mapActions([
+      "selectUserById"
+    ])
+  },
+  mounted() {
+    if (this.$route.params.userid) {
+      this.selectUserById({userid:this.$route.params.userid})
+      //  $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
+    } else {
+      console.log(this.$route);
+      // this.selectAreaAll();
+      // $.fn.zTree.init($("#treeDemo"), this.setting, this.areaAll);
+    }
+  }
   
 }
 </script> 

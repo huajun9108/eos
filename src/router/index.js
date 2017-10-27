@@ -54,58 +54,58 @@ var routes = [{
         ]
     },
     {
-        path: "/user",
+        path: "user",
         component: User,
         name: "user",
-        redirect: "/user/overview",
+        redirect: "user/overview/pert/:userid",
         children: [{
                 path: "overview",
                 component: Overview,
                 name: "overview",
                 children: [{
-                        path: "pert",
+                        path: "pert/:userid",
                         component: Pert,
                         name: "pert",
                     },
                     {
-                        path: "lossm",
+                        path: "lossm/:userid",
                         component: Lossm,
                         name: "lossm",
                     }
                 ],
-                redirect: "/user/overview/pert",
+                redirect: "user/overview/pert/:userid",
             },
             {
-                path: "performance",
+                path: "performance/:userid",
                 component: Performance,
                 name: "performance"
             },
             {
-                path: "target",
+                path: "target/:userid",
                 component: Target,
                 name: "target"
             },
             {
-                path: "lossmaping",
+                path: "lossmaping/:userid",
                 component: Lossmaping,
                 name: "lossmaping"
             },
             {
-                path: "savingbook",
+                path: "savingbook/:userid",
                 component: Savingbook,
                 name: "savingbook"
             },
             {
-                path: "datainput",
+                path: "datainput/:userid",
                 component: Datainput,
                 name: "datainput",
             },
             {
-                path: "useraccount",
+                path: "useraccount/:userid",
                 component: Useraccount,
                 name: "useraccount",
             },
-            { path: "*", redirect: "/user/overview/pert" }
+            { path: "*", redirect: "user/overview/pert/:userid" }
         ]
     },
 

@@ -14,6 +14,9 @@
                     <i class="iconfont icon-password"></i><input v-bind:type="seen?'password':'text'" placeholder="请输入密码" v-model='pwd' ref="pwd" @input="btnBac"/>
                     <i :class="seen?'iconfont icon-eye_x':'iconfont icon-eye'" @click="changeSeen"></i>
                 </div>
+                    <input type="radio"  id="admin-radio" value="0" v-model="picked" class="myradio"><label for="admin-radio">管理员</label>
+                    <input type="radio"  id="user-radio" value="1" v-model="picked" class="myradio"><label for="user-radio">用户</label>
+                
                 <input type="button" @keyup.13="tologin()" @click="tologin" class="btn" value="登  录" ref="btn" />
                 <div class="hint hide" ref="hint">
                     <i class="iconfont icon-hint"></i><span class="tips" ref="tip"/></span>
@@ -34,6 +37,7 @@ export default{
             pwd:"",
             user:"",
             seen:true,
+            picked:"0",
         }
     },
     computed:{
@@ -43,7 +47,8 @@ export default{
     },
     methods:{
         ...mapActions([
-            'login'
+            'adminLogin',
+            'userLogin'
         ]),
         changeSeen(){
             this.seen = !this.seen;
@@ -62,16 +67,18 @@ export default{
                  setTimeout(()=>{
                     this.$refs.hint.setAttribute("class","hint fadeOut hide")
                 },3000) 
-            }else{
+            }else if(this.picked=="0"){
                 
-                this.login({user:this.user,pwd:this.pwd})
+                this.adminLogin({user:this.user,pwd:this.pwd})
+            }else{
+                this.userLogin({user:this.user,pwd:this.pwd})
             }
         },
         btnBac(){
             if(!this.empty(this.user)&&!this.empty(this.pwd)){
                this.$refs.btn.style.background="#1b3867"
             }else{
-                 this.$refs.btn.style.background="#bfcdda"
+                 this.$refs.btn.style.background="#bfbfbf"
             }
         },
         empty(val){
@@ -100,9 +107,12 @@ export default{
                  setTimeout(()=>{
                     this.$refs.hint.setAttribute("class","hint fadeOut hide")
                 },3000) 
-            }else{
-                localStorage.setItem("user",this.user);
+            }else if(this.picked=="0"){
+                localStorage.setItem("user",newVal.data.adminname);
                 this.$router.push({name:"area"})
+            }else{
+                localStorage.setItem("user",newVal.data.username);
+                this.$router.push({name:"pert",params:{userid:newVal.data.userid}})
             }
         },
     }

@@ -45,7 +45,7 @@
             </tr>
         </tbody>
     </table>
-    <v-pagination :total="total" :current.sync="current" class="pull-right"></v-pagination> 
+    <v-pagination :total="total" :current.sync="current" class="pull-right" @pagechange="onPagechange"></v-pagination> 
 </div>
 </template>
 
@@ -56,7 +56,7 @@ import $ from "jquery";
 window.$ = $;
 import "../assets/js/tip"
 import { mapState, mapActions } from "vuex";
-import pagination from "../components/pager";
+import pagination from "../components/bootpage";
 export default {
   components: {
     "v-pagination": pagination
@@ -72,13 +72,16 @@ export default {
       fDisabled: false,
       lDisabled: false,
       arrayData: [],
-      total: 81, // 记录总条数
-      display: 10, // 每页显示条数
-      current: 1 // 当前第n页 ， 也可以 watch current 的变化
+      total: null,     // 记录总条数
+      display: 5,   // 每页显示条数
+      current: 1     // 当前第n页 ， 也可以 watch current 的变化 
     };
   },
   computed: {
-    ...mapState([]),
+    ...mapState([
+      "count",
+      // "userAll"
+    ]),
     checkedAll: {
       //  只要有一个为false就是 没有全选 返回  false
       //  getter
@@ -100,7 +103,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["delUser"]),
+    ...mapActions([
+      "delUser",
+      "findAndCount"
+      ]),
     goAccountInfo(obj) {
       this.$router.push({ name: "accountInfo", query: { userid: obj.userId } });
     },
@@ -125,11 +131,16 @@ export default {
           that.userAll.splice(i, 1);
         }
       }
+      // this.userAll.forEach((item,index)=>{
+      //   if (item.checked) {
+      //     that.userAll.splice(index, 1);
+      //   }
+      // })
     },
-    pagechange: function(currentPage) {
-      console.log(currentPage);
-      // ajax请求, 向后台发送 currentPage, 来获取对应的数据
-    },
+    // pagechange: function(currentPage) {
+    //   console.log(currentPage);
+    //   this.findAndCount({page:currentPage})
+    // },
     removeUsers() {
       this.$confirm("此操作将永久删除 " + this.selected.length + " 个用户, 是否继续?", "提示", {
         type: "warning"
@@ -154,101 +165,119 @@ export default {
         // this.$Message('已取消操作!');
       });
     },
-    showPage(pageIndex, $event, forceRefresh) {
-      if (pageIndex > 0) {
-        if (pageIndex > this.pageCount) {
-          pageIndex = this.pageCount;
-        }
-        //判断数据是否需要更新
-        var currentPageCount = Math.ceil(this.totalCount / this.pagesize);
-        if (currentPageCount != this.pageCount) {
-          pageIndex = 1;
-          this.pageCount = currentPageCount;
-        } else if (
-          this.pageCurrent == pageIndex &&
-          currentPageCount == this.pageCount &&
-          typeof forceRefresh == "undefined"
-        ) {
-          console.log("not refresh");
-          return;
-        }
-        //处理分页点中样式
-        var buttons = $("#pager").find("span");
-        for (var i = 0; i < buttons.length; i++) {
-          console.log(pageIndex);
-          if (buttons.eq(i).html() != pageIndex) {
-            buttons.eq(i).removeClass("active");
-          } else {
-            buttons.eq(i).addClass("active");
-          }
-        }
-        //测试数据 随机生成的
-        var newPageInfo = [];
-        var time = new Date();
-        for (var i = 0; i < this.pagesize; i++) {
-          newPageInfo[newPageInfo.length] = {
-            timestamp: time,
-            count: i + (pageIndex - 1) * 20
-          };
-        }
-        this.pageCurrent = pageIndex;
-        this.arrayData = newPageInfo;
-        //如果当前页首页或者尾页，则上一页首页就不能点击，下一页尾页就不能点击
-        if (this.pageCurrent === 1) {
-          this.fDisabled = true;
-        } else if (this.pageCurrent === this.pageCount) {
-          this.lDisabled = true;
-        } else {
-          this.fDisabled = false;
-          this.lDisabled = false;
-        }
-        //计算分页按钮数据
-        if (this.pageCount > this.showPages) {
-          if (pageIndex <= (this.showPages - 1) / 2) {
-            this.showPagesStart = 1;
-            this.showPageEnd = this.showPages - 1;
-            console.log("showPage1");
-          } else if (pageIndex >= this.pageCount - (this.showPages - 3) / 2) {
-            this.showPagesStart = this.pageCount - this.showPages + 2;
-            this.showPageEnd = this.pageCount;
-            console.log("showPage2");
-          } else {
-            console.log("showPage3");
-            this.showPagesStart = pageIndex - (this.showPages - 3) / 2;
-            this.showPageEnd = pageIndex + (this.showPages - 3) / 2;
-          }
-        }
-        console.log(
-          "showPagesStart:" +
-            this.showPagesStart +
-            ",showPageEnd:" +
-            this.showPageEnd +
-            ",pageIndex:" +
-            pageIndex
-        );
-      }
-    }
+    onPagechange:function(p){     // 页码改变event ， p 为新的 current
+        console.log('pagechange',p);
+        this.findAndCount({page:p})
+    },
+    // showPage(pageIndex, $event, forceRefresh) {
+    //   if (pageIndex > 0) {
+    //     if (pageIndex > this.pageCount) {
+    //       pageIndex = this.pageCount;
+    //     }
+    //     //判断数据是否需要更新
+    //     var currentPageCount = Math.ceil(this.totalCount / this.pagesize);
+    //     if (currentPageCount != this.pageCount) {
+    //       pageIndex = 1;
+    //       this.pageCount = currentPageCount;
+    //     } else if (
+    //       this.pageCurrent == pageIndex &&
+    //       currentPageCount == this.pageCount &&
+    //       typeof forceRefresh == "undefined"
+    //     ) {
+    //       console.log("not refresh");
+    //       return;
+    //     }
+    //     //处理分页点中样式
+    //     var buttons = $("#pager").find("span");
+    //     for (var i = 0; i < buttons.length; i++) {
+    //       console.log(pageIndex);
+    //       if (buttons.eq(i).html() != pageIndex) {
+    //         buttons.eq(i).removeClass("active");
+    //       } else {
+    //         buttons.eq(i).addClass("active");
+    //       }
+    //     }
+    //     //测试数据 随机生成的
+    //     var newPageInfo = [];
+    //     var time = new Date();
+    //     for (var i = 0; i < this.pagesize; i++) {
+    //       newPageInfo[newPageInfo.length] = {
+    //         timestamp: time,
+    //         count: i + (pageIndex - 1) * 20
+    //       };
+    //     }
+    //     this.pageCurrent = pageIndex;
+    //     this.arrayData = newPageInfo;
+    //     //如果当前页首页或者尾页，则上一页首页就不能点击，下一页尾页就不能点击
+    //     if (this.pageCurrent === 1) {
+    //       this.fDisabled = true;
+    //     } else if (this.pageCurrent === this.pageCount) {
+    //       this.lDisabled = true;
+    //     } else {
+    //       this.fDisabled = false;
+    //       this.lDisabled = false;
+    //     }
+    //     //计算分页按钮数据
+    //     if (this.pageCount > this.showPages) {
+    //       if (pageIndex <= (this.showPages - 1) / 2) {
+    //         this.showPagesStart = 1;
+    //         this.showPageEnd = this.showPages - 1;
+    //         console.log("showPage1");
+    //       } else if (pageIndex >= this.pageCount - (this.showPages - 3) / 2) {
+    //         this.showPagesStart = this.pageCount - this.showPages + 2;
+    //         this.showPageEnd = this.pageCount;
+    //         console.log("showPage2");
+    //       } else {
+    //         console.log("showPage3");
+    //         this.showPagesStart = pageIndex - (this.showPages - 3) / 2;
+    //         this.showPageEnd = pageIndex + (this.showPages - 3) / 2;
+    //       }
+    //     }
+    //     console.log(
+    //       "showPagesStart:" +
+    //         this.showPagesStart +
+    //         ",showPageEnd:" +
+    //         this.showPageEnd +
+    //         ",pageIndex:" +
+    //         pageIndex
+    //     );
+    //   }
+    // }
   },
   watch: {
-    
+			
   },
   mounted() {
-    axios
-      .get("/user/selectUserAll", {})
-      .then(res => {
-        return (
-            res.data.data.forEach(item=>{
-            this.userAll.push(item)
-            // this.validmenu.push(item.validmenu)
-            // console.log ('userAll -> ' + JSON.stringify (this.userAll))
+    // axios
+    //   .get("/user/selectUserAll", {})
+    //   .then(res => {
+    //     return (
+    //         res.data.data.forEach(item=>{
+    //         this.userAll.push(item)
+    //         // this.validmenu.push(item.validmenu)
+    //         // console.log ('userAll -> ' + JSON.stringify (this.userAll))
+    //     })
+    //     ); 
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    this.findAndCount({page:this.current})
+    axios.get("/user/findAndCount", {
+            params: {
+                page: this.current
+            }
+        }).then(res => {
+            console.log(res.data.data)
+            return this.total = res.data.data.count
+            // return this.userAll = res.data.data.rows
         })
-        );
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-    this.showPage(this.pageCurrent, null, true);
+        // .then(json => {
+        //     commit("findAndCount", json)
+        // }).catch(err => {
+        //     console.log(err)
+        // })
+    // this.showPage(this.pageCurrent, null, true);
   }
 };
 </script>

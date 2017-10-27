@@ -15,6 +15,7 @@
 </template>
 
 <script type="es6">
+import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -48,6 +49,9 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      "count"
+    ]),
     page: function() {
       // 总页数
       return Math.ceil(this.total / this.display);

@@ -11,7 +11,7 @@ function resolve(dir) {
 
 module.exports = {
     entry: {
-        app: ['./src/main.js']
+        app: ["babel-polyfill", "./src/main.js"]
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin('common.js'),
@@ -24,8 +24,7 @@ module.exports = {
         path: config.build.assetsRoot,
         filename: '[name].js',
         publicPath: process.env.NODE_ENV === 'production' ?
-            config.build.assetsPublicPath :
-            config.dev.assetsPublicPath
+            config.build.assetsPublicPath : config.dev.assetsPublicPath
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],

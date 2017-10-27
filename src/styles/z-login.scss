@@ -1,82 +1,84 @@
 @import "./mobile.scss";
-.page{
-    width:100%;
-    height:100%;
-    background: url("./assets/images/timg.jpg") center ;
+.page {
+    width: 100%;
+    height: 100%;
+    background: url("./assets/images/timg.jpg") center;
     background-size: cover;
     position: relative;
-    .login{
-        width:100%;
-        height:100%;
-        .login-con{
-            width: P(470);
-            height: P(360);
+    .login {
+        width: 100%;
+        height: 100%;
+        .login-con {
+            width: P(500);
+            height: P(380);
             background: #f7f7f7;
             margin: auto;
             position: absolute;
             left: 0;
             right: 0;
-            top:0;
+            top: 0;
             bottom: 0;
-            .title{
+            .title {
                 width: 100%;
                 background: #1b3867;
                 color: #fff;
                 text-align: center;
-                font-size:P(16);
-                img{
+                font-size: P(16);
+                img {
                     vertical-align: middle;
                     border: none;
                 }
-                span{
+                span {
                     line-height: P(80);
                     display: inline-block;
-                    margin-left: P(4);
+                    // margin-left: P(4);
                 }
             }
-            .userinfo{
-                width: P(280);
-                height: P(200);
+            .userinfo {
+                width: P(300);
+                height: auto;
                 margin: P(30) auto;
-            
-                div{
-                    margin:0 auto;
-                    width: 90%;
+                div {
+                    margin-top: P(40);
                     border-bottom: 1px solid #d6d6d6;
-                    .iconfont{
-                        font-size: P(16);
+                    line-height: P(26);
+                    .iconfont {
+                        display: inline-block;
+                        font-size: P(18);
                         color: #1b3867;
+                        line-height: P(26);
                     }
-                    .icon-eye,.icon-eye_x{
-                        color: #7c7c7C
+                    .icon-eye,
+                    .icon-eye_x {
+                        color: #7c7c7C;
+                        float: right;
                     }
-                    input{
+                    input {
                         width: 70%;
-                        display:inline-block;
+                        display: inline-block;
                         box-sizing: border-box;
-                        line-height: P(45);
+                        line-height: P(26);
                         border: 0;
-                        font-size: P(12);
+                        font-size: P(16);
                         caret-color: #1b3867;
                         padding-left: P(10);
                     }
-                }       
-                .btn{
+                }
+                .btn {
                     display: block;
-                    margin: P(15) auto;
-                    width: P(280);
-                    line-height: P(40);
+                    width: P(300);
+                    line-height: P(36);
                     border: none;
-                    background: #bfcdda;
+                    background: #bfbfbf;
                     color: #fff;
                     font-size: P(18);
                     font-weight: bold;
                     border-radius: P(2);
                 }
-                .hint{
+                .hint {
                     border-bottom: none;
-                    width: P(280);
-                    line-height: P(24); 
+                    width: P(300);
+                    line-height: P(24);
                     border-radius: P(12);
                     font-size: P(12);
                     color: #6b3612;
@@ -84,25 +86,23 @@
                     box-sizing: border-box;
                     padding-left: P(10);
                     border: 2px solid #fff5c3;
-                    .icon-hint{ 
+                    margin-top: P(10);
+                    .icon-hint {
                         color: #ff9c00;
-                        display:inline-block;
+                        display: inline-block;
                         margin-top: P(4)
                     }
-                    span{
-                        display: inline-block; 
+                    span {
+                        display: inline-block;
                         box-sizing: border-box;
                         padding-left: P(4)
                     }
                 }
-               
             }
-               
-        
         }
-        .foot{
-            width:100%;
-            line-height:P(60); 
+        .foot {
+            width: 100%;
+            line-height: P(60);
             text-align: center;
             color: #929191;
             background: #d7dde3;
@@ -111,6 +111,4 @@
             font-size: P(12)
         }
     }
-    
-    
 }

@@ -80,7 +80,7 @@ export default {
   },
   data() {
     return {
-      postOptions:null,           // 初渲染所有选项
+      postOptions:[],           // 初渲染所有选项
       post:null    ,    // 提交选项也是已选中选项
       checkLists: "",
       setting: {
@@ -182,11 +182,10 @@ export default {
           userAbbName: abbname,
           userJob: job,
           userLeader: leader,
-          valiMmenu:this.postOptions.join(",")
+          validMenu:this.postOptions.join(",")
         });
         console.log(this.postOptions)
       } else {
-
         this.confirmClick({
           userName: username,
           userPsd: pwd,
@@ -253,18 +252,18 @@ export default {
     validmenu(newVal){
       this.getOptions()
     },
-    areaAll(){
+    areaAll(newVal){
        $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll)
     },
     validarea(){
-      
-    }
+        $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
+    },
   },
 
   mounted() {
     if (this.$route.query.userid) {
       this.selectUserById({userid:this.$route.query.userid})
-       $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
+      //  $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
     } else {
       console.log(this.$route);
       this.selectAreaAll();

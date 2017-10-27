@@ -7,7 +7,7 @@
 		<div class="oeeTable">
 			<table class="table">
 				<tr>
-					<th colspan="2">oEE</th>
+					<th colspan="2">OEE</th>
 				</tr>
 				<tr>
 					<td>Performance</td>

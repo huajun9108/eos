@@ -99,7 +99,7 @@ export default {
         axios.post("/user/selectUserById", qs.stringify({
             "userId": obj.userid
         })).then(res => {
-            console.log(res.data.data)
+            console.log(res.data.data.validarea)
             return res.data.data
         }).then(json => {
             commit("selectUserById", json)
@@ -115,15 +115,15 @@ export default {
         })
     },
     addFactoryOne({ commit }, obj) {
-      axios.post("/workshopSet/addFactoryOne", qs.stringify({
-          "name": obj.name,
-          "pId" : obj.pId,
-      })).then(res => {
-          return res.data
-      }).then(json => {
-          commit("addFactoryOne", json)
-      }).catch(error => {
-          console.log(error);
-      })
+        axios.post("/workshopSet/addFactoryOne", qs.stringify({
+            "name": obj.name,
+            "pId": obj.pId,
+        })).then(res => {
+            return res.data
+        }).then(json => {
+            commit("addFactoryOne", json)
+        }).catch(error => {
+            console.log(error);
+        })
     },
 }

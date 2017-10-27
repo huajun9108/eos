@@ -10,7 +10,6 @@ import './assets/bootstrap/css/bootstrap.min.css'
 import './assets/icomoon/style.css'
 const qs = require('qs')
 import axios from 'axios'
-import 'babel-polyfill'
 
 
 Vue.use(VueRouter);

@@ -102,7 +102,7 @@ export default {
         // edit: {
         //   enable: true
         // }
-      },  
+      },
     };
   },
   computed: {
@@ -129,7 +129,7 @@ export default {
       }else{
         this.postOptions =[];
       }
-      
+
 
     },
     ArrayBlank(arr){
@@ -211,7 +211,6 @@ export default {
         });
         console.log(this.postOptions)
       } else {
-
         this.confirmClick({
           userName: username,
           userPsd: pwd,

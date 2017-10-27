@@ -23,14 +23,14 @@
             <td>密码</td>
             <td>职位</td>
             <td>上司</td>
-            <td>有效菜单</td>
-            <td>可视区域范围</td>
+            <!-- <td>有效菜单</td>
+            <td>可视区域范围</td> -->
             <td  colspan="2">操作</td>
         </tr>
         </thead>
         <tbody>
             <tr v-for="(item,idx) in userAll" :key="idx">
-                <td><input type="checkbox" v-model="item.check" :value="item.userid" :id="'checkbox'+idx" :class="item.check?'check':'uncheck'">
+                <td><input type="checkbox" v-model="item.checked" :value="item.userid" :id="'checkbox'+idx" :class="item.checked?'check':'uncheck'">
                 <label :for="'checkbox'+idx"></label></td>
                 <td>{{idx+1}}</td>
                 <td>{{item.username}}</td>
@@ -38,8 +38,8 @@
                 <td>{{item.userpsd}}</td>
                 <td>{{item.userjob}}</td>
                 <td>{{item.userleader}}</td>
-                <td>{{item.userleader}}</td>
-                <td>{{item.userleader}}</td>
+                <!-- <td>{{item.userleader}}</td>
+                <td>{{item.userleader}}</td> -->
                 <td class="icon-edit" :data="item.userid" @click="goAccountInfo({userId:item.userid})"></td>
                 <td class="icon-delete_2" :data="item.userid" @click="del({id:idx,userId:item.userid})"></td>
             </tr>
@@ -85,7 +85,7 @@ export default {
       get() {
         var flag = true;
         this.userAll.forEach(item => {
-          if (!item.check) {
+          if (!item.checked) {
             flag = false;
           }
         });
@@ -94,7 +94,7 @@ export default {
       set(newValue) {
         //  set 这个计算属性值改变时触发
         this.userAll.forEach(item => {
-          item.check = newValue;
+          item.checked = newValue;
         });
       }
     }
@@ -121,7 +121,7 @@ export default {
       var that = this;
       for (var i = that.userAll.length - 1; i >= 0; i--) {
         var index = that.userAll[i];
-        if (index.check) {
+        if (index.checked) {
           that.userAll.splice(i, 1);
         }
       }
@@ -238,8 +238,8 @@ export default {
       .then(res => {
         return (
             res.data.data.forEach(item=>{
-            this.userAll.push(item.user)
-            this.validmenu.push(item.validmenu)
+            this.userAll.push(item)
+            // this.validmenu.push(item.validmenu)
             // console.log ('userAll -> ' + JSON.stringify (this.userAll))
         })
         );

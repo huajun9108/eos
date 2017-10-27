@@ -23,7 +23,7 @@
         </router-link>
         <router-link :to="{name:'savingbook'}">
           <li>
-            <span>saving book</span>
+            <span>Saving Book</span>
           </li>
         </router-link>
         <router-link :to="{name:'datainput'}">

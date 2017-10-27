@@ -110,7 +110,8 @@ export default {
       "userinfor",
       "validmenu",
       "validmenuList",
-      "areaAll"
+      "areaAll",
+      "validarea"
     ])
   },
   methods: {
@@ -156,32 +157,6 @@ export default {
       }
       return o;
     },
-    // addHoverDom: function(treeId, treeNode) {
-    //   var sObj = $("#" + treeNode.tId + "_span");
-    //   if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0)
-    //     return;
-    //   var addStr =
-    //     "<span class='button add' id='addBtn_" +
-    //     treeNode.tId +
-    //     "' title='add node' onfocus='this.blur();'></span>";
-    //   sObj.after(addStr);
-    //   var btn = $("#addBtn_" + treeNode.tId);
-    //   if (btn)
-    //     btn.bind("click", function() {
-    //       var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-    //       zTree.addNodes(treeNode, {
-    //         // id: 100 + newCount,
-    //         pId: treeNode.id,
-    //         name: "new node" + newCount++
-    //       });
-    //       return false;
-    //     });
-    // },
-    // removeHoverDom: function(treeId, treeNode) {
-    //   $("#addBtn_" + treeNode.tId)
-    //     .unbind()
-    //     .remove();
-    // },
     userExist() {
       var username = this.$refs.name.value;
       var abbname = this.$refs.abbname.value;
@@ -231,16 +206,22 @@ export default {
       var pwd = this.$refs.pwd.value;
       var job = this.$refs.job.value;
       var leader = this.$refs.leader.value;
+      var that = this;
       if (
         this.empty(username) ||
         this.empty(abbname) ||
         this.empty(pwd) ||
-        this.empty(job) ||
-        this.empty(leader)
+        this.empty(job) 
       ) {
         alert("输入不能为空");
       } else {
-        this.updateUserById(obj);
+        Ewin.confirm({ message: "确认要更新数据吗？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+          that.updateUserById(obj);
+        });
+        
       }
     },
     confirmClick(obj) {
@@ -249,17 +230,23 @@ export default {
       var pwd = this.$refs.pwd.value;
       var job = this.$refs.job.value;
       var leader = this.$refs.leader.value;
-      // if (
-      //   this.empty(username) ||
-      //   this.empty(abbname) ||
-      //   this.empty(pwd) ||
-      //   this.empty(job) ||
-      //   this.empty(leader)
-      // ) {
-      //   alert("输入不能为空");
-      // } else {
-        this.addUser(obj);
-      // }
+      var that = this;
+      if (
+        this.empty(username) ||
+        this.empty(abbname) ||
+        this.empty(pwd) ||
+        this.empty(job) 
+      ) {
+        alert("输入不能为空");
+      } else {
+        Ewin.confirm({ message: "确认要添加数据吗？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+           that.addUser(obj);
+        });
+       
+      }
     }
   },
   watch: {
@@ -268,12 +255,16 @@ export default {
     },
     areaAll(){
        $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll)
+    },
+    validarea(){
+      
     }
   },
 
   mounted() {
     if (this.$route.query.userid) {
       this.selectUserById({userid:this.$route.query.userid})
+       $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
     } else {
       console.log(this.$route);
       this.selectAreaAll();

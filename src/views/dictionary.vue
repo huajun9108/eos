@@ -57,7 +57,8 @@
       				},
               view: {
                 addHoverDom: this.addHoverDom,
-                removeHoverDom: this.removeHoverDom
+                removeHoverDom: this.removeHoverDom,
+                showIcon: false,
               },
               edit: {
       					enable: true,

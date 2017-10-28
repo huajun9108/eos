@@ -23,6 +23,7 @@ export default {
         let str = ""
         state.userinfor = json.user
         state.validarea = json.validarea
+        console.log(state.validarea)
         json.validmenu.forEach((item) => {
             if (str == null || str == '') {
                 str += item.validmenuid
@@ -35,5 +36,9 @@ export default {
     selectKPIALL(state, json) {
         state.kpiAll = json
     },
-    addFactoryOne(state, json) {}
+    addFactoryOne(state, json) {
+        state.newArea = json
+    },
+    updateArea(state, json) {
+    }
 }

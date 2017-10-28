@@ -17,5 +17,6 @@ export default {
     ],
     areaAll: "",
     kpiAll: "",
-    validarea: ""
+    validarea: "",
+    newArea: "",
 }

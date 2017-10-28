@@ -210,7 +210,7 @@ export default {
         this.empty(username) ||
         this.empty(abbname) ||
         this.empty(pwd) ||
-        this.empty(job) 
+        this.empty(job)
       ) {
         alert("输入不能为空");
       } else {
@@ -220,7 +220,7 @@ export default {
           }
           that.updateUserById(obj);
         });
-        
+
       }
     },
     confirmClick(obj) {
@@ -234,7 +234,7 @@ export default {
         this.empty(username) ||
         this.empty(abbname) ||
         this.empty(pwd) ||
-        this.empty(job) 
+        this.empty(job)
       ) {
         alert("输入不能为空");
       } else {
@@ -244,7 +244,7 @@ export default {
           }
            that.addUser(obj);
         });
-       
+
       }
     }
   },
@@ -256,14 +256,17 @@ export default {
        $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll)
     },
     validarea(){
-      
+        console.log(this.validarea);
+      $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
     }
   },
 
   mounted() {
     if (this.$route.query.userid) {
       this.selectUserById({userid:this.$route.query.userid})
-       $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
+      console.log("=================");
+
+
     } else {
       console.log(this.$route);
       this.selectAreaAll();

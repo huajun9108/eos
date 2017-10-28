@@ -87,7 +87,8 @@ export default {
         view: {
           // addHoverDom: this.addHoverDom,
           // removeHoverDom: this.removeHoverDom,
-          selectedMulti: false
+          selectedMulti: false,
+          showIcon: false,
         },
         data: {
           simpleData: {

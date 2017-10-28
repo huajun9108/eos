@@ -227,11 +227,15 @@ export default {
 			if (treeNode.isNew) {
 				delete treeNode.isNew;
 			}
-		},
-		zTreeOnRename: function(event, treeId, treeNode, isCancel) {
+
 			console.log("newArea begin");
 			console.log(this.newArea);
 			console.log("newArea end");
+		},
+		zTreeOnRename: function(event, treeId, treeNode, isCancel) {
+			// console.log("newArea begin");
+			// console.log(this.newArea);
+			// console.log("newArea end");
 		}
 	},
 	watch: {

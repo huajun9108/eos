@@ -44,6 +44,11 @@ export default {
 		return {
 			sFlag: true,
 			setting: {
+				async: {
+					enable: true,
+					url: "http://116.196.113.167:3001/areaAllSet/showAreaAll",
+					type: "get"
+				},
 				callback: {
 					beforeRemove: this.zTreeBeforeRemove,
 					beforeRename: this.zTreeBeforeRename,
@@ -124,6 +129,10 @@ export default {
 		zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
 			var that = this;
 			var zTree = $.fn.zTree.getZTreeObj("area_tree");
+			var nodes = zTree.getNodes();
+			for (let i = 0; i < nodes.length; i++) {
+				console.log(nodes[i]);
+			}
 			var oldName = treeNode.name;
 
 			if (isCancel && treeNode.isNew) {
@@ -146,7 +155,7 @@ export default {
 				return false;
 			}
 
-      console.log(treeNode.isNew);
+			console.log(treeNode.isNew);
 			if (oldName !== newName && treeNode.isNew) {
 				console.log("treeNodetrue");
 				if (!confirm("确认修改？")) {
@@ -155,34 +164,49 @@ export default {
 					}, 10);
 					return false;
 				} else {
-					console.log("---------------------")
-					console.log(treeNode);
+
 					var obj = {
 						"name": newName,
 						"pId": treeNode.pId
 					};
-					console.log(obj);
-					console.log("---------------------")
-					that.addFactoryOne(obj);
+					$.post("http://116.196.113.167:3001/areaAllSet/addAreaOne", obj,
+						function(data, textStatus) {
+							if (data.status === "101") {
+								alert("该区域已存在,请重新输入!");
+								setTimeout(function() {
+									zTree.editName(treeNode);
+								}, 10);
+								return false;
+							}
+
+							if (data.length > 0) {
+                for(let i = 0; i < data.length; i++){
+									if(data[i].name === newName && data[i].pId === treeNode.pId){
+										treeNode.id = data[i].id;
+										zTree.updateNode(treeNode);
+									}
+								}
+							}
+						})
 				}
-			}else{
-					setTimeout(function() {
-						zTree.cancelEditName(oldName);
-					}, 10);
+			} else {
+				setTimeout(function() {
+					zTree.cancelEditName(oldName);
+				}, 10);
 			}
 
-      if (oldName !== newName && !treeNode.isNew) {
+			if (oldName !== newName && !treeNode.isNew) {
 				console.log("treeNodefalse");
 				if (!confirm("确认修改？")) {
 					setTimeout(function() {
 						zTree.cancelEditName(oldName);
 					}, 10);
 					return false;
-				} else{
+				} else {
 					var obj = {
-						"name" : newName,
-						"pId" : treeNode.pId,
-						"id" : treeNode.id,
+						"name": newName,
+						"pId": treeNode.pId,
+						"id": treeNode.id,
 					};
 					console.log(obj);
 					console.log("====================")
@@ -228,9 +252,9 @@ export default {
 				delete treeNode.isNew;
 			}
 
-			console.log("newArea begin");
-			console.log(this.newArea);
-			console.log("newArea end");
+			// console.log("newArea begin");
+			// console.log(this.newArea);
+			// console.log("newArea end");
 		},
 		zTreeOnRename: function(event, treeId, treeNode, isCancel) {
 			// console.log("newArea begin");
@@ -239,15 +263,17 @@ export default {
 		}
 	},
 	watch: {
-		areaAll: function() {
-			$.fn.zTree.init($("#area_tree"), this.setting, this.areaAll);
-		},
-		newArea: function() {
-			$.fn.zTree.init($("#area_tree"), this.setting, this.newArea);
-		}
+		// areaAll: function() {
+		// 	$.fn.zTree.init($("#area_tree"), this.setting, this.areaAll);
+		// },
+		// newArea: function() {
+		// 	$.fn.zTree.init($("#area_tree"), this.setting, this.newArea);
+		// }
 	},
 	mounted() {
-		this.selectAreaAll()
+		$.fn.zTree.init($("#area_tree"), this.setting);
+
+		// this.selectAreaAll()
 	}
 }
 </script>

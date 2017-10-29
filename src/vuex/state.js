@@ -19,5 +19,6 @@ export default {
     kpiAll: "",
     validarea: "",
     userAll: "",
-    count: ""
+    count: "",
+    addResult: ""
 }

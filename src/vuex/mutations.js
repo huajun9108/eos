@@ -14,7 +14,7 @@ export default {
         state.userId = json
     },
     addUser(state, json) {
-
+        state.addResult = json
     },
     updateUserById(state, json) {
 

@@ -15,25 +15,23 @@
     <table class="table table-hover table-bordered text-center">
         <thead>
         <tr>
-            <td width="5%"><input type="checkbox" id="checkbox-1" v-model="checkedAll" class="checkone" @click="changeAllChecked()"/>
-            <label for="checkbox-1"></label>
-            </td>
-            <td width="10%">编号</td>
-            <td width="15%">用户账号</td>
-            <td width="15%">姓名</td>
-            <td width="15%">密码</td>
-            <td width="10%">职位</td>
-            <td width="15%">上司</td>
+            <td><input type="checkbox" id="checkbox-1" v-model="checkedAll"/>
+            <label for="checkbox-1"></label></td>
+            <td>编号</td>
+            <td>用户账号</td>
+            <td>姓名</td>
+            <td>密码</td>
+            <td>职位</td>
+            <td>上司</td>
             <!-- <td>有效菜单</td>
             <td>可视区域范围</td> -->
-            <td width="15%" colspan="2">操作</td>
+            <td  colspan="2">操作</td>
         </tr>
         </thead>
         <tbody>
             <tr v-for="(item,idx) in userAll" :key="idx">
-                <td><input type="checkbox" v-model="checkedUserArr"  :value="item.userid" :id="'checkbox'+idx" class="checkone">
-                <label :for="'checkbox'+idx"></label>
-                </td>
+                <td><input type="checkbox" v-model="item.checked" :value="item.userid" :id="'checkbox'+idx" :class="item.checked?'check':'uncheck'">
+                <label :for="'checkbox'+idx"></label></td>
                 <td>{{idx+1}}</td>
                 <td>{{item.username}}</td>
                 <td>{{item.userabbname}}</td>
@@ -74,9 +72,8 @@ export default {
     return {
       validmenu:[],
       userAll: [],
-      checkedUserArr:[],
       selected: [],
-      checkedAll:false,
+      // checkedAll:"",
       checkModel: [],
       selectCity: "overview",
       fDisabled: false,
@@ -92,44 +89,31 @@ export default {
       "count",
       // "userAll"
     ]),
-    // checkedAll: {
-    //   //  只要有一个为false就是 没有全选 返回  false
-    //   //  getter
-    //   get() {
-    //     var flag = true;
-    //     this.userAll.forEach(item => {
-    //       if (!item.checked) {
-    //         flag = false;
-    //       }
-    //     });
-    //     return flag;
-    //   },
-    //   set(newValue) {
-    //     //  set 这个计算属性值改变时触发
-    //     this.userAll.forEach(item => {
-    //       item.checked = newValue;
-    //     });
-    //   }
-    // }
+    checkedAll: {
+      //  只要有一个为false就是 没有全选 返回  false
+      //  getter
+      get() {
+        var flag = true;
+        this.userAll.forEach(item => {
+          if (!item.checked) {
+            flag = false;
+          }
+        });
+        return flag;
+      },
+      set(newValue) {
+        //  set 这个计算属性值改变时触发
+        this.userAll.forEach(item => {
+          item.checked = newValue;
+        });
+      }
+    }
   },
   methods: {
     ...mapActions([
       "delUser",
       "findAndCount"
       ]),
-    changeAllChecked(e){
-      var _this = this;
-      console.log(_this.checkedUserArr);
-      //alert(this.checked);
-      if (!event.target.checked) {//实现反选
-        _this.checkedUserArr = [];
-      }else{//实现全选
-        _this.checkedUserArr = [];
-        _this.userAll.forEach(function(item) {
-          _this.checkedUserArr.push(item.userid);
-        });
-      }
-    },
     goAccountInfo(obj) {
       this.$router.push({ name: "accountInfo", query: { userid: obj.userId } });
     },
@@ -142,32 +126,19 @@ export default {
           if (!e) {
               return;
           }
-          //that.userAll.splice(obj.id, 1);
+          that.userAll.splice(obj.id, 1);
           that.delUser({ userId: obj.userId });
           that.loadList();
       });
     },
     dellALL() {
-      console.log(this.checkedUserArr);
       var that = this;
-
-      // for (var i = that.userAll.length - 1; i >= 0; i--) {
-      //   var index = that.userAll[i];
-      //   if (index.checked) {
-      //     that.userAll.splice(i, 1);
-      //   }
-      // }
-
-      Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
-          for (var i = that.checkedUserArr.length - 1; i >= 0; i--) {
-              var userId = that.checkedUserArr[i];
-              //that.userAll.splice(userId, 1);
-              that.delUser({ userId:userId });
-              that.loadList();
-          }   
-      });
-
-
+      for (var i = that.userAll.length - 1; i >= 0; i--) {
+        var index = that.userAll[i];
+        if (index.checked) {
+          that.userAll.splice(i, 1);
+        }
+      }
       // this.userAll.forEach((item,index)=>{
       //   if (item.checked) {
       //     that.userAll.splice(index, 1);
@@ -208,13 +179,13 @@ export default {
       this.loadList();
     },
     prevPage:function() {
-      if(this.current && this.current>1) {
+      if(this.current && this.current>0) {
          this.current = this.current-1;
       }      
       this.loadList();
     },
     nextPage:function() {
-      if(this.current && this.current<Math.ceil(this.total/5)) {
+      if(this.current && this.current<=Math.ceil(this.total/5)) {
          this.current = this.current+1;
       }      
       this.loadList();
@@ -227,7 +198,6 @@ export default {
       axios.get("/user/findAndCount?page="+this.current).then(res => {
         this.total=res.data.data.count;
         this.userAll=[];
-        this.checkedUserArr=[];
         return (
             res.data.data.rows.forEach(item=>{
               console.log(item);              
@@ -238,19 +208,83 @@ export default {
         console.log(error);
       });
     },
+    // showPage(pageIndex, $event, forceRefresh) {
+    //   if (pageIndex > 0) {
+    //     if (pageIndex > this.pageCount) {
+    //       pageIndex = this.pageCount;
+    //     }
+    //     //判断数据是否需要更新
+    //     var currentPageCount = Math.ceil(this.totalCount / this.pagesize);
+    //     if (currentPageCount != this.pageCount) {
+    //       pageIndex = 1;
+    //       this.pageCount = currentPageCount;
+    //     } else if (
+    //       this.pageCurrent == pageIndex &&
+    //       currentPageCount == this.pageCount &&
+    //       typeof forceRefresh == "undefined"
+    //     ) {
+    //       console.log("not refresh");
+    //       return;
+    //     }
+    //     //处理分页点中样式
+    //     var buttons = $("#pager").find("span");
+    //     for (var i = 0; i < buttons.length; i++) {
+    //       console.log(pageIndex);
+    //       if (buttons.eq(i).html() != pageIndex) {
+    //         buttons.eq(i).removeClass("active");
+    //       } else {
+    //         buttons.eq(i).addClass("active");
+    //       }
+    //     }
+    //     //测试数据 随机生成的
+    //     var newPageInfo = [];
+    //     var time = new Date();
+    //     for (var i = 0; i < this.pagesize; i++) {
+    //       newPageInfo[newPageInfo.length] = {
+    //         timestamp: time,
+    //         count: i + (pageIndex - 1) * 20
+    //       };
+    //     }
+    //     this.pageCurrent = pageIndex;
+    //     this.arrayData = newPageInfo;
+    //     //如果当前页首页或者尾页，则上一页首页就不能点击，下一页尾页就不能点击
+    //     if (this.pageCurrent === 1) {
+    //       this.fDisabled = true;
+    //     } else if (this.pageCurrent === this.pageCount) {
+    //       this.lDisabled = true;
+    //     } else {
+    //       this.fDisabled = false;
+    //       this.lDisabled = false;
+    //     }
+    //     //计算分页按钮数据
+    //     if (this.pageCount > this.showPages) {
+    //       if (pageIndex <= (this.showPages - 1) / 2) {
+    //         this.showPagesStart = 1;
+    //         this.showPageEnd = this.showPages - 1;
+    //         console.log("showPage1");
+    //       } else if (pageIndex >= this.pageCount - (this.showPages - 3) / 2) {
+    //         this.showPagesStart = this.pageCount - this.showPages + 2;
+    //         this.showPageEnd = this.pageCount;
+    //         console.log("showPage2");
+    //       } else {
+    //         console.log("showPage3");
+    //         this.showPagesStart = pageIndex - (this.showPages - 3) / 2;
+    //         this.showPageEnd = pageIndex + (this.showPages - 3) / 2;
+    //       }
+    //     }
+    //     console.log(
+    //       "showPagesStart:" +
+    //         this.showPagesStart +
+    //         ",showPageEnd:" +
+    //         this.showPageEnd +
+    //         ",pageIndex:" +
+    //         pageIndex
+    //     );
+    //   }
+    // }
   },
   watch: {
-    checkedUserArr:{
-      handler: function (val, oldVal) { 
-        console.log(this.checkedUserArr.length +"---" + this.userAll.length);
-        if (this.checkedUserArr.length === this.userAll.length) {
-          this.checkedAll=true;
-        }else{
-          this.checkedAll=false;
-        }
-      },
-      deep: true
-    }
+			
   },
   mounted() {
     this.loadList();

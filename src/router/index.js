@@ -54,10 +54,10 @@ var routes = [{
         ]
     },
     {
-        path: "user",
+        path: "/user",
         component: User,
         name: "user",
-        redirect: "user/overview/pert/:userid",
+        redirect: "/user/overview",
         children: [{
                 path: "overview",
                 component: Overview,
@@ -73,7 +73,7 @@ var routes = [{
                         name: "lossm",
                     }
                 ],
-                redirect: "user/overview/pert/:userid",
+                redirect: "/user/overview/pert/:userid",
             },
             {
                 path: "performance/:userid",
@@ -105,7 +105,7 @@ var routes = [{
                 component: Useraccount,
                 name: "useraccount",
             },
-            { path: "*", redirect: "user/overview/pert/:userid" }
+            { path: "*", redirect: "/user/overview/pert/:userid" }
         ]
     },
 

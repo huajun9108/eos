@@ -59,22 +59,20 @@ input[type='radio'] {
     display: none;
 }
 
-#checkbox-1+label {
-    box-sizing: border-box;
-    background: url("./assets/images/selected.png") no-repeat center;
-    padding: 7px;
-    display: inline-block;
-    position: relative;
-}
-
-#checkbox-1:checked+label {
-    box-sizing: border-box;
-    background: url("./assets/images/unselected.png") no-repeat center;
-    padding: 7px;
-    display: inline-block;
-    position: relative;
-}
-
+// #checkbox-1+label {
+//     box-sizing: border-box;
+//     background: url("./assets/images/selected.png") no-repeat center;
+//     padding: 7px;
+//     display: inline-block;
+//     position: relative;
+// }
+// #checkbox-1:checked+label {
+//     box-sizing: border-box;
+//     background: url("./assets/images/unselected.png") no-repeat center;
+//     padding: 7px;
+//     display: inline-block;
+//     position: relative;
+// }
 .uncheck+label {
     box-sizing: border-box;
     background: url("./assets/images/selected.png") no-repeat center;
@@ -95,7 +93,25 @@ label {
     margin: 0;
 }
 
+.checkone+label {
+    color: #131313;
+    box-sizing: border-box;
+    background: url("./assets/images/selected.png") no-repeat left center;
+    padding: 8px 7px;
+    display: inline-block;
+    position: relative;
+}
+
+.checkone:checked+label {
+    box-sizing: border-box;
+    background: url("./assets/images/unselected.png") no-repeat left center;
+    padding: 8px 7px;
+    display: inline-block;
+    position: relative;
+}
+
 .mycheck+label {
+    color: #131313;
     box-sizing: border-box;
     background: url("./assets/images/selected.png") no-repeat left center;
     padding: 8px 18px;

@@ -1,11 +1,11 @@
 @import "./mobile.scss";
 #user {
     width: 100%;
-    height: 100%;
+    height: auto;
     display: flex;
     #left-nav {
         float: left;
-        height: 100%;
+        height: auto;
         background: #122b54;
         .logo {
             width: 90%;

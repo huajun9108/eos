@@ -83,7 +83,12 @@ export default {
       postOptions:null,           // 初渲染所有选项
       post:null    ,    // 提交选项也是已选中选项
       checkLists: "",
-      setting: {
+      settingNewConstruction: {
+        async: {
+          enable: true,
+          type: 'get',
+          url: 'http://116.196.113.167:3001/areaAllSet/showAreaAll',
+        },
         view: {
           // addHoverDom: this.addHoverDom,
           // removeHoverDom: this.removeHoverDom,
@@ -103,6 +108,22 @@ export default {
         // edit: {
         //   enable: true
         // }
+      },
+      settingEdit: {
+        view: {
+          selectedMulti: false,
+          showIcon: false,
+        },
+        data: {
+          simpleData: {
+            enable: true
+          }
+        },
+        check: {
+          enable: true,
+          chkStyle: "checkbox",
+          radioType: "level"
+        },
       },
     };
   },
@@ -245,33 +266,31 @@ export default {
           }
            that.addUser(obj);
         });
-
       }
-    }
+    },
   },
   watch: {
     validmenu(newVal){
       this.getOptions()
     },
-    areaAll(){
-       $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll)
-    },
-    validarea(){
-        console.log(this.validarea);
-      $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
-    }
+    // areaAll(){
+    //    $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll)
+    // },
+    // validarea(){
+    //     console.log(this.validarea);
+      // $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
+    // }
   },
 
   mounted() {
     if (this.$route.query.userid) {
-      this.selectUserById({userid:this.$route.query.userid})
-      console.log("=================");
-
-
+      this.selectUserById({userid:this.$route.query.userid});
+      console.log(this.validarea);
+      $.fn.zTree.init($("#treeDemo"), this.settingEdit, this.validarea);
     } else {
       console.log(this.$route);
-      this.selectAreaAll();
-      $.fn.zTree.init($("#treeDemo"), this.setting, this.areaAll);
+      // this.selectAreaAll();
+      $.fn.zTree.init($("#treeDemo"), this.settingNewConstruction);
     }
   }
 };

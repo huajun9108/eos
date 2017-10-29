@@ -12,21 +12,7 @@
 		</div>
 	</div>
 	<div class="area_content">
-
 	</div>
-	<!-- <div class="area_content">
-		<div class="area_setting col-md-3">
-			<br>
-			<span class="area_setting_title">区域范围</span>
-			<hr>
-      <ul id="area_tree" class="area_tree_class ztree">
-      </ul>
-		</div>
-		<div class="area_other col-md-9">
-      <div class="area_other_content">
-      </div>
-		</div>
-	</div> -->
 </div>
 </template>
 <script type="text/javascript">
@@ -52,7 +38,6 @@ export default {
 				callback: {
 					beforeRemove: this.zTreeBeforeRemove,
 					beforeRename: this.zTreeBeforeRename,
-					onRename: this.zTreeOnRename,
 				},
 				view: {
 					addHoverDom: this.addHoverDom,
@@ -103,14 +88,6 @@ export default {
 				if (newNodes.length > 0) {
 					zTree.editName(newNodes[0]);
 				}
-
-				// console.log(newNodes[0].name, newNodes[0].pId);
-				// console.log(newNodes.length);
-				// if(newNodes.length > 0)
-				// {
-				// 	var obj = {"name":newNodes[0].name, "pId": newNodes[0].pId};
-				// 	that.addFactoryOne(obj);
-				// }
 				return false;
 			});
 		},
@@ -118,21 +95,12 @@ export default {
 			$("#addBtn_" + treeNode.tId).unbind().remove();
 		},
 		zTreeBeforeRemove: function(treeId, treeNode) {
-			var result = confirm("清除");
+			var result = confirm("确认删除？");
 			return result;
-			// console.log(Ewin.confirm({
-			// 				message: "确认要删除选择的数据吗？"
-			// 			}).on(function(e) {
-			// 				return e;
-			// }))
 		},
 		zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
 			var that = this;
 			var zTree = $.fn.zTree.getZTreeObj("area_tree");
-			var nodes = zTree.getNodes();
-			for (let i = 0; i < nodes.length; i++) {
-				console.log(nodes[i]);
-			}
 			var oldName = treeNode.name;
 
 			if (isCancel && treeNode.isNew) {
@@ -140,7 +108,6 @@ export default {
 					zTree.removeNode(treeNode);
 				});
 			}
-
 			if (isCancel && !treeNode.isNew) {
 				setTimeout(function() {
 					zTree.cancelEditName(oldName);
@@ -155,9 +122,7 @@ export default {
 				return false;
 			}
 
-			console.log(treeNode.isNew);
 			if (oldName !== newName && treeNode.isNew) {
-				console.log("treeNodetrue");
 				if (!confirm("确认修改？")) {
 					setTimeout(function() {
 						zTree.cancelEditName(oldName);
@@ -172,7 +137,7 @@ export default {
 					$.post("http://116.196.113.167:3001/areaAllSet/addAreaOne", obj,
 						function(data, textStatus) {
 							if (data.status === "101") {
-								alert("该区域已存在,请重新输入!");
+								alert("该区域已存在，请重新输入！");
 								setTimeout(function() {
 									zTree.editName(treeNode);
 								}, 10);
@@ -180,8 +145,8 @@ export default {
 							}
 
 							if (data.length > 0) {
-                for(let i = 0; i < data.length; i++){
-									if(data[i].name === newName && data[i].pId === treeNode.pId){
+								for (let i = 0; i < data.length; i++) {
+									if (data[i].name === newName && data[i].pId === treeNode.pId) {
 										treeNode.id = data[i].id;
 										zTree.updateNode(treeNode);
 									}
@@ -196,7 +161,6 @@ export default {
 			}
 
 			if (oldName !== newName && !treeNode.isNew) {
-				console.log("treeNodefalse");
 				if (!confirm("确认修改？")) {
 					setTimeout(function() {
 						zTree.cancelEditName(oldName);
@@ -208,72 +172,19 @@ export default {
 						"pId": treeNode.pId,
 						"id": treeNode.id,
 					};
-					console.log(obj);
-					console.log("====================")
 					that.updateArea(obj);
 				}
 			}
 
-			// else {
-			// 	setTimeout(function() {
-			// 		zTree.cancelEditName(oldName);
-			// 	}, 10);
-			// }
-
-			// if (isCancel && treeNode.isNew) {
-			// 	setTimeout(function() {
-			// 		zTree.removeNode(treeNode);
-			// 	})
-			// }
-			//
-
-			//
-			// if (oldName !== newName && treeNode.isNew) {
-			// 	if (!confirm("确认修改？")) {
-			// 		setTimeout(function() {
-			// 			zTree.cancelEditName(oldName);
-			// 		}, 10);
-			// 		return false;
-			// 	} else {
-			// 		console.log("---------------------")
-			// 		console.log(treeNode);
-			// 		console.log(treeNode.name)
-			// 		var obj = {
-			// 			"name": newName,
-			// 			"pId": treeNode.pId
-			// 		};
-			// 		console.log(obj);
-			// 		console.log("---------------------")
-			// 		that.addFactoryOne(obj);
-			// 	}
-			// }
-
 			if (treeNode.isNew) {
 				delete treeNode.isNew;
 			}
-
-			// console.log("newArea begin");
-			// console.log(this.newArea);
-			// console.log("newArea end");
 		},
-		zTreeOnRename: function(event, treeId, treeNode, isCancel) {
-			// console.log("newArea begin");
-			// console.log(this.newArea);
-			// console.log("newArea end");
-		}
 	},
 	watch: {
-		// areaAll: function() {
-		// 	$.fn.zTree.init($("#area_tree"), this.setting, this.areaAll);
-		// },
-		// newArea: function() {
-		// 	$.fn.zTree.init($("#area_tree"), this.setting, this.newArea);
-		// }
 	},
 	mounted() {
 		$.fn.zTree.init($("#area_tree"), this.setting);
-
-		// this.selectAreaAll()
 	}
 }
 </script>

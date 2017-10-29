@@ -23,7 +23,7 @@ export default {
         let str = ""
         state.userinfor = json.user
         state.validarea = json.validarea
-        console.log(state.validarea)
+        // console.log(state.validarea)
         json.validmenu.forEach((item) => {
             if (str == null || str == '') {
                 str += item.validmenuid

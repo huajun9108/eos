@@ -99,7 +99,7 @@ export default {
         axios.post("/user/selectUserById", qs.stringify({
             "userId": obj.userid
         })).then(res => {
-            console.log(res.data.data.validarea)
+            // console.log(res.data.data.validarea)
             return res.data.data
         }).then(json => {
             commit("selectUserById", json)

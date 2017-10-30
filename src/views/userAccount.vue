@@ -17,7 +17,7 @@
               <span class="bef">职位</span><span class="in">{{userinfor.userjob}}</span>
           </div>
           <div class="tip">
-              <span class="bef">直线上司</span><span class="in">{{userinfor.userjob}}</span>
+              <span class="bef">直线上司</span><span class="in">{{userinfor.userleader}}</span>
           </div>
         </div>
         <div class="area">
@@ -25,7 +25,7 @@
             <span>可视区域</span>
           </div>
           <div class="tree">
-            
+            <ul id="treeDemo" class="ztree"></ul>
           </div>
         </div>
         </div>
@@ -35,10 +35,10 @@
         <div class="info-content">
         <div class="information">
           <div class="tip">
-              <span class="bef">中文/英文</span>
-              <div class="wrap">
-              <my-switch size="lg" v-model="toggle" open-name	="CN" close-name="EN" ></my-switch>
-              </div>
+            <span class="bef">中文/英文</span>
+            <div class="wrap">
+            <my-switch size="lg" v-model="toggle" open-name	="CN" close-name="EN" ></my-switch>
+            </div>
         </div>
       </div>
       </div>
@@ -54,19 +54,42 @@ export default {
   },
   data(){
     return{
-      toggle: true
-    }
-      
+      toggle: true,
+      setting: {
+        view: {
+          selectedMulti: false,
+          showIcon: false,
+        },
+        data: {
+          simpleData: {
+            enable: true
+          }
+        },
+      },
+      validareaList:[]
+    } 
   },
   computed:{
     ...mapState([
       "userinfor",
+      "validarea"
       ])
   },
   methods: {
     ...mapActions([
       "selectUserById"
-    ])
+    ]),
+    
+  },
+  watch: {
+     validarea(newVal){
+        this.validarea.forEach(item=> {
+         if(item.checked){
+          this.validareaList.push(item)
+         }
+       });
+       $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
+    },
   },
   mounted() {
     if (this.$route.params.userid) {

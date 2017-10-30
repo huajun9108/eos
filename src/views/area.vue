@@ -20,11 +20,6 @@ import {
 	mapState,
 	mapActions
 } from "vuex"
-import "../assets/js/jquery-1.4.4.min.js"
-import "../assets/js/jquery.ztree.core.js"
-import "../assets/js/jquery.ztree.excheck.js"
-import "../assets/js/jquery.ztree.exedit.js"
-import "../assets/js/tip.js"
 export default {
 	data() {
 		return {

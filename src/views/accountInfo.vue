@@ -65,27 +65,16 @@
 </template>
 
 <script type="text/javascript">
-import axios from "axios";
-import qs from "qs";
-
 import { mapState, mapActions } from "vuex";
-import Bottom from "../components/bottom.vue";
-import "../assets/js/jquery-1.4.4.min.js";
-import "../assets/js/jquery.ztree.core.js";
-import "../assets/js/jquery.ztree.excheck.js";
-import "../assets/js/jquery.ztree.exedit.js";
 export default {
   created: function(){
     this.getOptions()
-  },
-  components: {
-    ebottom: Bottom
   },
   data() {
     return {
       flag:false,
       check:false,
-      continueAdd:"",
+      continueAdd:false,
       name:"",
       abbname:'',
       job:'',
@@ -116,9 +105,6 @@ export default {
           chkStyle: "checkbox",
           radioType: "level"
         },
-        // edit: {
-        //   enable: true
-        // }
       },
       settingEdit: {
         view: {
@@ -211,7 +197,8 @@ export default {
           userAbbName: this.abbname,
           userJob: this.job,
           userLeader: this.leader,
-          validMenu:this.postOptions.join(",")
+          validMenu:this.postOptions.join(","),
+          validArea: JSON.stringify(data),
         });
         console.log(this.postOptions)
       } else {
@@ -267,20 +254,23 @@ export default {
     addOption(obj) {
     var _this = this;
       if(this.validateData()) {
-          _this.addUser(obj);
-      } 
+          _this.addUser(obj); 
+          _this.name=""   
+          _this.pwd=""
+          _this.abbname=""
+          _this.job=""
+          _this.leader=""
+          _this.postOptions=[]
+      }
     }
   },
   watch: {
     validmenu(newVal){
       this.getOptions()
     },
-    // areaAll(newVal){
-    //    $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll)
-    // },
-    // validarea(newVal){
-    //     $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
-    // },
+    validarea(newVal){
+       $.fn.zTree.init($("#treeDemo"), this.settingEdit, this.validarea);
+    },
     userinfor(){
       this.name=this.userinfor.username;
       this.pwd=this.userinfor.userpsd;
@@ -289,23 +279,29 @@ export default {
       this.leader=this.userinfor.userleader;
     },
     addResult(newVal){
-      if(newVal==3){
+      if(newVal.status==3){
         alert("用户名已存在");
-      }else{
+        return false
+      }else if(newVal.status==0){
         alert("添加成功");
+       if(!this.continueAdd){
+        this.$router.push({name:"account"});
+       }else{
+
+       }
+      }else{
+        alert("网络问题请稍后再试")
       }
+        
+      
     }
   },
 
   mounted() {
     if (this.$route.query.userid) {
       this.selectUserById({userid:this.$route.query.userid});
-      console.log(this.validarea);
-      $.fn.zTree.init($("#treeDemo"), this.settingEdit, this.validarea);
     } else {
-      this.flag=!this.flag;
-      console.log(this.$route);
-      // this.selectAreaAll();
+      this.flag=!this.flag; 
       $.fn.zTree.init($("#treeDemo"), this.settingNewConstruction);
     }
   }

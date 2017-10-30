@@ -1,7 +1,6 @@
 
 
 <template>
-	<!--（ztree－🌲）-->
 	<div class="ztree_content_wrap">
 		<div class="zTreeDemoBackground left">
 			<ul class="ztree">

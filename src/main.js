@@ -10,7 +10,11 @@ import './assets/bootstrap/css/bootstrap.min.css'
 import './assets/icomoon/style.css'
 const qs = require('qs')
 import axios from 'axios'
-
+import "./assets/js/jquery-1.4.4.min.js";
+import "./assets/js/jquery.ztree.core.js";
+import "./assets/js/jquery.ztree.excheck.js";
+import "./assets/js/jquery.ztree.exedit.js";
+import "./assets/js/tip.js"
 
 Vue.use(VueRouter);
 Vue.config.productionTip = false

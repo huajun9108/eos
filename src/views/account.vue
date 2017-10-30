@@ -24,8 +24,6 @@
             <td width="15%">密码</td>
             <td width="10%">职位</td>
             <td width="15%">上司</td>
-            <!-- <td>有效菜单</td>
-            <td>可视区域范围</td> -->
             <td width="15%" colspan="2">操作</td>
         </tr>
         </thead>
@@ -40,32 +38,29 @@
                 <td>{{item.userpsd}}</td>
                 <td>{{item.userjob}}</td>
                 <td>{{item.userleader}}</td>
-                <!-- <td>{{item.userleader}}</td>
-                <td>{{item.userleader}}</td> -->
                 <td class="icon-edit" :data="item.userid" @click="goAccountInfo({userId:item.userid})"></td>
                 <td class="icon-delete_2" :data="item.userid" @click="del({id:idx,userId:item.userid})"></td>
             </tr>
         </tbody>
     </table>
-  
+
+    <!-- <ul class="pagination">
     <label>当前第</label><label v-text="this.current"></label><label>页</label>
-    <label @click="firstPage()">首页</label>
+    <li :class="{'disabled': current == 1}" @click="firstPage()">首页</li>
     <label @click="prevPage()">上一页</label>
     <label @click="nextPage()">下一页</label>
     <label @click="lastPage()">尾页</label>
-    <!-- <v-pagination :total="total" :current.sync="current" class="pull-right" @pagechange="onPagechange"></v-pagination>  -->
+    </ul> -->
+    <v-pagination :total="total" :current-page="current" class="pull-right" @pagechange="onPagechange"></v-pagination> 
 </div>
 </template>
 
 <script type="text/javascript">
 import axios from "axios";
-import qs from "qs";
 import $ from "jquery";
 window.$ = $;
-import "../assets/js/tip"
 import { mapState, mapActions } from "vuex";
 import pagination from "../components/bootpage";
-
 export default {
   components: {
     "v-pagination": pagination
@@ -90,33 +85,31 @@ export default {
   computed: {
     ...mapState([
       "count",
-      // "userAll"
     ]),
-    // checkedAll: {
-    //   //  只要有一个为false就是 没有全选 返回  false
-    //   //  getter
-    //   get() {
-    //     var flag = true;
-    //     this.userAll.forEach(item => {
-    //       if (!item.checked) {
-    //         flag = false;
-    //       }
-    //     });
-    //     return flag;
-    //   },
-    //   set(newValue) {
-    //     //  set 这个计算属性值改变时触发
-    //     this.userAll.forEach(item => {
-    //       item.checked = newValue;
-    //     });
-    //   }
-    // }
   },
   methods: {
     ...mapActions([
       "delUser",
       "findAndCount"
       ]),
+      onPagechange:function(currentPage){
+       console.log(currentPage);
+       // 请求, 向后台发送 currentPage, 来获取对应的数据
+       axios.get("/user/findAndCount?page="+currentPage).then(res => {
+        this.total=res.data.data.count;
+        this.userAll=[];
+        this.checkedUserArr=[];
+        return (
+            res.data.data.rows.forEach(item=>{
+              console.log(item);              
+              this.userAll.push(item);
+            })
+        ); 
+      }).catch(error => {
+        console.log(error);
+      });
+
+     },
     changeAllChecked(e){
       var _this = this;
       console.log(_this.checkedUserArr);
@@ -137,27 +130,20 @@ export default {
       this.$router.push({ name: "accountInfo" });
     },
     del(obj) {
-      var that= this
+      var _this= this
       Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
           if (!e) {
               return;
           }
           //that.userAll.splice(obj.id, 1);
-          that.delUser({ userId: obj.userId });
-          that.loadList();
+          _this.delUser({ userId: obj.userId });
+          _this.loadList();
+          _this.onPagechange(1)
       });
     },
     dellALL() {
       console.log(this.checkedUserArr);
       var that = this;
-
-      // for (var i = that.userAll.length - 1; i >= 0; i--) {
-      //   var index = that.userAll[i];
-      //   if (index.checked) {
-      //     that.userAll.splice(i, 1);
-      //   }
-      // }
-
       Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
           for (var i = that.checkedUserArr.length - 1; i >= 0; i--) {
               var userId = that.checkedUserArr[i];
@@ -166,63 +152,27 @@ export default {
               that.loadList();
           }   
       });
-
-
-      // this.userAll.forEach((item,index)=>{
-      //   if (item.checked) {
-      //     that.userAll.splice(index, 1);
-      //   }
-      // })
     },
-    // pagechange: function(currentPage) {
-    //   console.log(currentPage);
-    //   this.findAndCount({page:currentPage})
+    // firstPage:function() {
+    //   this.current = 1;
+    //   this.loadList();
     // },
-    removeUsers() {
-      this.$confirm("此操作将永久删除 " + this.selected.length + " 个用户, 是否继续?", "提示", {
-        type: "warning"
-      }).then(() => {
-        var ids = [];
-        //提取选中项的id
-        $.each(this.selected, (i, user) => {
-          ids.push(user.id);
-        });
-        // 向请求服务端删除
-        //     var resource = this.$resource(this.url);
-        //     resource.remove({ids: ids.join(",") })
-        //         .then((response) => {
-        //             this.$message.success('删除了' + this.selected.length + '个用户!');
-        //             this.getUsers();
-        //         })
-        //         .catch((response) => {
-        //             this.$message.error('删除失败!');
-        //     });
-        // })
-        // .catch(() => {
-        // this.$Message('已取消操作!');
-      });
-    },
-
-    firstPage:function() {
-      this.current = 1;
-      this.loadList();
-    },
-    prevPage:function() {
-      if(this.current && this.current>1) {
-         this.current = this.current-1;
-      }      
-      this.loadList();
-    },
-    nextPage:function() {
-      if(this.current && this.current<Math.ceil(this.total/5)) {
-         this.current = this.current+1;
-      }      
-      this.loadList();
-    },
-    lastPage:function() {
-      this.current = Math.ceil(this.total/5);
-      this.loadList();
-    },
+    // prevPage:function() {
+    //   if(this.current && this.current>1) {
+    //      this.current = this.current-1;
+    //   }      
+    //   this.loadList();
+    // },
+    // nextPage:function() {
+    //   if(this.current && this.current<Math.ceil(this.total/5)) {
+    //      this.current = this.current+1;
+    //   }      
+    //   this.loadList();
+    // },
+    // lastPage:function() {
+    //   this.current = Math.ceil(this.total/5);
+    //   this.loadList();
+    // },
     loadList:function() {
       axios.get("/user/findAndCount?page="+this.current).then(res => {
         this.total=res.data.data.count;
@@ -254,25 +204,9 @@ export default {
   },
   mounted() {
     this.loadList();
-    // this.findAndCount({page:this.current})
-    // axios.get("/user/findAndCount", {
-    //         params: {
-    //             page: this.current
-    //         }
-    //     }).then(res => {
-    //         console.log(res.data.data)
-    //         return this.total = res.data.data.count
-    //         // return this.userAll = res.data.data.rows
-    //     })
-        // .then(json => {
-        //     commit("findAndCount", json)
-        // }).catch(err => {
-        //     console.log(err)
-        // })
-    // this.showPage(this.pageCurrent, null, true);
   }
 };
 </script>
-<style lang="scss" scoped>
 
-</style>
+<style lang="scss" scoped>
+</style>  

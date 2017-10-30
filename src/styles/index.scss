@@ -149,3 +149,29 @@ label {
     display: inline-block;
     position: relative;
 }
+
+@keyframes show {
+    from {
+        right: -100%;
+    }
+    to {
+        right: 0;
+    }
+}
+
+@keyframes hide {
+    from {
+        right: 0;
+    }
+    to {
+        left: -100%;
+    }
+}
+
+.rightshow {
+    animation: show 0.5s;
+}
+
+.righthide {
+    animation: hide 1s;
+}

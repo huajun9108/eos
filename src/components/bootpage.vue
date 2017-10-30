@@ -8,8 +8,8 @@
         <li :class="{'disabled': current == page}"><a href="javascript:;" @click="setCurrent(page)"> 尾页 </a></li>
     </ul>
     <ul class="pagination pull-right">
-        <li><span> 共 {{ total }}  条数据 </span></li>            
-        <li><span> 每页显示 {{ display }}  条数据 </span></li>
+        <!-- <li><span> 共 {{ total }}  条数据 </span></li>             -->
+        <!-- <li><span> 每页显示 {{ display }}  条数据 </span></li> -->
         <li><span> 共 {{ page }} 页 </span></li>
         <li><span> 当前第 {{ current }} 页 </span></li>
     </ul>
@@ -18,6 +18,11 @@
 
 <script>
 export default {
+    data(){
+      return {
+        current: this.currentPage
+      }
+    },
     props: {
         total: {            // 数据总条数
             type: Number,
@@ -27,7 +32,7 @@ export default {
             type: Number,
             default: 5
         },
-        current: {            // 当前页码
+        currentPage: {            // 当前页码
             type: Number,
             default: 1
         },

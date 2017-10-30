@@ -115,7 +115,7 @@ export default {
 			}
 
 			if (!isCancel && newName.length == 0) {
-				alert("名称不能为空！");
+				alert("区域名称不能为空！");
 				setTimeout(function() {
 					zTree.editName(treeNode);
 				}, 10);

@@ -52,5 +52,6 @@ export default {
     addFactoryOne(state, json) {
         state.newArea = json
     },
-    updateArea(state, json) {}
+    updateArea(state, json) {},
+    updateKPItwoLev (state, json) {},
 }

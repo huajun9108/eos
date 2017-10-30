@@ -108,7 +108,7 @@ export default {
         // edit: {
         //   enable: true
         // }
-      },  
+      },
     };
   },
   computed: {
@@ -136,8 +136,6 @@ export default {
       }else{
         this.postOptions =[];
       }
-      
-
     },
     ArrayBlank(arr){
         for(var i = 0 ;i<arr.length;i++){
@@ -214,33 +212,33 @@ export default {
     },
     cancel(){
       var that=this;
-      if (!this.empty(this.name) 
-            || !this.empty(this.abbname) 
-            || !this.empty(this.pwd) 
-            || !this.empty(this.job) 
+      if (!this.empty(this.name)
+            || !this.empty(this.abbname)
+            || !this.empty(this.pwd)
+            || !this.empty(this.job)
         ) {
         Ewin.confirm({ message: "确认要取消编辑吗？" }).on(function (e) {
           that.$router.push({name:"account"});
         });
       }else{
         that.$router.push({name:"account"});
-      } 
+      }
     },
 
     validateData() {
-      //if (this.empty(this.username)) alert("用户情况不能为空"); this.        
+      //if (this.empty(this.username)) alert("用户情况不能为空"); this.
       if (
         this.empty(this.name) ||
         this.empty(this.abbname) ||
         this.empty(this.pwd) ||
-        this.empty(this.job) 
+        this.empty(this.job)
       ) {
         alert("输入不能为空");
         return false;
-      } 
+      }
       return true;
     }
-    
+
     ,
     confirmClick(obj) {
       var username = this.$refs.name.value;
@@ -253,7 +251,7 @@ export default {
         this.empty(username) ||
         this.empty(abbname) ||
         this.empty(pwd) ||
-        this.empty(job) 
+        this.empty(job)
       ) {
         alert("输入不能为空");
       } else {
@@ -263,7 +261,7 @@ export default {
           }
            that.addUser(obj);
         });
-       
+
       }
     }
   },

@@ -238,37 +238,37 @@ export default {
     },
     cancel(){
       var that=this;
-      if (!this.empty(this.name) 
-            || !this.empty(this.abbname) 
-            || !this.empty(this.pwd) 
-            || !this.empty(this.job) 
+      if (!this.empty(this.name)
+            || !this.empty(this.abbname)
+            || !this.empty(this.pwd)
+            || !this.empty(this.job)
         ) {
         Ewin.confirm({ message: "确认要取消编辑吗？" }).on(function (e) {
           that.$router.push({name:"account"});
         });
       }else{
         that.$router.push({name:"account"});
-      } 
+      }
     },
 
     validateData() {
-      //if (this.empty(this.username)) alert("用户情况不能为空"); this.        
+      //if (this.empty(this.username)) alert("用户情况不能为空"); this.
       if (
         this.empty(this.name) ||
         this.empty(this.abbname) ||
         this.empty(this.pwd) ||
-        this.empty(this.job) 
+        this.empty(this.job)
       ) {
         alert("输入不能为空");
         return false;
-      } 
+      }
       return true;
     },
     addOption(obj) {
     var _this = this;
       if(this.validateData()) {
           _this.addUser(obj);
-      } 
+      }
     }
   },
   watch: {
@@ -278,9 +278,10 @@ export default {
     // areaAll(newVal){
     //    $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll)
     // },
-    // validarea(newVal){
-    //     $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
-    // },
+    validarea(newVal){
+      $.fn.zTree.init($("#treeDemo"), this.settingEdit, this.validarea);
+        // $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
+    },
     userinfor(){
       this.name=this.userinfor.username;
       this.pwd=this.userinfor.userpsd;
@@ -301,7 +302,6 @@ export default {
     if (this.$route.query.userid) {
       this.selectUserById({userid:this.$route.query.userid});
       console.log(this.validarea);
-      $.fn.zTree.init($("#treeDemo"), this.settingEdit, this.validarea);
     } else {
       this.flag=!this.flag;
       console.log(this.$route);

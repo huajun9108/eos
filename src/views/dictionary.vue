@@ -43,6 +43,7 @@ export default {
 				callback: {
 					beforeRename: this.zTreeBeforeRenameKpi,
 					brforeRemove: this.zTreeBeforeRemoveKpi,
+					onAsyncSuccess: this.zTreeOnAsyncSuccess,
 				},
 				data: {
 					simpleData: {
@@ -59,25 +60,30 @@ export default {
 					renameTitle: '编辑'
 				}
 			},
-			// setting: {
-			// 	data: {
-			// 		simpleData: {
-			// 			enable: true
-			// 		}
-			// 	},
-			// 	view: {
-			// 		addHoverDom: this.addHoverDomKpi,
-			// 		removeHoverDom: this.removeHoverDom,
-			// 		showIcon: false,
-			// 	},
-			// 	edit: {
-			// 		enable: true,
-			// 		removeTitle: '删除',
-			// 		renameTitle: '编辑',
-			// 		showRemoveBtn: this.hiddenParentBtn,
-			// 		showRenameBtn: this.hiddenParentBtn,
-			// 	}
-			// },
+			settingCategory: {
+				async: {
+					enable: true,
+					url: "http://116.196.113.167:3001/losscategory/selectLossAll",
+					type: "get"
+				},
+				data: {
+					simpleData: {
+						enable: true
+					}
+				},
+				view: {
+					// addHoverDom: this.addHoverDom,
+					// removeHoverDom: this.removeHover,
+					showIcon: false,
+				},
+				edit: {
+					enable: true,
+					removeTitle: '删除',
+					renameTitle: '编辑',
+					// showRemoveBtn: this.hiddenParentBtn,
+					// showRenameBtn: this.hiddenParentBtn,
+				}
+			},
 		}
 	},
 	computed: {
@@ -108,6 +114,9 @@ export default {
 				return true;
 			}
 		},
+	  zTreeOnAsyncSuccess: function(event, treeId, treeNode, msg) {
+      console.log(msg);
+    },
 		addHoverDomKpi: function(treeId, treeNode) {
 			if (treeNode.level >= 1) return;
 
@@ -211,6 +220,7 @@ export default {
 					// that.updateKPItwoLev(obj);
 					$.post("http://116.196.113.167:3001/KPISet/updateKPItwoLev", obj,
 						function(data, textStatus) {
+							console.log(data);
 							if (data.status === "101") {
 								alert("该词已存在，请重新输入！");
 								setTimeout(function() {
@@ -230,7 +240,6 @@ export default {
 						})
 				}
 			}
-
 			if (treeNode.isNew) {
 				delete treeNode.isNew;
 			}
@@ -256,14 +265,14 @@ export default {
 
 	mounted() {
 		// this.selectKPIALL();
-		$.fn.zTree.init($("#treeKpi"), this.settingKpi)
+		$.fn.zTree.init($("#treeKpi"), this.settingKpi);
+		$.fn.zTree.init($("#treeCategory"), this.settingCategory);
 		// $.fn.zTree.init($("#treeCategory"), this.setting, this.zNodesLoss);
 		// this.getlocalData()
 		// this.getpopularData()
 		// this.getcountryData()
 		// this.getlocalshop()
 		// this.getcountryshop()
-
 	}
 }
 </script>

@@ -62,7 +62,7 @@ export default {
         })
     },
     addUser({ commit }, obj) {
-        axios.post("/user/addUserOne", qs.stringify({
+        axios.post("/user/addU", qs.stringify({
             "userName": obj.userName,
             "userPsd": obj.userPsd,
             "userAbbName": obj.userAbbName,
@@ -71,6 +71,7 @@ export default {
             "validMenu": obj.validMenu,
             "validArea": obj.validArea,
         })).then(res => {
+            console.log(res)
             return res.data
 
         }).then(json => {

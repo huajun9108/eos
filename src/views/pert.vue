@@ -84,6 +84,9 @@
 			</table>
 		</div>
 	</div>
+	<div class>
+
+	</div>
 </div>
 </template>
 <script type="text/javascript">

@@ -54,9 +54,7 @@
       </div>
       </div>
       <div class="accountinfo_button text-right">
-          <input  v-model="continueAdd" id='continueCheck' :checked="this.check" type="checkbox" class="mycheck">
-          <label v-show = "flag" for='continueCheck' >连续添加</label>
-          <span class="button_confirm button" @click="confirm">确认</span>
+          <span class="button_confirm button" @click="userExist">确认</span>
           <span class="button_cancel button" @click="cancel">取消</span>
       </div>
   </div>
@@ -83,9 +81,6 @@ export default {
   },
   data() {
     return {
-      flag:false,
-      check:false,
-      continueAdd:"",
       name:"",
       abbname:'',
       job:'',
@@ -122,8 +117,7 @@ export default {
       "validmenu",
       "validmenuList",
       "areaAll",
-      "validarea",
-      "addResult"
+      "validarea"
     ])
   },
   methods: {
@@ -169,7 +163,12 @@ export default {
       }
       return o;
     },
-    confirm() {
+    userExist() {
+      var username = this.$refs.name.value;
+      var abbname = this.$refs.abbname.value;
+      var pwd = this.$refs.pwd.value;
+      var job = this.$refs.job.value;
+      var leader = this.$refs.leader.value;
       var zTree = $.fn.zTree.getZTreeObj("treeDemo");
       var nodes = zTree.getCheckedNodes(true);
       var checkedNodes=[];
@@ -182,9 +181,9 @@ export default {
       var data = this.clone(checkedNodes, {id:1, pId:1, name:1});
       this.ArrayBlank(this.postOptions)
       if (this.$route.query.userid) {
-        this.updateOption({
+        this.update({
           userId: this.$route.query.userid,
-          userName: this.name,
+          userName: this.user,
           userPsd: this.pwd,
           userAbbName: this.abbname,
           userJob: this.job,
@@ -193,7 +192,7 @@ export default {
         });
         console.log(this.postOptions)
       } else {
-        this.addOption({
+        this.confirmClick({
           userName: this.name,
           userPsd: this.pwd,
           userAbbName: this.abbname,
@@ -206,11 +205,10 @@ export default {
          console.log(data);
       }
     },
-    updateOption(obj) {
-      var _this = this;
-      if(this.validateData()) {
+    update(obj) {
+      if(validateData) {
         Ewin.confirm({ message: "确认要更新数据吗？" }).on(function (e) {
-          _this.updateUserById(obj);
+          that.updateUserById(obj);
         });
       }
     },
@@ -241,12 +239,32 @@ export default {
         return false;
       } 
       return true;
-    },
-    addOption(obj) {
-    var _this = this;
-      if(this.validateData()) {
-          _this.addUser(obj);
-      } 
+    }
+    
+    ,
+    confirmClick(obj) {
+      var username = this.$refs.name.value;
+      var abbname = this.$refs.abbname.value;
+      var pwd = this.$refs.pwd.value;
+      var job = this.$refs.job.value;
+      var leader = this.$refs.leader.value;
+      var that = this;
+      if (
+        this.empty(username) ||
+        this.empty(abbname) ||
+        this.empty(pwd) ||
+        this.empty(job) 
+      ) {
+        alert("输入不能为空");
+      } else {
+        Ewin.confirm({ message: "确认要添加数据吗？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+           that.addUser(obj);
+        });
+       
+      }
     }
   },
   watch: {
@@ -256,31 +274,21 @@ export default {
     areaAll(newVal){
        $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll)
     },
-    validarea(newVal){
+    validarea(){
         $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
     },
-    userinfor(){
-      this.name=this.userinfor.username;
-      this.pwd=this.userinfor.userpsd;
-      this.abbname=this.userinfor.userabbname;
-      this.job=this.userinfor.userjob;
-      this.leader=this.userinfor.userleader;
-    },
-    addResult(newVal){
-      if(newVal==3){
-        alert("用户名已存在");
-      }else{
-        alert("添加成功");
-      }
-    }
   },
 
   mounted() {
     if (this.$route.query.userid) {
       this.selectUserById({userid:this.$route.query.userid})
       //  $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
+      this.name=this.userinfor.username;
+      this.pwd=this.userinfor.userpsd;
+      this.abbname=this.userinfor.userabbname;
+      this.job=this.userinfor.userjob;
+      this.leader=this.userinfor.userleader;
     } else {
-      this.flag=!this.flag;
       console.log(this.$route);
       this.selectAreaAll();
       $.fn.zTree.init($("#treeDemo"), this.setting, this.areaAll);

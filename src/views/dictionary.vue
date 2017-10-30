@@ -41,9 +41,8 @@ export default {
 					type: "get"
 				},
 				callback: {
+					beforeRemove: this.zTreeBeforeRemoveKpi,
 					beforeRename: this.zTreeBeforeRenameKpi,
-					brforeRemove: this.zTreeBeforeRemoveKpi,
-					onAsyncSuccess: this.zTreeOnAsyncSuccess,
 				},
 				data: {
 					simpleData: {
@@ -114,9 +113,9 @@ export default {
 				return true;
 			}
 		},
-	  zTreeOnAsyncSuccess: function(event, treeId, treeNode, msg) {
-      console.log(msg);
-    },
+		zTreeOnAsyncSuccess: function(event, treeId, treeNode, msg) {
+			console.log(msg);
+		},
 		addHoverDomKpi: function(treeId, treeNode) {
 			if (treeNode.level >= 1) return;
 
@@ -141,6 +140,9 @@ export default {
 		},
 		removeHoverDom: function(treeId, treeNode) {
 			$("#addBtn_" + treeNode.tId).unbind().remove();
+		},
+		Test: function() {
+			console.log("remove");
 		},
 		zTreeBeforeRenameKpi: function(treeId, treeNode, newName, isCancel) {
 			var that = this;
@@ -247,10 +249,9 @@ export default {
 		zTreeBeforeRemoveKpi: function(treeId, treeNode) {
 			var result = confirm("确认删除？");
 			if(result){
-				console.log(treeNode);
 				var deleteNode =  treeNode;
 				$.get("http://116.196.113.167:3001/KPISet/deleteKPItwoLev", treeNode, function(response, status){
-					console.log(response);
+					
 				})
 			}
 			return result;

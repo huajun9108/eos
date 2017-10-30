@@ -6,32 +6,20 @@
 				区域范围
 			</span>
 		</div>
-    <div class="nav_body">
+		<div class="nav_body">
 			<ul id="area_tree" class="area_tree_class ztree">
 			</ul>
-    </div>
+		</div>
 	</div>
 	<div class="area_content">
-
 	</div>
-	<!-- <div class="area_content">
-		<div class="area_setting col-md-3">
-			<br>
-			<span class="area_setting_title">区域范围</span>
-			<hr>
-      <ul id="area_tree" class="area_tree_class ztree">
-      </ul>
-		</div>
-		<div class="area_other col-md-9">
-      <div class="area_other_content">
-      </div>
-		</div>
-	</div> -->
-
 </div>
 </template>
 <script type="text/javascript">
-import {mapState,mapActions} from "vuex"
+import {
+	mapState,
+	mapActions
+} from "vuex"
 import "../assets/js/jquery-1.4.4.min.js"
 import "../assets/js/jquery.ztree.core.js"
 import "../assets/js/jquery.ztree.excheck.js"
@@ -42,6 +30,11 @@ export default {
 		return {
 			sFlag: true,
 			setting: {
+				async: {
+					enable: true,
+					url: "http://116.196.113.167:3001/areaAllSet/showAreaAll",
+					type: "get"
+				},
 				callback: {
 					beforeRemove: this.zTreeBeforeRemove,
 					beforeRename: this.zTreeBeforeRename,
@@ -50,6 +43,7 @@ export default {
 					addHoverDom: this.addHoverDom,
 					removeHoverDom: this.removeHoverDom,
 					selectedMulti: false,
+					showIcon: false,
 				},
 				data: {
 					simpleData: {
@@ -58,7 +52,7 @@ export default {
 				},
 				edit: {
 					enable: true,
-		      removeTitle: '删除',
+					removeTitle: '删除',
 					renameTitle: '编辑'
 				}
 			},
@@ -66,16 +60,18 @@ export default {
 	},
 	computed: {
 		...mapState([
-			"areaAll"
+			"areaAll",
+			"newArea"
 		])
 	},
 	methods: {
 		...mapActions([
 			"selectAreaAll",
 			"addFactoryOne",
+			"updateArea"
 		]),
 		addHoverDom: function(treeId, treeNode) {
-			if(treeNode.level >= 3) return;
+			if (treeNode.level >= 3) return;
 			var sObj = $("#" + treeNode.tId + "_span");
 			if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
 			var addStr = "<span class='button add' id='addBtn_" + treeNode.tId +
@@ -86,37 +82,39 @@ export default {
 				var zTree = $.fn.zTree.getZTreeObj("area_tree");
 				var newNodes = zTree.addNodes(treeNode, {
 					pId: treeNode.id,
-					name: "new code"
+					name: "",
+					isNew: true,
 				});
-				// console.log(newNodes[0].name, newNodes[0].pId);
-				// console.log(newNodes.length);
-				// if(newNodes.length > 0)
-				// {
-				// 	var obj = {"name":newNodes[0].name, "pId": newNodes[0].pId};
-				// 	that.addFactoryOne(obj);
-				// }
+				if (newNodes.length > 0) {
+					zTree.editName(newNodes[0]);
+				}
 				return false;
 			});
 		},
 		removeHoverDom: function(treeId, treeNode) {
 			$("#addBtn_" + treeNode.tId).unbind().remove();
 		},
-		zTreeBeforeRemove: function(treeId, treeNode){
-			var result = confirm("清除");
-			console.log(result);
+		zTreeBeforeRemove: function(treeId, treeNode) {
+			var result = confirm("确认删除？");
 			return result;
-			// console.log(Ewin.confirm({
-			// 				message: "确认要删除选择的数据吗？"
-			// 			}).on(function(e) {
-			// 				return e;
-			// }))
-
 		},
-   		 zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
+		zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
+			var that = this;
 			var zTree = $.fn.zTree.getZTreeObj("area_tree");
 			var oldName = treeNode.name;
 
-			if(!isCancel && newName.length == 0) {
+			if (isCancel && treeNode.isNew) {
+				setTimeout(function() {
+					zTree.removeNode(treeNode);
+				});
+			}
+			if (isCancel && !treeNode.isNew) {
+				setTimeout(function() {
+					zTree.cancelEditName(oldName);
+				}, 10);
+			}
+
+			if (!isCancel && newName.length == 0) {
 				alert("名称不能为空！");
 				setTimeout(function() {
 					zTree.editName(treeNode);
@@ -124,21 +122,69 @@ export default {
 				return false;
 			}
 
-			if(oldName !== newName){
-				if(!confirm("确认修改？")){
+			if (oldName !== newName && treeNode.isNew) {
+				if (!confirm("确认修改？")) {
 					setTimeout(function() {
 						zTree.cancelEditName(oldName);
 					}, 10);
 					return false;
+				} else {
+
+					var obj = {
+						"name": newName,
+						"pId": treeNode.pId
+					};
+					$.post("http://116.196.113.167:3001/areaAllSet/addAreaOne", obj,
+						function(data, textStatus) {
+							if (data.status === "101") {
+								alert("该区域已存在，请重新输入！");
+								setTimeout(function() {
+									zTree.editName(treeNode);
+								}, 10);
+								return false;
+							}
+
+							if (data.length > 0) {
+								for (let i = 0; i < data.length; i++) {
+									if (data[i].name === newName && data[i].pId === treeNode.pId) {
+										treeNode.id = data[i].id;
+										zTree.updateNode(treeNode);
+									}
+								}
+							}
+						})
+				}
+			} else {
+				setTimeout(function() {
+					zTree.cancelEditName(oldName);
+				}, 10);
+			}
+
+			if (oldName !== newName && !treeNode.isNew) {
+				if (!confirm("确认修改？")) {
+					setTimeout(function() {
+						zTree.cancelEditName(oldName);
+					}, 10);
+					return false;
+				} else {
+					var obj = {
+						"name": newName,
+						"pId": treeNode.pId,
+						"id": treeNode.id,
+					};
+					that.updateArea(obj);
 				}
 			}
-		}
+
+			if (treeNode.isNew) {
+				delete treeNode.isNew;
+			}
+		},
 	},
 	watch: {
-		areaAll: function() { $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll); }
 	},
 	mounted() {
-		this.selectAreaAll()
+		$.fn.zTree.init($("#area_tree"), this.setting);
 	}
 }
 </script>

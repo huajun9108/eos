@@ -20,5 +20,6 @@ export default {
     validarea: "",
     userAll: "",
     count: "",
-    addResult: ""
+    addResult: "",
+    newArea: "",
 }

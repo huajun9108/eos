@@ -26,6 +26,7 @@ export default {
         let str = ""
         state.userinfor = json.user
         state.validarea = json.validarea
+            // console.log(state.validarea)
         json.validmenu.forEach((item) => {
             if (str == null || str == '') {
                 str += item.validmenuid
@@ -47,5 +48,9 @@ export default {
             //     arr.push(item)
             // });
             // return state.userAll = arr
-    }
+    },
+    addFactoryOne(state, json) {
+        state.newArea = json
+    },
+    updateArea(state, json) {}
 }

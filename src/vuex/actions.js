@@ -129,10 +129,11 @@ export default {
         })
     },
     addFactoryOne({ commit }, obj) {
-        axios.post("/workshopSet/addFactoryOne", qs.stringify({
+        axios.post("/areaAllSet/addAreaOne", qs.stringify({
             "name": obj.name,
             "pId": obj.pId,
         })).then(res => {
+            console.log(res.data)
             return res.data
         }).then(json => {
             commit("addFactoryOne", json)
@@ -153,6 +154,19 @@ export default {
         }).catch(err => {
             console.log(err)
         })
+    },
+    updateArea({ commit }, obj) {
+        axios.post("/areaAllSet/updateArea", qs.stringify({
+            "name": obj.name,
+            "pId": obj.pId,
+            "id": obj.id,
+        })).then(res => {
+            // console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("updateArea", json)
+        }).catch(error => {
+            console.log(error);
+        })
     }
-
 }

@@ -248,30 +248,30 @@ export default {
 			
   },
   mounted() {
-    // axios
-    //   .get("/user/selectUserAll", {})
-    //   .then(res => {
-    //     return (
-    //         res.data.data.forEach(item=>{
-    //         this.userAll.push(item)
-    //         // this.validmenu.push(item.validmenu)
-    //         // console.log ('userAll -> ' + JSON.stringify (this.userAll))
-    //     })
-    //     ); 
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-    this.findAndCount({page:this.current})
-    axios.get("/user/findAndCount", {
-            params: {
-                page: this.current
-            }
-        }).then(res => {
-            console.log(res.data.data)
-            return this.total = res.data.data.count
-            // return this.userAll = res.data.data.rows
+    axios
+      .get("/user/selectUserAll", {})
+      .then(res => {
+        return (
+            res.data.data.forEach(item=>{
+            this.userAll.push(item)
+            // this.validmenu.push(item.validmenu)
+            // console.log ('userAll -> ' + JSON.stringify (this.userAll))
         })
+        ); 
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    // this.findAndCount({page:this.current})
+    // axios.get("/user/findAndCount", {
+    //         params: {
+    //             page: this.current
+    //         }
+    //     }).then(res => {
+    //         console.log(res.data.data)
+    //         return this.total = res.data.data.count
+    //         // return this.userAll = res.data.data.rows
+    //     })
         // .then(json => {
         //     commit("findAndCount", json)
         // }).catch(err => {

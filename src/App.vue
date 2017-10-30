@@ -43,4 +43,5 @@
     @import "./styles/overview.scss"
     @import "./styles/useraccount.scss"
     @import "./styles/pert.scss"
+    @import "./styles/datainput.scss"
 </style>

@@ -121,7 +121,7 @@ export default {
         })
     },
     selectKPIALL({ commit }, obj) {
-        axios.get("/KPISet/selectKPIALL", {}).then(res => {
+        axios.get("/KPISet/showKPIAll ", {}).then(res => {
             console.log(res.data)
             return res.data
         }).then(json => {
@@ -168,5 +168,20 @@ export default {
         }).catch(error => {
             console.log(error);
         })
-    }
+    },
+    updateKPItwoLev({ commit }, obj) {
+        axios.post("/KPISet/updateKPItwoLev", qs.stringify({
+            "name": obj.name,
+            "pId": obj.pId,
+            "id": obj.id,
+        })).then(res => {
+            // console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("updateKPItwoLev", json)
+        }).catch(error => {
+            console.log(error);
+        })
+    },
+
 }

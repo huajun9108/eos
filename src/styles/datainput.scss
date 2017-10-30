@@ -1,14 +1,18 @@
 @import "./mobile.scss";
-.datainput{
-	height: 100%;
-	width: 100%;
-	.tableContainer{
-		padding-left: 2%;
-		padding-top: 2%;
-		height: 98%;
-		width: 48%;
-		table th{
-			text-align: center;
-		}
-	}
+.datainput {
+    height: 100%;
+    width: 100%;
+    .tableContainer {
+        box-sizing: border-box;
+        padding-left: 2%;
+        padding-top: 2%;
+        height: 98%;
+        width: 48%;
+        .table th {
+            text-align: center;
+        }
+        .table>tbody>tr>td {
+            vertical-align: middle;
+        }
+    }
 }

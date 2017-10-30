@@ -1,0 +1,54 @@
+@import "./mobile.scss";
+.loss {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+    .tableContainer {
+        box-sizing: border-box;
+        padding-left: 2%;
+        padding-top: 2%;
+        height: auto;
+        width: 80%;
+        .table th {
+            text-align: center;
+        }
+        .table>tbody>tr>td {
+            vertical-align: middle;
+        }
+    }
+}
+
+// .table {
+//     width: 100%;
+//     border-collapse: collapse;
+//     border-spacing: 0;
+// }
+// .fixedThead {
+//     display: block;
+//     width: 100%;
+//     border-bottom: 1px solid #9ba3a9
+// }
+// .scrollTbody {
+//     display: block;
+//     height: 600px;
+//     overflow: auto;
+//     width: 100%;
+// }
+// .table td,
+// .table td {
+//     width: 200px;
+//     border-bottom: none;
+//     border-left: none;
+//     border-right: 1px solid #CCC;
+//     border-top: 1px solid #DDD;
+//     padding: 2px 3px 3px 4px
+// }
+// .table td {
+//     border-left: 1px solid #EB8;
+//     border-bottom: 1px solid #B74;
+// }
+// thead.fixedThead tr td:last-child {
+//     // color: #FF0000;
+//     width: 212px;
+// }

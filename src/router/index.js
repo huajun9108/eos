@@ -18,7 +18,8 @@ import Datainput from "../views/datainput.vue"
 import Useraccount from "../views/useraccount.vue"
 import Pert from "../views/pert.vue"
 import Lossm from "../views/lossm.vue"
-
+import kpi from "../views/datainputkpi.vue"
+import loss from "../views/loss.vue"
 
 var routes = [{
         path: "/",
@@ -96,9 +97,23 @@ var routes = [{
                 name: "savingbook"
             },
             {
-                path: "datainput/:userid",
+                path: "datainput",
                 component: Datainput,
                 name: "datainput",
+                redirect: "datainput/kpi",
+                children: [{
+                        path: "kpi/:userid",
+                        component: kpi,
+                        name: "kpi",
+                    },
+                    {
+                        path: "loss/:userid",
+                        component: loss,
+                        name: "loss",
+                    }
+
+                ],
+                redirect: "/datainput/kpi/:userid",
             },
             {
                 path: "useraccount/:userid",

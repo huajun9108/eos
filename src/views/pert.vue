@@ -57,9 +57,6 @@
 		</div>
 	</div>
 	<div class="xxxContainer col-md-4">
-		<div class="areaTime">
-			<span>区域/时间</span>
-		</div>
 		<div id="xxxDashboardId" class="xxxDashboard">
 		</div>
 		<div class="xxxTable">

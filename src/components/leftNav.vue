@@ -26,7 +26,7 @@
             <span>Saving Book</span>
           </li>
         </router-link>
-        <router-link :to="{name:'datainput'}">
+        <router-link :to="{name:'kpi'}">
           <li>
             <span>Data Input</span>
           </li>

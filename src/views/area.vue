@@ -108,7 +108,9 @@ export default {
             return false;
           }
         })
-      }
+      } else {
+				return false;
+			}
     },
     zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
       var that = this;
@@ -154,7 +156,7 @@ export default {
 									zTree.removeNode(treeNode);
 								});
 							}
-							
+
               if (data.status === "101") {
                 alert("该区域已存在，请重新输入！");
                 setTimeout(function() {

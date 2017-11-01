@@ -63,7 +63,8 @@ export default {
 				async: {
 					enable: true,
 					url: "http://116.196.113.167:3001/losscategory/selectLossAll",
-					type: "get"
+					type: "get",
+					// dataFilter: this.ajaxDataFilter,
 				},
 				data: {
 					simpleData: {
@@ -251,11 +252,14 @@ export default {
 			if(result){
 				var deleteNode =  treeNode;
 				$.get("http://116.196.113.167:3001/KPISet/deleteKPItwoLev", treeNode, function(response, status){
-					
+
 				})
 			}
 			return result;
 		},
+	  ajaxDataFilter: function(treeId, parentNode, responseData) {
+			console.log("ajaxDataFilter: " + responseData[1].name);
+		}
 
 	},
 	watch: {

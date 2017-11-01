@@ -11,22 +11,22 @@
 					<td>编辑</td>
 				</tr>
 			</thead>
-      		<tbody>
-        		<tr>
+			<tbody>
+				<tr>
 					<td>1</td>
 					<td>Volume</td>
 					<td>Volume</td>
 					<td></td>
 					<td class="icon-edit"></td>
-  				</tr>
+				</tr>
 				<tr>
 					<td>2</td>
 					<td>Machine</td>
 					<td>OEE</td>
 					<td></td>
 					<td class="icon-edit"></td>
-  				</tr>
-  				<tr>
+				</tr>
+				<tr>
 					<td>3</td>
 					<td>Material</td>
 					<td>MatEff</td>
@@ -45,28 +45,43 @@
 					<td></td>
 					<td class="icon-edit"></td>
 				</tr>
-  				<tr>
+				<tr>
 					<td rowspan="2">5</td>
 					<td rowspan="2">Energy</td>
 					<td>EneCons</td>
 					<td></td>
 					<td class="icon-edit"></td>
-  				</tr>
-  				<tr>
+				</tr>
+				<tr>
 					<td>Energy</td>
 					<td></td>
 					<td class="icon-edit"></td>
 				</tr>
-  			<tr v-for="(d,index) in tableData" :key="index">
-  				<td>{{ d.number }}</td>
-  				<td>{{ d.Tier1 }}</td>
-  				<td>{{ d.Tier2 }}</td>
-  				<td></td>
-  				<td class="icon-edit"></td>
-  			</tr>
-      		</tbody>
+				<tr v-for="(d,index) in tableData" :key="index">
+					<td>{{ d.number }}</td>
+					<td>{{ d.Tier1 }}</td>
+					<td>{{ d.Tier2 }}</td>
+					<td></td>
+					<td class="icon-edit"></td>
+				</tr>
+			</tbody>
 		</table>
 	</div>
+	<!-- <div class="showAreaAndShift" @click="showFlag=!showFlag">
+		<span :class="showFlag?'iconfont icon-drop-down2 rotate':'iconfont icon-drop-down2'"></span>
+		<span class="areaAndShift">区域/班次</span>
+	</div> -->
+	<!-- <div :class="showFlag?'showchoose':'righthide'">
+		<div class="chooseArea box">
+			<span>区域选择</span>
+			<ul id="area" class="ztree"></ul>
+		</div>
+		<div class="chooseShift box">
+			<span>班次选择</span>
+			<div id="shift" style="width: 600px;height:400px;">
+			</div>
+		</div>
+	</div> -->
 </div>
 </template>
 
@@ -153,10 +168,30 @@ export default {
 					"Tier2": "ExtCoNQ"
 				},
 			],
+			setting: {
+				async: {
+					enable: true,
+					url: "http://116.196.113.167:3001/areaAllSet/showAreaAll",
+					type: "get"
+				},
+				view: {
+					selectedMulti: false,
+					showIcon: false,
+				},
+				data: {
+					simpleData: {
+						enable: true
+					}
+				},
+				check: {
+					enable: true,
+					chkStyle: "checkbox",
+					radioType: "level"
+				},
+			},
 		}
+	},
+	mounted() {
 	}
-
-
-
 }
 </script>

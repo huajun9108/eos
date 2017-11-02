@@ -96,8 +96,6 @@ export default {
           "id": treeNode.id,
         };
         $.get("http://116.196.113.167:3001/areaAllSet/deleteArea", obj, function(response, status) {
-          console.log(response);
-          console.log(status);
           if (status !== "success") {
             alert("服务器请求失败！");
             return false;
@@ -109,8 +107,8 @@ export default {
           }
         })
       } else {
-				return false;
-			}
+        return false;
+      }
     },
     zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
       var that = this;
@@ -150,12 +148,12 @@ export default {
           };
           $.post("http://116.196.113.167:3001/areaAllSet/addAreaOne", obj,
             function(data, textStatus) {
-							if (textStatus !== "success") {
-								alert("服务器请求失败！");
-								setTimeout(function() {
-									zTree.removeNode(treeNode);
-								});
-							}
+              if (textStatus !== "success") {
+                alert("服务器请求失败！");
+                setTimeout(function() {
+                  zTree.removeNode(treeNode);
+                });
+              }
 
               if (data.status === "101") {
                 alert("该区域已存在，请重新输入！");
@@ -165,13 +163,9 @@ export default {
                 return false;
               }
 
-              if (data.length > 0) {
-                for (let i = 0; i < data.length; i++) {
-                  if (data[i].name === newName && data[i].pId === treeNode.pId) {
-                    treeNode.id = data[i].id;
-                    zTree.updateNode(treeNode);
-                  }
-                }
+              if(data.id){
+                treeNode.id = data.id;
+                zTree.updateNode(treeNode);
               }
             })
         }

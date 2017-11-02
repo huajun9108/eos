@@ -45,7 +45,7 @@ export default {
           beforeRename: this.zTreeBeforeRenameKpi,
           onRemove: this.zTreeOnRemoveKpi,
           onRename: this.zTreeOnRenameKpi,
-					onAsyncSuccess: this.zTreeOnAsynSuccessKpi,
+					// onAsyncSuccess: this.zTreeOnAsynSuccessKpi,
         },
         data: {
           simpleData: {
@@ -100,22 +100,12 @@ export default {
   computed: {
     ...mapState([
       "kpiAll"
-      //    'localData',
-      //    'popularData',
-      //    'countryData',
-      //    'localshop',
-      //    'countryshop'
     ])
   },
   methods: {
     ...mapActions([
       "selectKPIALL",
       "updateKPItwoLev"
-      // 'getlocalData',
-      // 'getpopularData',
-      // 'getcountryData',
-      // 'getlocalshop',
-      // 'getcountryshop'
     ]),
     hiddenParentBtn: function(treeId, treeNode) {
       var level = treeNode.level;
@@ -246,8 +236,11 @@ export default {
               console.log("oldName: " + oldName);
 							console.log("newName: " + treeNode.name);
               if (data.status === "0") {
-                zTree.updateNode(treeNode);
-              }
+								return true;
+                // zTree.updateNode(treeNode);
+              }else {
+								return false;
+							}
             })
         }
       }
@@ -339,8 +332,11 @@ export default {
 	              }
 
 	              if (data.status === "0") {
-	                zTree.updateNode(treeNode);
-	              }
+									return true;
+	                // zTree.updateNode(treeNode);
+	              }else {
+									return false;
+								}
 	            })
 	        }
 	      }
@@ -383,81 +379,25 @@ export default {
         return false;
       }
     },
-    zTreeOnRemoveKpi: function(event, treeId, treeNode) {
-      var zTree = $.fn.zTree.getZTreeObj("treeCategory");
-			$.get("http://116.196.113.167:3001/losscategory/selectLossAll", function(response, status) {
-				console.log(response);
-
-			})
-      // var node = zTree.getNodeByParam("id", treeNode.id, null);
-      // zTree.removeNode(node);
-			// setTimeout("zTree.reAsyncChildNodes(null, 'refresh')", 10);
-      // zTree.reAsyncChildNodes(null, "refresh");
-      // $.fn.zTree.init($("#treeCategory"), this.settingCategory);
-			// $.fn.zTree.init($("#treeCategory"), this.settingCategory);
-    },
-    zTreeOnRemoveCategory: function(event, treeId, treeNode) {
-      var zTree = $.fn.zTree.getZTreeObj("treeKpi");
-			// setTimeout("zTree.reAsyncChildNodes(null, 'refresh')", 10);
-      // var node = zTree.getNodeByParam("id", treeNode.id, null);
-      // zTree.removeNode(node);
-      zTree.reAsyncChildNodes(null, "refresh");
-      // $.fn.zTree.init($("#treeKpi"), this.settingKpi);
-			// $.fn.zTree.init($("#treeKpi"), this.settingKpi);
-    },
-    zTreeOnRenameKpi: function(event, treeId, treeNode, isCancel) {
-      var zTree = $.fn.zTree.getZTreeObj("treeCategory");
-			// setTimeout("zTree.reAsyncChildNodes(null, 'refresh')", 10);
-      // var node = zTree.getNodeByParam("id", treeNode.id, null);
-      // zTree.updateNode(node);
-      zTree.reAsyncChildNodes(null, "refresh");
-      // $.fn.zTree.init($("#treeCategory"), this.settingCategory);
-			// $.fn.zTree.init($("#treeCategory"), this.settingCategory);
-    },
-    zTreeOnRenameCategory: function(event, treeId, treeNode, isCancel) {
-      var zTree = $.fn.zTree.getZTreeObj("treeKpi");
-			// setTimeout("zTree.reAsyncChildNodes(null, 'refresh')", 10);
-      // var node = zTree.getNodeByParam("id", treeNode.id, null);
-      // zTree.updateNode(node);
-      zTree.reAsyncChildNodes(null, "refresh");
-      // $.fn.zTree.init($("#treeKpi"), this.settingKpi);
-			// $.fn.zTree.init($("#treeKpi"), this.settingKpi);
-    },
-		// zTreeOnAsynSuccessKpi: function(event, treeId, treeNode, msg) {
-		// 	console.log("zTreeOnAsynSuccessKpi" + msg);
-		// },
-		// zTreeOnAsynSuccessCategory: function(event, treeId, treeNode, msg) {
-		// 	console.log("zTreeOnAsynSuccessCategory" + msg);
-		// }
-    // ajaxDataFilter: function(treeId, parentNode, responseData) {
-    //   if (responseData) {
-    //     for (var i = 0; i < responseData.length; i++) {
-    //       if ((typeof responseData[i].id) === 'string') {
-    //         if (responseData[i].id.substr(0, 1) === 'l')
-    //           responseData[i].isHidden = true;
-    //       }
-    //     }
-    //   }
-    //   return responseData;
-    // }
+		zTreeOnRenameKpi: function() {
+			$.fn.zTree.init($("#treeCategory"), this.settingCategory);
+		},
+		zTreeOnRenameCategory: function() {
+			$.fn.zTree.init($("#treeKpi"), this.settingKpi);
+		},
+		zTreeOnRemoveKpi: function() {
+			$.fn.zTree.init($("#treeCategory"), this.settingCategory);
+		},
+		zTreeOnRemoveCategory: function() {
+			$.fn.zTree.init($("#treeKpi"), this.settingKpi);
+		}
   },
   watch: {
-    // kpiAll: function() {
-    // 	$.fn.zTree.init($("#treeKpi"), this.settingKpi);
-    // 	  $.fn.zTree.init($("#treeCategory"), this.settingCategory);
-    // }
   },
 
   mounted() {
-    // this.selectKPIALL();
     $.fn.zTree.init($("#treeKpi"), this.settingKpi);
     $.fn.zTree.init($("#treeCategory"), this.settingCategory);
-    // $.fn.zTree.init($("#treeCategory"), this.setting, this.zNodesLoss);
-    // this.getlocalData()
-    // this.getpopularData()
-    // this.getcountryData()
-    // this.getlocalshop()
-    // this.getcountryshop()
   }
 }
 </script>

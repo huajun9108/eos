@@ -16,6 +16,7 @@ import "./assets/js/jquery-1.4.4.min.js";
 import "./assets/js/jquery.ztree.core.js";
 import "./assets/js/jquery.ztree.excheck.js";
 import "./assets/js/jquery.ztree.exedit.js";
+import "./assets/js/jquery.ztree.exhide.js";
 import "./assets/js/tip.js"
 
 Vue.use(VueRouter);

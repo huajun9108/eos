@@ -26,4 +26,72 @@
     height: 100%;
     border: P(2) solid #e1e1e1;
     overflow: hidden;
+    position: relative;
+    .showAreaAndShift{
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: P(144);
+      line-height: P(38);
+      text-align: center;
+      background: #e1e1e1;
+      border-bottom-left-radius: 4px;
+      z-index: 10;
+      cursor: pointer;
+    }
+    .icon-drop-down2 {
+      display: inline-block;
+      color: #aaaaaa;
+      font-weight: bold;
+    }
+
+    .rotate {
+      transform: rotate(180deg);
+    }
+
+    .showchoose {
+      overflow: hidden;
+      width: P(900);
+      height: 100%;
+      position: absolute;
+      right: 0;
+      top: 0;
+      background: #eeeeee;
+      display: flex;
+      animation: show 0.5s;
+      // padding-top: P(100);
+      // padding-left: 2%;
+      justify-content: space-around;
+      font-family: "思源黑体";
+      font-size: P(14);
+      // align-items: center;
+      .chooseArea {
+        margin-top:P(50);
+        width:P(260);
+        .title {
+          border-bottom: 1px solid #b4b4b4;
+          display: inline-block;
+          width: 100%;
+          line-height: P(30);
+          font-weight: bold;
+        }
+      }
+      .chooseShift {
+        margin-top:P(50);
+        width: P(510);
+        height: 100%;
+        border: 1px solid #b4b4b4;
+        .title {
+          border-bottom: 1px solid #b4b4b4;
+          display: inline-block;
+          width: 100%;
+          line-height: P(30);
+          font-weight: bold;
+        }
+      }
+    }
+
+    .hidechoose {
+      display: none;
+    }
 }

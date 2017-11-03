@@ -195,7 +195,7 @@ export default {
 				// 	to: '2016-02-20'
 				// }
 			]
-		}	
+		}
 	},
 	methods: {
 		...mapActions([

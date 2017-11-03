@@ -46,4 +46,5 @@
     @import "./styles/datainput.scss"
     @import "./styles/loss.scss"
     @import "./styles/target.scss"
+    @import "./styles/lossmapping.scss"
 </style>

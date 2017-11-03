@@ -45,7 +45,8 @@ export default {
           beforeRename: this.zTreeBeforeRenameKpi,
           onRemove: this.zTreeOnRemoveKpi,
           onRename: this.zTreeOnRenameKpi,
-					// onAsyncSuccess: this.zTreeOnAsynSuccessKpi,
+          onAsyncSuccess: this.zTreeOnAsynSuccess,
+          onAsyncError: this.zTreeOnAsyncError,
         },
         data: {
           simpleData: {
@@ -72,10 +73,11 @@ export default {
         },
         callback: {
           beforeRemove: this.zTreeBeforeRemoveCategory,
-					beforeRename: this.zTreeBeforeRenameCategory,
+          beforeRename: this.zTreeBeforeRenameCategory,
           onRemove: this.zTreeOnRemoveCategory,
           onRename: this.zTreeOnRenameCategory,
-					// onAsyncSuccess: this.zTreeOnAsynSuccessCategory,
+          onAsyncSuccess: this.zTreeOnAsyncSuccess,
+          onAsyncError: this.zTreeOnAsyncError,
         },
         data: {
           simpleData: {
@@ -197,9 +199,9 @@ export default {
               console.log(data.name + " " + data.pId + " " + data.id);
               if (data.id) {
                 treeNode.id = data.id;
-								console.log(typeof data.id);
-								console.log(typeof treeNode.id);
-								console.log(treeNode.id);
+                console.log(typeof data.id);
+                console.log(typeof treeNode.id);
+                console.log(treeNode.id);
                 zTree.updateNode(treeNode);
               }
             })
@@ -234,117 +236,117 @@ export default {
               }
 
               console.log("oldName: " + oldName);
-							console.log("newName: " + treeNode.name);
+              console.log("newName: " + treeNode.name);
               if (data.status === "0") {
-								return true;
+                return true;
                 // zTree.updateNode(treeNode);
-              }else {
-								return false;
-							}
+              } else {
+                return false;
+              }
             })
         }
       }
       if (treeNode.isNew) {
         delete treeNode.isNew;
       }
-			return true;
+      return true;
     },
-		zTreeBeforeRenameCategory: function(treeId, treeNode, newName, isCancel) {
-			  var zTree = $.fn.zTree.getZTreeObj("treeCategory");
-	      var oldName = treeNode.name;
+    zTreeBeforeRenameCategory: function(treeId, treeNode, newName, isCancel) {
+      var zTree = $.fn.zTree.getZTreeObj("treeCategory");
+      var oldName = treeNode.name;
 
-	      if (isCancel && treeNode.isNew) {
-	        setTimeout(function() {
-	          zTree.removeNode(treeNode);
-	        });
-	      }
-	      if (isCancel && !treeNode.isNew) {
-	        setTimeout(function() {
-	          zTree.cancelEditName(oldName);
-	        }, 10);
-	      }
+      if (isCancel && treeNode.isNew) {
+        setTimeout(function() {
+          zTree.removeNode(treeNode);
+        });
+      }
+      if (isCancel && !treeNode.isNew) {
+        setTimeout(function() {
+          zTree.cancelEditName(oldName);
+        }, 10);
+      }
 
-	      if (!isCancel && newName.length == 0) {
-	        alert("名称不能为空！");
-	        setTimeout(function() {
-	          zTree.editName(treeNode);
-	        }, 10);
-	        return false;
-	      }
+      if (!isCancel && newName.length == 0) {
+        alert("名称不能为空！");
+        setTimeout(function() {
+          zTree.editName(treeNode);
+        }, 10);
+        return false;
+      }
 
-	      if (oldName !== newName && treeNode.isNew) {
-	        if (!confirm("确认修改？")) {
-	          setTimeout(function() {
-	            zTree.cancelEditName(oldName);
-	          }, 10);
-	          return false;
-	        } else {
+      if (oldName !== newName && treeNode.isNew) {
+        if (!confirm("确认修改？")) {
+          setTimeout(function() {
+            zTree.cancelEditName(oldName);
+          }, 10);
+          return false;
+        } else {
 
-	          var obj = {
-	            "name": newName,
-	            "pId": treeNode.pId
-	          };
-	          $.post("http://116.196.113.167:3001/losscategory/addLossOne", obj,
-	            function(data, textStatus) {
-	              console.log("addLossOne:" + data);
-	              if (data.status === "101") {
-	                alert("该词已存在，请重新输入！");
-	                setTimeout(function() {
-	                  zTree.editName(treeNode);
-	                }, 10);
-	                return false;
-	              }
+          var obj = {
+            "name": newName,
+            "pId": treeNode.pId
+          };
+          $.post("http://116.196.113.167:3001/losscategory/addLossOne", obj,
+            function(data, textStatus) {
+              console.log("addLossOne:" + data);
+              if (data.status === "101") {
+                alert("该词已存在，请重新输入！");
+                setTimeout(function() {
+                  zTree.editName(treeNode);
+                }, 10);
+                return false;
+              }
 
-	              console.log(data.name + " " + data.pId + " " + data.id);
-	              if (data.id) {
-	                treeNode.id = data.id;
-	                zTree.updateNode(treeNode);
-	              }
-	            })
-	        }
-	      } else {
-	        setTimeout(function() {
-	          zTree.cancelEditName(oldName);
-	        }, 10);
-	      }
+              console.log(data.name + " " + data.pId + " " + data.id);
+              if (data.id) {
+                treeNode.id = data.id;
+                zTree.updateNode(treeNode);
+              }
+            })
+        }
+      } else {
+        setTimeout(function() {
+          zTree.cancelEditName(oldName);
+        }, 10);
+      }
 
-	      if (oldName !== newName && !treeNode.isNew) {
-	        if (!confirm("确认修改？")) {
-	          setTimeout(function() {
-	            zTree.cancelEditName(oldName);
-	          }, 10);
-	          return false;
-	        } else {
-	          var obj = {
-	            "name": newName,
-	            "pId": treeNode.pId,
-	            "id": treeNode.id,
-	          };
-	          $.post("http://116.196.113.167:3001/losscategory/updateLossById", obj,
-	            function(data, textStatus) {
-	              console.log("updateLossById:" + data);
-	              if (data.status === "101") {
-	                alert("该词已存在，请重新输入！");
-	                setTimeout(function() {
-	                  zTree.editName(treeNode);
-	                }, 10);
-	                return false;
-	              }
+      if (oldName !== newName && !treeNode.isNew) {
+        if (!confirm("确认修改？")) {
+          setTimeout(function() {
+            zTree.cancelEditName(oldName);
+          }, 10);
+          return false;
+        } else {
+          var obj = {
+            "name": newName,
+            "pId": treeNode.pId,
+            "id": treeNode.id,
+          };
+          $.post("http://116.196.113.167:3001/losscategory/updateLossById", obj,
+            function(data, textStatus) {
+              console.log("updateLossById:" + data);
+              if (data.status === "101") {
+                alert("该词已存在，请重新输入！");
+                setTimeout(function() {
+                  zTree.editName(treeNode);
+                }, 10);
+                return false;
+              }
 
-	              if (data.status === "0") {
-									return true;
-	                // zTree.updateNode(treeNode);
-	              }else {
-									return false;
-								}
-	            })
-	        }
-	      }
-	      if (treeNode.isNew) {
-	        delete treeNode.isNew;
-	      }
-				return true;
-		},
+              if (data.status === "0") {
+                return true;
+                // zTree.updateNode(treeNode);
+              } else {
+                return false;
+              }
+            })
+        }
+      }
+      if (treeNode.isNew) {
+        delete treeNode.isNew;
+      }
+      return true;
+    },
     zTreeBeforeRemoveKpi: function(treeId, treeNode) {
       if (confirm("确认删除？")) {
         var obj = {
@@ -379,21 +381,42 @@ export default {
         return false;
       }
     },
-		zTreeOnRenameKpi: function() {
-			$.fn.zTree.init($("#treeCategory"), this.settingCategory);
-		},
-		zTreeOnRenameCategory: function() {
-			$.fn.zTree.init($("#treeKpi"), this.settingKpi);
-		},
-		zTreeOnRemoveKpi: function() {
-			$.fn.zTree.init($("#treeCategory"), this.settingCategory);
-		},
-		zTreeOnRemoveCategory: function() {
-			$.fn.zTree.init($("#treeKpi"), this.settingKpi);
-		}
+    zTreeOnRenameKpi: function() {
+      setTimeout(function() {
+        console.log("test");
+        var zTree = $.fn.zTree.getZTreeObj("treeCategory");
+        zTree.reAsyncChildNodes(null, "refresh");
+      }, 1000);
+    },
+    zTreeOnRenameCategory: function() {
+      setTimeout(function() {
+        console.log("test");
+        var zTree = $.fn.zTree.getZTreeObj("treeKpi");
+        zTree.reAsyncChildNodes(null, "refresh");
+      }, 1000);
+    },
+    zTreeOnRemoveKpi: function() {
+      setTimeout(function() {
+        console.log("test");
+        var zTree = $.fn.zTree.getZTreeObj("treeCategory");
+        zTree.reAsyncChildNodes(null, "refresh");
+      }, 1000);
+    },
+    zTreeOnRemoveCategory: function() {
+      setTimeout(function() {
+        console.log("test");
+        var zTree = $.fn.zTree.getZTreeObj("treeKpi");
+        zTree.reAsyncChildNodes(null, "refresh");
+      }, 1000);
+    },
+    zTreeOnAsyncSuccess: function(event, treeId, treeNode, msg) {
+      console.log(`msg: ${msg}`);
+    },
+    zTreeOnAsyncError: function(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+      console.log(XMLHttpRequest);
+    }
   },
-  watch: {
-  },
+  watch: {},
 
   mounted() {
     $.fn.zTree.init($("#treeKpi"), this.settingKpi);

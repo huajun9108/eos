@@ -43,8 +43,8 @@ export default {
         callback: {
           beforeRemove: this.zTreeBeforeRemoveKpi,
           beforeRename: this.zTreeBeforeRenameKpi,
-          onRemove: this.zTreeOnRemoveKpi,
-          onRename: this.zTreeOnRenameKpi,
+          onRemove: this.zTreeOnModifyKpi,
+          onRename: this.zTreeOnModifyKpi,
         },
         data: {
           simpleData: {
@@ -72,8 +72,8 @@ export default {
         callback: {
           beforeRemove: this.zTreeBeforeRemoveCategory,
           beforeRename: this.zTreeBeforeRenameCategory,
-          onRemove: this.zTreeOnRemoveCategory,
-          onRename: this.zTreeOnRenameCategory,
+          onRemove: this.zTreeOnModifyCategory,
+          onRename: this.zTreeOnModifyCategory,
         },
         data: {
           simpleData: {
@@ -146,7 +146,50 @@ export default {
       $("#addBtn_" + treeNode.tId).unbind().remove();
     },
     zTreeBeforeRenameKpi: function(treeId, treeNode, newName, isCancel) {
-      var zTree = $.fn.zTree.getZTreeObj("treeKpi");
+      this.cancelEdit(treeId, treeNode, isCancel);
+      this.zTreeAdd(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/KPISet/addKPItwoLev");
+      this.zTreeUpdate(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/KPISet/updateKPItwoLev");
+      if (treeNode.isNew) {
+        delete treeNode.isNew;
+      }
+
+      return true;
+    },
+    zTreeBeforeRenameCategory: function(treeId, treeNode, newName, isCancel) {
+      this.cancelEdit(treeId, treeNode, isCancel);
+      this.zTreeAdd(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/losscategory/addLossOne");
+      this.zTreeUpdate(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/losscategory/updateLossById");
+      if (treeNode.isNew) {
+        delete treeNode.isNew;
+      }
+
+      return true;
+    },
+    zTreeBeforeRemoveKpi: function(treeId, treeNode) {
+      this.zTreeBeforeRemove(treeId, treeNode, "http://116.196.113.167:3001/KPISet/deleteKPItwoLev");
+    },
+    zTreeBeforeRemoveCategory: function(treeId, treeNode) {
+      this.zTreeBeforeRemove(treeId, treeNode, "http://116.196.113.167:3001/losscategory/deleteLossById");
+    },
+    zTreeBeforeRemove: function(treeId, treeNode, url) {
+      if (confirm("确认删除？")) {
+        var obj = {
+          "id": treeNode.id,
+        };
+        $.get(url, obj, function(response, status) {
+          if (response.status === "0") {
+            return true;
+          } else {
+            return false;
+          }
+        })
+      } else {
+        return false;
+      }
+    },
+    cancelEdit: function(treeId, treeNode, isCancel) {
+      console.log(treeId);
+      var zTree = $.fn.zTree.getZTreeObj(treeId);
       var oldName = treeNode.name;
 
       if (isCancel && treeNode.isNew) {
@@ -159,6 +202,10 @@ export default {
           zTree.cancelEditName(oldName);
         }, 10);
       }
+    },
+    zTreeAdd: function(treeId, treeNode, newName, isCancel, url) {
+      var zTree = $.fn.zTree.getZTreeObj(treeId);
+      var oldName = treeNode.name;
 
       if (!isCancel && newName.length == 0) {
         alert("名称不能为空！");
@@ -180,7 +227,7 @@ export default {
             "name": newName,
             "pId": treeNode.pId
           };
-          $.post("http://116.196.113.167:3001/KPISet/addKPItwoLev", obj,
+          $.post(url, obj,
             function(data, textStatus) {
               if (data.status === "101") {
                 alert("该词已存在，请重新输入！");
@@ -201,6 +248,10 @@ export default {
           zTree.cancelEditName(oldName);
         }, 10);
       }
+    },
+    zTreeUpdate: function(treeId, treeNode, newName, isCancel, url) {
+      var zTree = $.fn.zTree.getZTreeObj(treeId);
+      var oldName = treeNode.name;
 
       if (oldName !== newName && !treeNode.isNew) {
         if (!confirm("确认修改？")) {
@@ -214,7 +265,7 @@ export default {
             "pId": treeNode.pId,
             "id": treeNode.id,
           };
-          $.post("http://116.196.113.167:3001/KPISet/updateKPItwoLev", obj,
+          $.post(url, obj,
             function(data, textStatus) {
               if (data.status === "101") {
                 alert("该词已存在，请重新输入！");
@@ -232,157 +283,24 @@ export default {
             })
         }
       }
-      if (treeNode.isNew) {
-        delete treeNode.isNew;
-      }
-      return true;
     },
-    zTreeBeforeRenameCategory: function(treeId, treeNode, newName, isCancel) {
-      var zTree = $.fn.zTree.getZTreeObj("treeCategory");
-      var oldName = treeNode.name;
-
-      if (isCancel && treeNode.isNew) {
-        setTimeout(function() {
-          zTree.removeNode(treeNode);
-        });
-      }
-      if (isCancel && !treeNode.isNew) {
-        setTimeout(function() {
-          zTree.cancelEditName(oldName);
-        }, 10);
-      }
-
-      if (!isCancel && newName.length == 0) {
-        alert("名称不能为空！");
-        setTimeout(function() {
-          zTree.editName(treeNode);
-        }, 10);
-        return false;
-      }
-
-      if (oldName !== newName && treeNode.isNew) {
-        if (!confirm("确认修改？")) {
-          setTimeout(function() {
-            zTree.cancelEditName(oldName);
-          }, 10);
-          return false;
-        } else {
-
-          var obj = {
-            "name": newName,
-            "pId": treeNode.pId
-          };
-          $.post("http://116.196.113.167:3001/losscategory/addLossOne", obj,
-            function(data, textStatus) {
-              if (data.status === "101") {
-                alert("该词已存在，请重新输入！");
-                setTimeout(function() {
-                  zTree.editName(treeNode);
-                }, 10);
-                return false;
-              }
-              if (data.id) {
-                treeNode.id = data.id;
-                zTree.updateNode(treeNode);
-              }
-            })
-        }
-      } else {
-        setTimeout(function() {
-          zTree.cancelEditName(oldName);
-        }, 10);
-      }
-
-      if (oldName !== newName && !treeNode.isNew) {
-        if (!confirm("确认修改？")) {
-          setTimeout(function() {
-            zTree.cancelEditName(oldName);
-          }, 10);
-          return false;
-        } else {
-          var obj = {
-            "name": newName,
-            "pId": treeNode.pId,
-            "id": treeNode.id,
-          };
-          $.post("http://116.196.113.167:3001/losscategory/updateLossById", obj,
-            function(data, textStatus) {
-              if (data.status === "101") {
-                alert("该词已存在，请重新输入！");
-                setTimeout(function() {
-                  zTree.editName(treeNode);
-                }, 10);
-                return false;
-              }
-              if (data.status === "0") {
-                return true;
-              } else {
-                return false;
-              }
-            })
-        }
-      }
-      if (treeNode.isNew) {
-        delete treeNode.isNew;
-      }
-      return true;
-    },
-    zTreeBeforeRemoveKpi: function(treeId, treeNode) {
-      if (confirm("确认删除？")) {
-        var obj = {
-          "id": treeNode.id,
-        };
-        $.get("http://116.196.113.167:3001/KPISet/deleteKPItwoLev", obj, function(response, status) {
-          if (response.status === "0") {
-            return true;
-          } else {
-            return false;
-          }
-        })
-      } else {
-        return false;
-      }
-    },
-    zTreeBeforeRemoveCategory: function(treeId, treeNode) {
-      if (confirm("确认删除？")) {
-        var obj = {
-          "id": treeNode.id,
-        };
-        $.get("http://116.196.113.167:3001/losscategory/deleteLossById", obj, function(response, status) {
-          if (response.status === "0") {
-            return true;
-          } else {
-            return false;
-          }
-        })
-      } else {
-        return false;
-      }
-    },
-    zTreeOnRenameKpi: function() {
+    zTreeOnModifyKpi: function(event, treeId, treeNode) {
       setTimeout(function() {
+        console.log("zTreeOnModifyBegin");
         var zTree = $.fn.zTree.getZTreeObj("treeCategory");
         zTree.reAsyncChildNodes(null, "refresh");
+        console.log("zTreeOnModifyEnd");
       }, 1000);
     },
-    zTreeOnRenameCategory: function() {
+    zTreeOnModifyCategory: function(event, treeId, treeNode) {
       setTimeout(function() {
+        console.log("zTreeOnModifyBegin");
         var zTree = $.fn.zTree.getZTreeObj("treeKpi");
         zTree.reAsyncChildNodes(null, "refresh");
+        console.log("zTreeOnModifyEnd");
       }, 1000);
     },
-    zTreeOnRemoveKpi: function() {
-      setTimeout(function() {
-        var zTree = $.fn.zTree.getZTreeObj("treeCategory");
-        zTree.reAsyncChildNodes(null, "refresh");
-      }, 1000);
-    },
-    zTreeOnRemoveCategory: function() {
-      setTimeout(function() {
-        var zTree = $.fn.zTree.getZTreeObj("treeKpi");
-        zTree.reAsyncChildNodes(null, "refresh");
-      }, 1000);
-    },
+
   },
   watch: {},
 

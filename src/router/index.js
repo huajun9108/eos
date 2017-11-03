@@ -20,6 +20,7 @@ import Pert from "../views/pert.vue"
 import Lossm from "../views/lossm.vue"
 import kpi from "../views/datainputkpi.vue"
 import loss from "../views/loss.vue"
+import target from "../views/target.vue"
 
 var routes = [{
         path: "/",
@@ -45,11 +46,15 @@ var routes = [{
                 component: Dictionary,
                 name: "dictionary"
             },
-
             {
                 path: "accountinfo",
                 component: AccountInfo,
                 name: "accountInfo",
+            },
+            {
+                path: "target",
+                component: target,
+                name: "target",
             },
             { path: "*", redirect: "/index/area" }
         ]
@@ -64,35 +69,30 @@ var routes = [{
                 component: Overview,
                 name: "overview",
                 children: [{
-                        path: "pert/:userid",
+                        path: "pert",
                         component: Pert,
                         name: "pert",
                     },
                     {
-                        path: "lossm/:userid",
+                        path: "lossm",
                         component: Lossm,
                         name: "lossm",
                     }
                 ],
-                redirect: "/user/overview/pert/:userid",
+                redirect: "/user/overview/pert",
             },
             {
-                path: "performance/:userid",
+                path: "performance",
                 component: Performance,
                 name: "performance"
             },
             {
-                path: "target/:userid",
-                component: Target,
-                name: "target"
-            },
-            {
-                path: "lossmaping/:userid",
+                path: "lossmaping",
                 component: Lossmaping,
                 name: "lossmaping"
             },
             {
-                path: "savingbook/:userid",
+                path: "savingbook",
                 component: Savingbook,
                 name: "savingbook"
             },
@@ -100,27 +100,26 @@ var routes = [{
                 path: "datainput",
                 component: Datainput,
                 name: "datainput",
-                redirect: "datainput/kpi",
                 children: [{
-                        path: "kpi/:userid",
+                        path: "kpi",
                         component: kpi,
                         name: "kpi",
                     },
                     {
-                        path: "loss/:userid",
+                        path: "loss",
                         component: loss,
                         name: "loss",
                     }
 
                 ],
-                redirect: "/datainput/kpi/:userid",
+                redirect: "/user/datainput/kpi",
             },
             {
-                path: "useraccount/:userid",
+                path: "useraccount",
                 component: Useraccount,
                 name: "useraccount",
             },
-            { path: "*", redirect: "/user/overview/pert/:userid" }
+            { path: "*", redirect: "/user/overview/pert" }
         ]
     },
 

@@ -1,7 +1,7 @@
 <template>
   <div class="nav-left">
     <ul>
-        <router-link :to="{name:'pert'}">
+        <router-link :to="{name:'overview'}" ref="overview">
           <li>
             <span>Overview</span> 
           </li>
@@ -9,11 +9,6 @@
         <router-link :to="{name:'performance'}">
           <li>
             <span>Performance</span> 
-          </li>
-        </router-link>
-        <router-link :to="{name:'target'}">
-          <li>
-            <span>Target</span>
           </li>
         </router-link>
         <router-link :to="{name:'lossmaping'}">
@@ -26,7 +21,7 @@
             <span>Saving Book</span>
           </li>
         </router-link>
-        <router-link :to="{name:'kpi'}">
+        <router-link :to="{name:'datainput'}">
           <li>
             <span>Data Input</span>
           </li>
@@ -46,13 +41,24 @@
     data(){
       return {
         current: '',
-        menu: []
+        menu: [
+          {name:"Overview",label:"/home"},
+          {name:"Performance",label:"/designer"},
+          {name:"Target",label:"/taskmanger"},
+          {name:"Loss Mapping",label:"/node"},
+          {name:"Improvement Project",label:"/home"},
+          {name:"Saving Book",label:"/designer"},
+          {name:"Data Input",label:"/designer"},
+          {name:"Account",label:"/taskmanger"},
+        ]
       }
     },
     mounted(){
     },
     watch: {
       $route(to, from){
+        
+
       }
     }
   }

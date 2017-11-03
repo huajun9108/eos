@@ -24,15 +24,15 @@ website:    http://code.google.com/p/jquerytree/
 .ztree * {
     padding: 0;
     margin: 0;
-    font-size: 12px;
+    font-size: P(14);
     font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif;
     background-color: transparent;
 }
 
 .ztree {
-    margin: 0;
-    padding: 5px;
-    color: black;
+    margin-top: P(8);
+    padding: 2px;
+    color: #040404;
     background-color: transparent;
 }
 
@@ -44,6 +44,7 @@ website:    http://code.google.com/p/jquerytree/
     text-align: left;
     white-space: nowrap;
     outline: 0;
+    overflow: hidden;
 }
 
 .ztree li ul {
@@ -56,7 +57,7 @@ website:    http://code.google.com/p/jquerytree/
     margin: 0;
     cursor: pointer;
     height: 30px;
-    color: black;
+    color: #040404;
     background-color: transparent;
     text-decoration: none;
     vertical-align: top;
@@ -85,6 +86,7 @@ website:    http://code.google.com/p/jquerytree/
     color: black;
     height: 30px;
     opacity: 0.8;
+    width: 100%;
 }
 
 .ztree li a.curSelectedNode_Edit {
@@ -114,7 +116,7 @@ website:    http://code.google.com/p/jquerytree/
 .ztree li span.button {
     line-height: 0;
     margin: 0;
-    padding: 0;
+    padding-right: P(6);
     width: 15px;
     height: 30px;
     display: inline-block;

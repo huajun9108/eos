@@ -39,7 +39,7 @@
                 <td>{{item.userjob}}</td>
                 <td>{{item.userleader}}</td>
                 <td class="icon-edit" :data="item.userid" @click="goAccountInfo({userId:item.userid})"></td>
-                <td class="icon-delete_2" :data="item.userid" @click="del({id:idx,userId:item.userid})"></td>
+                <td class="icon-delete_2" :data="item.userid" @click="del({id:idx,userId:item.userid,name:item.username})"></td>
             </tr>
         </tbody>
     </table>
@@ -51,7 +51,7 @@
     <label @click="nextPage()">下一页</label>
     <label @click="lastPage()">尾页</label>
     </ul> -->
-    <v-pagination :total="total" :current-page="current" class="pull-right" @pagechange="onPagechange"></v-pagination> 
+    <v-pagination :total="total" :current-page="current" :display="display" class="pull-right" @pagechange="onPagechange"></v-pagination> 
 </div>
 </template>
 
@@ -78,7 +78,7 @@ export default {
       lDisabled: false,
       arrayData: [],
       total: null,     // 记录总条数
-      display: 5,   // 每页显示条数
+      display:10,   // 每页显示条数
       current: 1     // 当前第n页 ， 也可以 watch current 的变化 
     };
   },
@@ -100,8 +100,7 @@ export default {
         this.userAll=[];
         this.checkedUserArr=[];
         return (
-            res.data.data.rows.forEach(item=>{
-              console.log(item);              
+            res.data.data.rows.forEach(item=>{          
               this.userAll.push(item);
             })
         ); 
@@ -131,7 +130,7 @@ export default {
     },
     del(obj) {
       var _this= this
-      Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
+      Ewin.confirm({ message: "确认要删除用户"+obj.name+"吗？" }).on(function (e) {
           if (!e) {
               return;
           }
@@ -139,17 +138,17 @@ export default {
           _this.delUser({ userId: obj.userId });
           _this.loadList();
           _this.onPagechange(1)
+          _this.$message.success('删除'+obj.name+'成功');
       });
     },
     dellALL() {
-      console.log(this.checkedUserArr);
-      var that = this;
+      var _this= this
       Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
-          for (var i = that.checkedUserArr.length - 1; i >= 0; i--) {
-              var userId = that.checkedUserArr[i];
+          for (var i = _this.checkedUserArr.length - 1; i >= 0; i--) {
+              var userId = _this.checkedUserArr[i];
               //that.userAll.splice(userId, 1);
-              that.delUser({ userId:userId });
-              that.loadList();
+              _this.delUser({ userId:userId });
+              _this.loadList();
           }   
       });
     },
@@ -179,8 +178,7 @@ export default {
         this.userAll=[];
         this.checkedUserArr=[];
         return (
-            res.data.data.rows.forEach(item=>{
-              console.log(item);              
+            res.data.data.rows.forEach(item=>{ 
               this.userAll.push(item);
             })
         ); 
@@ -192,7 +190,6 @@ export default {
   watch: {
     checkedUserArr:{
       handler: function (val, oldVal) { 
-        console.log(this.checkedUserArr.length +"---" + this.userAll.length);
         if (this.checkedUserArr.length === this.userAll.length) {
           this.checkedAll=true;
         }else{

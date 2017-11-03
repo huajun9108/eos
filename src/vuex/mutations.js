@@ -19,6 +19,9 @@ export default {
     updateUserById(state, json) {
 
     },
+    updateUserPsdById(state, json) {
+        state.updatePwdResult = json
+    },
     selectAreaAll(state, json) {
         state.areaAll = json
     },
@@ -53,5 +56,5 @@ export default {
         state.newArea = json
     },
     updateArea(state, json) {},
-    updateKPItwoLev (state, json) {},
+    updateKPItwoLev(state, json) {},
 }

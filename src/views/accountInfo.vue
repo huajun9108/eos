@@ -187,7 +187,7 @@ export default {
           checkedNodes.push(nodes[i]);
         }
       }
-      var data = this.clone(checkedNodes, {id:1, pId:1, name:1});
+       this.checkLists = this.clone(checkedNodes, {id:1, pId:1, name:1});
       this.ArrayBlank(this.postOptions)
       if (this.$route.query.userid) {
         this.updateOption({
@@ -198,9 +198,8 @@ export default {
           userJob: this.job,
           userLeader: this.leader,
           validMenu:this.postOptions.join(","),
-          validArea: JSON.stringify(data),
+          validArea: JSON.stringify(this.checkLists),
         });
-        console.log(this.postOptions)
       } else {
         this.addOption({
           userName: this.name,
@@ -209,10 +208,8 @@ export default {
           userJob: this.job,
           userLeader: this.leader,
           validMenu:this.postOptions.join(","),
-          validArea: JSON.stringify(data),
+          validArea: JSON.stringify(this.checkLists),
         });
-         console.log(this.postOptions);
-         console.log(data);
       }
     },
     updateOption(obj) {
@@ -220,21 +217,22 @@ export default {
       if(this.validateData()) {
         Ewin.confirm({ message: "确认要更新数据吗？" }).on(function (e) {
           _this.updateUserById(obj);
+          _this.$router.push({name:"account"});
         });
       }
     },
     cancel(){
-      var that=this;
+      var _this=this;
       if (!this.empty(this.name)
             || !this.empty(this.abbname)
             || !this.empty(this.pwd)
             || !this.empty(this.job)
         ) {
         Ewin.confirm({ message: "确认要取消编辑吗？" }).on(function (e) {
-          that.$router.push({name:"account"});
+          _this.$router.push({name:"account"});
         });
       }else{
-        that.$router.push({name:"account"});
+        _this.$router.push({name:"account"});
       }
     },
 
@@ -246,7 +244,7 @@ export default {
         this.empty(this.pwd) ||
         this.empty(this.job)
       ) {
-        alert("输入不能为空");
+        this.$message.warning('用户信息不能为空');
         return false;
       }
       return true;
@@ -261,6 +259,8 @@ export default {
           _this.job=""
           _this.leader=""
           _this.postOptions=[]
+          var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+          treeObj.checkAllNodes(false);
       }
     }
   },
@@ -280,17 +280,17 @@ export default {
     },
     addResult(newVal){
       if(newVal.status==3){
-        alert("用户名已存在");
+       this.$message.error('用户名已存在,请勿重复添加');
         return false
       }else if(newVal.status==0){
-        alert("添加成功");
+        this.$message.success('添加成功');
        if(!this.continueAdd){
         this.$router.push({name:"account"});
        }else{
 
        }
       }else{
-        alert("网络问题请稍后再试")
+        this.$message.warning('网络问题请稍后再试');
       }
         
       

@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <etop></etop>
-        <div class="main-content col-md-8 col-lg-8">
+        <div class="main-content">
             <router-view></router-view>
         </div>
     </div>

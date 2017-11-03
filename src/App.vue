@@ -45,4 +45,5 @@
     @import "./styles/pert.scss"
     @import "./styles/datainput.scss"
     @import "./styles/loss.scss"
+    @import "./styles/target.scss"
 </style>

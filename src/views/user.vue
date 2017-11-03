@@ -9,7 +9,7 @@
         <div id="right-content">
             <div id="user-con">
                 <div id="user">
-                    <router-view></router-view>
+                    <router-view ></router-view>
                 </div>   
             </div>
         </div>
@@ -19,7 +19,13 @@
 import leftNav from '../components/leftNav.vue'
 export default {
     name: 'app',
-    components:{leftNav}
+    components:{leftNav},
+    computed: {
+        
+    },
+    watch: {
+
+    }
 }
 </script>
 <style lang="sass" scoped>

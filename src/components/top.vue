@@ -20,6 +20,11 @@
                         字典设置
                     </router-link>
                 </li>
+                <li>
+                    <router-link :to="{name:'target'}">
+                        Target
+                    </router-link>
+                </li>
             </ul>
             <div class="exit">
                 <select v-model="selectLan">
@@ -59,9 +64,7 @@ export default {
         }
     },
     computed:{
-    ...mapState([
-        "footList"
-        ])
+   
     }
 }
 </script>

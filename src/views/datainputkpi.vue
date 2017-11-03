@@ -28,7 +28,7 @@
   				</tr>
   				<tr>
 					<td>3</td>
-					<td>Material</td>
+					<td>Material</td>		
 					<td>MatEff</td>
 					<td></td>
 					<td class="icon-edit"></td>

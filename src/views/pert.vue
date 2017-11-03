@@ -87,6 +87,7 @@
 		<span :class="showFlag?'iconfont icon-drop-down2 rotate':'iconfont icon-drop-down2'"></span>
 		<span class="areaAndTime">区域/时间</span>
 	</div>
+	<transition>
 	<div :class="showFlag?'showchoose':'righthide'">
 		<div class="chooseTime box">
 			<h1>时间选择</h1>
@@ -106,6 +107,7 @@
 			</div>
 		</div>
 	</div>
+	</transition>
 </div>
 </template>
 <script type="text/javascript">
@@ -113,7 +115,6 @@ import { mapState, mapActions } from "vuex";
 import myDatepicker from 'vue-datepicker'
 import echarts from "echarts"
 export default {
-	name: 'pert',
 	components: {
 		'date-picker': myDatepicker
 	},
@@ -262,8 +263,8 @@ export default {
 	mounted: function() {
 
 		this.initCharts();
-		if (this.$route.params.userid) {
-		this.selectUserById({userid:this.$route.params.userid})
+		if (sessionStorage.getItem("userid")) {
+		this.selectUserById({userid:sessionStorage.getItem("userid")})
 		//  $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
 		} else {
 		console.log(this.$route);

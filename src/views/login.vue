@@ -17,7 +17,7 @@
                     <input type="radio"  id="admin-radio" value="0" v-model="picked" class="myradio"><label for="admin-radio">管理员</label>
                     <input type="radio"  id="user-radio" value="1" v-model="picked" class="myradio"><label for="user-radio">用户</label>
                 
-                <input type="button" @keyup.13="tologin()" @click="tologin" class="btn" value="登  录" ref="btn" />
+                <button type="button" @keyup.13="tologin()" @click="tologin" class="btn" ref="btn" >登&nbsp&nbsp录</button>
                 <div class="hint hide" ref="hint">
                     <i class="iconfont icon-hint"></i><span class="tips" ref="tip"/></span>
                 </div>
@@ -111,8 +111,8 @@ export default{
                 localStorage.setItem("user",newVal.data.adminname);
                 this.$router.push({name:"area"})
             }else{
-                localStorage.setItem("user",newVal.data.username);
-                this.$router.push({name:"pert",params:{userid:newVal.data.userid}})
+                sessionStorage.setItem("userid",newVal.data.userid);
+                this.$router.push({name:"pert",params:{userid:sessionStorage.getItem("userid")}})
             }
         },
     }

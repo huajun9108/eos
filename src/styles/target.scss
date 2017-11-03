@@ -1,0 +1,130 @@
+    @import "./mobile.scss";
+    .target {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        .target_nav {
+            width: 20%;
+            background: #f2f2f2;
+            box-sizing: border-box;
+            padding: 0 P(46);
+            display: flex;
+            flex-direction: column;
+            .nav_header {
+                margin-top: P(32);
+                border-bottom: 1px solid #dde4e8;
+                .header_title {
+                    display: inline-block;
+                    line-height: P(32);
+                    font-size: P(16);
+                    box-sizing: border-box;
+                    padding-left: 2px;
+                }
+            }
+            .nav_body {
+                flex: 1;
+                overflow: auto;
+            }
+            .ztree li a.curSelectedNode {
+                background-color: #dde4e8;
+            }
+        }
+        .target_content {
+            width: 75%;
+            .target_box {
+                margin-top: P(64);
+                width: 95%;
+                height: 85%;
+                border: 1px solid #bdbdbd;
+                border-radius: 2px;
+                position: relative;
+                .target_top {
+                    width: 100%;
+                    .target_title {
+                        margin-top: P(18);
+                        line-height: P(38);
+                        .target_tit {
+                            float: left;
+                            width: P(342);
+                            padding-left: P(60);
+                            font-size: P(18);
+                            color: #040404;
+                        }
+                    }
+                    .target_setting {
+                        background: #f2f2f2;
+                        .target_set {
+                            line-height: P(120);
+                            float: left;
+                            width: P(342);
+                            padding-left: P(60);
+                            border-right: 1px solid #dde4e8;
+                            .target_no {
+                                width: P(220);
+                                height: 38px;
+                                border: 1px solid #bdbdbd;
+                                border-radius: 4px;
+                                font-size: P(16);
+                                color: #040404;
+                            }
+                        }
+                        .target_set:last-child {
+                            border-right: 0;
+                        }
+                    }
+                }
+                .accountinfo_button {
+                    position: absolute;
+                    right: P(56);
+                    bottom: P(42);
+                    color: #fff;
+                    .button {
+                        line-height: P(28);
+                        text-align: center;
+                        display: inline-block;
+                        border-radius: P(14);
+                        width: P(104);
+                    }
+                    .button_confirm {
+                        background: #1b3867;
+                    }
+                    .button_cancel {
+                        background: #c2c2c2;
+                        margin-left: P(18)
+                    }
+                }
+            }
+            .el-input--small .el-input__inner {
+                height: 38px;
+            }
+            .el-input__inner {
+                border: 1px solid #bdbdbd;
+                color: #040404;
+            }
+        }
+    }
+    
+    .el-picker-panel {
+        top: 233px !important;
+    }
+    
+    .el-autocomplete-suggestion {
+        top: 233px !important;
+    }
+    
+    .el-scrollbar {
+        border: 1px solid #bdbdbd;
+    }
+    
+    .el-popper[x-placement^=bottom] .popper__arrow::after {
+        border-bottom-color: #bdbdbd;
+    }
+    
+    .el-autocomplete-suggestion li:hover {
+        background: #ecf0f1;
+    }
+    
+    .el-autocomplete-suggestion__wrap {
+        padding: 0;
+    }

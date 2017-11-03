@@ -1,26 +1,26 @@
 <template>
 <div class="dictionary">
-	<div class="kpiContainer">
+	<div class="kpiContainer dictionary_box">
 		<div class="title">
 			KPI
 		</div>
-		<div class="kpiContent">
+		<div class="kpiContent dictionary_content">
 			<ul id="treeKpi" class="kpiTree ztree"></ul>
 		</div>
 	</div>
-	<div class="categoryContainer">
+	<div class="categoryContainer dictionary_box">
 		<div class="title">
-			loss category
+			LOSS CATEGORY
 		</div>
-		<div class="categoryContent">
+		<div class="categoryContent dictionary_content">
 			<ul id="treeCategory" class="categoryTree ztree"></ul>
 		</div>
 	</div>
-	<div class="savingDictionaryContainer">
+	<div class="savingDictionaryContainer dictionary_box">
 		<div class="title">
-			loss saving into dictionary
+			LOSS INTO SAVING DICTIONARY
 		</div>
-		<div class="savingDictionaryContent">
+		<div class="savingDictionaryContent dictionary_content">
 
 		</div>
 	</div>

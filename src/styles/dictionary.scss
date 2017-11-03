@@ -2,45 +2,40 @@
 .dictionary {
     margin: P(40) auto;
     height: 90%;
-    width: 100%;
-    .title {
-        background: #e4e7e9;
-        height: P(35);
-        text-align: center;
-        padding-top: P(10);
-        font-family: "Arial";
-        font-size: P(14);
-    }
-    .kpiContainer {
-        width: 20%;
+    width: 90%;
+    .dictionary_box {
         height: 100%;
         float: left;
+        .title {
+            background: #e0e4e7;
+            line-height: P(32);
+            text-align: center;
+            font-size: P(14);
+            color: #040404;
+        }
+        .dictionary_content {
+            height: 90%;
+            overflow-y: scroll;
+        }
+    }
+    .kpiContainer {
+        width: 25%;
         .kpiContent {
-            height: 95%;
-            overflow: auto;
-            border-left: P(1) solid black;
-            border-bottom: P(1) solid black;
+            border-left: P(1) solid #747474;
+            border-bottom: P(1) solid #747474
         }
     }
     .categoryContainer {
         width: 40%;
-        height: 100%;
-        float: left;
         .categoryContent {
-            overflow: auto;
-            height: 95%;
-            border-bottom: P(1) solid black;
+            border-bottom: P(1) solid #747474;
         }
     }
     .savingDictionaryContainer {
-        width: 40%;
-        height: 100%;
-        float: left;
+        width: 35%;
         .savingDictionaryContent {
-            overflow: auto;
-            height: 95%;
-            border-right: P(1) solid black;
-            border-bottom: P(1) solid black;
+            border-right: P(1) solid #747474;
+            border-bottom: P(1) solid #747474;
         }
     }
 }

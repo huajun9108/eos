@@ -101,6 +101,21 @@ export default {
             console.log(error);
         })
     },
+    updateUserPsdById({ commit }, obj) {
+        axios.post("/user/updateUserPsdById  ", qs.stringify({
+            "userId": obj.userId,
+            "userPsd": obj.userPsd,
+            "userNewPsd": obj.userNewPsd,
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("updateUserPsdById", json)
+
+        }).catch(error => {
+            console.log(error);
+        })
+    },
     selectAreaAll({ commit }, obj) {
         axios.get("/areaAllSet/showAreaAll", {}).then(res => {
             console.log(res.data)

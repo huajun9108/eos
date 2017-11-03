@@ -12,6 +12,7 @@
 		</div>
 	</div>
 	<div class="area_content">
+		<div class="area_box"></div>
 	</div>
 </div>
 </template>

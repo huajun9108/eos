@@ -31,12 +31,16 @@
                             <el-date-picker
                             v-model="dateStart"
                             type="date"
+                            format="yyyy 年 MM 月 dd 日"
+                            value-format="yyyy-MM-dd"
                             placeholder="选择日期">
                             </el-date-picker>
                         </li>
                         <li class="target_set"><el-date-picker
                             v-model="dateEnd"
                             type="date"
+                            format="yyyy 年 MM 月 dd 日"
+                            value-format="yyyy-MM-dd"
                             placeholder="选择日期">
                             </el-date-picker>
                         </li>
@@ -45,13 +49,13 @@
                         <li class="target_tit">Vision</li>
                     </ul>
                      <ul class="target_setting clearfix">
-                        <li class="target_set"><input class="target_no"/></li>
+                        <li class="target_set"><input class="target_no" v-model="vision"/></li>
                     </ul>
                      <ul class="target_title clearfix">
                         <li class="target_tit">Ideal</li>
                     </ul>
                      <ul class="target_setting clearfix">
-                        <li class="target_set"><input class="target_no"/></li>
+                        <li class="target_set"><input class="target_no"  v-model="ideal"/></li>
                     </ul>
                 </div>
                 <div class="accountinfo_button text-right">
@@ -75,6 +79,8 @@ export default{
             targetNo:'',
             dateStart:'',
             dateEnd:'',
+            vision:'',
+            ideal:'',
             setting: {
                 view: {
                     selectedMulti: false,
@@ -85,22 +91,43 @@ export default{
                     enable: true
                     }
                 },
+                callback:{
+                    onClick:this.clickNode
+                }
             },
+            nodeId:'',
         }
     },
 
     computed:{
         ...mapState([
-            'areaAll'
+            'areaAll',
+            'lineBody'
             
         ])
     },
     methods:{
         ...mapActions([
             'selectAreaAll',
+            'selectLinebodyById',
+            'updateLinebodyInfById'
         ]),
         confirm(){
-
+            alert()
+            let _this=this
+            this.updateLinebodyInfById({
+                "id": this.nodeId,
+                "targetValue": this.targetNo,
+                "targetStrattime":this.dateStart,
+                "targetEndtime": this.dateEnd,
+                "visionValue": this.vision,
+                "visionStrattime": '2010-10-21',
+                "visionEndtime":'2010-10-21',
+                "idealValue": this.ideal,
+                "idealStrattime": '2010-10-21',
+                "idealEndtime":'2010-10-21'
+            })
+            console.log(this.nodeId+"--"+this.targetNo+"---"+typeof(this.dateStart)+"--"+this.dateEnd+"--"+this.vision+"--"+this.ideal)
         },
         cancel(){
 
@@ -127,11 +154,30 @@ export default{
         handleSelect(item) {
             console.log(item);
             this.targetList = this.loadAll();
+        },
+        clickNode(event, treeId, treeNode){
+            let reg=/^l/g;
+            if(reg.test(treeNode.id)){
+                this.selectLinebodyById({id:treeNode.id})
+                this.nodeId = treeNode.id
+            }else{
+                this.$message.info("暂无信息")
+                this.lineBody=""
+            }
+                
+            
         }
     },
     watch: {
         areaAll(){
             $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+        },
+        lineBody(newVal){
+            this.targetNo=newVal.targetvalue;
+            this.dateStart= newVal.targetstrattime;
+            this.dateEnd = newVal.targetendtime;
+            this.vision = newVal.visionvalue;
+            this.ideal = newVal.idealvalue
         }
     },
     mounted() {

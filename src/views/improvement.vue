@@ -1,6 +1,17 @@
 <template>
-    <div class="losscate">
-        losscate显示
+    <div class="improvement">
+        <div class="project_pool">
+
+        </div>
+        <div class="project_now">
+
+        </div>
+        <div class="project_icon">
+
+        </div>
+        <div class="project_now">
+
+        </div>
     </div>
 </template>
 <script>

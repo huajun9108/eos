@@ -12,10 +12,10 @@
             <div class="img" @click="showFlag=!showFlag">
                <img src="../assets/images/edit .png">
             </div>
-            <div v-show="showFlag" class="showbox">
+            <div v-if="showFlag" class="showbox">
             <div class="oldpwd">
               <span>原密码</span><input class="in" type="password" placeholder="请输入当前密码" @blur="isShow" v-model="oldPwd" @focus="oldPwdFlag=false">
-              <span class="pwdtip" v-show="oldPwdFlag">
+              <span class="pwdtip" v-if="oldPwdFlag">
                 <i class="icon-hint"></i>
                 密码不能为空
               </span>
@@ -84,12 +84,13 @@
           <div class="sti-tbl-body">
             <table class="table table-hover">
             <tbody class="scrollTbody">
-              <tr v-for="(item,idx) in tier2List" :key="idx">
+              <tr v-for="(item,idx) in tier2" :key="idx">
                   <td class="text-center num" width="5%">{{idx+1}}</td>
-                  <td width="80%" class="tier2item">{{item.tier2}}</td>
-                  <td width="15%" class="text-right img_td" :data="item.userid" >
-                    <img class="move up" src="../assets/images/move_up.png" @click="moveUp(idx,item.tier2)"/>
-                    <img class="move down" src="../assets/images/move_down.png" @click="moveDown(idx,item.tier2)"/>
+                  <td width="80%" class="tier2item">{{item.name}}</td>
+                  <td width="15%" class="text-right img_td" :data="item.name" >
+                    <img class="move up" src="../assets/images/move_up.png" @click="moveUp({'userId':userinfor.userid,
+                    'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx,'changedOrder':item.userKpitwolev.sequence-1})"/>
+                    <img class="move down" src="../assets/images/move_down.png" @click="moveDown(idx,item.name)"/>
                   </td>
               </tr>
             </tbody>
@@ -130,114 +131,41 @@ export default {
         },
       },
       validareaList:[],
-      tier2List: [{
-					"number": 1,
-					"Tier1": "Packaging",
-					"tier2": "Volume"
-				},
-				{
-					"number": 2,
-					"Tier1": "Consumables",
-					"tier2": "OEE"
-				},
-				{
-					"number": 3,
-					"Tier1": "Fluids",
-					"tier2": "MatEff"
-				},
-				{
-					"number": 4,
-					"Tier1": "Maintenance",
-					"tier2": "MaintCosts"
-				},
-				{
-					"number": 5,
-					"Tier1": "Subcontractors",
-					"tier2": "SubCost"
-				},
-				{
-					"number": 6,
-					"Tier1": "Logistic",
-					"tier2": "LogCost"
-				},
-				{
-					"number": 7,
-					"Tier1": "inventory Losses",
-					"tier2": "invLoss"
-				},
-				{
-					"number": 8,
-					"Tier1": "Logistic Efficiency",
-					"tier2": "LogEff"
-				},
-				{
-					"number": 9,
-					"Tier1": "Transport",
-					"tier2": "Fillln"
-				},
-				{
-					"number": 10,
-					"Tier1": "Administration",
-					"tier2": "AdmEff"
-				},
-				{
-					"number": 11,
-					"Tier1": "indirect Staff",
-					"tier2": "indStaff"
-				},
-				{
-					"number": 12,
-					"Tier1": "Quality",
-					"tier2": "QuaEff"
-				},
-				{
-					"number": 13,
-					"Tier1": "Internal CoNQ",
-					"tier2": "intCoNQ"
-				},
-				{
-					"number": 14,
-					"Tier1": "Others",
-					"tier2": "OthCost"
-				},
-				{
-					"number": 15,
-					"Tier1": "External CoNQ",
-					"tier2": "ExtCoNQ"
-				},
-			],
+  
     } 
   },
   computed:{
     ...mapState([
       "userinfor",
       "validarea",
-      'updatePwdResult'
+      'updatePwdResult',
+      'tier2'
       ])
   },
   methods: {
     ...mapActions([
       "selectUserById",
-      'updateUserPsdById'
+      'updateUserPsdById',
+      'updateUserKpiTwolveById'
     ]),
-    fun(){
-      alert()
-    },
-    show(obj){
-      if(obj.option){
-        obj.flag=false
-        // return true
+    show(tip){
+      if(tip){
+        return true
       }else{
-        obj.flag=true
-        // return false
+        return false
       }
     },
     isShow(){
-      var _this=this
-      _this.show({option:_this.oldPwd,flag:_this.oldPwdFlag})
+      if(this.show(this.oldPwd)){
+        this.oldPwdFlag=false
+        return true
+      }else{
+        this.oldPwdFlag=true
+        return false
+      }
     },
     isNewShow(){
-      if(this.newPwd){
+      if(this.show(this.newPwd)){
         this.newPwdFlag=false
         return true
       }else{
@@ -254,8 +182,36 @@ export default {
         return false
       }
     },
+    clearData(){
+      this.oldPwd='';
+      this.newPwd='';
+      this.newPwdCheck=''
+    },
     cancel(){
-
+      if(this.isShow()&&this.isNewShow()&&this.checkNew()!=0){
+        this.$confirm('确认放弃之前的修改吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+             type: 'info',
+            message: '已取消编辑'
+          });
+          this.showFlag=false;
+          this.clearData()
+        }).catch(() => {
+          // this.$message({
+          //   type: 'info',
+          //   message: '已取消编辑'
+          // });  
+          this.showFlag=false;  
+          this.clearData()      
+        })
+      }else{
+        this.showFlag=false;
+        this.oldPwdFlag=false;
+      }
     },
     confirm(){
       if(this.isShow()&&this.isNewShow()&&this.checkNew()){
@@ -264,26 +220,33 @@ export default {
           userPsd:this.oldPwd,
           userNewPsd:this.newPwdCheck
         })
-        console.log(this.oldPwd+"--"+this.newPwd+"--"+this.newPwdCheck)
+        this.clearData()
       }else{
-        alert("false")
+         this.$message.error('用户信息填写错误');
       }
 
     },
-    moveUp(idex,item){
-      this.tier2List.splice(idex-1,0,(this.tier2List[idex])); 
-      //删除后一项 
-      this.tier2List.splice(idex+1,1); 
-      if(idex == 0) { 
+    moveUp(obj){
+      if(obj.index == 0) { 
         alert("到顶啦！"); 
+      }else{
+        let changedid = this.tier2[obj.index-1].kpitwoid
+        this.updateUserKpiTwolveById({
+          "userId":obj.userId,
+          "changeId":obj.changeId,
+          "changeOrder":obj.changeOrder,
+          "changedId":changedid,
+          "changedOrder":obj.changedOrder
+
+        })
       } 
     },
     moveDown:function(index,item) { 
     //在下一项插入该项 
-    this.tier2List.splice(index+2,0,(this.tier2List[index])); 
+    this.tier2.splice(index+2,0,(this.tier2[index])); 
     // 删除前一项 
-    this.tier2List.splice(index,1); 
-      if(index == this.tier2List.length-1) { 
+    this.tier2.splice(index,1); 
+      if(index == this.tier2.length-1) { 
         alert("已经是最后一项啦！"); 
       } 
     }
@@ -305,6 +268,9 @@ export default {
           this.$message.success('密码修改成功');
           this.showFlag = false
       }
+    },
+    tier2(){
+      
     }
   },
   mounted() {

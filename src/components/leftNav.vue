@@ -16,6 +16,11 @@
            <span>Loss Mapping</span>
           </li>
         </router-link>
+        <router-link :to="{name:'improvement'}">
+          <li>
+            <span>Improvement Project</span>
+          </li>
+        </router-link>
         <router-link :to="{name:'savingbook'}">
           <li>
             <span>Saving Book</span>

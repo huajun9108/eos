@@ -21,6 +21,7 @@ import Lossm from "../views/lossm.vue"
 import kpi from "../views/datainputkpi.vue"
 import loss from "../views/loss.vue"
 import target from "../views/target.vue"
+import Improvement from "../views/improvement.vue"
 
 var routes = [{
         path: "/",
@@ -95,6 +96,11 @@ var routes = [{
                 path: "savingbook",
                 component: Savingbook,
                 name: "savingbook"
+            },
+            {
+                path: "improvement",
+                component: Improvement,
+                name: "improvement"
             },
             {
                 path: "datainput",

@@ -10,23 +10,23 @@
         <div class="accountinfo_username accountinfo">
           <i class="icon-User-name"></i>
           <!-- <input type="hidden" value=> -->
-          <input class="input_accountinfo" type="text" v-model="name" placeholder="用户名" ref="name">
+          <input class="input_accountinfo" type="text" v-model="name" placeholder="用户名" >
         </div>
 				<div class="accountinfo_name accountinfo">
           <i class="icon-User-name"></i>
-          <input class="input_accountinfo" type="text" v-model="abbname"  placeholder="姓名" ref="abbname">
+          <input class="input_accountinfo" type="text" v-model="abbname"  placeholder="姓名" >
         </div>
         <div class="accountinfo_password accountinfo">
           <i class="icon-password"></i>
-          <input class="input_accountinfo" type="text" v-model="pwd" placeholder="密码" ref="pwd">
+          <input class="input_accountinfo" type="text" v-model="pwd" placeholder="密码" >
         </div>
         <div class="accountinfo_position accountinfo">
           <i class="icon-position"></i>
-          <input class="input_accountinfo" type="text" v-model="job"  placeholder="职位"  ref="job">
+          <input class="input_accountinfo" type="text" v-model="job"  placeholder="职位"  >
         </div>
         <div class="accountinfo_boss dropdown accountinfo">
           <i class="icon-superior"></i>
-          <input class="input_accountinfo" type="text" v-model="leader"  placeholder="直线上司"  ref="leader">
+          <input class="input_accountinfo" type="text" v-model="leader"  placeholder="直线上司" >
         </div>
         <div class="accountinfo_effectivemenu">
           <i class="icon-Effective-menu"></i>
@@ -90,8 +90,6 @@ export default {
           url: 'http://116.196.113.167:3001/areaAllSet/showAreaAll',
         },
         view: {
-          // addHoverDom: this.addHoverDom,
-          // removeHoverDom: this.removeHoverDom,
           selectedMulti: false,
           showIcon: false,
         },

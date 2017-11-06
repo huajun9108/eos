@@ -1,34 +1,34 @@
 <template>
 <div class="lossmapping">
-  <div class="lossmContainer">
     <div class="titleContainer">
-      <span class="lossmTitle">loss</span>
+      <span>loss</span>
       <div class="showTimeAndArea" @click="showFlag=!showFlag">
         <span :class="showFlag?'iconfont icon-drop-down2 rotate':'iconfont icon-drop-down2'"></span>
-        <span class="areaAndShift">区域/班次</span>
+        <span class="areaAndShift">时间/区域</span>
       </div>
     </div>
-    <table class="table">
-      <tbody>
-        <tr>
-          <td>OEE</td>
-          <td id="oee" style="width: 600px;height:200px;"></td>
-        </tr>
-        <tr>
-          <td>OLE</td>
-          <td id="ole" style="width: 600px;height:200px;"></td>
-        </tr>
-        <tr>
-          <td>OLE</td>
-          <td id="ole1" style="width: 600px;height:200px;"></td>
-        </tr>
-        <tr>
-          <td>OLE</td>
-          <td id="ole2" style="width: 600px;height:200px;"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div class="tableContainer">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>OEE</td>
+            <td id="oee" style="width: 600px;height:200px;"></td>
+          </tr>
+          <tr>
+            <td>OLE</td>
+            <td id="ole" style="width: 600px;height:200px;"></td>
+          </tr>
+          <tr>
+            <td>OLE</td>
+            <td id="ole1" style="width: 600px;height:200px;"></td>
+          </tr>
+          <tr>
+            <td>OLE</td>
+            <td id="ole2" style="width: 600px;height:200px;"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 </div>
 </template>
 <script>

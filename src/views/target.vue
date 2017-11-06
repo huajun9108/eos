@@ -80,10 +80,6 @@ export default {
             enable: true
           }
         },
-        callback: {
-          beforeClick: this.zTreeBeforeClick,
-          onClick: this.zTreeOnClick,
-        },
       },
     }
   },

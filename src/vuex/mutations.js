@@ -29,7 +29,7 @@ export default {
         let str = ""
         state.userinfor = json.user
         state.validarea = json.validarea
-            // console.log(state.validarea)
+        state.tier2 = json.tier2
         json.validmenu.forEach((item) => {
             if (str == null || str == '') {
                 str += item.validmenuid
@@ -57,4 +57,13 @@ export default {
     },
     updateArea(state, json) {},
     updateKPItwoLev(state, json) {},
+    selectLinebodyById(state, json) {
+        state.lineBody = json
+    },
+    updateLinebodyInfById(state, json) {
+
+    },
+    updateUserKpiTwolveById(state, json) {
+
+    }
 }

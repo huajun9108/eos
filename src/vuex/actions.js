@@ -198,5 +198,54 @@ export default {
             console.log(error);
         })
     },
+    selectLinebodyById({ commit }, obj) {
+        axios.post("/linebodySet/selectLinebodyById ", qs.stringify({
+            "id": obj.id
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("selectLinebodyById", json)
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+    updateLinebodyInfById({ commit }, obj) {
+        axios.post("/linebodySet/updateLinebodyInfById ", qs.stringify({
+            "id": obj.id,
+            "targetValue": obj.targetValue,
+            "targetStrattime": obj.targetStrattime,
+            "targetEndtime": obj.targetEndtime,
+            "visionValue": obj.visionValue,
+            "visionStrattime": obj.visionStrattime,
+            "visionEndtime": obj.visionEndtime,
+            "idealValue": obj.idealValue,
+            "idealStrattime": obj.idealStrattime,
+            "idealEndtime": obj.idealEndtime
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("updateLinebodyInfById", json)
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+    updateUserKpiTwolveById({ commit }, obj) {
+        axios.post("/user/updateUserKpiTwolveById ", qs.stringify({
+            "userId": obj.userId,
+            "changeId": obj.changedId,
+            "changedId": obj.changedId,
+            "changeOrder": obj.changeOrder,
+            "changedOrder": obj.changedOrder
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("updateUserKpiTwolveById", json)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
 
 }

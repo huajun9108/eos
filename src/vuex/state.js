@@ -22,5 +22,7 @@ export default {
     count: "",
     addResult: "",
     newArea: "",
-    updatePwdResult: ''
+    updatePwdResult: '',
+    lineBody: '',
+    tier2: []
 }

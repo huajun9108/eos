@@ -1,50 +1,78 @@
 @import "./mobile.scss";
 
 .lossmapping {
-  width: 80%;
+  width: 90%;
   margin: P(76) auto;
-  height: auto;
-  border: 1px solid #BDBDBD;
-  border-radius: 4px;
+  height: 90%;
+  color: #040404;
 
-  .lossmContainer {
-    height: 80%;
-    box-sizing: border-box;
-    padding: 0 P(24);
+  .titleContainer {
+    line-height: P(52);
+    padding-left: P(35);
+    font-size: P(18);
+    border: 1px solid #BDBDBD;
+    border-bottom: none;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom: 1px solid #BDBDBD;
+  }
 
-    .titleContainer {
-      line-height: P(52);
-      padding-left: P(42);
-      font-size: 18px;
-      color: #040404;
+  .tableContainer {
+    overflow: auto;
+    height: 90%;
+    border-bottom: 1px solid #BDBDBD;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+
+    .tableBody {
+      width: 100%;
+      height: 100%;
     }
 
-    table {
-      line-height: P(45);
-      font-size: P(20);
-    }
-
-    table td,
-    th {
-      padding-left: 10px;
+    .tableBody tr {
       border: 1px solid #BDBDBD;
     }
 
-    table tbody {
-      overflow: auto;
+    .tableBody tr:first-child {
+      border-top: none;
     }
 
-    .showTimeAndArea {
-      float: right;
-      width: P(144);
-      line-height: P(38);
+    .tableBody tr:last-child {
+      border-bottom: none;
+    }
+
+    .tableBody td {
+      font-size: P(16);
       text-align: center;
       vertical-align: middle;
-      background: #e1e1e1;
-      border-radius: 4px;
-      z-index: 10;
-      cursor: pointer;
     }
+
+    .firstCol {
+      width: 10%;
+      border-right: 1px solid #BDBDBD;
+      // border-left: 1px solid #BDBDBD;
+    }
+
+    .secordCol {
+      width: 90%;
+      padding-left: P(56);
+      padding-top: p(50);
+    }
+  }
+
+  .showTimeAndArea {
+    font-size: P(18);
+    position: absolute;
+    right: 5%;
+    top: P(77);
+    width: P(144);
+    line-height: P(38);
+    text-align: center;
+    vertical-align: middle;
+    background: #e1e1e1;
+    border-radius: 4px;
+    z-index: 100;
+    cursor: pointer;
 
     .icon-drop-down2 {
       display: inline-block;
@@ -54,6 +82,75 @@
 
     .rotate {
       transform: rotate(180deg);
+    }
+  }
+
+  .hidechoose {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .showchoose {
+    visibility: visible;
+    opacity: 1;
+    transition: all 0.5s 0.3s;
+    width: P(316);
+    height: 85%;
+    position: absolute;
+    right: 5%;
+    top: P(77);
+    background: #eeeeee;
+    display: flex;
+    flex-direction: column;
+    // animation: show 0.5s;
+    .box {
+      width: P(266);
+      margin: P(66) auto;
+
+      h1 {
+        color: #131313;
+        font-size: P(14);
+        line-height: P(36);
+        padding-left: P(18);
+        border-bottom: 1px solid #b4b4b4;
+        font-weight: bold;
+      }
+
+      .time {
+        margin: P(18) auto;
+        padding-left: P(18);
+        display: flex;
+        justify-content: space-between;
+
+        span {
+          font-size: P(14);
+          line-height: P(22);
+          display: inline-block;
+        }
+
+        .cov-vue-date {
+          display: inline-block;
+        }
+      }
+    }
+
+    .chooseArea {
+      flex: 1;
+      padding-left: P(18);
+      width: 100%;
+      height: auto;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+
+      .area {
+        padding-left: P(18);
+        flex: 1;
+        margin-top: P(14);
+        width: 100%;
+        height: auto;
+        overflow: auto;
+      }
     }
   }
 }

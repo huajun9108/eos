@@ -103,7 +103,7 @@ export default{
         ...mapState([
             'areaAll',
             'lineBody'
-            
+
         ])
     },
     methods:{
@@ -164,8 +164,8 @@ export default{
                 this.$message.info("暂无信息")
                 this.lineBody=""
             }
-                
-            
+
+
         }
     },
     watch: {
@@ -183,12 +183,12 @@ export default{
     mounted() {
         this.selectAreaAll(),
         this.targetList = this.loadAll();
-        
-		
+
+
 	}
- 
+
 }
 </script>
 <style lang="scss" scoped>
-	
+
 </style>

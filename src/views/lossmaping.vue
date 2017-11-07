@@ -1,7 +1,7 @@
 <template>
 <div class="lossmapping">
   <div class="titleContainer">
-    <span>Loss</span>
+    <span class="titleContent">Loss</span>
   </div>
   <div class="tableContainer">
     <table class="tableBody">
@@ -101,6 +101,14 @@ export default {
         {
           name: '数据4',
           value: 10
+        },
+        {
+          name: '数据5',
+          value: 5
+        },
+        {
+          name: '数据6',
+          value: 25,
         }
       ],
       links: [{
@@ -122,6 +130,26 @@ export default {
           source: '数据2',
           target: '数据4',
           value: 9
+        },
+        {
+          source: '数据4',
+          target: '数据5',
+          value: 3
+        },
+        {
+          source: '数据4',
+          target: '数据6',
+          value: 7
+        },
+        {
+          source: '数据3',
+          target: '数据5',
+          value: 2
+        },
+        {
+          source: '数据3',
+          target: '数据6',
+          value: 18
         }
       ],
       startTime: {

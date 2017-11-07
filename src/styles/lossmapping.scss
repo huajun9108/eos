@@ -3,11 +3,12 @@
 .lossmapping {
   width: 90%;
   margin: P(76) auto;
-  height: 90%;
+  height: 85%;
   color: #040404;
 
   .titleContainer {
-    line-height: P(52);
+    // line-height: P(52);
+    height: 6%;
     padding-left: P(35);
     font-size: P(18);
     border: 1px solid #BDBDBD;
@@ -15,11 +16,14 @@
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     border-bottom: 1px solid #BDBDBD;
+    vertical-align: middle;
+    padding-top: 1%;
+
   }
 
   .tableContainer {
     overflow: auto;
-    height: 90%;
+    height: 94%;
     border-bottom: 1px solid #BDBDBD;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
@@ -27,6 +31,7 @@
     .tableBody {
       width: 100%;
       height: 100%;
+      border-collapse:collapse;
     }
 
     .tableBody tr {

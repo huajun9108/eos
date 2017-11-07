@@ -49,7 +49,11 @@ export default {
         edit: {
           enable: true,
           removeTitle: '删除',
-          renameTitle: '编辑'
+          renameTitle: '编辑',
+          drag: {
+            isCopy: false,
+            isMove: false,
+          }
         }
       },
     }

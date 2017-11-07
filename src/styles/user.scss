@@ -4,19 +4,20 @@
     height: 100%;
     display: flex;
     #left-nav {
-        float: left;
+        // width: 20%;
         height: 100%;
         background: #122b54;
         .logo {
             width: 90%;
-            margin: 50px auto;
+            margin: P(44) auto;
+            margin-bottom: 0;
             img {
                 width: 100%;
                 margin: auto
             }
         }
         .nav-left {
-            margin: 100px auto;
+            margin-top: P(100);
             ul {
                 width: 100%;
                 overflow: hidden;
@@ -35,12 +36,12 @@
                         color: #d5d7dc;
                         line-height: P(38);
                         font-size: P(22);
+                        border-left: P(6) solid #122b54;
                     }
                 }
                 .router-link-active {
                     background: #164380;
                     li {
-                        font-size: P(24);
                         font-weight: bold;
                         border-left: P(6) solid #62e3ff;
                         color: #fff;
@@ -50,9 +51,8 @@
         }
     }
     #right-content {
-        width: 100%;
-        float: left;
         flex: 1;
+        height: 100%;
         #user-con {
             width: 100%;
             height: 100%;

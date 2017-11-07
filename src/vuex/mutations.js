@@ -44,13 +44,8 @@ export default {
     },
     addFactoryOne(state, json) {},
     findAndCount(state, json) {
-        // let arr = []
         state.count = json.count
         state.userAll = json.rows
-            // json.rows.forEach((item) => {
-            //     arr.push(item)
-            // });
-            // return state.userAll = arr
     },
     addFactoryOne(state, json) {
         state.newArea = json
@@ -64,6 +59,11 @@ export default {
 
     },
     updateUserKpiTwolveById(state, json) {
+
+    },
+    showImpItempool(state, json) {
+
+        state.improList = json
 
     }
 }

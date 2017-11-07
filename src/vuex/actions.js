@@ -234,7 +234,7 @@ export default {
     updateUserKpiTwolveById({ commit }, obj) {
         axios.post("/user/updateUserKpiTwolveById ", qs.stringify({
             "userId": obj.userId,
-            "changeId": obj.changedId,
+            "changeId": obj.changeId,
             "changedId": obj.changedId,
             "changeOrder": obj.changeOrder,
             "changedOrder": obj.changedOrder
@@ -246,6 +246,18 @@ export default {
         }).catch(err => {
             console.log(err)
         })
-    }
+    },
+    showImpItempool({ commit }, obj) {
+        axios.get("/impobject/showImpItempool", {
 
+        }).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("showImpItempool", json)
+        }).catch(err => {
+            console.log(err)
+        })
+
+    }
 }

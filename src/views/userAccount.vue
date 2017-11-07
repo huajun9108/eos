@@ -90,7 +90,8 @@
                   <td width="15%" class="text-right img_td" :data="item.name" >
                     <img class="move up" src="../assets/images/move_up.png" @click="moveUp({'userId':userinfor.userid,
                     'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx,'changedOrder':item.userKpitwolev.sequence-1})"/>
-                    <img class="move down" src="../assets/images/move_down.png" @click="moveDown(idx,item.name)"/>
+                    <img class="move down" src="../assets/images/move_down.png" @click="moveDown({'userId':userinfor.userid,
+                    'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx,'changedOrder':item.userKpitwolev.sequence+1})"/>
                   </td>
               </tr>
             </tbody>
@@ -239,16 +240,29 @@ export default {
           "changedOrder":obj.changedOrder
 
         })
+        this.tier2.splice(obj.index-1,0,(this.tier2[obj.index])); 
+        //删除后一项 
+        this.tier2.splice(obj.index+1,1); 
+        console.log(obj.changeId+","+obj.changeOrder+","+changedid+","+obj.changedOrder)
       } 
     },
-    moveDown:function(index,item) { 
+    moveDown:function(obj) { 
+      let changedid = this.tier2[obj.index+1].kpitwoid
+      this.updateUserKpiTwolveById({
+          "userId":obj.userId,
+          "changeId":obj.changeId,
+          "changeOrder":obj.changeOrder,
+          "changedId":changedid,
+          "changedOrder":obj.changedOrder
+
+        })
     //在下一项插入该项 
-    this.tier2.splice(index+2,0,(this.tier2[index])); 
+    this.tier2.splice(obj.index+2,0,(this.tier2[obj.index])); 
     // 删除前一项 
-    this.tier2.splice(index,1); 
-      if(index == this.tier2.length-1) { 
+    this.tier2.splice(obj.index,1); 
+      if(obj.index == this.tier2.length-1) { 
         alert("已经是最后一项啦！"); 
-      } 
+      }
     }
     
   },
@@ -269,7 +283,8 @@ export default {
           this.showFlag = false
       }
     },
-    tier2(){
+    tier2(newVal){
+
       
     }
   },

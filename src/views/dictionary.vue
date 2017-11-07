@@ -61,6 +61,10 @@ export default {
           renameTitle: '编辑',
           showRemoveBtn: this.hiddenParentBtn,
           showRenameBtn: this.hiddenParentBtn,
+          drag: {
+            isCopy: false,
+            isMove: false,
+          }
         }
       },
       settingCategory: {
@@ -91,6 +95,10 @@ export default {
           renameTitle: '编辑',
           showRemoveBtn: this.hiddenParentBtn,
           showRenameBtn: this.hiddenParentBtn,
+           drag: {
+            isCopy: false,
+            isMove: false,
+          }
         }
       },
     }

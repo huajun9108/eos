@@ -24,5 +24,6 @@ export default {
     newArea: "",
     updatePwdResult: '',
     lineBody: '',
-    tier2: []
+    tier2: [],
+    improList: []
 }

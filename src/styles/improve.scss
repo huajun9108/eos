@@ -1,0 +1,130 @@
+@import "./mobile.scss";
+.improvement {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: P(85) 0 P(85) P(76);
+    .improve_content {
+        width: 90%;
+        height: 100%;
+        border: 1px solid #bdbdbd;
+        border-radius: P(4);
+        color: #040404;
+        .project_pool {
+            float: left;
+            width: 35%;
+            height: 100%;
+            border-right: 1px solid #bdbdbd;
+            display: flex;
+            flex-direction: column;
+            .pro_title {
+                display: block;
+                line-height: P(50);
+                padding-left: P(42);
+                font-size: P(18);
+                border-bottom: 1px solid #bdbdbd;
+            }
+            .pro_table {
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                .table>tbody>tr>td {
+                    border-bottom: 1px solid #bdbdbd;
+                    border-top: 0;
+                    border-right: 1px solid #bdbdbd;
+                }
+            }
+        }
+        .project_icon {
+            float: left;
+            width: 10%;
+            height: 100%;
+            border-right: 1px solid #bdbdbd;
+            .pro_title {
+                display: block;
+                height: P(51);
+                border-bottom: 1px solid #bdbdbd;
+            }
+            .project_iconfont {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                font-size: P(66);
+                text-align: center;
+                line-height: 100%;
+                padding-top: 50%;
+                .icon-add_add {
+                    color: #d2d2d2;
+                    display: block;
+                }
+            }
+        }
+        .project_now {
+            float: left;
+            width: 55%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            .pro_title {
+                display: block;
+                line-height: P(50);
+                padding-left: P(42);
+                font-size: P(18);
+                border-bottom: 1px solid #bdbdbd;
+            }
+            .pro_detail {
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                flex: 1;
+                .pro_item {
+                    width: 55%;
+                    height: 100%;
+                    float: left;
+                    border-right: 1px solid #bdbdbd;
+                }
+                .pro_itemdetail {
+                    width: 45%;
+                    height: 100%;
+                    float: left;
+                    box-sizing: border-box;
+                    padding: 0 P(43);
+                    position: relative;
+                    .item_det {
+                        width: 100%;
+                        margin-top: P(46);
+                        .item_li {
+                            padding-left: P(2);
+                            width: 100%;
+                            line-height: P(50);
+                            border-bottom: 1px solid #bdbdbd;
+                        }
+                        .item_li:last-child {
+                            border-bottom: none;
+                        }
+                    }
+                    .accountinfo_button {
+                        position: absolute;
+                        bottom: P(36);
+                        right: P(43);
+                        color: #fff;
+                        .button {
+                            line-height: P(28);
+                            text-align: center;
+                            display: inline-block;
+                            border-radius: P(14);
+                            width: P(104);
+                        }
+                        .button_confirm {
+                            background: #1b3867;
+                        }
+                        .button_cancel {
+                            background: #c2c2c2;
+                            margin-left: P(12)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

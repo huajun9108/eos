@@ -1,7 +1,7 @@
     @import "./mobile.scss";
     .account {
         width: 90%;
-        margin-top: P(70);
+        margin-top: P(50);
         box-sizing: border-box;
         padding-left: P(136);
         color: #040404;
@@ -170,7 +170,7 @@
             .sti-tbl-container {
                 margin-top: P(30);
                 box-sizing: border-box;
-                height: P(342);
+                height: P(320);
                 overflow: hidden;
                 display: flex;
                 flex-direction: column;

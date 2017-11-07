@@ -88,12 +88,12 @@ export default {
       showFlag: false,
       data1: [{
           name: '数据1',
-          value: 10
+          value: 30
         },
-        {
-          name: '数据2',
-          value: 20
-        },
+        // {
+        //   name: '数据2',
+        //   value: 20
+        // },
         {
           name: '数据3',
           value: 20
@@ -114,23 +114,23 @@ export default {
       links: [{
           source: '数据1',
           target: '数据3',
-          value: 9
+          value: 20
         },
-        {
-          source: '数据2',
-          target: '数据3',
-          value: 11
-        },
+        // {
+        //   source: '数据1',
+        //   target: '数据3',
+        //   value: 11
+        // },
         {
           source: '数据1',
           target: '数据4',
-          value: 1
+          value: 10
         },
-        {
-          source: '数据2',
-          target: '数据4',
-          value: 9
-        },
+        // {
+        //   source: '数据1',
+        //   target: '数据4',
+        //   value: 9
+        // },
         {
           source: '数据4',
           target: '数据5',

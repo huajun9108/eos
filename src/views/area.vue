@@ -95,6 +95,7 @@ export default {
       $("#addBtn_" + treeNode.tId).unbind().remove();
     },
     zTreeBeforeRemove: function(treeId, treeNode) {
+      var _this = this;
       if (confirm("确认删除？")) {
         var zTree = $.fn.zTree.getZTreeObj("area_tree");
         var obj = {
@@ -106,6 +107,7 @@ export default {
             return false;
           }
           if (response.status === "0") {
+            _this.$message.success("删除成功");
             return true;
           } else {
             return false;
@@ -119,32 +121,29 @@ export default {
       var that = this;
       var zTree = $.fn.zTree.getZTreeObj("area_tree");
       var oldName = treeNode.name;
-
+      /*新增节点直接取消或编辑后取消*/
       if (isCancel && treeNode.isNew) {
         setTimeout(function() {
           zTree.removeNode(treeNode);
-        });
+        }, 10);
       }
+      /*已存在节点直接取消*或编辑后取消*/
       if (isCancel && !treeNode.isNew) {
         setTimeout(function() {
-          zTree.cancelEditName(oldName);
+          zTree.cancelEditName();
         }, 10);
       }
-
+      /*节点名为空*/
       if (!isCancel && newName.length == 0) {
-        alert("区域名称不能为空！");
-        setTimeout(function() {
-          zTree.editName(treeNode);
-        }, 10);
+        that.$message.error("区域名称不能为空！");
         return false;
       }
-
-      if (oldName !== newName && treeNode.isNew) {
+      /*新增节点回车弹框*/
+      if (!isCancel && treeNode.isNew) {
         if (!confirm("确认修改？")) {
           setTimeout(function() {
-            zTree.cancelEditName(oldName);
+            zTree.removeNode(treeNode);
           }, 10);
-          return false;
         } else {
 
           var obj = {
@@ -159,28 +158,25 @@ export default {
                   zTree.removeNode(treeNode);
                 });
               }
-
               if (data.status === "101") {
-                alert("该区域已存在，请重新输入！");
+                that.$message.error("该区域已存在，请重新输入！");
+
                 setTimeout(function() {
                   zTree.editName(treeNode);
                 }, 10);
                 return false;
               }
-
-              if(data.id){
+              if(data.id && treeNode.isNew){
                 treeNode.id = data.id;
+                delete treeNode.isNew;
                 zTree.updateNode(treeNode);
+                return true;
               }
             })
         }
-      } else {
-        setTimeout(function() {
-          zTree.cancelEditName(oldName);
-        }, 10);
       }
-
-      if (oldName !== newName && !treeNode.isNew) {
+      /*已存在节点回车弹框*/
+      if (!isCancel && !treeNode.isNew) {
         if (!confirm("确认修改？")) {
           setTimeout(function() {
             zTree.cancelEditName(oldName);
@@ -193,11 +189,8 @@ export default {
             "id": treeNode.id,
           };
           that.updateArea(obj);
+          return true;
         }
-      }
-
-      if (treeNode.isNew) {
-        delete treeNode.isNew;
       }
     },
   },

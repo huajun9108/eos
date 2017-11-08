@@ -106,19 +106,6 @@ var routes = [{
                 path: "datainput",
                 component: Datainput,
                 name: "datainput",
-                children: [{
-                        path: "kpi",
-                        component: kpi,
-                        name: "kpi",
-                    },
-                    {
-                        path: "loss",
-                        component: loss,
-                        name: "loss",
-                    }
-
-                ],
-                redirect: "/user/datainput/kpi",
             },
             {
                 path: "useraccount",

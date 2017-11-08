@@ -92,11 +92,11 @@ export default {
       showFlag: false,
       data1: [{
           name: '数据1',
-          value: 30
+          value: 30,
         },
         {
           name: '数据3',
-          value: 20
+          value: 20,
         },
         {
           name: '数据4',

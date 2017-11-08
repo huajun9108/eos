@@ -157,21 +157,11 @@ export default {
       this.cancelEdit(treeId, treeNode, isCancel);
       this.zTreeAdd(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/KPISet/addKPItwoLev");
       this.zTreeUpdate(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/KPISet/updateKPItwoLev");
-      if (treeNode.isNew) {
-        delete treeNode.isNew;
-      }
-
-      return true;
     },
     zTreeBeforeRenameCategory: function(treeId, treeNode, newName, isCancel) {
       this.cancelEdit(treeId, treeNode, isCancel);
       this.zTreeAdd(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/losscategory/addLossOne");
       this.zTreeUpdate(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/losscategory/updateLossById");
-      if (treeNode.isNew) {
-        delete treeNode.isNew;
-      }
-
-      return true;
     },
     zTreeBeforeRemoveKpi: function(treeId, treeNode) {
       this.zTreeBeforeRemove(treeId, treeNode, "http://116.196.113.167:3001/KPISet/deleteKPItwoLev");
@@ -198,39 +188,32 @@ export default {
     cancelEdit: function(treeId, treeNode, isCancel) {
       console.log(treeId);
       var zTree = $.fn.zTree.getZTreeObj(treeId);
-      var oldName = treeNode.name;
 
       if (isCancel && treeNode.isNew) {
         setTimeout(function() {
           zTree.removeNode(treeNode);
-        });
+        }, 10);
       }
       if (isCancel && !treeNode.isNew) {
         setTimeout(function() {
-          zTree.cancelEditName(oldName);
+          zTree.cancelEditName();
         }, 10);
       }
     },
     zTreeAdd: function(treeId, treeNode, newName, isCancel, url) {
       var zTree = $.fn.zTree.getZTreeObj(treeId);
-      var oldName = treeNode.name;
 
       if (!isCancel && newName.length == 0) {
         alert("名称不能为空！");
-        setTimeout(function() {
-          zTree.editName(treeNode);
-        }, 10);
         return false;
       }
 
-      if (oldName !== newName && treeNode.isNew) {
+      if (!isCancel && treeNode.isNew) {
         if (!confirm("确认修改？")) {
           setTimeout(function() {
-            zTree.cancelEditName(oldName);
+            zTree.removeNode(treeNode);
           }, 10);
-          return false;
         } else {
-
           var obj = {
             "name": newName,
             "pId": treeNode.pId
@@ -245,28 +228,23 @@ export default {
                 return false;
               }
 
-              if (data.id) {
+              if (data.id && treeNode.isNew) {
                 treeNode.id = data.id;
+								delete treeNode.isNew;
                 zTree.updateNode(treeNode);
+								return true;
               }
             })
         }
-      } else {
-        setTimeout(function() {
-          zTree.cancelEditName(oldName);
-        }, 10);
       }
     },
     zTreeUpdate: function(treeId, treeNode, newName, isCancel, url) {
       var zTree = $.fn.zTree.getZTreeObj(treeId);
-      var oldName = treeNode.name;
-
-      if (oldName !== newName && !treeNode.isNew) {
+      if (!isCancel && !treeNode.isNew) {
         if (!confirm("确认修改？")) {
           setTimeout(function() {
-            zTree.cancelEditName(oldName);
+            zTree.cancelEditName();
           }, 10);
-          return false;
         } else {
           var obj = {
             "name": newName,
@@ -275,6 +253,7 @@ export default {
           };
           $.post(url, obj,
             function(data, textStatus) {
+							console.log(data);
               if (data.status === "101") {
                 alert("该词已存在，请重新输入！");
                 setTimeout(function() {
@@ -283,9 +262,10 @@ export default {
                 return false;
               }
               if (data.status === "0") {
+								alert("修改成功");
                 return true;
-                // zTree.updateNode(treeNode);
               } else {
+								alert("修改失败！");
                 return false;
               }
             })

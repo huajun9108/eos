@@ -8,19 +8,23 @@
       <tbody>
         <tr>
           <td class="firstCol">OEE</td>
-          <td id="oee" class="secordCol" style="width: 600px;height:200px;"></td>
+          <td id="oee" class="secordCol" style="width: 600px;height:220px;"></td>
         </tr>
         <tr>
           <td class="firstCol">OLE</td>
-          <td id="ole" class="secordCol" style="width: 600px;height:200px;"></td>
+          <td id="ole" class="secordCol" style="width: 600px;height:220px;"></td>
         </tr>
         <tr>
           <td class="firstCol">OLE</td>
-          <td id="ole1" class="secordCol" style="width: 600px;height:200px;"></td>
+          <td id="ole1" class="secordCol" style="width: 600px;height:220px;"></td>
         </tr>
         <tr>
           <td class="firstCol">OLE</td>
-          <td id="ole2" class="secordCol" style="width: 600px;height:200px;"></td>
+          <td id="ole2" class="secordCol" style="width: 600px;height:220px;"></td>
+        </tr>
+        <tr>
+          <td class="firstCol">OLE</td>
+          <td id="ole3" class="secordCol" style="width: 600px;height:220px;"></td>
         </tr>
       </tbody>
     </table>
@@ -90,10 +94,6 @@ export default {
           name: '数据1',
           value: 30
         },
-        // {
-        //   name: '数据2',
-        //   value: 20
-        // },
         {
           name: '数据3',
           value: 20
@@ -116,21 +116,11 @@ export default {
           target: '数据3',
           value: 20
         },
-        // {
-        //   source: '数据1',
-        //   target: '数据3',
-        //   value: 11
-        // },
         {
           source: '数据1',
           target: '数据4',
           value: 10
         },
-        // {
-        //   source: '数据1',
-        //   target: '数据4',
-        //   value: 9
-        // },
         {
           source: '数据4',
           target: '数据5',
@@ -221,15 +211,16 @@ export default {
       var myChart2 = echarts.init(document.getElementById('ole'));
       var myChart3 = echarts.init(document.getElementById('ole1'));
       var myChart4 = echarts.init(document.getElementById('ole2'));
+      var myChart5 = echarts.init(document.getElementById('ole3'));
+
 
       var option = {
-        width: 500,
-        height: 150,
         tooltip: {
           trigger: 'item',
           triggerOn: 'mousemove'
         },
         series: [{
+          width:600,
           type: 'sankey',
           layout: 'none',
           data: this.data1,
@@ -252,6 +243,8 @@ export default {
       myChart2.setOption(option, true);
       myChart3.setOption(option, true);
       myChart4.setOption(option, true);
+      myChart5.setOption(option, true);
+
     }
   },
   computed: {

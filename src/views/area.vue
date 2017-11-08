@@ -121,6 +121,7 @@ export default {
       var that = this;
       var zTree = $.fn.zTree.getZTreeObj("area_tree");
       var oldName = treeNode.name;
+      console.log(oldName);
       /*新增节点直接取消或编辑后取消*/
       if (isCancel && treeNode.isNew) {
         setTimeout(function() {
@@ -129,8 +130,10 @@ export default {
       }
       /*已存在节点直接取消*或编辑后取消*/
       if (isCancel && !treeNode.isNew) {
+        console.log("hello");
         setTimeout(function() {
           zTree.cancelEditName();
+          console.log("1");
         }, 10);
       }
       /*节点名为空*/
@@ -145,7 +148,6 @@ export default {
             zTree.removeNode(treeNode);
           }, 10);
         } else {
-
           var obj = {
             "name": newName,
             "pId": treeNode.pId
@@ -178,18 +180,34 @@ export default {
       /*已存在节点回车弹框*/
       if (!isCancel && !treeNode.isNew) {
         if (!confirm("确认修改？")) {
+          console.log(oldName);
           setTimeout(function() {
-            zTree.cancelEditName(oldName);
+            zTree.cancelEditName();
+            return true;
           }, 10);
-          return false;
         } else {
           var obj = {
             "name": newName,
             "pId": treeNode.pId,
             "id": treeNode.id,
           };
-          that.updateArea(obj);
-          return true;
+          // that.updateArea(obj);
+          $.post("http://116.196.113.167:3001/areaAllSet/updateArea", obj,
+          function(data, textStatus) {
+            if (data.status === "101") {
+              that.$message.error("该区域已存在！");
+              setTimeout(function() {
+                zTree.cancelEditName();
+              }, 10);
+              return false;
+            }else if(data.status === "0") {
+              return true;
+            }else {
+              return false;
+            }
+
+          })
+          // return true;
         }
       }
     },

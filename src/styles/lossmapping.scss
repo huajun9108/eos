@@ -3,12 +3,13 @@
 .lossmapping {
   width: 90%;
   margin: P(76) auto;
-  height: 85%;
+  padding-left: p(76);
+  height: 80%;
   color: #040404;
 
   .titleContainer {
     // line-height: P(52);
-    height: 6%;
+    height: 7%;
     padding-left: P(35);
     font-size: P(18);
     border: 1px solid #BDBDBD;
@@ -18,12 +19,13 @@
     border-bottom: 1px solid #BDBDBD;
     vertical-align: middle;
     padding-top: 1%;
+    padding-bottom: 1%;
 
   }
 
   .tableContainer {
-    overflow: auto;
-    height: 94%;
+    overflow-y: auto;
+    height: 93%;
     border-bottom: 1px solid #BDBDBD;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
@@ -60,8 +62,8 @@
 
     .secordCol {
       width: 90%;
-      padding-left: P(56);
-      padding-top: p(50);
+      padding-top: 16px;
+      padding-bottom: 16px;
     }
   }
 
@@ -100,7 +102,7 @@
     opacity: 1;
     transition: all 0.5s 0.3s;
     width: P(316);
-    height: 85%;
+    height: 80%;
     position: absolute;
     right: 5%;
     top: P(77);

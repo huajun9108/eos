@@ -157,3 +157,21 @@ textarea {
 .hide {
     display: none;
 }
+
+.table>tbody>tr>td,
+.table-bordered>thead>tr>td {
+    border: 1px solid #bdbdbd;
+    vertical-align: middle;
+}
+
+.table th {
+    text-align: center;
+}
+
+.table-hover>tbody>tr>.icon-edit:hover {
+    color: #3498db
+}
+
+.table-hover>tbody>tr>.icon-delete_2:hover {
+    color: #ff9c00
+}

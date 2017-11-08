@@ -1,12 +1,13 @@
     @import "./mobile.scss";
     .account {
         width: 90%;
-        margin-top: P(70);
+        margin-top: P(50);
         box-sizing: border-box;
         padding-left: P(136);
         color: #040404;
         display: flex;
         flex-direction: column;
+        height: 94%;
         .acommon {
             width: 100%;
             height: auto;
@@ -138,7 +139,7 @@
                     .tree {
                         width: 100%;
                         height: P(260);
-                        overflow: auto;
+                        overflow-y: auto;
                         font-size: P(14);
                     }
                     .ztree li a.curSelectedNode {
@@ -170,7 +171,7 @@
             .sti-tbl-container {
                 margin-top: P(30);
                 box-sizing: border-box;
-                height: P(342);
+                height: P(320);
                 overflow: hidden;
                 display: flex;
                 flex-direction: column;
@@ -187,6 +188,14 @@
                 }
                 .table {
                     margin-bottom: 0;
+                }
+                .table>tbody>tr>td {
+                    border-bottom: none;
+                    border-left: none;
+                    border-right: none;
+                }
+                .table>tbody>tr>td:first-child {
+                    border-right: 1px solid #bdbdbd;
                 }
                 .table>thead>tr>td:first-child {
                     border-right: 1px solid #bdbdbd;

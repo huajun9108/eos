@@ -6,11 +6,17 @@
   <div class="tableContainer">
     <table class="tableBody">
       <tbody>
-        <tr>
-          <td class="firstCol">OEE</td>
-          <td id="oee" class="secordCol" style="width: 600px;height:200px;"></td>
+        <tr v-for="(item,idx) in tier2" :key="idx">
+          <td class="firstCol">{{item.name}}</td>
+          <td class="secordCol" style="width: 600px;height:200px;">
+            <chart
+            :_id="'OEE'"
+            :_titleText="'访问量统计'"
+            :_chartData="accessList"
+            :_type="'Sankey'"></chart>
+          </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td class="firstCol">OLE</td>
           <td id="ole" class="secordCol" style="width: 600px;height:200px;"></td>
         </tr>
@@ -21,7 +27,8 @@
         <tr>
           <td class="firstCol">OLE</td>
           <td id="ole2" class="secordCol" style="width: 600px;height:200px;"></td>
-        </tr>
+        </tr> -->
+        
       </tbody>
     </table>
   </div>
@@ -60,11 +67,12 @@ import {
 import router from "../router/index.js";
 import echarts from "echarts"
 import myDatepicker from 'vue-datepicker'
-
+import chart from '../components/echarts'
 
 export default {
   components: {
-    'date-picker': myDatepicker
+    'date-picker': myDatepicker,
+    chart
   },
   data: function() {
     return {
@@ -84,6 +92,75 @@ export default {
           radioType: "level"
         },
       },
+      accessList:[
+        {data1: [{
+          name: '数据1',
+          value: 10
+        },
+        {
+          name: '数据2',
+          value: 20
+        },
+        {
+          name: '数据3',
+          value: 20
+        },
+        {
+          name: '数据4',
+          value: 10
+        },
+        {
+          name: '数据5',
+          value: 5
+        },
+        {
+          name: '数据6',
+          value: 25,
+        }
+      ]},{
+        links: [{
+          source: '数据1',
+          target: '数据3',
+          value: 9
+        },
+        {
+          source: '数据2',
+          target: '数据3',
+          value: 11
+        },
+        {
+          source: '数据1',
+          target: '数据4',
+          value: 1
+        },
+        {
+          source: '数据2',
+          target: '数据4',
+          value: 9
+        },
+        {
+          source: '数据4',
+          target: '数据5',
+          value: 3
+        },
+        {
+          source: '数据4',
+          target: '数据6',
+          value: 7
+        },
+        {
+          source: '数据3',
+          target: '数据5',
+          value: 2
+        },
+        {
+          source: '数据3',
+          target: '数据6',
+          value: 18
+        }
+      ]
+      }
+      ],
       validareaList: [],
       showFlag: false,
       data1: [{
@@ -216,11 +293,16 @@ export default {
     ...mapActions([
       'selectUserById',
     ]),
+     send(){
+        var x = "类别"+(this.chartData.length+1)
+        var y =Math.ceil(Math.random()*100)
+        this.chartData.push([x,y])
+      },
     initCharts: function() {
-      var myChart1 = echarts.init(document.getElementById('oee'));
-      var myChart2 = echarts.init(document.getElementById('ole'));
-      var myChart3 = echarts.init(document.getElementById('ole1'));
-      var myChart4 = echarts.init(document.getElementById('ole2'));
+      // var myChart1 = echarts.init(document.getElementById('OEE'));
+      // var myChart2 = echarts.init(document.getElementById('ole'));
+      // var myChart3 = echarts.init(document.getElementById('ole1'));
+      // var myChart4 = echarts.init(document.getElementById('ole2'));
 
       var option = {
         width: 500,
@@ -248,15 +330,16 @@ export default {
           }
         }]
       };
-      myChart1.setOption(option, true);
-      myChart2.setOption(option, true);
-      myChart3.setOption(option, true);
-      myChart4.setOption(option, true);
+      // myChart1.setOption(option, true);
+      // myChart2.setOption(option, true);
+      // myChart3.setOption(option, true);
+      // myChart4.setOption(option, true);
     }
   },
   computed: {
     ...mapState([
-      "validarea"
+      "validarea",
+      'tier2'
     ])
   },
   watch: {
@@ -277,6 +360,7 @@ export default {
       this.selectUserById({
         userid: sessionStorage.getItem("userid")
       })
+      console.log(this.tier2)
     } else {
       console.log(this.$route);
     }

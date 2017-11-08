@@ -41,6 +41,8 @@
 					<td class="icon-edit"></td>
 				</tr>
 				<tr>
+					<td style="display:none"></td>
+					<td style="display:none"></td>
 					<td>Manlnd</td>
 					<td></td>
 					<td class="icon-edit"></td>

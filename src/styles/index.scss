@@ -201,9 +201,11 @@ label {
 }
 
 .table-hover>tbody>tr>.icon-edit:hover {
-    color: #3498db
+    color: #3498db;
+    cursor: pointer;
 }
 
 .table-hover>tbody>tr>.icon-delete_2:hover {
-    color: #ff9c00
+    color: #ff9c00;
+    cursor: pointer;
 }

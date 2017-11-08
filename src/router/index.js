@@ -15,7 +15,7 @@ import Target from "../views/target.vue"
 import Lossmaping from "../views/lossmaping.vue";
 import Savingbook from "../views/savingbook.vue"
 import Datainput from "../views/datainput.vue"
-import Useraccount from "../views/useraccount.vue"
+import Useraccount from "../views/userAccount.vue"
 import Pert from "../views/pert.vue"
 import Lossm from "../views/lossm.vue"
 import kpi from "../views/datainputkpi.vue"

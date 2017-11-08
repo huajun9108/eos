@@ -4,16 +4,19 @@
             <div class="project_pool">
                 <span class="pro_title">项目池</span>
                 <div class="pro_table">
-                    <table class="table table-hover">
-                        <tbody class="pro_Tbody">
-                        <tr v-for="(item,idx) in improList" :key="idx">
-                            <td class="text-center num" width="25%">{{item.name}}</td> 
-                            <td v-for="(option,idx) in item.data">{{option.name}}</td>  
-                        </tr>
-                        <!-- <tr v-for="(option,idx) in improList.data" :key="idx">
-                            <td @click="choose">{{option.name}}</td>
-
-                        </tr> -->
+                    <table class="table table-hover text-center">
+                        <tbody class="pro_Tbody" v-for="(item,idx) in improList" :key="idx">
+                            <tr v-if="item.data.length>0">
+                                <td :rowspan="item.data.length">{{item.name}}</td>
+                                <td @click="choose">{{item.data[0].name}}</td>
+                            </tr>
+                            <tr v-if="item.data.length==0">
+                                <td>{{item.name}}</td>
+                                <td></td>
+                            </tr>
+                            <tr v-for="(option,index) in item.data" v-if="index!=0">
+                                <td @click="choose">{{option.name}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -21,19 +24,19 @@
             <div class="project_icon">
                 <span class="pro_title"></span>
                 <div class="project_iconfont">
-                    <i class="icon-add_add"></i>
+                    <i class="icon-add_add" @click = "add_item"></i>
                 </div>
-            </div>  
+            </div> 
             <div class="project_now">
                 <span class="pro_title">现进行项目</span>
                 <div class="pro_detail">
                     <div class="pro_item">
-                        <div class="sti-tbl-header">
-                            <table class="table text-left">
+                        <div class="sti-tbl-header" style="padding-right:18px">
+                            <table class="table text-center">
                             <thead class="fixedThead">
                                 <tr>
-                                <td class="text-center" width="80%">名称</td>
-                                <td width="20%">编辑</td>
+                                <td class="text-center" width="75%">名称</td>
+                                <td width="25%"  colspan="2">编辑</td>
                                 </tr>
                             </thead>
                             </table>
@@ -41,20 +44,22 @@
                         <div class="sti-tbl-body">
                             <table class="table table-hover">
                             <tbody class="scrollTbody">
-                            <!-- <tr  :key="idx">
-                                <td class="text-center num" width="5%">{{idx+1}}</td>
-                                <td width="80%" class="tier2item">{{item.name}}</td>
-                                <td width="15%" class="text-right img_td" :data="item.name" >
-                                    <img class="move up" src="../assets/images/move_up.png" @click="moveUp({'userId':userinfor.userid,
-                                    'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx,'changedOrder':item.userKpitwolev.sequence-1})"/>
-                                    <img class="move down" src="../assets/images/move_down.png" @click="moveDown(idx,item.name)"/>
+                            <tr v-for="(item,idx) in this.proNowList" :key="idx" class="text-center"  >
+                                <td width="75%">{{item}}</td>
+                                <td class="icon-edit" @click = "editpro"></td>
+                                <td class="icon-delete_2" @click = "delpro"></td>
+                            </tr>
+
+                            <tr v-if="proNowList.length==0">
+                                <td colspan="4" class="text-center text-muted">
+                                    <p>暂无数据...</p>
                                 </td>
-                            </tr> -->
+                            </tr>
                             </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="pro_itemdetail">
+                    <div class="pro_itemdetail" v-show="detailFlag">
                         <ul class="item_det">
                             <li class="item_li">
                                 <span class="item_title">状态</span>
@@ -125,7 +130,11 @@
 	export default{
         data(){
             return{
-                option:""
+                option:"",
+                detailFlag:false,
+                proList:[],
+                proNowList:[],
+                isChoose:false,
             }
         },
 		computed:{
@@ -144,8 +153,41 @@
             confirm(){
 
             },
-            choose(e){
-                console.log(e.target)
+            arrIsContains(arr, obj) {  
+                var i = arr.length;  
+                while (i--) {  
+                    if (arr[i] === obj) {  
+                        return true;  
+                    }  
+                }  
+                return false;  
+            },
+            choose($event){
+                var _this = this;
+                var pro = $event.currentTarget.innerHTML
+                
+                if(!this.arrIsContains(this.proList,pro)){
+                    this.proList.push(pro)
+                    $event.currentTarget.className = "pro_active"
+                }else{
+        
+                }
+              
+                 
+                
+            },
+            add_item(){
+                 var _this = this;
+                console.log(1)
+                this.proNowList=this.proList;
+            },
+            editpro(){
+                this.detailFlag = true
+            },
+            delpro(){
+                this.proNowList.splice(this.idx, 1);
+                this.proList = this.proNowList
+                console.log(this.proList)
             }
             
         },

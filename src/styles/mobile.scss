@@ -7,7 +7,7 @@ $c-info:#5bc0de; //天蓝信息
 // * { touch-action: none; }   //消除高版本choore 浏览器 阻止浏览器默认事件bug
 // px2Rem  把px ==>rem  150px  1rem = 75px  2rem
 @function P($px, $base:64) {
-    @return ($px/$base) * 1rem;
+    @return ($px/$base) * 0.9rem;
 }
 
 html {

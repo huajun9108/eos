@@ -48,7 +48,9 @@
     </table>
   </div>
   <div class="LossChoose" :class="showFlag?'showchoose':'hidechoose'">
-    addLoss
+    <div class="dirChoose">
+
+    </div>
   </div>
 </div>
 </template>

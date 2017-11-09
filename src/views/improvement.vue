@@ -8,14 +8,14 @@
                         <tbody class="pro_Tbody" v-for="(item,idx) in improList" :key="idx">
                             <tr v-if="item.data.length>0">
                                 <td :rowspan="item.data.length">{{item.name}}</td>
-                                <td @click="choose">{{item.data[0].name}}</td>
+                                <td @click="choose(0)" ref="pro">{{item.data[0].name}}</td>
                             </tr>
                             <tr v-if="item.data.length==0">
                                 <td>{{item.name}}</td>
                                 <td></td>
                             </tr>
                             <tr v-for="(option,index) in item.data" v-if="index!=0">
-                                <td @click="choose">{{option.name}}</td>
+                                <td @click="choose(index)" ref="pro">{{option.name}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -47,7 +47,7 @@
                             <tr v-for="(item,idx) in this.proNowList" :key="idx" class="text-center"  >
                                 <td width="75%">{{item}}</td>
                                 <td class="icon-edit" @click = "editpro"></td>
-                                <td class="icon-delete_2" @click = "delpro"></td>
+                                <td class="icon-delete_2" @click = "delpro(idx)"></td>
                             </tr>
 
                             <tr v-if="proNowList.length==0">
@@ -154,7 +154,7 @@
 
             },
             arrIsContains(arr, obj) {  
-                var i = arr.length;  
+                let i = arr.length;  
                 while (i--) {  
                     if (arr[i] === obj) {  
                         return true;  
@@ -162,13 +162,13 @@
                 }  
                 return false;  
             },
-            choose($event){
-                var _this = this;
-                var pro = $event.currentTarget.innerHTML
-                
-                if(!this.arrIsContains(this.proList,pro)){
-                    this.proList.push(pro)
-                    $event.currentTarget.className = "pro_active"
+            choose(idx){
+                let _this = this;
+                console.log(this.$refs.pro[idx].innerHTML)
+                let proItem = this.$refs.pro[idx].innerHTML
+                if(!this.arrIsContains(this.proList,proItem)){
+                    this.proList.push(proItem)
+                    this.$refs.pro[idx].className = "pro_active"
                 }else{
         
                 }
@@ -176,18 +176,26 @@
                  
                 
             },
-            add_item(){
-                 var _this = this;
+            add_item(index){
+                 let _this = this;
                 console.log(1)
-                this.proNowList=this.proList;
+                this.proList.forEach(function(item) {
+                   if(!_this.arrIsContains(_this.proNowList,item)){
+                    _this.proNowList.push(item)
+                    // $event.currentTarget.className = "pro_active"
+                    }else{
+        
+                    }
+                })
             },
             editpro(){
                 this.detailFlag = true
             },
-            delpro(){
-                this.proNowList.splice(this.idx, 1);
-                this.proList = this.proNowList
+            delpro(idx){
+                this.proNowList.splice(idx, 1);
+                this.proList.splice(idx, 1);
                 console.log(this.proList)
+                this.$refs.pro[idx].className = ""
             }
             
         },

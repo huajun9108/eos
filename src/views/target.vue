@@ -49,13 +49,13 @@
                         <li class="target_tit">Vision</li>
                     </ul>
                      <ul class="target_setting clearfix">
-                        <li class="target_set"><input class="target_no" v-model="vision"/></li>
+                        <li class="target_set"><input class="target_no" type="text" v-model="vision"/></li>
                     </ul>
                      <ul class="target_title clearfix">
                         <li class="target_tit">Ideal</li>
                     </ul>
                      <ul class="target_setting clearfix">
-                        <li class="target_set"><input class="target_no"  v-model="ideal"/></li>
+                        <li class="target_set"><input class="target_no" type="text"  v-model="ideal"/></li>
                     </ul>
                 </div>
                 <div class="accountinfo_button text-right">
@@ -76,7 +76,7 @@ export default{
     data () {
         return {
             targetList:[],
-            targetNo:'',
+            targetNo:null,
             dateStart:'',
             dateEnd:'',
             vision:'',
@@ -113,7 +113,6 @@ export default{
             'updateLinebodyInfById'
         ]),
         confirm(){
-            alert()
             let _this=this
             this.updateLinebodyInfById({
                 "id": this.nodeId,
@@ -162,7 +161,11 @@ export default{
                 this.nodeId = treeNode.id
             }else{
                 this.$message.info("暂无信息")
-                this.lineBody=""
+                this.targetNo="";
+                this.dateStart='';
+                this.dateEnd='';
+                this.vision='';
+                this.ideal='';
             }
 
 
@@ -173,7 +176,7 @@ export default{
             $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
         },
         lineBody(newVal){
-            this.targetNo=newVal.targetvalue;
+            this.targetNo=JSON.stringify(newVal.targetvalue);
             this.dateStart= newVal.targetstrattime;
             this.dateEnd = newVal.targetendtime;
             this.vision = newVal.visionvalue;

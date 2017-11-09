@@ -10,7 +10,7 @@
             <div id="user-con">
                 <div id="user-content" class="clearfix">
                     <router-view ></router-view>
-                </div>   
+                </div>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@ export default {
     name: 'app',
     components:{leftNav},
     computed: {
-        
+
     },
     watch: {
 
@@ -30,4 +30,3 @@ export default {
 </script>
 <style lang="sass" scoped>
 </style>
-

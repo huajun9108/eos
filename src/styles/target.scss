@@ -105,27 +105,27 @@
             }
         }
     }
-    
-    .el-picker-panel {
+
+    .el-date-picker {
         top: 233px !important;
     }
-    
-    .el-autocomplete-suggestion {
-        top: 233px !important;
-    }
-    
+
+    // .el-autocomplete-suggestion {
+    //     top: 233px !important;
+    // }
+
     .el-scrollbar {
         border: 1px solid #bdbdbd;
     }
-    
+
     .el-popper[x-placement^=bottom] .popper__arrow::after {
         border-bottom-color: #bdbdbd;
     }
-    
+
     .el-autocomplete-suggestion li:hover {
         background: #ecf0f1;
     }
-    
+
     .el-autocomplete-suggestion__wrap {
         padding: 0;
     }

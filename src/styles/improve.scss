@@ -1,7 +1,7 @@
 @import "./mobile.scss";
 .improvement {
     width: 100%;
-    height: 100%;
+    height: 98%;
     box-sizing: border-box;
     padding: P(85) 0 P(85) P(76);
     .improve_content {
@@ -27,11 +27,29 @@
             .pro_table {
                 width: 100%;
                 height: 100%;
-                overflow: auto;
+                overflow-y: auto;
                 .table>tbody>tr>td {
-                    border-bottom: 1px solid #bdbdbd;
                     border-top: 0;
-                    border-right: 1px solid #bdbdbd;
+                    border-left: 0;
+                    cursor: pointer;
+                }
+                .pro_active {
+                    background: #5b7ba6;
+                    color: #fff;
+                }
+                .table>tbody:last-child>tr>td {
+                    border-bottom: 0;
+                }
+                .pro_table_item {
+                    display: block;
+                    width: 100%;
+                    border-bottom: 1px solid #bdbdbd;
+                }
+                .table {
+                    margin-bottom: 0
+                }
+                .table>tbody+tbody {
+                    border: 0;
                 }
             }
         }
@@ -56,6 +74,7 @@
                 .icon-add_add {
                     color: #d2d2d2;
                     display: block;
+                    cursor: pointer;
                 }
             }
         }
@@ -75,13 +94,41 @@
             .pro_detail {
                 width: 100%;
                 height: 100%;
-                overflow: auto;
+                overflow-y: auto;
                 flex: 1;
                 .pro_item {
                     width: 55%;
                     height: 100%;
                     float: left;
                     border-right: 1px solid #bdbdbd;
+                    box-sizing: border-box;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    // border: 1px solid #bdbdbd;
+                    /* 设置表格的布局方式，用于宽度对齐 */
+                    .sti-tbl-body>table,
+                    .sti-tbl-header>table {
+                        table-layout: fixed;
+                    }
+                    /* 设置表格内容容器，用于铺满整个剩余空间 */
+                    .sti-tbl-body {
+                        flex-grow: 1;
+                        overflow-y: scroll;
+                    }
+                    .table {
+                        margin-bottom: 0;
+                    }
+                    .table>thead>tr>td {
+                        border-right: 1px solid #bdbdbd;
+                        border-bottom: 1px solid #bdbdbd;
+                    }
+                    .table>tbody>tr:first-child>td {
+                        border-top: 0;
+                    }
+                    .table>tbody>tr>td {
+                        border-left: 0;
+                    }
                 }
                 .pro_itemdetail {
                     width: 45%;

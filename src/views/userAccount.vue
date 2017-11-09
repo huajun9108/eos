@@ -87,7 +87,7 @@
               <tr v-for="(item,idx) in tier2" :key="idx">
                   <td class="text-center num" width="5%">{{idx+1}}</td>
                   <td width="80%" class="tier2item">{{item.name}}</td>
-                  <td width="15%" class="text-right img_td" :data="item.name" >
+                  <td width="15%" class="pull-right img_td" :data="item.name" >
                     <img class="move up" src="../assets/images/move_up.png" @click="moveUp({'userId':userinfor.userid,
                     'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx,'changedOrder':item.userKpitwolev.sequence-1})"/>
                     <img class="move down" src="../assets/images/move_down.png" @click="moveDown({'userId':userinfor.userid,
@@ -283,10 +283,6 @@ export default {
           this.showFlag = false
       }
     },
-    tier2(newVal){
-
-      
-    }
   },
   mounted() {
     if (sessionStorage.getItem("userid")) {

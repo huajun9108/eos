@@ -1,55 +1,100 @@
 <template>
-<div class="datainput">
-  <div class="openCeremony">
-    <span class="inputBtn openCeremonyButton">开班</span>
-    <span class="inputBtn historyButton">班次历史记录</span>
-  </div>
-  <div class="lengthShift">
-    <span class="lengthShiftTime">本班次时间：</span>
-    <el-date-picker v-model="value" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-    </el-date-picker>
-  </div>
-  <div class="tableContainer">
-    <table class="tableBody">
-      <tbody>
-        <tr v-for="d in tableData">
-          <td class="firstCol">{{ d.tier }}</td>
-          <td class="secondCol">
-            <textarea class="textArea"></textarea>
-          </td>
-          <td class="thirdCol">
-            <div class="childTableContainer">
-              <table class="childTableBody">
-                <tbody>
-                  <tr>
-                    <td class="childFirstCol">Tier3</td>
-                    <td class="childSecondCol">Tier4</td>
-                    <td class="childThirdCol">开始时间</td>
-                    <td class="childFourthCol">结束时间</td>
-                    <td class="childFifthCol">操作</td>
-                  </tr>
-                  <tr v-for="c in childTableData">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </td>
-          <td class="fourthCol">
-            <span class="addLossBtn" @click="addLoss">添加loss</span>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-  </div>
-  <div class="LossChoose" :class="showFlag?'showchoose':'hidechoose'">
-    <div class="dirChoose">
-
+<div class="datainput user_common">
+  <div class="datainputContainer user_maincontent">
+    <div class="openCeremony">
+      <span class="inputBtn openCeremonyButton">开班</span>
+      <span class="inputBtn historyButton">班次历史记录</span>
+    </div>
+    <div class="lengthShift">
+      <span class="lengthShiftTime">本班次时间：</span>
+      <el-date-picker v-model="value" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+      </el-date-picker>
+    </div>
+    <div class="tableContainer">
+      <table class="tableBody">
+        <tbody>
+          <tr v-for="d in tableData">
+            <td class="firstCol">{{ d.tier }}</td>
+            <td class="secondCol">
+              <textarea class="textArea"></textarea>
+            </td>
+            <td class="thirdCol">
+              <div class="childTableContainer">
+                <div class="childTableTitle">
+                  <span class="childFirstCol childTableCol">Tier3</span>
+                  <span class="childSecondCol childTableCol">Tier4</span>
+                  <span class="childThirdCol childTableCol">开始时间</span>
+                  <span class="childFourthCol childTableCol">结束时间</span>
+                  <span class="childFifthCol childTableCol">操作</span>
+                </div>
+                <!-- <table class="childTableBody">
+                  <tbody>
+                    <tr v-for="c in childTableData">
+                      <td class="childFirstCol"></td>
+                      <td class="childSecondCol"></td>
+                      <td class="childThirdCol"></td>
+                      <td class="childFourthCol"></td>
+                      <td class="childFifthCol"></td>
+                    </tr>
+                  </tbody>
+                </table> -->
+              </div>
+            </td>
+            <td class="fourthCol">
+              <span class="addLossBtn" @click="addLoss">添加loss</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="shade" :class="showFlag?'showchoose':'hidechoose'"></div>
+    <div class="lossChoose" :class="showFlag?'showchoose':'hidechoose'">
+      <div class="dirChoose">
+        <el-dropdown class="dropdownTier">
+          <span class="el-dropdown-link">
+            Tier3<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="data in tierMenuData">{{ data.name }}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-dropdown class="dropdownTier">
+          <span class="el-dropdown-link">
+            Tier4<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item  v-for="data in tierMenuData">{{ data.name }}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <div class="startTimeContainer">
+        <span class="timeTitle">开始时间：</span>
+        <el-date-picker
+        v-model="lossTimeValue"
+        type="datetime"
+        placeholder="选择日期时间">
+      </el-date-picker>
+      </div>
+      <div class="durationTimeContainer">
+        <span class="timeTitle">持续时间：</span>
+        <el-date-picker
+        v-model="lossTimeValue"
+        type="datetime"
+        placeholder="选择日期时间">
+      </el-date-picker>
+      </div>
+      <div class="endTimeContainer">
+        <span class="timeTitle">结束时间：</span>
+        <el-date-picker
+        v-model="lossTimeValue"
+        type="datetime"
+        placeholder="选择日期时间">
+      </el-date-picker>
+      </div>
+      <div class="btnContainer text-right">
+        <span class="confirmBtn btn" @click="confirmClick">确定</span>
+        <span class="cancelBtn btn" @click="cancelClick">取消</span>
+      </div>
     </div>
   </div>
 </div>
@@ -60,6 +105,11 @@ import echarts from "echarts"
 export default {
   data: function() {
     return {
+      tierMenuData: [
+        { "name": "Lack of demand" },
+        { "name": "Lack of demand" },
+        { "name": "Breakdowns"},
+      ],
       childTableData: [
         {},
         {},
@@ -96,6 +146,7 @@ export default {
       ],
       value: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
       showFlag: false,
+      lossTimeValue: '',
       // setting: {
       //   async: {
       //     enable: true,
@@ -121,38 +172,7 @@ export default {
   },
   methods: {
     addLoss: function() {
-      const h = this.$createElement;
-      this.$msgbox({
-        title: '消息',
-        message: h('p', null, [
-          h('span', null, '内容可以是 '),
-          h('i', {
-            style: 'color: teal'
-          }, 'VNode')
-        ]),
-        showCancelButton: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true;
-            instance.confirmButtonText = '执行中...';
-            setTimeout(() => {
-              done();
-              setTimeout(() => {
-                instance.confirmButtonLoading = false;
-              }, 300);
-            }, 3000);
-          } else {
-            done();
-          }
-        }
-      }).then(action => {
-        this.$message({
-          type: 'info',
-          message: 'action: ' + action
-        });
-      });
+      this.showFlag = !this.showFlag;
     },
     getVirtulData: function(year) {
       year = year || '2017';
@@ -168,6 +188,12 @@ export default {
       }
       return data;
     },
+    confirmClick: function() {
+      this.showFlag = !this.showFlag;
+    },
+    cancelClick: function() {
+      this.showFlag = !this.showFlag;
+    }
     // initCharts: function() {
     //   var myChart = echarts.init(document.getElementById('shift'));
     //   var option = {

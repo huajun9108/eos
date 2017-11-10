@@ -1,7 +1,7 @@
 import axios from "axios"
 import qs from 'qs'
 
-axios.defaults.baseURL = "http://116.196.113.167:3001";
+axios.defaults.baseURL = "http://116.62.10.199:3001";
 
 export default {
     adminLogin({ commit }, obj) {
@@ -258,6 +258,13 @@ export default {
         }).catch(err => {
             console.log(err)
         })
-
+    },
+    selectLossmappingLinebody({ commit }, obj) {
+      axios.get("/lossmapping/linebody", {}).then(res => {
+          console.log(res.data.data)
+          return res.data.data
+      }).then(json => {
+          commit("selectLossmappingLinebody", json)
+      })
     }
 }

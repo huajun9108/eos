@@ -25,5 +25,6 @@ export default {
     updatePwdResult: '',
     lineBody: '',
     tier2: [],
-    improList: []
+    improList: [],
+    lossmappingLinebodyAll: [],
 }

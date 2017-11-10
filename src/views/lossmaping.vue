@@ -1,59 +1,45 @@
 <template>
-<div class="lossmapping">
-  <div class="titleContainer">
-    <span class="titleContent">Loss</span>
-  </div>
-  <div class="tableContainer">
-    <table class="tableBody">
-      <tbody>
-        <tr>
-          <td class="firstCol">OEE</td>
-          <td id="oee" class="secordCol" style="width: 600px;height:220px;"></td>
-        </tr>
-        <tr>
-          <td class="firstCol">OLE</td>
-          <td id="ole" class="secordCol" style="width: 600px;height:220px;"></td>
-        </tr>
-        <tr>
-          <td class="firstCol">OLE</td>
-          <td id="ole1" class="secordCol" style="width: 600px;height:220px;"></td>
-        </tr>
-        <tr>
-          <td class="firstCol">OLE</td>
-          <td id="ole2" class="secordCol" style="width: 600px;height:220px;"></td>
-        </tr>
-        <tr>
-          <td class="firstCol">OLE</td>
-          <td id="ole3" class="secordCol" style="width: 600px;height:220px;"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="showTimeAndArea" @click="showFlag=!showFlag">
-    <span :class="showFlag?'iconfont icon-drop-down2 rotate':'iconfont icon-drop-down2'"></span>
-    <span class="areaAndShift">时间/区域</span>
-  </div>
-  <transition>
-    <div class="TimeAndAreaContainer" :class="showFlag?'showchoose':'hidechoose'">
-      <div class="chooseTime box">
-        <h1>时间选择</h1>
-        <div class="time">
-          <span>开始时间</span>
-          <date-picker :date="startTime" :option="option" :limit="limit"></date-picker>
-        </div>
-        <div class="time">
-          <span>结束时间</span>
-          <date-picker :date="endtime" :option="option" :limit="limit"></date-picker>
-        </div>
-      </div>
-      <div class="chooseArea box">
-        <h1>区域选择</h1>
-        <div class="area">
-          <ul id="treeDemo" class="ztree"></ul>
-        </div>
-      </div>
+<div class="lossmapping user_common">
+  <div class="lossmappingContainer user_maincontent">
+    <div class="titleContainer">
+      <span class="titleContent">Loss</span>
     </div>
-  </transition>
+    <div class="tableContainer">
+      <table class="tableBody">
+        <tbody>
+          <tr v-for="title in testList">
+            <td class="firstCol">{{ title.title }}</td>
+            <td :id='title.title' class="secordCol" style="width: 600px;height:220px;"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="showTimeAndArea" @click="showFlag=!showFlag">
+      <span :class="showFlag?'iconfont icon-drop-down2 rotate':'iconfont icon-drop-down2'"></span>
+      <span class="areaAndShift">时间/区域</span>
+    </div>
+    <transition>
+      <div class="TimeAndAreaContainer" :class="showFlag?'showchoose':'hidechoose'">
+        <div class="chooseTime box">
+          <h1>时间选择</h1>
+          <div class="time">
+            <span>开始时间</span>
+            <date-picker :date="startTime" :option="option" :limit="limit"></date-picker>
+          </div>
+          <div class="time">
+            <span>结束时间</span>
+            <date-picker :date="endtime" :option="option" :limit="limit"></date-picker>
+          </div>
+        </div>
+        <div class="chooseArea box">
+          <h1>区域选择</h1>
+          <div class="area">
+            <ul id="treeDemo" class="ztree"></ul>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </div>
 </div>
 </template>
 <script>
@@ -64,11 +50,12 @@ import {
 import router from "../router/index.js";
 import echarts from "echarts"
 import myDatepicker from 'vue-datepicker'
-
+import chart from '../components/echarts'
 
 export default {
   components: {
-    'date-picker': myDatepicker
+    'date-picker': myDatepicker,
+    chart
   },
   data: function() {
     return {
@@ -88,6 +75,76 @@ export default {
           radioType: "level"
         },
       },
+      testList: [],
+      accessList:[
+        {data1: [{
+          name: '数据1',
+          value: 10
+        },
+        {
+          name: '数据2',
+          value: 20
+        },
+        {
+          name: '数据3',
+          value: 20
+        },
+        {
+          name: '数据4',
+          value: 10
+        },
+        {
+          name: '数据5',
+          value: 5
+        },
+        {
+          name: '数据6',
+          value: 25,
+        }
+      ]},{
+        links: [{
+          source: '数据1',
+          target: '数据3',
+          value: 9
+        },
+        {
+          source: '数据2',
+          target: '数据3',
+          value: 11
+        },
+        {
+          source: '数据1',
+          target: '数据4',
+          value: 1
+        },
+        {
+          source: '数据2',
+          target: '数据4',
+          value: 9
+        },
+        {
+          source: '数据4',
+          target: '数据5',
+          value: 3
+        },
+        {
+          source: '数据4',
+          target: '数据6',
+          value: 7
+        },
+        {
+          source: '数据3',
+          target: '数据5',
+          value: 2
+        },
+        {
+          source: '数据3',
+          target: '数据6',
+          value: 18
+        }
+      ]
+      }
+      ],
       validareaList: [],
       showFlag: false,
       data1: [{
@@ -205,51 +262,54 @@ export default {
   methods: {
     ...mapActions([
       'selectUserById',
+      'selectLossmappingLinebody'
     ]),
+    testdata(){
+      this.selectLossmappingLinebody()
+    },
+     send(){
+        var x = "类别"+(this.chartData.length+1)
+        var y = Math.ceil(Math.random()*100)
+        this.chartData.push([x,y])
+      },
     initCharts: function() {
-      var myChart1 = echarts.init(document.getElementById('oee'));
-      var myChart2 = echarts.init(document.getElementById('ole'));
-      var myChart3 = echarts.init(document.getElementById('ole1'));
-      var myChart4 = echarts.init(document.getElementById('ole2'));
-      var myChart5 = echarts.init(document.getElementById('ole3'));
-
-
-      var option = {
-        tooltip: {
-          trigger: 'item',
-          triggerOn: 'mousemove'
-        },
-        series: [{
-          width:600,
-          type: 'sankey',
-          layout: 'none',
-          data: this.data1,
-          links: this.links,
-          itemStyle: {
-            normal: {
-              borderWidth: 1,
-              borderColor: '#aaa'
-            }
-          },
-          lineStyle: {
-            normal: {
-              color: 'source',
-              curveness: 0.5
-            }
-          }
-        }]
-      };
-      myChart1.setOption(option, true);
-      myChart2.setOption(option, true);
-      myChart3.setOption(option, true);
-      myChart4.setOption(option, true);
-      myChart5.setOption(option, true);
-
+      for(let i = 0; i < this.testList.length; i++) {
+        console.log(this.testList[i].title);
+          var myChart = echarts.init(document.getElementById(this.testList[i].title));
+          var option = {
+            tooltip: {
+              trigger: 'item',
+              triggerOn: 'mousemove'
+            },
+            series: [{
+              width:600,
+              type: 'sankey',
+              layout: 'none',
+              data: this.testList[i].data,
+              links: this.testList[i].link,
+              itemStyle: {
+                normal: {
+                  borderWidth: 1,
+                  borderColor: '#aaa'
+                }
+              },
+              lineStyle: {
+                normal: {
+                  color: 'source',
+                  curveness: 0.5
+                }
+              }
+            }]
+          };
+          myChart.setOption(option, true);
+      }
     }
   },
   computed: {
     ...mapState([
-      "validarea"
+      "validarea",
+      'tier2',
+      'lossmappingLinebodyAll'
     ])
   },
   watch: {
@@ -262,17 +322,19 @@ export default {
         }
       );
       $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
-    }
+    },
+  },
+  created() {
+    this.testdata()
+    this.lossmappingLinebodyAll.forEach(
+      item => {
+        this.testList.push(item);
+        console.log(item)
+      }
+    );
   },
   mounted() {
     this.initCharts();
-    if (sessionStorage.getItem("userid")) {
-      this.selectUserById({
-        userid: sessionStorage.getItem("userid")
-      })
-    } else {
-      console.log(this.$route);
-    }
   }
 }
 </script>

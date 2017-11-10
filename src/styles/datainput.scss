@@ -1,7 +1,9 @@
 @import "./mobile.scss";
+
 .datainput {
   height: 100%;
-  overflow:hidden;
+  overflow: hidden;
+
   .datainputContainer {
     width: 90%;
     margin: P(76) auto;
@@ -67,7 +69,6 @@
       }
 
       .tableBody tr {
-
         border-bottom: 1px solid #BDBDBD;
       }
 
@@ -99,32 +100,87 @@
 
       .thirdCol {
         width: 60%;
-        vertical-align: top;
         border-right: 1px solid #BDBDBD;
+
         .childTableContainer {
-          overflow-y: auto;
+          width: 100%;
           height: 100%;
 
+          .childTableTitle {
+            padding-right: P(19);
+            font-size: P(0);
+            border-bottom: 1px solid #BDBDBD;
+          }
+
+          .childTableBody {
+            overflow-y: scroll;
+            height: P(202);
+            width: 100%;
+          }
+
+          .childTableRow {
+            font-size: P(0);
+            width: 100%;
+          }
+
           .childTableCol {
+            height: P(30);
             display: inline-block;
+            font-size: P(14);
+            border-bottom: 1px solid #BDBDBD;
           }
 
-          .childFirstCol, .childSecondCol {
+          .childTableCol:last-child {
+            border-right: none;
+          }
+
+          .childTableTitle > .childTableCol {
+            border-bottom: none;
+          }
+
+          .childTableTitle > .childTableCol:last-child {
+            border-right: 1px solid #BDBDBD;
+          }
+
+          // .childTableBody table {
+          //   width: 100%;
+          // }
+          //
+          // .childTableBody tbody {
+          //   width: 100%;
+          // }
+          //
+          // .childTableBody tr {
+          //   width: 100%;
+          //   border-bottom: 1px solid #BDBDBD;
+          // }
+          //
+          // .childTableBody td {
+          //   height: P(30);
+          // }
+
+          .childFirstCol,
+          .childSecondCol {
             width: 25%;
+            border-right: 1px solid #BDBDBD;
           }
 
-          .childThirdCol, .childFourthCol {
+          .childFourthCol,
+          .childThirdCol {
             width: 20%;
+            border-right: 1px solid #BDBDBD;
           }
 
           .childFifthCol {
             width: 10%;
+            border-right: 1px solid #BDBDBD;
           }
         }
       }
 
       .fourthCol {
         width: 10%;
+
         .addLossBtn {
           display: inline-block;
           width: P(80);
@@ -134,6 +190,7 @@
         }
       }
     }
+
     .lossChoose {
       z-index: 2000;
       visibility: hidden;
@@ -147,11 +204,13 @@
       max-height: P(730);
       padding: P(46) P(40) 0 P(46);
       transform: translateX(-50%) translateY(-50%);
+
       .dropdownTier {
         width: P(200);
         height: P(30);
         margin-bottom: P(46);
       }
+
       .dropdownTier:first-child {
         margin-right: P(16);
       }
@@ -170,6 +229,7 @@
         position: absolute;
         bottom: P(34);
         right: P(40);
+
         .btn {
           font-size: P(14);
           width: P(104);

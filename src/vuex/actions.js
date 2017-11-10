@@ -309,4 +309,12 @@ export default {
             console.log(err)
         })
     },
+    selectLossmappingLinebody({ commit }, obj) {
+        axios.get("/lossmapping/linebody", {}).then(res => {
+            console.log(res.data.data)
+            return res.data.data
+        }).then(json => {
+            commit("selectLossmappingLinebody", json)
+        })
+    }
 }

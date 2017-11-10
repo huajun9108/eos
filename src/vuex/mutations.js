@@ -75,5 +75,10 @@ export default {
     },
     updateImpItemstatus(state, json) {
         state.updateItemResult = json
+    },
+
+
+    selectLossmappingLinebody(state, json) {
+        state.lossmappingLinebodyAll = json
     }
 }

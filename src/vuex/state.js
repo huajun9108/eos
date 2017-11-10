@@ -28,5 +28,6 @@ export default {
     improList: [],
     nowline: '',
     itemstatus: '',
-    updateItemResult: ''
+    updateItemResult: '',
+    lossmappingLinebodyAll: [],
 }

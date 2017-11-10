@@ -1,129 +1,132 @@
 @import "./mobile.scss";
 .lossmapping {
-    width: 90%;
-    margin: P(76) auto;
-    height: 80%;
-    color: #040404;
-    border: 1px solid #BDBDBD;
-    border-radius: 4px;
-    overflow: hidden;
-    .titleContainer {
-        // line-height: P(52);
-        height: 7%;
-        padding-left: P(35);
-        font-size: P(18);
-        border-bottom: 1px solid #BDBDBD;
-        vertical-align: middle;
-        padding-top: 1%;
-        padding-bottom: 1%;
-    }
-    .tableContainer {
-        overflow-y: auto;
-        height: 93%;
-        .tableBody {
-            width: 100%;
-            height: 100%;
-        }
-        .tableBody tr {
-            border-bottom: 1px solid #BDBDBD;
-        }
-        .tableBody tr:last-child {
-            border-bottom: none;
-        }
-        .tableBody td {
-            font-size: P(16);
-            text-align: center;
-        }
-        .firstCol {
-            width: 10%;
-            border-right: 1px solid #BDBDBD;
-        }
-        .secordCol {
-            width: 90%;
-            padding-top: 16px;
-            padding-bottom: 16px;
-        }
-    }
-    .showTimeAndArea {
-        font-size: P(18);
-        position: absolute;
-        right: 5%;
-        top: P(77);
-        width: P(144);
-        line-height: P(38);
-        text-align: center;
-        vertical-align: middle;
-        background: #e1e1e1;
+    width: 100%;
+    height: 100%;
+    .lossmappingContainer {
+        width: 90%;
+        height: 82%;
+        color: #040404;
+        border: 1px solid #BDBDBD;
         border-radius: 4px;
-        z-index: 100;
-        cursor: pointer;
-        .icon-drop-down2 {
-            display: inline-block;
-            color: #aaaaaa;
-            font-weight: bold;
+        position: relative;
+        .titleContainer {
+            // line-height: P(52);
+            height: 7%;
+            padding-left: P(35);
+            font-size: P(18);
+            border-bottom: 1px solid #BDBDBD;
+            vertical-align: middle;
+            padding-top: 1%;
+            padding-bottom: 1%;
         }
-        .rotate {
-            transform: rotate(180deg);
+        .tableContainer {
+            overflow-y: auto;
+            height: 93%;
+            .tableBody {
+                width: 100%;
+                height: 100%;
+            }
+            .tableBody tr {
+                border-bottom: 1px solid #BDBDBD;
+            }
+            .tableBody tr:last-child {
+                border-bottom: none;
+            }
+            .tableBody td {
+                font-size: P(16);
+                text-align: center;
+            }
+            .firstCol {
+                width: 10%;
+                border-right: 1px solid #BDBDBD;
+            }
+            .secordCol {
+                width: 90%;
+                padding-top: 16px;
+                padding-bottom: 16px;
+            }
         }
-    }
-    .hidechoose {
-        opacity: 0;
-        visibility: hidden;
-    }
-    .showchoose {
-        visibility: visible;
-        opacity: 1;
-        transition: all 0.5s 0.3s;
-        width: P(316);
-        height: 80%;
-        position: absolute;
-        right: 5%;
-        top: P(77);
-        background: #eeeeee;
-        display: flex;
-        flex-direction: column;
-        // animation: show 0.5s;
-        .box {
-            width: P(266);
-            margin: P(66) auto;
-            h1 {
-                color: #131313;
-                font-size: P(14);
-                line-height: P(36);
-                padding-left: P(18);
-                border-bottom: 1px solid #b4b4b4;
+        .showTimeAndArea {
+            font-size: P(18);
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: P(144);
+            line-height: P(38);
+            text-align: center;
+            vertical-align: middle;
+            background: #e1e1e1;
+            border-radius: 4px;
+            z-index: 100;
+            cursor: pointer;
+            .icon-drop-down2 {
+                display: inline-block;
+                color: #aaaaaa;
                 font-weight: bold;
             }
-            .time {
-                margin: P(18) auto;
-                padding-left: P(18);
-                display: flex;
-                justify-content: space-between;
-                span {
-                    font-size: P(14);
-                    line-height: P(22);
-                    display: inline-block;
-                }
-                .cov-vue-date {
-                    display: inline-block;
-                }
+            .rotate {
+                transform: rotate(180deg);
             }
         }
-        .chooseArea {
-            flex: 1;
-            padding-left: P(18);
-            width: 100%;
-            height: auto;
-            margin: 0;
+        .hidechoose {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .showchoose {
+            visibility: visible;
+            opacity: 1;
+            transition: all 0.5s 0.3s;
+            width: P(316);
+            height: 100%;
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: #eeeeee;
             display: flex;
             flex-direction: column;
-            .area {
-                padding-left: P(18);
+            // animation: show 0.5s;
+            .box {
+                width: P(266);
+                margin: P(66) auto;
+                h1 {
+                    color: #131313;
+                    font-size: P(14);
+                    line-height: P(36);
+                    padding-left: P(18);
+                    border-bottom: 1px solid #b4b4b4;
+                    font-weight: bold;
+                }
+                .time {
+                    margin: P(18) auto;
+                    padding-left: P(18);
+                    display: flex;
+                    justify-content: space-between;
+                    span {
+                        font-size: P(14);
+                        line-height: P(22);
+                        display: inline-block;
+                    }
+                    .cov-vue-date {
+                        display: inline-block;
+                    }
+                }
+            }
+            .chooseArea {
                 flex: 1;
-                margin-top: P(14);
+                padding-left: P(18);
                 width: 100%;
                 height: auto;
-                overflow: auto;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                .area {
+                    padding-left: P(18);
+                    flex: 1;
+                    margin-top: P(14);
+                    width: 100%;
+                    height: auto;
+                    overflow: auto;
+                }
             }
         }
     }

@@ -28,7 +28,7 @@ export default {
       setting: {
         async: {
           enable: true,
-          url: "http://116.196.113.167:3001/areaAllSet/showAreaAll",
+          url: "http://116.62.10.199:3001/areaAllSet/showAreaAll",
           type: "get"
         },
         callback: {

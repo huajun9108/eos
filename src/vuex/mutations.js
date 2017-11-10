@@ -65,5 +65,15 @@ export default {
 
         state.improList = json
 
+    },
+    showObjectnowBylinedyid(state, json) {
+        state.nowline = json
+    },
+    showImpItemstatus(state, json) {
+        state.itemstatus = json[0]
+        console.log(state.itemstatus)
+    },
+    updateImpItemstatus(state, json) {
+        state.updateItemResult = json
     }
 }

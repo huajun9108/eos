@@ -60,15 +60,18 @@
                 width: 100%;
                 height: 100%;
                 position: relative;
-                .common {
-                    width: 95%;
-                    height: 85%;
-                    position: absolute;
-                    margin: auto;
-                    left: 0;
-                    right: 0;
-                    top: 0;
-                    bottom: 0;
+                .user_common {
+                    width: 100%;
+                    height: 98%;
+                    box-sizing: border-box;
+                    padding: P(85) 0 P(85) P(76);
+                    .user_maincontent {
+                        width: 95%;
+                        height: 100%;
+                        border: 1px solid #bdbdbd;
+                        border-radius: P(4);
+                        color: #040404;
+                    }
                 }
             }
         }

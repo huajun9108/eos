@@ -25,5 +25,8 @@ export default {
     updatePwdResult: '',
     lineBody: '',
     tier2: [],
-    improList: []
+    improList: [],
+    nowline: '',
+    itemstatus: '',
+    updateItemResult: ''
 }

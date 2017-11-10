@@ -112,7 +112,7 @@ export default{
                 this.$router.push({name:"area"})
             }else{
                 sessionStorage.setItem("userid",newVal.data.userid);
-                this.$router.push({name:"pert",params:{userid:sessionStorage.getItem("userid")}})
+                this.$router.push({name:"useraccount",params:{userid:sessionStorage.getItem("userid")}})
             }
         },
     }

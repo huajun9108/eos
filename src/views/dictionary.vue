@@ -37,7 +37,7 @@ export default {
       settingKpi: {
         async: {
           enable: true,
-          url: "http://116.196.113.167:3001/KPISet/showKPIAll",
+          url: "http://116.62.10.199:3001/KPISet/showKPIAll",
           type: "get",
         },
         callback: {
@@ -70,7 +70,7 @@ export default {
       settingCategory: {
         async: {
           enable: true,
-          url: "http://116.196.113.167:3001/losscategory/selectLossAll",
+          url: "http://116.62.10.199:3001/losscategory/selectLossAll",
           type: "get",
         },
         callback: {
@@ -155,19 +155,19 @@ export default {
     },
     zTreeBeforeRenameKpi: function(treeId, treeNode, newName, isCancel) {
       this.cancelEdit(treeId, treeNode, isCancel);
-      this.zTreeAdd(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/KPISet/addKPItwoLev");
-      this.zTreeUpdate(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/KPISet/updateKPItwoLev");
+      this.zTreeAdd(treeId, treeNode, newName, isCancel, "http://116.62.10.199:3001/KPISet/addKPItwoLev");
+      this.zTreeUpdate(treeId, treeNode, newName, isCancel, "http://116.62.10.199:3001/KPISet/updateKPItwoLev");
     },
     zTreeBeforeRenameCategory: function(treeId, treeNode, newName, isCancel) {
       this.cancelEdit(treeId, treeNode, isCancel);
-      this.zTreeAdd(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/losscategory/addLossOne");
-      this.zTreeUpdate(treeId, treeNode, newName, isCancel, "http://116.196.113.167:3001/losscategory/updateLossById");
+      this.zTreeAdd(treeId, treeNode, newName, isCancel, "http://116.62.10.199:3001/losscategory/addLossOne");
+      this.zTreeUpdate(treeId, treeNode, newName, isCancel, "http://116.62.10.199:3001/losscategory/updateLossById");
     },
     zTreeBeforeRemoveKpi: function(treeId, treeNode) {
-      this.zTreeBeforeRemove(treeId, treeNode, "http://116.196.113.167:3001/KPISet/deleteKPItwoLev");
+      this.zTreeBeforeRemove(treeId, treeNode, "http://116.62.10.199:3001/KPISet/deleteKPItwoLev");
     },
     zTreeBeforeRemoveCategory: function(treeId, treeNode) {
-      this.zTreeBeforeRemove(treeId, treeNode, "http://116.196.113.167:3001/losscategory/deleteLossById");
+      this.zTreeBeforeRemove(treeId, treeNode, "http://116.62.10.199:3001/losscategory/deleteLossById");
     },
     zTreeBeforeRemove: function(treeId, treeNode, url) {
       if (confirm("确认删除？")) {

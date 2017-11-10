@@ -1,7 +1,7 @@
 import axios from "axios"
 import qs from 'qs'
 
-axios.defaults.baseURL = "http://116.196.113.167:3001";
+axios.defaults.baseURL = "http://116.62.10.199:3001";
 
 export default {
     adminLogin({ commit }, obj) {
@@ -248,9 +248,9 @@ export default {
         })
     },
     showImpItempool({ commit }, obj) {
-        axios.get("/impobject/showImpItempool", {
-
-        }).then(res => {
+        axios.post("/impobject/showImpItempool", qs.stringify({
+            "linebodyId": 6
+        })).then(res => {
             console.log(res.data)
             return res.data
         }).then(json => {
@@ -259,5 +259,54 @@ export default {
             console.log(err)
         })
 
-    }
+    },
+    showObjectnowBylinedyid({ commit }, obj) {
+        axios.post("/impobject/showObjectnowBylinedyid", qs.stringify({
+            "linebodyId": 6
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("showObjectnowBylinedyid", json)
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+    showImpItemstatus({ commit }, obj) {
+        axios.post("/impobject/showImpItemstatus", qs.stringify({
+            "lossId": obj.lossId
+        })).then(res => {
+            console.log(res.data.data)
+            return res.data.data
+        }).then(json => {
+            commit("showImpItemstatus", json)
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+    updateImpItemstatus({ commit }, obj) {
+        axios.post("/impobject/updateImpItemstatus ", qs.stringify({
+            "lossId": obj.lossId,
+            "status": obj.status,
+            "projectNumber": obj.projectNumber,
+            "projectName": obj.projectName,
+            "areaBlong": obj.areaBlong,
+            "projectMethod": obj.projectMethod,
+            "projectManager": obj.projectManager,
+            "teamMember": obj.teamMember,
+            "planStart": obj.planStart,
+            "actualStart": obj.actualStart,
+            "planEnd": obj.planEnd,
+            "actualEnd": obj.actualEnd,
+            "target": obj.target,
+            "actualValue": obj.actualValue
+        })).then(res => {
+            console.log(res)
+            return res.data.data
+        }).then(json => {
+            commit("updateImpItemstatus", json)
+        }).catch(err => {
+            console.log(err)
+        })
+    },
 }

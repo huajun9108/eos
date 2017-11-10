@@ -16,10 +16,6 @@ import Lossmaping from "../views/lossmaping.vue";
 import Savingbook from "../views/savingbook.vue"
 import Datainput from "../views/datainput.vue"
 import Useraccount from "../views/userAccount.vue"
-import Pert from "../views/pert.vue"
-import Lossm from "../views/lossm.vue"
-import kpi from "../views/datainputkpi.vue"
-import loss from "../views/loss.vue"
 import target from "../views/target.vue"
 import Improvement from "../views/improvement.vue"
 
@@ -69,18 +65,6 @@ var routes = [{
                 path: "overview",
                 component: Overview,
                 name: "overview",
-                children: [{
-                        path: "pert",
-                        component: Pert,
-                        name: "pert",
-                    },
-                    {
-                        path: "lossm",
-                        component: Lossm,
-                        name: "lossm",
-                    }
-                ],
-                redirect: "/user/overview/pert",
             },
             {
                 path: "performance",
@@ -112,7 +96,7 @@ var routes = [{
                 component: Useraccount,
                 name: "useraccount",
             },
-            { path: "*", redirect: "/user/overview/pert" }
+            { path: "*", redirect: "/user/overview" }
         ]
     },
 

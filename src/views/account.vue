@@ -109,11 +109,11 @@ export default {
       });
 
      },
-    changeAllChecked(e){
+    changeAllChecked(){
       var _this = this;
       console.log(_this.checkedUserArr);
       //alert(this.checked);
-      if (!event.target.checked) {//实现反选
+      if (this.checkedAll) {//实现反选
         _this.checkedUserArr = [];
       }else{//实现全选
         _this.checkedUserArr = [];

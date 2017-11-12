@@ -164,7 +164,7 @@ export default {
           "tier": "MaintCosts"
         },
       ],
-      lengthShiftTimeValue: [new Date(2017, 11, 12, 8, 0, 0), new Date(2017, 11, 12, 18, 0, 0)],
+      lengthShiftTimeValue: [],
       startTimeValue: '',
       durationTimeValue: '',
       endTimeValue: '',

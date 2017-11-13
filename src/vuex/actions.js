@@ -309,6 +309,18 @@ export default {
             console.log(err)
         })
     },
+    addObjectnowBylossid({ commit }, obj) {
+        axios.post("/impobject/addObjectnowBylossid ", qs.stringify({
+            "lossIdList": obj.lossId,
+        })).then(res => {
+            console.log(res)
+            return res.data.data
+        }).then(json => {
+            commit("addObjectnowBylossid", json)
+        }).catch(err => {
+            console.log(err)
+        })
+    },
     selectLossmappingLinebody({ commit }, obj) {
         axios.get("/lossmapping/linebody", {}).then(res => {
             console.log(res.data.data)

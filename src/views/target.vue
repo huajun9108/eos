@@ -31,7 +31,7 @@
                             <el-date-picker
                             v-model="dateStart"
                             type="date"
-                            format="yyyy 年 MM 月 dd 日"
+                            format="yyyy-MM-dd"
                             value-format="yyyy-MM-dd"
                             placeholder="选择日期">
                             </el-date-picker>
@@ -39,7 +39,7 @@
                         <li class="target_set"><el-date-picker
                             v-model="dateEnd"
                             type="date"
-                            format="yyyy 年 MM 月 dd 日"
+                            format="yyyy-MM-dd"
                             value-format="yyyy-MM-dd"
                             placeholder="选择日期">
                             </el-date-picker>
@@ -67,12 +67,8 @@
     </div>
 </template>
 <script>
-import myDatepicker from 'vue-datepicker'
 import {mapActions,mapState} from "vuex"
 export default{
-    components: {
-		'date-picker': myDatepicker
-	},
     data () {
         return {
             targetList:[],

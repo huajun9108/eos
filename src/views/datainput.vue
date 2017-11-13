@@ -36,19 +36,7 @@
                     <span class="childFifthCol childTableCol">{{ c.name }}</span>
                   </div>
                 </div>
-                <!-- <div class="childTableBody">
-                  <table>
-                    <tbody>
-                      <tr v-for="c in childTableData">
-                        <td class="childFirstCol">{{ c.name }}</td>
-                        <td class="childSecondCol">{{ c.name }}</td>
-                        <td class="childThirdCol">{{ c.name }}</td>
-                        <td class="childFourthCol">{{ c.name }}</td>
-                        <td class="childFifthCol">{{ c.name }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div> -->
+                
               </div>
             </td>
             <td class="fourthCol">
@@ -66,7 +54,7 @@
             Tier3<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="data in tierMenuData">{{ data.name }}</el-dropdown-item>
+            <el-dropdown-item v-for="(data,idx) in tierMenuData" :key="idx">{{ data.name }}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <el-dropdown class="dropdownTier">
@@ -74,7 +62,7 @@
             Tier4<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="data in tierMenuData">{{ data.name }}</el-dropdown-item>
+            <el-dropdown-item v-for="(data,idx) in tierMenuData" :key="idx">{{ data.name }}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>

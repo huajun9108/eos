@@ -76,8 +76,9 @@ export default {
     updateImpItemstatus(state, json) {
         state.updateItemResult = json
     },
-
-
+    addObjectnowBylossid(state, json) {
+        state.addObject = json
+    },
     selectLossmappingLinebody(state, json) {
         state.lossmappingLinebodyAll = json
     }

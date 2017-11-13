@@ -60,20 +60,6 @@ input[type='radio'] {
     display: none;
 }
 
-// #checkbox-1+label {
-//     box-sizing: border-box;
-//     background: url("./assets/images/selected.png") no-repeat center;
-//     padding: 7px;
-//     display: inline-block;
-//     position: relative;
-// }
-// #checkbox-1:checked+label {
-//     box-sizing: border-box;
-//     background: url("./assets/images/unselected.png") no-repeat center;
-//     padding: 7px;
-//     display: inline-block;
-//     position: relative;
-// }
 .uncheck+label {
     box-sizing: border-box;
     background: url("./assets/images/selected.png") no-repeat center;
@@ -149,32 +135,6 @@ label {
     padding: 8px 18px;
     display: inline-block;
     position: relative;
-}
-
-@keyframes show {
-    from {
-        right: -100%;
-    }
-    to {
-        right: 0;
-    }
-}
-
-@keyframes hide {
-    from {
-        right: 0;
-    }
-    to {
-        left: -100%;
-    }
-}
-
-.rightshow {
-    animation: show 0.5s;
-}
-
-.righthide {
-    animation: hide 1s;
 }
 
 .table {

@@ -30,4 +30,5 @@ export default {
     itemstatus: '',
     updateItemResult: '',
     lossmappingLinebodyAll: [],
+    addObject: ''
 }

@@ -60,8 +60,15 @@
                             width: P(342);
                             padding-left: P(60);
                             border-right: 1px solid #dde4e8;
+                            box-sizing: border-box;
+                            .el-date-editor {
+                                width: P(222);
+                                .el-input__inner {
+                                    width: P(222);
+                                }
+                            }
                             .target_no {
-                                width: P(220);
+                                width: P(222);
                                 height: 38px;
                                 border: 1px solid #bdbdbd;
                                 border-radius: 4px;
@@ -107,7 +114,7 @@
     }
     
     .el-date-picker {
-        top: 233px !important;
+        top: 209px !important;
     }
     
     .el-scrollbar {

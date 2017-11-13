@@ -175,3 +175,31 @@ textarea {
 .table-hover>tbody>tr>.icon-delete_2:hover {
     color: #ff9c00
 }
+
+.showTimeAndArea {
+    font-size: P(18);
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: P(144);
+    line-height: P(38);
+    text-align: center;
+    vertical-align: middle;
+    background: #e1e1e1;
+    border-radius: 4px;
+    z-index: 100;
+    cursor: pointer;
+    .icon-drop-down2 {
+        display: inline-block;
+        color: #aaaaaa;
+        font-weight: bold;
+    }
+    .rotate {
+        transform: rotate(180deg);
+    }
+}
+
+// .hidechoose {
+// opacity: 0;
+// display: none;
+// }

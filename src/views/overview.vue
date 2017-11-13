@@ -1,6 +1,11 @@
 <template>
     <div class="overview user_common">
         <div class="overview_content  user_maincontent">
+        <div class="showTimeAndArea" @click="showlDialog">
+            <span :class="isShow?'iconfont icon-drop-down2 rotate':'iconfont icon-drop-down2'"></span>
+            <span class="areaAndShift">时间/区域</span>
+        </div>
+        <v-timearea v-show="isShow"></v-timearea>
             <span class="overview_title">Performance</span>
             <div class="over_table">
                 <table class="table table-hover text-center overview_tableBody">
@@ -98,9 +103,14 @@
 </template>
 <script>
 import echarts from "echarts"
+import timearea from "../components/timeArea"
 export default {
+    components: {
+        "v-timearea": timearea
+    },
    data(){
        return{
+        isShow:false,
         upColor : '#3670be',
         upBorderColor :'#3670be',
         downColor : '#f3d3a1',
@@ -199,6 +209,9 @@ export default {
        }
    },
    methods:{
+        showlDialog(data){
+            this.isShow = !this.isShow 
+        },
         splitData(rawData) {
             var categoryData = [];
             var values = []

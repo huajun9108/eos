@@ -1,5 +1,6 @@
 <template>
-    <div class="account">
+    <div class="account user_common">
+      <div class="account_content user_maincontent">
       <div class="userinfor acommon">
         <h1>个人信息</h1>
         <div class="info-content">
@@ -100,6 +101,7 @@
         </div>
       </div>
       </div>
+    </div>
     </div>
     </div>
 </template>

@@ -151,7 +151,8 @@
                 planend:'',
                 actualend:'',
                 target:'',
-                actualvalue:''
+                actualvalue:'',
+                addObjId:[]
             }
                 
         },
@@ -160,8 +161,8 @@
                 'improList',
                 'nowline',
                 'itemstatus',
-                'updateItemResult'
-				
+                'updateItemResult',
+				'addObject'
 			])
 		},
         methods:{
@@ -169,8 +170,18 @@
                 'showImpItempool',
                 'showObjectnowBylinedyid',
                 'showImpItemstatus',
-                'updateImpItemstatus'
+                'updateImpItemstatus',
+                'addObjectnowBylossid'
             ]),
+            ArrayBlank(arr){
+                for(var i = 0 ;i<arr.length;i++){
+                if(arr[i] == "" || typeof(arr[i]) == "undefined"){
+                        arr.splice(i,1);
+                        i= i-1;
+                }
+                }
+                return arr;
+            },
             cancel(){
 
             },
@@ -221,9 +232,19 @@
                 this.proList.forEach(item=> {
                     if(this.arrIsContains(this.proNowList,item)){
                         this.proNowList.push(item)
+                        this.addObjId.push(item.id)
                     }
                 }, this);
                 this.arrlength = false
+                console.log(this.proListId)
+                console.log(this.addObjId)
+                this.ArrayBlank(this.addObjId)
+                this.addObjectnowBylossid({
+                    lossId:this.addObjId.join(",")
+                })
+                
+                this.addObjId=[]
+
             },
             editpro(lossId){
                 this.detailFlag = true
@@ -257,12 +278,12 @@
                     })
                 })
                 this.nowline.forEach((item)=> {
-                    if(!this.arrIsContains(this.leftId,item.losscategoryLossid)){
+                    if(!this.arrIsContains(this.leftId,item.lossid)){
                        
                         setTimeout(function() {
-                            _this.$refs[item.losscategoryLossid][0].className = "pro_active"
+                            _this.$refs[item.lossid][0].className = "pro_active"
                             // _this.proList=this.nowLine
-                        }, 800);
+                        }, 10);
                         
                     }
                 });
@@ -270,8 +291,8 @@
             },
             nowline(){
                 this.nowline.forEach((item)=> {
-                    this.proNowList.push({id:item.objectid,name:item.name})
-                    this.proList.push({id:item.objectid,name:item.name})
+                    this.proNowList.push({id:item.lossid,name:item.name})
+                    this.proList.push({id:item.lossid,name:item.name})
                 }, this);
                 console.log(this.proNowList)
             },
@@ -313,16 +334,12 @@
             
         },
         created(){
-            
-            
             // console.log(this.proList)
         },
         mounted(){
             this.showImpItempool()
             this.showObjectnowBylinedyid()
-            console.log((this.nowline) instanceof Array)
-            
-           
+            // console.log((this.nowline) instanceof Array)
         }
 	}
 </script>

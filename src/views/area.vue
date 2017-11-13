@@ -102,6 +102,7 @@ export default {
           "id": treeNode.id,
         };
         $.get("http://116.62.10.199:3001/areaAllSet/deleteArea", obj, function(response, status) {
+          console.log(response);
           if (status !== "success") {
             that.$message.error("服务器请求失败");
           }
@@ -150,6 +151,7 @@ export default {
           };
           $.post("http://116.62.10.199:3001/areaAllSet/addAreaOne", obj,
             function(data, textStatus) {
+              console.log(data);
               if (textStatus !== "success") {
                 that.$message.error("服务器请求失败");
                 setTimeout(function() {
@@ -183,6 +185,7 @@ export default {
         };
         $.post("http://116.62.10.199:3001/areaAllSet/updateArea", obj,
           function(data, textStatus) {
+            console.log(data);
             if (data.status === "101") {
               that.$message.error("该区域已存在！");
               setTimeout(function() {

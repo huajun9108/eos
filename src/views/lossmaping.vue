@@ -42,7 +42,6 @@
     },
     methods: {
       ...mapActions([
-        'selectUserById',
         'selectLossmappingLinebody'
       ]),
       showlDialog(data){
@@ -83,22 +82,10 @@
     },
     computed: {
       ...mapState([
-        "validarea",
-        'tier2',
         'lossmappingLinebodyAll'
       ])
     },
     watch: {
-      validarea(newVal) {
-        this.validarea.forEach(
-          item => {
-            if (item.checked) {
-              this.validareaList.push(item);
-            }
-          }
-        );
-        $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
-      },
       lossmappingLinebodyAll(newVal){
         this.lossmappingLinebodyAll.forEach(
         item => {
@@ -116,7 +103,7 @@
       let _this = this
       setTimeout(function() {
         _this.initCharts();
-      }, 100);
+      }, 800);
       
     }
   }

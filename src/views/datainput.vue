@@ -7,8 +7,7 @@
     </div>
     <div class="lengthShift" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <span class="lengthShiftTime">本班次时间：</span>
-      <el-date-picker v-model="lengthShiftTimeValue" type="datetimerange" range-separator="至" start-placeholder="开始日期"
-      end-placeholder="结束日期" @change="lengthShiftTimeChange" value-format="yyyy-MM-dd HH:mm:ss">
+      <el-date-picker v-model="lengthShiftTimeValue" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="lengthShiftTimeChange" value-format="yyyy-MM-dd HH:mm:ss">
       </el-date-picker>
     </div>
     <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
@@ -49,22 +48,21 @@
     <div class="shade" :class="showFlag?'showchoose':'hidechoose'"></div>
     <div class="lossChoose" :class="showFlag?'showchoose':'hidechoose'">
       <div class="dirChoose">
-        <el-select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3">
+        <el-select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @change="getTier($event)">
           <el-option v-for="item in tierMenuData" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
-        <el-select class="dropdownTier" v-model="childTierValue" clearable placeholder="Tier4">
+        <el-select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4">
           <el-option v-for="item in childTierMenuData" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
-            <el-dropdown-item v-for="(data, index) in tierMenuData" :key="index">{{ data.name }}</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <!-- <el-dropdown-item v-for="(data, index) in tierMenuData" :key="index">{{ data.name }}</el-dropdown-item>
+        </el-dropdown-menu>
+        </el-dropdown> -->
       </div>
       <div class="startTimeContainer">
         <span class="timeTitle">开始时间：</span>
-        <el-date-picker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" @change="startTimeValueChange"
-        value-format="yyyy-MM-dd HH:mm:ss">
+        <el-date-picker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" @change="startTimeValueChange" value-format="yyyy-MM-dd HH:mm:ss">
         </el-date-picker>
       </div>
       <div class="durationTimeContainer">
@@ -76,8 +74,7 @@
       </div>
       <div class="endTimeContainer">
         <span class="timeTitle">结束时间：</span>
-        <el-date-picker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" @change="endTimeValueChange"
-        value-format="yyyy-MM-dd HH:mm:ss">
+        <el-date-picker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" @change="endTimeValueChange" value-format="yyyy-MM-dd HH:mm:ss">
         </el-date-picker>
       </div>
       <div class="btnContainer text-right">
@@ -99,28 +96,93 @@ export default {
           "label": "Lack of demand"
         },
         {
-          "value": "Lack of demand",
-          "label": "Lack of demand"
+          "value": "Preventive Maintenance",
+          "label": "Preventive Maintenance"
+        },
+        {
+          "value": "Training, Meetings & Shift Breaks",
+          "label": "Training, Meetings & Shift Breaks"
         },
         {
           "value": "Breakdowns",
           "label": "Breakdowns"
+        },
+        {
+          "value": "Short Stops",
+          "label": "Short Stops"
+        },
+        {
+          "value": "First Level Maintenance",
+          "label": "First Level Maintenance"
+        },
+        {
+          "value": "Lack Of Resources & Waiting",
+          "label": "Lack Of Resources & Waiting"
+        },
+        {
+          "value": "Setup Time & Adjustment",
+          "label": "Setup Time & Adjustment"
+        },
+        {
+          "value": "Process Incidents",
+          "label": "Process Incidents"
+        },
+        {
+          "value": "Speed Loss",
+          "label": "Speed Loss"
+        },
+        {
+          "value": "Overusage",
+          "label": "Overusage"
+        },
+      ],
+      allChildTier: [{
+          "tier": "Lack of demand",
+          "label": "Lack"
+        },
+        {
+          "tier": "Preventive Maintenance",
+          "label": "Preventive"
+        },
+        {
+          "tier": "Training, Meetings & Shift Breaks",
+          "label": "Training"
+        },
+        {
+          "tier": "Breakdowns",
+          "label": "Breakdowns"
+        },
+        {
+          "tier": "Short Stops",
+          "label": "Short"
+        },
+        {
+          "tier": "First Level Maintenance",
+          "label": "First"
+        },
+        {
+          "tier": "Lack Of Resources & Waiting",
+          "label": "Lack Of"
+        },
+        {
+          "tier": "Setup Time & Adjustment",
+          "label": "Setup"
+        },
+        {
+          "tier": "Process Incidents",
+          "label": "Process"
+        },
+        {
+          "tier": "Speed Loss",
+          "label": "Speed"
+        },
+        {
+          "tier": "Overusage",
+          "label": "Overusage"
         },
       ],
       tierValue: '',
-      childTierMenuData: [{
-          "value": "Lack of demand",
-          "label": "Lack of demand"
-        },
-        {
-          "value": "Lack of demand",
-          "label": "Lack of demand"
-        },
-        {
-          "value": "Breakdowns",
-          "label": "Breakdowns"
-        },
-      ],
+      childTierMenuData: [],
       childTierValue: '',
       childTableData: [{
           "tierValue": "a",
@@ -188,7 +250,21 @@ export default {
     }
   },
   methods: {
-    deleteLoss(index){
+    getTier: function(tier) {
+      let tempTier = [];
+      this.childTierMenuData = [];
+      this.childTierValue = '';
+      for (let val of this.allChildTier) {
+        if (tier === val.tier) {
+          tempTier.push({
+            "label": val.label,
+            "value": val.label
+          });
+        }
+      }
+      this.childTierMenuData = tempTier;
+    },
+    deleteLoss(index) {
       this.childTableData.splice(index, 1);
     },
     lengthShiftTimeChange: function(val) {
@@ -226,19 +302,19 @@ export default {
       }
     },
     startTimeValueChange: function(val) {
-      if(!this.startTimeValue) {
+      if (!this.startTimeValue) {
         this.durationTimeValue = '';
         this.endTimeValue = '';
         return;
       }
       const start = new Date(this.startTimeValue);
       const startMs = start.getTime();
-      if(this.durationTimeValue !== '') {
+      if (this.durationTimeValue !== '') {
         const durationArray = this.durationTimeValue.split(":");
         const durationMs = this.timeTranslateMs(durationArray);
         const end = new Date(startMs + durationMs);
         this.endTimeValue = this.dateFormat(end);
-      } else if(this.endTimeValue !== '') {
+      } else if (this.endTimeValue !== '') {
         const end = new Date(this.endTimeValue);
         const endMs = end.getTime();
         const durationMs = endMs - startMs;
@@ -246,7 +322,7 @@ export default {
       }
     },
     durationTimeValueChange: function(val) {
-      if(!this.durationTimeValue) {
+      if (!this.durationTimeValue) {
         this.startTimeValue = '';
         this.endTimeValue = '';
         return;
@@ -266,14 +342,14 @@ export default {
       }
     },
     endTimeValueChange: function(val) {
-      if(!this.endTimeValue) {
+      if (!this.endTimeValue) {
         this.startTimeValue = '';
         this.durationTimeValue = '';
         return;
       }
       const end = new Date(this.endTimeValue);
       const endMs = end.getTime();
-      if(this.durationTimeValue !== '') {
+      if (this.durationTimeValue !== '') {
         const durationArray = this.durationTimeValue.split(":");
         const durationMs = this.timeTranslateMs(durationArray);
         const start = new Date(endMs - durationMs);
@@ -307,9 +383,13 @@ export default {
     },
     confirmClick: function() {
       this.showFlag = !this.showFlag;
-      const obj = {"tierValue": this.tierValue, "childTierValue": this.childTierValue,
-      "startTimeValue": this.startTimeValue, "endTimeValue": this.endTimeValue };
-      if(obj){
+      const obj = {
+        "tierValue": this.tierValue,
+        "childTierValue": this.childTierValue,
+        "startTimeValue": this.startTimeValue,
+        "endTimeValue": this.endTimeValue
+      };
+      if (obj) {
         this.childTableData.push(obj);
         this.tierValue = '';
         this.childTierValue = '';

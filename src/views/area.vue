@@ -104,13 +104,14 @@ export default {
         $.get("http://116.62.10.199:3001/areaAllSet/deleteArea", obj, function(response, status) {
           console.log(response);
           if (status !== "success") {
-            that.$message.error("服务器请求失败");
+            _this.$message.error("服务器请求失败");
           }
           if (response.status === "0") {
             _this.$message.success("删除成功");
             zTree.removeNode(treeNode);
           } else {
-            that.$message.error("删除失败");
+            _this.$message.error("删除失败");
+            zTree.reAsyncChildNodes(null, "refresh");
           }
         })
       } else {
@@ -149,6 +150,7 @@ export default {
             "name": newName,
             "pId": treeNode.pId
           };
+          console.log(obj);
           $.post("http://116.62.10.199:3001/areaAllSet/addAreaOne", obj,
             function(data, textStatus) {
               console.log(data);
@@ -168,6 +170,7 @@ export default {
                 treeNode.id = data.id;
                 delete treeNode.isNew;
                 zTree.updateNode(treeNode);
+                that.$message.success("添加成功");
               }
             })
           return true;
@@ -189,7 +192,7 @@ export default {
             if (data.status === "101") {
               that.$message.error("该区域已存在！");
               setTimeout(function() {
-                zTree.editName(treeNode);
+                zTree.reAsyncChildNodes(null, "refresh");
               }, 10);
             } else if (data.status === "0") {
               that.$message.success("修改成功");

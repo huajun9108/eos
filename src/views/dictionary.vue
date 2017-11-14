@@ -1,26 +1,26 @@
 <template>
 <div class="dictionary">
-	<div class="kpiContainer dictionary_box">
-		<div class="title">
-			KPI
-		</div>
-		<div class="kpiContent dictionary_content">
-			<ul id="treeKpi" class="kpiTree ztree"></ul>
-		</div>
-	</div>
-	<div class="categoryContainer dictionary_box">
-		<div class="title">
-			LOSS CATEGORY
-		</div>
-		<div class="categoryContent dictionary_content">
-			<ul id="treeCategory" class="categoryTree ztree"></ul>
-		</div>
-	</div>
-	<div class="savingDictionaryContainer dictionary_box">
-		<div class="title">
-			LOSS INTO SAVING DICTIONARY
-		</div>
-		<div class="savingDictionaryContent dictionary_content">
+  <div class="kpiContainer dictionary_box">
+    <div class="title">
+      KPI
+    </div>
+    <div class="kpiContent dictionary_content">
+      <ul id="treeKpi" class="kpiTree ztree"></ul>
+    </div>
+  </div>
+  <div class="categoryContainer dictionary_box">
+    <div class="title">
+      LOSS CATEGORY
+    </div>
+    <div class="categoryContent dictionary_content">
+      <ul id="treeCategory" class="categoryTree ztree"></ul>
+    </div>
+  </div>
+  <div class="savingDictionaryContainer dictionary_box">
+    <div class="title">
+      LOSS INTO SAVING DICTIONARY
+    </div>
+    <div class="savingDictionaryContent dictionary_content">
 
     </div>
   </div>
@@ -95,7 +95,7 @@ export default {
           renameTitle: '编辑',
           showRemoveBtn: this.hiddenParentBtn,
           showRenameBtn: this.hiddenParentBtn,
-           drag: {
+          drag: {
             isCopy: false,
             isMove: false,
           }
@@ -170,18 +170,22 @@ export default {
       this.zTreeBeforeRemove(treeId, treeNode, "http://116.62.10.199:3001/losscategory/deleteLossById");
     },
     zTreeBeforeRemove: function(treeId, treeNode, url) {
+      var _this = this;
       if (confirm("确认删除？")) {
         var obj = {
           "id": treeNode.id,
         };
         $.get(url, obj, function(response, status) {
           if (response.status === "0") {
-            return true;
+            _this.$message.success("删除成功");
+            zTree.removeNode(treeNode);
           } else {
-            return false;
+            _this.$message.error("删除失败");
+            zTree.reAsyncChildNodes(null, "refresh");
           }
         })
       } else {
+        _this.$message.error("删除失败");
         return false;
       }
     },
@@ -193,26 +197,27 @@ export default {
         setTimeout(function() {
           zTree.removeNode(treeNode);
         }, 10);
+        return true;
       }
       if (isCancel && !treeNode.isNew) {
-        setTimeout(function() {
-          zTree.cancelEditName();
-        }, 10);
+        return true;
       }
     },
     zTreeAdd: function(treeId, treeNode, newName, isCancel, url) {
+      var _this = this;
       var zTree = $.fn.zTree.getZTreeObj(treeId);
 
       if (!isCancel && newName.length == 0) {
-        alert("名称不能为空！");
+        _this.$message.error("名称不能为空！");
         return false;
       }
 
       if (!isCancel && treeNode.isNew) {
-        if (!confirm("确认修改？")) {
+        if (!confirm("确认添加？")) {
           setTimeout(function() {
             zTree.removeNode(treeNode);
           }, 10);
+          return true;
         } else {
           var obj = {
             "name": newName,
@@ -220,56 +225,62 @@ export default {
           };
           $.post(url, obj,
             function(data, textStatus) {
+              if (textStatus !== "success") {
+                _this.$message.error("服务器请求失败");
+                zTree.reAsyncChildNodes(null, "refresh");
+              }
+
               if (data.status === "101") {
-                alert("该词已存在，请重新输入！");
+                _this.$message.error("该词已存在，请重新输入！");
                 setTimeout(function() {
                   zTree.editName(treeNode);
                 }, 10);
-                return false;
               }
-
               if (data.id && treeNode.isNew) {
                 treeNode.id = data.id;
-								delete treeNode.isNew;
+                delete treeNode.isNew;
                 zTree.updateNode(treeNode);
-								return true;
+                _this.$message.success("添加成功");
               }
             })
+          return true;
         }
       }
     },
     zTreeUpdate: function(treeId, treeNode, newName, isCancel, url) {
+			var _this = this;
       var zTree = $.fn.zTree.getZTreeObj(treeId);
+      const oldName = treeNode.name;
       if (!isCancel && !treeNode.isNew) {
-        if (!confirm("确认修改？")) {
-          setTimeout(function() {
-            zTree.cancelEditName();
-          }, 10);
-        } else {
-          var obj = {
-            "name": newName,
-            "pId": treeNode.pId,
-            "id": treeNode.id,
-          };
-          $.post(url, obj,
-            function(data, textStatus) {
-							console.log(data);
-              if (data.status === "101") {
-                alert("该词已存在，请重新输入！");
-                setTimeout(function() {
-                  zTree.editName(treeNode);
-                }, 10);
-                return false;
-              }
-              if (data.status === "0") {
-								alert("修改成功");
-                return true;
-              } else {
-								alert("修改失败！");
-                return false;
-              }
-            })
+        if (oldName === newName) {
+          return true;
         }
+        var obj = {
+          "name": newName,
+          "pId": treeNode.pId,
+          "id": treeNode.id,
+        };
+        $.post(url, obj,
+          function(data, textStatus) {
+            console.log(data);
+            if (textStatus !== "success") {
+              _this.$message.error("服务器请求失败");
+              zTree.reAsyncChildNodes(null, "refresh");
+            }
+            if (data.status === "101") {
+              _this.$message.error("该词已存在！");
+              zTree.reAsyncChildNodes(null, "refresh");
+              return false;
+            }
+            if (data.status === "0") {
+              _this.$message.success("修改成功");
+              zTree.cancelEditName(newName);
+            } else {
+              _this.$message.error("修改失败");
+              zTree.reAsyncChildNodes(null, "refresh");
+            }
+          })
+        return true;
       }
     },
     zTreeOnModifyKpi: function(event, treeId, treeNode) {

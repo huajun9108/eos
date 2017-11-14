@@ -82,8 +82,8 @@
         </el-date-picker>
       </div>
       <div class="btnContainer text-right">
-        <span class="confirmBtn btn" @click="confirmClick">确定</span>
-        <span class="cancelBtn btn" @click="cancelClick">取消</span>
+        <span class="confirmBtn data_btn" @click="confirmClick">确定</span>
+        <span class="cancelBtn data_btn" @click="cancelClick">取消</span>
       </div>
     </div>
   </div>

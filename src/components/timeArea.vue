@@ -142,6 +142,7 @@ import { mapState, mapActions } from "vuex";
     background: #eeeeee;
     display: flex;
     flex-direction: column;
+    z-index: 100;
     .box {
         width: P(266);
         margin: P(66) auto;
@@ -172,7 +173,6 @@ import { mapState, mapActions } from "vuex";
         flex: 1;
         padding-left: P(18);
         width: 100%;
-        height: auto;
         margin: 0;
         display: flex;
         flex-direction: column;
@@ -181,7 +181,6 @@ import { mapState, mapActions } from "vuex";
             flex: 1;
             margin-top: P(14);
             width: 100%;
-            height: auto;
             overflow-y: auto;
         }
     }

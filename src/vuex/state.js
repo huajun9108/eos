@@ -30,5 +30,6 @@ export default {
     itemstatus: '',
     updateItemResult: '',
     lossmappingLinebodyAll: [],
-    addObject: ''
+    addObject: '',
+    deleteObject: ''
 }

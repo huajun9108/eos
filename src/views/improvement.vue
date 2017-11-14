@@ -14,7 +14,7 @@
                                 <td>{{item.name}}</td>
                                 <td></td>
                             </tr>
-                            <tr v-for="(option,index) in item.data" v-if="index!=0">
+                            <tr v-for="(option,index) in item.data" :key="index" v-if="index!=0">
                                 <td @click="choose({id:option.lossid,name:option.name})" :ref="option.lossid">{{option.name}}</td>
                             </tr>
                         </tbody>
@@ -162,7 +162,9 @@
                 'nowline',
                 'itemstatus',
                 'updateItemResult',
-				'addObject'
+                'addObject',
+                'deleteObject'
+                
 			])
 		},
         methods:{
@@ -171,7 +173,8 @@
                 'showObjectnowBylinedyid',
                 'showImpItemstatus',
                 'updateImpItemstatus',
-                'addObjectnowBylossid'
+                'addObjectnowBylossid',
+                'deleteObjectnowBylossid'
             ]),
             ArrayBlank(arr){
                 for(var i = 0 ;i<arr.length;i++){
@@ -260,6 +263,7 @@
                     if(item.id==idx){
                         this.proNowList.splice(index,1)
                         this.proList.splice(index,1)
+                        this.deleteObjectnowBylossid({lossId:item.id})
                     }
                 }, this);
                
@@ -277,23 +281,22 @@
                         this.leftId.push(option.lossid)
                     })
                 })
-                this.nowline.forEach((item)=> {
-                    if(!this.arrIsContains(this.leftId,item.lossid)){
-                       
-                        setTimeout(function() {
-                            _this.$refs[item.lossid][0].className = "pro_active"
-                            // _this.proList=this.nowLine
-                        }, 10);
-                        
-                    }
-                });
                console.log(this.leftId)
             },
             nowline(){
+                 let _this = this;
                 this.nowline.forEach((item)=> {
-                    this.proNowList.push({id:item.lossid,name:item.name})
+                   
+                    if(!this.arrIsContains(this.leftId,item.lossid)){
+                        // setTimeout(function() {
+                            _this.$refs[item.lossid][0].className = "pro_active"
+                            // _this.proList=this.nowLine
+                        // }, 100);
+                        
+                    }
+                     this.proNowList.push({id:item.lossid,name:item.name})
                     this.proList.push({id:item.lossid,name:item.name})
-                }, this);
+                });
                 console.log(this.proNowList)
             },
             itemstatus(){

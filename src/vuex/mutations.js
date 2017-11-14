@@ -79,6 +79,9 @@ export default {
     addObjectnowBylossid(state, json) {
         state.addObject = json
     },
+    deleteObjectnowBylossid(state, json) {
+        state.deleteObject = json
+    },
     selectLossmappingLinebody(state, json) {
         state.lossmappingLinebodyAll = json
     }

@@ -113,22 +113,6 @@
                     .childTableTitle>.childTableCol:last-child {
                         border-right: 1px solid #BDBDBD;
                     }
-                    // .childTableBody table {
-                    //   width: 100%;
-                    // }
-                    //
-                    // .childTableBody tbody {
-                    //   width: 100%;
-                    // }
-                    //
-                    // .childTableBody tr {
-                    //   width: 100%;
-                    //   border-bottom: 1px solid #BDBDBD;
-                    // }
-                    //
-                    // .childTableBody td {
-                    //   height: P(30);
-                    // }
                     .childFirstCol,
                     .childSecondCol {
                         width: 25%;
@@ -174,9 +158,9 @@
                 height: P(30);
                 margin-bottom: P(46);
                 .el-input__inner {
-                  background: #E1E1E1;
-                  font-size: P(14);
-                  color: #040404;
+                    background: #E1E1E1;
+                    font-size: P(14);
+                    color: #040404;
                 }
             }
             .dropdownTier:first-child {
@@ -194,13 +178,14 @@
                 position: absolute;
                 bottom: P(34);
                 right: P(40);
-                .btn {
+                .data_btn {
+                    display: inline-block;
                     font-size: P(14);
                     width: P(104);
-                    line-height: P(14);
-                    height: P(26);
+                    line-height: P(26);
                     border-radius: P(14);
                     color: #FFF;
+                    text-align: center;
                 }
                 .confirmBtn {
                     background-color: #1B3867;

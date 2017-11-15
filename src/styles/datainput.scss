@@ -107,16 +107,17 @@
             width: 100%;
             height: 100;
           }
+
+          .ivu-table .demo-table-info-row td {
+            background-color: pink;
+          }
           // th.ivu-table-column-center, td.ivu-table-column-center {
           //   height: P(30);
           //   font-size: P(14);
           // }
-
-
           // Table {
           //   width: 100%;
           // }
-
           // table tbody {
           //   display: block;
           //   overflow-y: scroll;
@@ -128,7 +129,6 @@
           //   width: 100%;
           //   table-layout: fixed;
           // }
-
           // table thead {
           //   width: calc( 100% - 1em );
           // }

@@ -21,49 +21,7 @@
             </td>
             <td class="thirdCol">
               <div class="childTableContainer">
-                <Table border height="202" :columns="childTabCols" :data="childTableData"></Table>
-                <!-- <div class="childTableTitle">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Tier3</th>
-                        <th>Tier4</th>
-                        <th>开始时间</th>
-                        <th>结束时间</th>
-                        <th>操作</th>
-                      </tr>
-                    </thead>
-                  </table>
-                </div>
-                <div class="childTableBody">
-                  <table>
-                    <tbody class="">
-                      <tr v-for="(c,idx) in childTableData" :key="idx">
-                        <td>{{ c.tierValue }}</td>
-                        <td>{{ c.childTierValue }}</td>
-                        <td>{{ c.startTimeValue }}</td>
-                        <td>{{ c.endTimeValue }}</td>
-                        <td @click="deleteLoss(idx)"><i class="icon-delete_2"></i></td>
-                      </tr>
-                    </tbody>
-                  </table> -->
-                <!-- </div> -->
-                <!-- <div class="childTableTitle">
-                  <span class="childFirstCol childTableCol">Tier3</span>
-                  <span class="childSecondCol childTableCol">Tier4</span>
-                  <span class="childThirdCol childTableCol">开始时间</span>
-                  <span class="childFourthCol childTableCol">结束时间</span>
-                  <span class="childFifthCol childTableCol">操作</span>
-                </div>
-                <div class="childTableBody">
-                  <div class="childTableRow" v-for="(c,idx) in childTableData" :key="idx">
-                    <span class="childFirstCol childTableCol">{{ c.tierValue }}</span>
-                    <span class="childSecondCol childTableCol">{{ c.childTierValue }}</span>
-                    <span class="childThirdCol childTableCol">{{ c.startTimeValue }}</span>
-                    <span class="childFourthCol childTableCol">{{ c.endTimeValue }}</span>
-                    <span class="childFifthCol childTableCol" @click="deleteLoss(idx)"><i class="icon-delete_2"></i></span>
-                  </div>
-                </div> -->
+                <Table border height="202" :columns="childTabCols" :data="childTableData" :columnClassName="columnClassName"></Table>
               </div>
             </td>
             <td class="fourthCol">
@@ -207,8 +165,7 @@ export default {
       tierValue: '',
       childTierMenuData: [],
       childTierValue: '',
-      childTabCols: [
-        {
+      childTabCols: [{
           title: 'Tier3',
           key: 'tier3',
           align: 'center',
@@ -244,7 +201,6 @@ export default {
                 on: {
                   click: () => {
                     this.deleteLoss(params.index)
-                    // this.show(params.index)
                   }
                 }
               }),
@@ -314,6 +270,12 @@ export default {
     }
   },
   methods: {
+    colClassName(col, index) {
+      if (index === 1) {
+        return 'demo-table-info-row';
+      }
+      return '';
+    },
     getTier: function(tier) {
       let tempTier = [];
       this.childTierMenuData = [];

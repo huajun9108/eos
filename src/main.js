@@ -18,9 +18,12 @@ import "./assets/js/jquery.ztree.excheck.js";
 import "./assets/js/jquery.ztree.exedit.js";
 import "./assets/js/jquery.ztree.exhide.js";
 import "./assets/js/tip.js"
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
 
 Vue.use(VueRouter);
 Vue.use(ElementUI, { size: 'small' })
+Vue.use(iView);
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

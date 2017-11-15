@@ -197,7 +197,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
+          this.$Message({
              type: 'info',
             message: '已取消编辑'
           });
@@ -214,6 +214,7 @@ export default {
       }else{
         this.showFlag=false;
         this.oldPwdFlag=false;
+        this.newPwdFlag = false
       }
     },
     confirm(){
@@ -225,13 +226,13 @@ export default {
         })
         this.clearData()
       }else{
-         this.$message.error('用户信息填写错误');
+         this.$Message.error('用户信息填写错误');
       }
 
     },
     moveUp(obj){
       if(obj.index == 0) { 
-        alert("到顶啦！"); 
+        this.$Message.warning("到顶啦！"); 
       }else{
         let changedid = this.tier2[obj.index-1].kpitwoid
         this.updateUserKpiTwolveById({
@@ -263,7 +264,7 @@ export default {
     // 删除前一项 
     this.tier2.splice(obj.index,1); 
       if(obj.index == this.tier2.length-1) { 
-        alert("已经是最后一项啦！"); 
+        this.$Message.warning("已经是最后一项啦！"); 
       }
     }
     
@@ -279,9 +280,9 @@ export default {
     },
     updatePwdResult(newVal){
       if(newVal.status==2){
-          this.$message.error('原密码输入不一致');
+          this.$Message.error('原密码输入不一致');
       }else if(newVal.status==0){
-          this.$message.success('密码修改成功');
+          this.$Message.success('密码修改成功');
           this.showFlag = false
       }
     },

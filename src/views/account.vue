@@ -136,7 +136,7 @@ export default {
           _this.delUser({ userId: obj.userId });
           _this.loadList();
           _this.onPagechange(1)
-          _this.$message.success('删除'+obj.name+'成功');
+          _this.$Message.success('删除'+obj.name+'成功');
       });
     },
     dellALL() {

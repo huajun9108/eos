@@ -87,7 +87,7 @@ export default {
         async: {
           enable: true,
           type: 'get',
-          url: 'http://116.196.113.167:3001/areaAllSet/showAreaAll',
+          url: 'http://116.62.10.199:3001/areaAllSet/showAreaAll',
         },
         view: {
           selectedMulti: false,
@@ -242,7 +242,7 @@ export default {
         this.empty(this.pwd) ||
         this.empty(this.job)
       ) {
-        this.$message.warning('用户信息不能为空');
+        this.$Message.warning('用户信息不能为空');
         return false;
       }
       return true;
@@ -278,17 +278,17 @@ export default {
     },
     addResult(newVal){
       if(newVal.status==3){
-       this.$message.error('用户名已存在,请勿重复添加');
+       this.$Message.error('用户名已存在,请勿重复添加');
         return false
       }else if(newVal.status==0){
-        this.$message.success('添加成功');
+        this.$Message.success('添加成功');
        if(!this.continueAdd){
         this.$router.push({name:"account"});
        }else{
 
        }
       }else{
-        this.$message.warning('网络问题请稍后再试');
+        this.$Message.warning('网络问题请稍后再试');
       }
         
       

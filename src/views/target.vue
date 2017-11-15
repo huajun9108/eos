@@ -20,29 +20,22 @@
                         <li class="target_tit">结束时间</li>
                     </ul>
                     <ul class="target_setting clearfix">
-                        <li class="target_set"> <el-autocomplete
-                            class="inline-input"
-                            v-model="targetNo"
-                            :fetch-suggestions="querySearch"
-                            placeholder="请输入"
-                            @select="handleSelect"
-                            ></el-autocomplete></li>
-                        <li class="target_set">
-                            <el-date-picker
-                            v-model="dateStart"
-                            type="date"
-                            format="yyyy-MM-dd"
-                            value-format="yyyy-MM-dd"
-                            placeholder="选择日期">
-                            </el-date-picker>
+                        <li class="target_set"> 
+                            <Select
+                            :value="targetNo"
+                            filterable
+                            remote
+                            size="large"
+                            :remote-method="remoteMethod1"
+                            :loading="loading1">
+                            <Option v-for="(option, index) in options1" :value="option.value" :key="index">{{option.label}}</Option>
+                            </Select>
                         </li>
-                        <li class="target_set"><el-date-picker
-                            v-model="dateEnd"
-                            type="date"
-                            format="yyyy-MM-dd"
-                            value-format="yyyy-MM-dd"
-                            placeholder="选择日期">
-                            </el-date-picker>
+                        <li class="target_set">
+                            <DatePicker type="date" v-model="dateStart" placeholder="Select date" :options="optionsStart"></DatePicker>
+                        </li>
+                        <li class="target_set">
+                            <DatePicker type="date" v-model="dateEnd" placeholder="Select date" :options="optionsEnd"></DatePicker>
                         </li>
                     </ul>
                     <ul class="target_title clearfix">
@@ -72,11 +65,35 @@ export default{
     data () {
         return {
             targetList:[],
-            targetNo:null,
+            targetNo:'',
             dateStart:'',
             dateEnd:'',
             vision:'',
             ideal:'',
+            loading1: false,
+            options1: [],
+            optionsStart:{
+                // disabledDate (date) {
+                //         return date && date.valueOf() < Date.now() - 86400000;
+                //     }
+            },
+            optionsEnd:{
+                // disabledDate (date) {
+                //         return date && date.valueOf() < this.dateStart
+                //     }
+            },
+            list: ['Alabama', 
+            'Alaska', 'Arizona', 
+            'Arkansas', 'California', 'Colorado',
+            'Connecticut', 'Delaware', 'Florida', 'Georgia', 
+            'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
+            'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland',
+            'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 
+            'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New hampshire', 
+            'New jersey', 'New mexico', 'New york', 'North carolina', 'North dakota',
+            'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode island', 'South carolina', 
+            'South dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 
+            'West virginia', 'Wisconsin', 'Wyoming'],
             setting: {
                 view: {
                     selectedMulti: false,
@@ -108,6 +125,23 @@ export default{
             'selectLinebodyById',
             'updateLinebodyInfById'
         ]),
+        remoteMethod1 (query) {
+                if (query !== '') {
+                    this.loading1 = true;
+                    setTimeout(() => {
+                        this.loading1 = false;
+                        const list = this.list.map(item => {
+                            return {
+                                value: item,
+                                label: item
+                            };
+                        });
+                        this.options1 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
+                    }, 200);
+                } else {
+                    this.options1 = [];
+                }
+            },
         confirm(){
             let _this=this
             this.updateLinebodyInfById({
@@ -156,7 +190,7 @@ export default{
                 this.selectLinebodyById({id:treeNode.id})
                 this.nodeId = treeNode.id
             }else{
-                this.$message.info("暂无信息")
+                this.$Message.info("暂无信息")
                 this.targetNo="";
                 this.dateStart='';
                 this.dateEnd='';
@@ -172,16 +206,21 @@ export default{
             $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
         },
         lineBody(newVal){
-            this.targetNo=JSON.stringify(newVal.targetvalue);
+            this.targetNo=newVal.targetvalue;
             this.dateStart= newVal.targetstrattime;
             this.dateEnd = newVal.targetendtime;
             this.vision = newVal.visionvalue;
             this.ideal = newVal.idealvalue
+            console.log(this.targetNo)
+        },
+        targetNo(){
+console.log(this.targetNo)
         }
     },
     mounted() {
         this.selectAreaAll(),
         this.targetList = this.loadAll();
+         console.log(this.targetNo)
 
 
 	}

@@ -2584,12 +2584,7 @@ th {
 .table-bordered>thead>tr>td,
 .table-bordered>tbody>tr>td,
 .table-bordered>tfoot>tr>td {
-    border: 1px solid #ddd
-}
-
-.table-bordered>thead>tr>th,
-.table-bordered>thead>tr>td {
-    border-bottom-width: 2px
+    border: 1px solid #bdbdbd
 }
 
 .table-striped>tbody>tr:nth-child(odd) {

@@ -12,7 +12,7 @@
       <div class="tableContainer">
         <table class="tableBody">
           <tbody>
-            <tr v-for="title in testList">
+            <tr v-for="(title,idx) in testList" :key="idx">
               <td class="firstCol">{{ title.title }}</td>
               <td :id='title.title' class="secordCol" style="width: 600px;height:220px;"></td>
             </tr>

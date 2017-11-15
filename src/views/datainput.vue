@@ -8,8 +8,6 @@
     <div class="lengthShift" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <span class="lengthShiftTime">本班次时间：</span>
       <DatePicker type="datetimerange" placeholder="Select date and time" style="width: 300px"></DatePicker>
-      <!-- <el-date-picker v-model="lengthShiftTimeValue" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="lengthShiftTimeChange" value-format="yyyy-MM-dd HH:mm:ss">
-      </el-date-picker> -->
     </div>
     <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <table class="tableBody">
@@ -21,7 +19,7 @@
             </td>
             <td class="thirdCol">
               <div class="childTableContainer">
-                <Table border height="202" :columns="childTabCols" :data="childTableData" :columnClassName="columnClassName"></Table>
+                <Table border width="646" height="202" :columns="childTabCols" :data="childTableData"></Table>
               </div>
             </td>
             <td class="fourthCol">
@@ -59,8 +57,8 @@
         </DatePicker>
       </div>
       <div class="btnContainer text-right">
-        <span class="confirmBtn btn" @click="confirmClick">确定</span>
-        <span class="cancelBtn btn" @click="cancelClick">取消</span>
+        <span class="confirmBtn data_btn" @click="confirmClick">确定</span>
+        <span class="cancelBtn data_btn" @click="cancelClick">取消</span>
       </div>
     </div>
   </div>
@@ -168,26 +166,31 @@ export default {
       childTabCols: [{
           title: 'Tier3',
           key: 'tier3',
+          className: 'childTableFirstCol',
           align: 'center',
         },
         {
           title: 'Tier4',
           key: 'tier4',
+          className: 'childTableSecondCol',
           align: 'center',
         },
         {
           title: '开始时间',
           key: '开始时间',
-          align: 'center',
+          className: 'childTableThirdCol',
+          align: 'center'
         },
         {
           title: '结束时间',
           key: '结束时间',
-          align: 'center',
+          className: 'childTableFourthCol',
+          align: 'center'
         },
         {
           title: '操作',
           key: '操作',
+          className: 'childTableFifthCol',
           align: 'center',
           render: (h, params) => {
             return h('div', [
@@ -196,7 +199,6 @@ export default {
                   class: "icon-delete_2",
                 },
                 style: {
-                  // marginRight: '5px'
                 },
                 on: {
                   click: () => {
@@ -208,7 +210,32 @@ export default {
           }
         },
       ],
-      childTableData: [{
+      childTableData: [
+        {
+          "tier3": "a",
+          "tier4": "aa",
+          "开始时间": "2017-10-11 10:00:00",
+          "结束时间": "2017-10-12 11:00:00",
+        },
+        {
+          "tier3": "b",
+          "tier4": "bb",
+          "开始时间": "2017-10-11 10:00:00",
+          "结束时间": "2017-10-12 11:00:00",
+        },
+        {
+          "tier3": "c",
+          "tier4": "cc",
+          "开始时间": "2017-10-11 10:00:00",
+          "结束时间": "2017-10-12 11:00:00"
+        },
+        {
+          "tier3": "d",
+          "tier4": "dd",
+          "开始时间": "2017-10-11 10:00:00",
+          "结束时间": "2017-10-12 11:00:00"
+        },
+        {
           "tier3": "a",
           "tier4": "aa",
           "开始时间": "2017-10-11 10:00:00",
@@ -270,12 +297,6 @@ export default {
     }
   },
   methods: {
-    colClassName(col, index) {
-      if (index === 1) {
-        return 'demo-table-info-row';
-      }
-      return '';
-    },
     getTier: function(tier) {
       let tempTier = [];
       this.childTierMenuData = [];

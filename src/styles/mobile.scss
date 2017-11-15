@@ -187,7 +187,7 @@ textarea {
     vertical-align: middle;
     background: #e1e1e1;
     border-radius: 4px;
-    z-index: 100;
+    z-index: 999;
     cursor: pointer;
     .icon-drop-down2 {
         display: inline-block;
@@ -198,8 +198,3 @@ textarea {
         transform: rotate(180deg);
     }
 }
-
-// .hidechoose {
-// opacity: 0;
-// display: none;
-// }

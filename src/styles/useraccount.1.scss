@@ -7,7 +7,6 @@
             display: flex;
             flex-direction: column;
             border: none !important;
-            overflow-y: auto;
             .acommon {
                 width: 100%;
                 height: auto;
@@ -29,7 +28,7 @@
                         width: 60%;
                         position: relative;
                         .tip {
-                            line-height: P(72);
+                            line-height: P(65);
                             border-bottom: 1px solid #bdbdbd;
                             font-size: P(16);
                             box-sizing: border-box;
@@ -61,7 +60,7 @@
                                 z-index: 99999;
                                 right: P(30);
                                 top: P(25);
-                                width: P(480);
+                                width: P(422);
                                 height: P(210);
                                 font-size: P(14);
                                 color: #040404;
@@ -167,7 +166,7 @@
             .tier2 {
                 flex: 1;
                 margin-top: P(40);
-                // overflow: hidden;
+                overflow: hidden;
                 .sti-tbl-container {
                     margin-top: P(30);
                     box-sizing: border-box;

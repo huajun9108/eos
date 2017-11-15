@@ -2,11 +2,11 @@
 <div class="mainaccount">
   <br/>
     <div class="fixed-table-toolbar oper">
-        <span class="add" @click="add">
+        <span class="account_sapn add" @click="add">
             <i class="icon-add"></i>
-            新建
+             &nbsp;&nbsp;新建
         </span>
-        <span class="delA" @click="dellALL" >
+        <span class="account_sapn delA" @click="dellALL" >
             <i class="icon-delete"></i>
             批量删除
         </span>
@@ -57,8 +57,6 @@
 
 <script type="text/javascript">
 import axios from "axios";
-import $ from "jquery";
-window.$ = $;
 import { mapState, mapActions } from "vuex";
 import pagination from "../components/bootpage";
 export default {
@@ -138,7 +136,7 @@ export default {
           _this.delUser({ userId: obj.userId });
           _this.loadList();
           _this.onPagechange(1)
-          _this.$message.success('删除'+obj.name+'成功');
+          _this.$Message.success('删除'+obj.name+'成功');
       });
     },
     dellALL() {

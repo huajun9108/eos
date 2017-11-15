@@ -1,0 +1,16 @@
+@import "./mobile.scss";
+.saving {
+    .saving_content {
+        position: relative;
+        #saving_table {
+            width: 90%;
+            height: 55%;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+        }
+    }
+}

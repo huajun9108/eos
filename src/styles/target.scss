@@ -110,32 +110,5 @@
                     }
                 }
             }
-            .el-input--small .el-input__inner {
-                height: 38px;
-            }
-            .el-input__inner {
-                border: 1px solid #bdbdbd;
-                color: #040404;
-            }
         }
-    }
-    
-    .el-date-picker {
-        top: 209px !important;
-    }
-    
-    .el-scrollbar {
-        border: 1px solid #bdbdbd;
-    }
-    
-    .el-popper[x-placement^=bottom] .popper__arrow::after {
-        border-bottom-color: #bdbdbd;
-    }
-    
-    .el-autocomplete-suggestion li:hover {
-        background: #ecf0f1;
-    }
-    
-    .el-autocomplete-suggestion__wrap {
-        padding: 0;
     }

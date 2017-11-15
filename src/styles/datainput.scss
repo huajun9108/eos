@@ -108,7 +108,7 @@
           .ivu-table th, .ivu-table td {
             height: P(30);
           }
-          
+
           .ivu-table td.childTableThirdCol, .ivu-table td.childTableFourthCol{
             text-align: center;
           }
@@ -147,7 +147,7 @@
         height: P(30);
         margin-bottom: P(46);
 
-        .el-input__inner {
+        .ivu-select-selection {
           background: #E1E1E1;
           font-size: P(14);
           color: #040404;
@@ -156,6 +156,11 @@
 
       .dropdownTier:first-child {
         margin-right: P(16);
+      }
+
+      .ivu-date-picker {
+        width: P(322);
+        height: P(42);
       }
 
       .durationTimeContainer {

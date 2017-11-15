@@ -43,17 +43,17 @@
       </div>
       <div class="startTimeContainer">
         <span class="timeTitle">开始时间：</span>
-        <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss">
+        <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" @on-change="startTimeValueChange">
         </DatePicker>
       </div>
       <div class="durationTimeContainer">
         <span class="timeTitle">持续时间：</span>
-        <TimePicker v-model="durationTimeValue" placeholder="任意时间点" format="HH:mm:ss">
+        <TimePicker v-model="durationTimeValue" placeholder="任意时间点" format="HH:mm:ss" @on-change="durationTimeValueChange">
         </TimePicker>
       </div>
       <div class="endTimeContainer">
         <span class="timeTitle">结束时间：</span>
-        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss">
+        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" @on-change="endTimeValueChange">
         </DatePicker>
       </div>
       <div class="btnContainer text-right">
@@ -198,8 +198,7 @@ export default {
                 attrs: {
                   class: "icon-delete_2",
                 },
-                style: {
-                },
+                style: {},
                 on: {
                   click: () => {
                     this.deleteLoss(params.index)
@@ -210,8 +209,7 @@ export default {
           }
         },
       ],
-      childTableData: [
-        {
+      childTableData: [{
           "tier3": "a",
           "tier4": "aa",
           "开始时间": "2017-10-11 10:00:00",
@@ -315,23 +313,22 @@ export default {
       console.log(this.childTableData.splice(index, 1));
     },
     lengthShiftTimeChange: function(val) {},
-    dateFormat: function(dateObj) {
-      const year = dateObj.getFullYear();
-      const month = dateObj.getMonth() + 1;
-      const day = dateObj.getDate() < 10 ? '0' + dateObj.getDate() : dateObj.getDate();
-      const hour = dateObj.getHours() < 10 ? '0' + dateObj.getHours() : dateObj.getHours();
-      const min = dateObj.getMinutes() < 10 ? '0' + dateObj.getMinutes() : dateObj.getMinutes();;
-      const sec = dateObj.getSeconds() < 10 ? '0' + dateObj.getSeconds() : dateObj.getSeconds();;
-      return `${year}-${month}-${day} ${hour}:${min}:${sec}`;
-    },
     timeFormat: function(mss) {
       var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
       var sec = (mss % (1000 * 60)) / 1000;
       return `${hour}:${min}:${sec}`;
     },
-    timeTranslateMs: function(durationArray) {
-      if (durationArray) {
+    timeTranslateDateMs: function(dateObj) {
+      if (dateObj) {
+        const hour = dateObj.getHours();
+        const min = dateObj.getMinutes();
+        const sec = dateObj.getSeconds();
+        return (hour * 3600 + min * 60 + sec) * 1000;
+      }
+    },
+    timeTranslateArrayMs: function(durationArray) {
+      if (durationArray.length > 0) {
         const hour = parseInt(durationArray[0]);
         const min = parseInt(durationArray[1]);
         const sec = parseInt(durationArray[2]);
@@ -339,63 +336,54 @@ export default {
       }
     },
     startTimeValueChange: function(val) {
-      console.log(this.startTimeValue);
-      if (!this.startTimeValue) {
+      if (!val) {
         this.durationTimeValue = '';
         this.endTimeValue = '';
         return;
       }
-      const start = new Date(this.startTimeValue);
+      const start = new Date(val);
       const startMs = start.getTime();
-      console.log(`${start} ${startMs}`);
       if (this.durationTimeValue !== '') {
-        const durationArray = this.durationTimeValue.split(":");
-        const durationMs = this.timeTranslateMs(durationArray);
-        const end = new Date(startMs + durationMs);
-        this.endTimeValue = this.dateFormat(end);
+        const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
+        this.endTimeValue = new Date(startMs + durationMs);
       } else if (this.endTimeValue !== '') {
-        const end = new Date(this.endTimeValue);
+        const end = this.endTimeValue;
         const endMs = end.getTime();
         const durationMs = endMs - startMs;
         this.durationTimeValue = this.timeFormat(durationMs);
       }
     },
     durationTimeValueChange: function(val) {
-      console.log(typeof this.durationTimeValue);
-      // if (!this.durationTimeValue) {
-      //   this.startTimeValue = '';
-      //   this.endTimeValue = '';
-      //   return;
-      // }
-      // const durationArray = this.durationTimeValue.split(":");
-      // const durationMs = this.timeTranslateMs(durationArray);
-      // if (this.startTimeValue !== '') {
-      //   const start = new Date(this.startTimeValue);
-      //   const startMs = start.getTime();
-      //   const end = new Date(startMs + durationMs);
-      //   this.endTimeValue = this.dateFormat(end);
-      // } else if (this.endTimeValue !== '') {
-      //   const end = new Date(this.endTimeValue);
-      //   const endMs = end.getTime();
-      //   const start = new Date(endMs - durationMs);
-      //   this.startTimeValue = this.dateFormat(start);
-      // }
+      if (!val) {
+        this.startTimeValue = '';
+        this.endTimeValue = '';
+        return;
+      }
+      const durationArray = val.split(":");
+      const durationMs = this.timeTranslateArrayMs(durationArray);
+      if (this.startTimeValue !== '') {
+        const start = this.startTimeValue;
+        const startMs = start.getTime();
+        this.endTimeValue = new Date(startMs + durationMs);
+      } else if (this.endTimeValue !== '') {
+        const end = this.endTimeValue;
+        const endMs = end.getTime();
+        this.startTimeValue = new Date(endMs - durationMs);
+      }
     },
     endTimeValueChange: function(val) {
-      if (!this.endTimeValue) {
+      if (!val) {
         this.startTimeValue = '';
         this.durationTimeValue = '';
         return;
       }
-      const end = new Date(this.endTimeValue);
+      const end = new Date(val);
       const endMs = end.getTime();
       if (this.durationTimeValue !== '') {
-        const durationArray = this.durationTimeValue.split(":");
-        const durationMs = this.timeTranslateMs(durationArray);
-        const start = new Date(endMs - durationMs);
-        this.startTimeValue = this.dateFormat(start);
+        const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
+        this.startTimeValue = new Date(endMs - durationMs);
       } else if (this.startTimeValue !== '') {
-        const start = new Date(this.startTimeValue);
+        const start = this.startTimeValue;
         const startMs = start.getTime();
         const durationMs = endMs - startMs;
         this.durationTimeValue = this.timeFormat(durationMs);

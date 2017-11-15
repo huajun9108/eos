@@ -7,8 +7,9 @@
     </div>
     <div class="lengthShift" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <span class="lengthShiftTime">本班次时间：</span>
-      <el-date-picker v-model="lengthShiftTimeValue" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="lengthShiftTimeChange" value-format="yyyy-MM-dd HH:mm:ss">
-      </el-date-picker>
+      <DatePicker type="datetimerange" placeholder="Select date and time" style="width: 300px"></DatePicker>
+      <!-- <el-date-picker v-model="lengthShiftTimeValue" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="lengthShiftTimeChange" value-format="yyyy-MM-dd HH:mm:ss">
+      </el-date-picker> -->
     </div>
     <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <table class="tableBody">
@@ -20,7 +21,34 @@
             </td>
             <td class="thirdCol">
               <div class="childTableContainer">
-                <div class="childTableTitle">
+                <Table border height="202" :columns="childTabCols" :data="childTableData"></Table>
+                <!-- <div class="childTableTitle">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Tier3</th>
+                        <th>Tier4</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+                <div class="childTableBody">
+                  <table>
+                    <tbody class="">
+                      <tr v-for="(c,idx) in childTableData" :key="idx">
+                        <td>{{ c.tierValue }}</td>
+                        <td>{{ c.childTierValue }}</td>
+                        <td>{{ c.startTimeValue }}</td>
+                        <td>{{ c.endTimeValue }}</td>
+                        <td @click="deleteLoss(idx)"><i class="icon-delete_2"></i></td>
+                      </tr>
+                    </tbody>
+                  </table> -->
+                <!-- </div> -->
+                <!-- <div class="childTableTitle">
                   <span class="childFirstCol childTableCol">Tier3</span>
                   <span class="childSecondCol childTableCol">Tier4</span>
                   <span class="childThirdCol childTableCol">开始时间</span>
@@ -35,11 +63,7 @@
                     <span class="childFourthCol childTableCol">{{ c.endTimeValue }}</span>
                     <span class="childFifthCol childTableCol" @click="deleteLoss(idx)"><i class="icon-delete_2"></i></span>
                   </div>
-                </div>
-<<<<<<< HEAD
-                
-=======
->>>>>>> sponge
+                </div> -->
               </div>
             </td>
             <td class="fourthCol">
@@ -52,34 +76,29 @@
     <div class="shade" :class="showFlag?'showchoose':'hidechoose'"></div>
     <div class="lossChoose" :class="showFlag?'showchoose':'hidechoose'">
       <div class="dirChoose">
-        <el-select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @change="getTier($event)">
-          <el-option v-for="item in tierMenuData" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4">
-          <el-option v-for="item in childTierMenuData" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-        <!-- <el-dropdown-item v-for="(data, index) in tierMenuData" :key="index">{{ data.name }}</el-dropdown-item>
-        </el-dropdown-menu>
-        </el-dropdown> -->
+        <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier($event)">
+          <Option v-for="item in tierMenuData" :key="item.value" :label="item.label" :value="item.value">
+          </Option>
+        </Select>
+        <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4">
+          <Option v-for="item in childTierMenuData" :key="item.value" :label="item.label" :value="item.value">
+          </Option>
+        </Select>
       </div>
       <div class="startTimeContainer">
         <span class="timeTitle">开始时间：</span>
-        <el-date-picker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" @change="startTimeValueChange" value-format="yyyy-MM-dd HH:mm:ss">
-        </el-date-picker>
+        <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss">
+        </DatePicker>
       </div>
       <div class="durationTimeContainer">
         <span class="timeTitle">持续时间：</span>
-        <el-time-picker v-model="durationTimeValue" :picker-options="{
-        selectableRange: '00:00:00 - 23:59:59'
-        }" placeholder="任意时间点" @change="durationTimeValueChange" value-format="HH:mm:ss">
-        </el-time-picker>
+        <TimePicker v-model="durationTimeValue" placeholder="任意时间点" format="HH:mm:ss">
+        </TimePicker>
       </div>
       <div class="endTimeContainer">
         <span class="timeTitle">结束时间：</span>
-        <el-date-picker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" @change="endTimeValueChange" value-format="yyyy-MM-dd HH:mm:ss">
-        </el-date-picker>
+        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss">
+        </DatePicker>
       </div>
       <div class="btnContainer text-right">
         <span class="confirmBtn data_btn" @click="confirmClick">确定</span>
@@ -188,34 +207,75 @@ export default {
       tierValue: '',
       childTierMenuData: [],
       childTierValue: '',
+      childTabCols: [
+        {
+          title: 'Tier3',
+          key: 'tier3',
+          align: 'center',
+        },
+        {
+          title: 'Tier4',
+          key: 'tier4',
+          align: 'center',
+        },
+        {
+          title: '开始时间',
+          key: '开始时间',
+          align: 'center',
+        },
+        {
+          title: '结束时间',
+          key: '结束时间',
+          align: 'center',
+        },
+        {
+          title: '操作',
+          key: '操作',
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h('i', {
+                attrs: {
+                  class: "icon-delete_2",
+                },
+                style: {
+                  // marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.deleteLoss(params.index)
+                    // this.show(params.index)
+                  }
+                }
+              }),
+            ]);
+          }
+        },
+      ],
       childTableData: [{
-          "tierValue": "a",
-          "childTierValue": "aa",
-          "startTimeValue": "2017-10-11 10:00:00",
-          "endTimeValue": "2017-10-12 11:00:00"
+          "tier3": "a",
+          "tier4": "aa",
+          "开始时间": "2017-10-11 10:00:00",
+          "结束时间": "2017-10-12 11:00:00",
         },
         {
-          "tierValue": "b",
-          "childTierValue": "bb",
-          "startTimeValue": "2017-10-11 10:00:00",
-          "endTimeValue": "2017-10-12 11:00:00"
+          "tier3": "b",
+          "tier4": "bb",
+          "开始时间": "2017-10-11 10:00:00",
+          "结束时间": "2017-10-12 11:00:00",
         },
         {
-          "tierValue": "c",
-          "childTierValue": "cc",
-          "startTimeValue": "2017-10-11 10:00:00",
-          "endTimeValue": "2017-10-12 11:00:00"
+          "tier3": "c",
+          "tier4": "cc",
+          "开始时间": "2017-10-11 10:00:00",
+          "结束时间": "2017-10-12 11:00:00"
         },
         {
-          "tierValue": "d",
-          "childTierValue": "dd",
-          "startTimeValue": "2017-10-11 10:00:00",
-          "endTimeValue": "2017-10-12 11:00:00"
+          "tier3": "d",
+          "tier4": "dd",
+          "开始时间": "2017-10-11 10:00:00",
+          "结束时间": "2017-10-12 11:00:00"
         },
-        // { "name": "a" },
-        // { "name": "b" },
-        // { "name": "c" },
-        // { "name": "d" },
       ],
       tableData: [{
           "tier": "OEE"
@@ -269,19 +329,9 @@ export default {
       this.childTierMenuData = tempTier;
     },
     deleteLoss(index) {
-      this.childTableData.splice(index, 1);
+      console.log(this.childTableData.splice(index, 1));
     },
-    lengthShiftTimeChange: function(val) {
-      // alert(val);
-      // const timeString = JSON.stringify(val);
-      // const timeStringFilter1 = timeString.replace('[', '');
-      // const timeStringFilter2 = timeStringFilter1.replace(']', '');
-      // const timeArray = timeStringFilter2.split(",");
-      // if(timeArray.length > 0) {
-      //   this.startTimeValue = timeArray[0];
-      //   this.endTimeValue = timeArray[1];
-      // }
-    },
+    lengthShiftTimeChange: function(val) {},
     dateFormat: function(dateObj) {
       const year = dateObj.getFullYear();
       const month = dateObj.getMonth() + 1;
@@ -306,6 +356,7 @@ export default {
       }
     },
     startTimeValueChange: function(val) {
+      console.log(this.startTimeValue);
       if (!this.startTimeValue) {
         this.durationTimeValue = '';
         this.endTimeValue = '';
@@ -313,6 +364,7 @@ export default {
       }
       const start = new Date(this.startTimeValue);
       const startMs = start.getTime();
+      console.log(`${start} ${startMs}`);
       if (this.durationTimeValue !== '') {
         const durationArray = this.durationTimeValue.split(":");
         const durationMs = this.timeTranslateMs(durationArray);
@@ -326,24 +378,25 @@ export default {
       }
     },
     durationTimeValueChange: function(val) {
-      if (!this.durationTimeValue) {
-        this.startTimeValue = '';
-        this.endTimeValue = '';
-        return;
-      }
-      const durationArray = this.durationTimeValue.split(":");
-      const durationMs = this.timeTranslateMs(durationArray);
-      if (this.startTimeValue !== '') {
-        const start = new Date(this.startTimeValue);
-        const startMs = start.getTime();
-        const end = new Date(startMs + durationMs);
-        this.endTimeValue = this.dateFormat(end);
-      } else if (this.endTimeValue !== '') {
-        const end = new Date(this.endTimeValue);
-        const endMs = end.getTime();
-        const start = new Date(endMs - durationMs);
-        this.startTimeValue = this.dateFormat(start);
-      }
+      console.log(typeof this.durationTimeValue);
+      // if (!this.durationTimeValue) {
+      //   this.startTimeValue = '';
+      //   this.endTimeValue = '';
+      //   return;
+      // }
+      // const durationArray = this.durationTimeValue.split(":");
+      // const durationMs = this.timeTranslateMs(durationArray);
+      // if (this.startTimeValue !== '') {
+      //   const start = new Date(this.startTimeValue);
+      //   const startMs = start.getTime();
+      //   const end = new Date(startMs + durationMs);
+      //   this.endTimeValue = this.dateFormat(end);
+      // } else if (this.endTimeValue !== '') {
+      //   const end = new Date(this.endTimeValue);
+      //   const endMs = end.getTime();
+      //   const start = new Date(endMs - durationMs);
+      //   this.startTimeValue = this.dateFormat(start);
+      // }
     },
     endTimeValueChange: function(val) {
       if (!this.endTimeValue) {
@@ -368,20 +421,6 @@ export default {
     addLoss: function() {
       this.showFlag = !this.showFlag;
     },
-    // getVirtulData: function(year) {
-    //   year = year || '2017';
-    //   var date = +echarts.number.parseDate(year + '-01-01');
-    //   var end = +echarts.number.parseDate((+year + 1) + '-01-01');
-    //   var dayTime = 3600 * 24 * 1000;
-    //   var data = [];
-    //   for (var time = date; time < end; time += dayTime) {
-    //     data.push([
-    //       echarts.format.formatTime('yyyy-MM-dd', time),
-    //       Math.floor(Math.random() * 1000)
-    //     ]);
-    //   }
-    //   return data;
-    // },
     openCeremonyClick: function() {
       this.openCeremonyFlag = !this.openCeremonyFlag;
     },

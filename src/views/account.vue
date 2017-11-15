@@ -51,7 +51,7 @@
     <label @click="nextPage()">下一页</label>
     <label @click="lastPage()">尾页</label>
     </ul> -->
-    <v-pagination :total="total" :current-page="current" :display="display" class="pull-right" @pagechange="onPagechange"></v-pagination> 
+    <v-pagination :total="total" :current-page="current" :display="display" class="pull-right" @pagechange="onPagechange"></v-pagination>
 </div>
 </template>
 
@@ -77,7 +77,7 @@ export default {
       arrayData: [],
       total: null,     // 记录总条数
       display:10,   // 每页显示条数
-      current: 1     // 当前第n页 ， 也可以 watch current 的变化 
+      current: 1     // 当前第n页 ， 也可以 watch current 的变化
     };
   },
   computed: {
@@ -98,10 +98,10 @@ export default {
         this.userAll=[];
         this.checkedUserArr=[];
         return (
-            res.data.data.rows.forEach(item=>{          
+            res.data.data.rows.forEach(item=>{
               this.userAll.push(item);
             })
-        ); 
+        );
       }).catch(error => {
         console.log(error);
       });
@@ -147,39 +147,19 @@ export default {
               //that.userAll.splice(userId, 1);
               _this.delUser({ userId:userId });
               _this.loadList();
-          }   
+          }
       });
     },
-    // firstPage:function() {
-    //   this.current = 1;
-    //   this.loadList();
-    // },
-    // prevPage:function() {
-    //   if(this.current && this.current>1) {
-    //      this.current = this.current-1;
-    //   }      
-    //   this.loadList();
-    // },
-    // nextPage:function() {
-    //   if(this.current && this.current<Math.ceil(this.total/5)) {
-    //      this.current = this.current+1;
-    //   }      
-    //   this.loadList();
-    // },
-    // lastPage:function() {
-    //   this.current = Math.ceil(this.total/5);
-    //   this.loadList();
-    // },
     loadList:function() {
       axios.get("/user/findAndCount?page="+this.current).then(res => {
         this.total=res.data.data.count;
         this.userAll=[];
         this.checkedUserArr=[];
         return (
-            res.data.data.rows.forEach(item=>{ 
+            res.data.data.rows.forEach(item=>{
               this.userAll.push(item);
             })
-        ); 
+        );
       }).catch(error => {
         console.log(error);
       });
@@ -187,7 +167,7 @@ export default {
   },
   watch: {
     checkedUserArr:{
-      handler: function (val, oldVal) { 
+      handler: function (val, oldVal) {
         if (this.checkedUserArr.length === this.userAll.length) {
           this.checkedAll=true;
         }else{
@@ -204,4 +184,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-</style>  
+</style>

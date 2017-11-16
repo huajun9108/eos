@@ -7,7 +7,8 @@
     </div>
     <div class="lengthShift" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <span class="lengthShiftTime">本班次时间：</span>
-      <DatePicker type="datetimerange" placeholder="Select date and time" style="width: 300px"></DatePicker>
+      <DatePicker type="datetimerange" placeholder="Select date and time" style="width: 300px"
+      :options="optionsOpenCeremony" @on-change="lengthShiftTimeChange"></DatePicker>
     </div>
     <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <table class="tableBody">
@@ -43,7 +44,8 @@
       </div>
       <div class="startTimeContainer">
         <span class="timeTitle">开始时间：</span>
-        <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" @on-change="startTimeValueChange">
+        <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss"
+        :options="optionsStart" @on-change="startTimeValueChange">
         </DatePicker>
       </div>
       <div class="durationTimeContainer">
@@ -53,7 +55,8 @@
       </div>
       <div class="endTimeContainer">
         <span class="timeTitle">结束时间：</span>
-        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" @on-change="endTimeValueChange">
+        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss"
+        :options="optionsEnd" @on-change="endTimeValueChange">
         </DatePicker>
       </div>
       <div class="btnContainer text-right">
@@ -70,6 +73,27 @@ import echarts from "echarts"
 export default {
   data: function() {
     return {
+      optionsOpenCeremony: {
+        disabledDate (date) {
+          // return date && date.valueOf() < Date.now() - 86400000;
+        }
+      },
+      optionsStart: {
+        disabledDate: (date) => {
+          // let beginDateVal = this.endTimeValue;
+          // if(beginDateVal) {
+          //   return date && date.valueOf() > beginDateVal;
+          // }
+        }
+      },
+      optionsEnd: {
+        disabledDate: (date) => {
+          // let beginDateVal = this.startTimeValue;
+          // if(beginDateVal) {
+          //   return (date && date.valueOf() < beginDateVal);
+          // }
+        }
+      },
       tierMenuData: [{
           "value": "Lack of demand",
           "label": "Lack of demand"
@@ -310,9 +334,11 @@ export default {
       this.childTierMenuData = tempTier;
     },
     deleteLoss(index) {
-      console.log(this.childTableData.splice(index, 1));
+      this.childTableData.splice(index, 1);
     },
-    lengthShiftTimeChange: function(val) {},
+    lengthShiftTimeChange: function(val) {
+      console.log(val);
+    },
     timeFormat: function(mss) {
       var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
@@ -397,11 +423,17 @@ export default {
     },
     confirmClick: function() {
       this.showFlag = !this.showFlag;
+      console.log(typeof this.startTimeValue);
+      console.log(this.startTimeValue);
+      console.log(typeof this.durationTimeValue);
+      console.log(this.durationTimeValue);
+      console.log(typeof this.endTimeValue);
+      console.log(this.endTimeValue);
       const obj = {
-        "tierValue": this.tierValue,
-        "childTierValue": this.childTierValue,
-        "startTimeValue": this.startTimeValue,
-        "endTimeValue": this.endTimeValue
+        "tier3": this.tierValue,
+        "tier4": this.childTierValue,
+        "开始时间": this.startTimeValue,
+        "结束时间": this.endTimeValue
       };
       if (obj) {
         this.childTableData.push(obj);

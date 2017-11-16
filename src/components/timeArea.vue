@@ -45,7 +45,7 @@ import { mapState, mapActions } from "vuex";
                 }
             }
         },
-        
+
         setting: {
             view: {
                 selectedMulti: false,
@@ -66,9 +66,6 @@ import { mapState, mapActions } from "vuex";
         },
         validareaList:[],
         }
-    },
-    props: {
-        props:['invitor'],
     },
     methods: {
        ...mapActions([

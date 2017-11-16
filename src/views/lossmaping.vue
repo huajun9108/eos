@@ -12,7 +12,7 @@
       <div class="tableContainer">
         <table class="tableBody">
           <tbody>
-            <tr v-for="(title,idx) in testList" :key="idx">
+            <tr v-for="(title,idx) in this.lossmappingLinebodyAll" :key="idx">
               <td class="firstCol">{{ title.title }}</td>
               <td :id='title.title' class="secordCol" style="width: 600px;height:220px;"></td>
             </tr>
@@ -45,12 +45,12 @@
         'selectLossmappingLinebody'
       ]),
       showlDialog(data){
-        this.isShow = !this.isShow 
+        this.isShow = !this.isShow
       },
       initCharts: function() {
-        for(let i = 0; i < this.testList.length; i++) {
-          console.log(this.testList[i].title);
-            var myChart = echarts.init(document.getElementById(this.testList[i].title));
+        for(let i = 0; i < this.lossmappingLinebodyAll.length; i++) {
+          console.log(this.lossmappingLinebodyAll.title);
+            var myChart = echarts.init(document.getElementById(this.lossmappingLinebodyAll[i].title));
             var option = {
               tooltip: {
                 trigger: 'item',
@@ -60,8 +60,8 @@
                 width:600,
                 type: 'sankey',
                 layout: 'none',
-                data: this.testList[i].data,
-                links: this.testList[i].link,
+                data: this.lossmappingLinebodyAll[i].data,
+                links: this.lossmappingLinebodyAll[i].link,
                 itemStyle: {
                   normal: {
                     borderWidth: 1,
@@ -86,17 +86,17 @@
       ])
     },
     watch: {
-      lossmappingLinebodyAll(newVal){
-        this.lossmappingLinebodyAll.forEach(
-        item => {
-          this.testList.push(item);
-          console.log(item)
-        }
-      );
-      }
+      // lossmappingLinebodyAll(newVal){
+      //   this.lossmappingLinebodyAll.forEach(
+      //   item => {
+      //     this.testList.push(item);
+      //     console.log(item)
+      //   }
+      // );
+      // }
     },
     created() {
-      
+
     },
     mounted() {
       this.selectLossmappingLinebody()
@@ -104,7 +104,7 @@
       setTimeout(function() {
         _this.initCharts();
       }, 800);
-      
+
     }
   }
   </script>

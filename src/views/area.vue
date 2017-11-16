@@ -26,11 +26,6 @@ export default {
     return {
       sFlag: true,
       setting: {
-        async: {
-          enable: true,
-          url: "http://116.62.10.199:3001/areaAllSet/showAreaAll",
-          type: "get"
-        },
         callback: {
           beforeRemove: this.zTreeBeforeRemove,
           beforeRename: this.zTreeBeforeRename,
@@ -61,14 +56,17 @@ export default {
   computed: {
     ...mapState([
       "areaAll",
-      "newArea"
+      "newArea",
+      "updateAreaRes",
+      "deleteAreaRes",
     ])
   },
   methods: {
     ...mapActions([
       "selectAreaAll",
-      "addFactoryOne",
-      "updateArea"
+      "addAreaOne",
+      "updateArea",
+      "deleteArea",
     ]),
     addHoverDom: function(treeId, treeNode) {
       if (treeNode.level >= 3) return;
@@ -101,21 +99,9 @@ export default {
         var obj = {
           "id": treeNode.id,
         };
-        $.get("http://116.62.10.199:3001/areaAllSet/deleteArea", obj, function(response, status) {
-          console.log(response);
-          if (status !== "success") {
-            _this.$Message.error("服务器请求失败");
-          }
-          if (response.status === "0") {
-            _this.$Message.success("删除成功");
-            zTree.removeNode(treeNode);
-          } else {
-            _this.$Message.error("删除失败");
-            zTree.reAsyncChildNodes(null, "refresh");
-          }
-        })
+        this.deleteArea(obj);
+        return true;
       } else {
-        _this.$Message.error("删除失败");
         return false;
       }
     },
@@ -151,27 +137,7 @@ export default {
             "name": newName,
             "pId": treeNode.pId
           };
-          console.log(obj);
-          $.post("http://116.62.10.199:3001/areaAllSet/addAreaOne", obj,
-            function(data, textStatus) {
-              console.log(data);
-              if (textStatus !== "success") {
-                _this.$Message.error("服务器请求失败");
-                zTree.reAsyncChildNodes(null, "refresh");
-              }
-              if (data.status === "101") {
-                _this.$Message.error("该区域已存在，请重新输入！");
-                setTimeout(function() {
-                  zTree.editName(treeNode);
-                }, 10);
-              }
-              if (data.id && treeNode.isNew) {
-                treeNode.id = data.id;
-                delete treeNode.isNew;
-                zTree.updateNode(treeNode);
-                _this.$Message.success("添加成功");
-              }
-            })
+          this.addAreaOne({"name": newName, "pId": treeNode.pId});
           return true;
         }
       }
@@ -185,31 +151,59 @@ export default {
           "pId": treeNode.pId,
           "id": treeNode.id,
         };
-        $.post("http://116.62.10.199:3001/areaAllSet/updateArea", obj,
-          function(data, textStatus) {
-            console.log(data);
-            if (textStatus !== "success") {
-              _this.$Message.error("服务器请求失败");
-              zTree.reAsyncChildNodes(null, "refresh");
-            }
-            if (data.status === "101") {
-              _this.$Message.error("该区域已存在！");
-              zTree.reAsyncChildNodes(null, "refresh");
-            } else if (data.status === "0") {
-              _this.$Message.success("修改成功");
-              zTree.cancelEditName(newName);
-            } else {
-              _this.$Message.error("修改失败");
-              zTree.reAsyncChildNodes(null, "refresh");
-            }
-          })
+        this.updateArea({"name": newName, "pId": treeNode.pId, "id": treeNode.id});
         return true;
       }
     },
   },
-  watch: {},
+  watch: {
+    areaAll(){
+        $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+    },
+    newArea(newVal){
+      const _this = this;
+      if(newVal.id) {
+        const zTree = $.fn.zTree.getZTreeObj("area_tree");
+        const nodes = zTree.getSelectedNodes();
+        if(nodes.length > 0){
+          let newNode = nodes[0];
+          newNode.id = newVal.id;
+          delete newNode.isNew;
+          zTree.updateNode(newNode);
+          _this.$Message.success("添加成功");
+        } else {
+          _this.$Message.error("添加失败");
+          $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+        }
+      } else {
+        _this.$Message.error("添加失败");
+        $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+      }
+    },
+    updateAreaRes(newval){
+      const _this = this;
+      if(newval.status === "0") {
+        _this.$Message.success("修改成功");
+      } else if(newval.status === "101") {
+        $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+        _this.$Message.error("区域已存在");
+      } else {
+        _this.$Message.error("修改失败");
+        $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+      }
+    },
+    deleteAreaRes(newval){
+      const _this = this;
+      if(newval.status === "0") {
+        _this.$Message.success("删除成功");
+      } else {
+        $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+        _this.$Message.error("删除失败");
+      }
+    }
+  },
   mounted() {
-    $.fn.zTree.init($("#area_tree"), this.setting);
+    this.selectAreaAll();
   }
 }
 </script>

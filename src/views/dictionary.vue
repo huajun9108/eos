@@ -241,9 +241,6 @@ export default {
       }
     },
     zTreeBeforeRenameCategory: function(treeId, treeNode, newName, isCancel) {
-      // this.cancelEdit(treeId, treeNode, isCancel);
-      // this.zTreeAdd(treeId, treeNode, newName, isCancel, "http://116.62.10.199:3001/losscategory/addLossOne");
-      // this.zTreeUpdate(treeId, treeNode, newName, isCancel, "http://116.62.10.199:3001/losscategory/updateLossById");
       var _this = this;
       var zTree = $.fn.zTree.getZTreeObj(treeId);
 
@@ -411,7 +408,6 @@ export default {
         console.log("zTreeOnModifyEnd");
       }, 1000);
     },
-
   },
   watch: {},
 

@@ -1,115 +1,127 @@
 <template>
-    <transition name="slide-fade">
-    <div class="TimeAndAreaContainer showchoose">
-        <div class="chooseTime box">
-            <h1 class="choose">时间选择</h1>
-            <div class="time">
-            <span>开始时间</span>
-                <DatePicker size="small" v-model="startTime" placement="bottom-end" type="date" placeholder="Select date" @on-change="astartTime=$event"></DatePicker>
-            </div>
-            <div class="time">
-            <span>结束时间</span>
-            <DatePicker size="small" v-model="endTime" type="date" placement="bottom-end" placeholder="Select date"></DatePicker>
-            </div>
-        </div>
-        <div class="chooseArea box">
-            <h1 class="choose">区域选择</h1>
-            <div class="area">
-                <ul id="treeDemo" class="ztree"></ul>
-            </div>
-        </div>
+<transition name="slide-fade">
+  <div class="TimeAndAreaContainer showchoose">
+    <div class="chooseTime box">
+      <h1 class="choose">时间选择</h1>
+      <div class="time">
+        <span>开始时间</span>
+        <DatePicker size="small" v-model="startTime" placement="bottom-end" type="date" placeholder="Select date" @on-change="astartTime=$event"></DatePicker>
+      </div>
+      <div class="time">
+        <span>结束时间</span>
+        <DatePicker size="small" v-model="endTime" type="date" placement="bottom-end" placeholder="Select date"></DatePicker>
+      </div>
     </div>
-    </transition>
+    <div class="chooseArea box">
+      <h1 class="choose">区域选择</h1>
+      <div class="area">
+        <ul id="treeDemo" class="ztree"></ul>
+      </div>
+    </div>
+  </div>
+</transition>
 </div>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
- export default {
-    data () {
-      return {
-        startTime:null,
-        endTime:null,
-        pickerBeginDateBefore:{
-            disabledDate: (time) => {
-                let beginDateVal = this.endTime;
-                if (beginDateVal) {
-                    return time.getTime() < beginDateVal;
-                }
-            }
-        },
-        pickerBeginDateAfter:{
-            disabledDate: (time) => {
-                let beginDateVal = this.startTime;
-                if (beginDateVal) {
-                    return time.getTime() > beginDateVal;
-                }
-            }
-        },
+import {
+  mapState,
+  mapActions
+} from "vuex";
+export default {
+  data() {
+    return {
+      startTime: null,
+      endTime: null,
+      pickerBeginDateBefore: {
+        disabledDate: (time) => {
+          let beginDateVal = this.endTime;
+          if (beginDateVal) {
+            return time.getTime() < beginDateVal;
+          }
+        }
+      },
+      pickerBeginDateAfter: {
+        disabledDate: (time) => {
+          let beginDateVal = this.startTime;
+          if (beginDateVal) {
+            return time.getTime() > beginDateVal;
+          }
+        }
+      },
 
-        setting: {
-            view: {
-                selectedMulti: false,
-                showIcon: false,
-            },
-            data: {
-                simpleData: {
-                    enable: true
-                }
-            },
-            check: {
-                enable: true,
-                chkStyle: "checkbox",
-            },
-            callback: {
-		        onCheck: this.zTreeOnCheck
-	        }
+      setting: {
+        view: {
+          selectedMulti: false,
+          showIcon: false,
         },
-        validareaList:[],
-        }
-    },
-    methods: {
-       ...mapActions([
-        "selectUserById",
-        ]),
-        zTreeOnCheck(){
-            var treeObj = $.fn.zTree.getZTreeObj("treeDemo  ");
-            var nodes = treeObj.getCheckedNodes(true);
-            console.log(nodes)
-        }
-    },
-    computed:{
-        ...mapState([
-        "validarea",
-        ])
-    },
-    watch:{
-        startTime(newVal){
-            console.log(newVal)
+        data: {
+          simpleData: {
+            enable: true
+          }
         },
-        endTime(newVal){
-            console.log(newVal)
+        check: {
+          enable: true,
+          chkStyle: "checkbox",
         },
-        validarea(newVal){
-            this.validarea.forEach(item=> {
-                if(item.checked){
-                    this.validareaList.push(item)
-                }
-            });
-            $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
+        callback: {
+          onCheck: this.zTreeOnCheck
         }
-    },
-    mounted(){
-        if (sessionStorage.getItem("userid")) {
-            this.selectUserById({userid:sessionStorage.getItem("userid")})
-            //  $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
-        } else {
-            console.log(this.$route);
-            // this.selectAreaAll();
-            // $.fn.zTree.init($("#treeDemo"), this.setting, this.areaAll);
-        }
+      },
+      validareaList: [],
     }
+  },
+  methods: {
+    ...mapActions([
+      "selectUserById",
+    ]),
+    zTreeOnCheck(event, treeId, treeNode) {
+      var treeObj = $.fn.zTree.getZTreeObj(treeId);
+      var nodes = treeObj.getCheckedNodes(true);
+      var childNodes = [];
+      nodes.forEach(function(node) {
+        let reg = /^l/g;
+        if (reg.test(node.id)) {
+          childNodes.push(node.id);
+        }
+      })
+      console.log(childNodes);
+      // console.log(nodes)
+    }
+  },
+  computed: {
+    ...mapState([
+      "validarea",
+    ])
+  },
+  watch: {
+    startTime(newVal) {
+      console.log(newVal)
+    },
+    endTime(newVal) {
+      console.log(newVal)
+    },
+    validarea(newVal) {
+      this.validarea.forEach(item => {
+        if (item.checked) {
+          this.validareaList.push(item)
+        }
+      });
+      $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
+    }
+  },
+  mounted() {
+    if (sessionStorage.getItem("userid")) {
+      this.selectUserById({
+        userid: sessionStorage.getItem("userid")
+      })
+      //  $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
+    } else {
+      console.log(this.$route);
+      // this.selectAreaAll();
+      // $.fn.zTree.init($("#treeDemo"), this.setting, this.areaAll);
+    }
+  }
 }
-
 </script>
 <style lang="scss" scoped>
 @import "../styles/mobile.scss";
@@ -151,8 +163,8 @@ import { mapState, mapActions } from "vuex";
             }
         }
     }
-    .chooseTime{
-        margin-bottom: P(26)
+    .chooseTime {
+        margin-bottom: P(26);
     }
     .chooseArea {
         flex: 1;
@@ -172,15 +184,15 @@ import { mapState, mapActions } from "vuex";
     }
 }
 .slide-fade-enter-active {
-  transition: all .3s ease;
+    transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all 0.3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
+/* .slide-fade-leave-active for below version 2.1.8 */
+.slide-fade-enter,
+.slide-fade-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
 }
-
 </style>

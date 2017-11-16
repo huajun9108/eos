@@ -118,11 +118,50 @@ export default {
     },
     selectAreaAll({ commit }, obj) {
         axios.get("/areaAllSet/showAreaAll", {}).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("selectAreaAll", json)
         })
+    },
+    addAreaOne({ commit }, obj) {
+        axios.post("/areaAllSet/addAreaOne", qs.stringify({
+            "name": obj.name,
+            "pId": obj.pId,
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("addAreaOne", json)
+        }).catch(error => {
+            console.log(error);
+        })
+    },
+    updateArea({ commit }, obj) {
+        axios.post("/areaAllSet/updateArea", qs.stringify({
+            "name": obj.name,
+            "pId": obj.pId,
+            "id": obj.id,
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("updateArea", json)
+        }).catch(error => {
+            console.log(error);
+        })
+    },
+    deleteArea({ commit }, obj) {
+      axios.get("/areaAllSet/deleteArea", {
+        params: {
+            id: obj.id
+        }
+      }).then(res =>{
+        console.log(res.data)
+        return res.data
+      }).then(json => {
+        commit("deleteArea", json)
+      })
     },
     selectUserById({ commit }, obj) {
         axios.post("/user/selectUserById", qs.stringify({
@@ -132,7 +171,6 @@ export default {
             return res.data.data
         }).then(json => {
             commit("selectUserById", json)
-
         })
     },
     selectKPIALL({ commit }, obj) {
@@ -141,19 +179,6 @@ export default {
             return res.data
         }).then(json => {
             commit("selectKPIALL", json)
-        })
-    },
-    addFactoryOne({ commit }, obj) {
-        axios.post("/areaAllSet/addAreaOne", qs.stringify({
-            "name": obj.name,
-            "pId": obj.pId,
-        })).then(res => {
-            console.log(res.data)
-            return res.data
-        }).then(json => {
-            commit("addFactoryOne", json)
-        }).catch(error => {
-            console.log(error);
         })
     },
     findAndCount({ commit }, obj) {
@@ -168,20 +193,6 @@ export default {
             commit("findAndCount", json)
         }).catch(err => {
             console.log(err)
-        })
-    },
-    updateArea({ commit }, obj) {
-        axios.post("/areaAllSet/updateArea", qs.stringify({
-            "name": obj.name,
-            "pId": obj.pId,
-            "id": obj.id,
-        })).then(res => {
-            // console.log(res.data)
-            return res.data
-        }).then(json => {
-            commit("updateArea", json)
-        }).catch(error => {
-            console.log(error);
         })
     },
     updateKPItwoLev({ commit }, obj) {

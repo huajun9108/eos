@@ -25,6 +25,12 @@ export default {
     selectAreaAll(state, json) {
         state.areaAll = json
     },
+    addAreaOne(state, json) {
+        state.newArea = json
+    },
+    deleteArea(state, json) {
+      state.deleteAreaRes = json
+    },
     selectUserById(state, json) {
         let str = ""
         state.userinfor = json.user
@@ -42,15 +48,13 @@ export default {
     selectKPIALL(state, json) {
         state.kpiAll = json
     },
-    addFactoryOne(state, json) {},
     findAndCount(state, json) {
         state.count = json.count
         state.userAll = json.rows
     },
-    addFactoryOne(state, json) {
-        state.newArea = json
+    updateArea(state, json) {
+        state.updateAreaRes = json
     },
-    updateArea(state, json) {},
     updateKPItwoLev(state, json) {},
     selectLinebodyById(state, json) {
         state.lineBody = json
@@ -62,9 +66,7 @@ export default {
 
     },
     showImpItempool(state, json) {
-
         state.improList = json
-
     },
     showObjectnowBylinedyid(state, json) {
         state.nowline = json

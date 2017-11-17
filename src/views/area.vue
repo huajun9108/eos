@@ -93,13 +93,9 @@ export default {
       $("#addBtn_" + treeNode.tId).unbind().remove();
     },
     zTreeBeforeRemove: function(treeId, treeNode) {
-      var _this = this;
       if (confirm("确认删除？")) {
         var zTree = $.fn.zTree.getZTreeObj("area_tree");
-        var obj = {
-          "id": treeNode.id,
-        };
-        this.deleteArea(obj);
+        this.deleteArea({"id": treeNode.id});
         return true;
       } else {
         return false;
@@ -133,10 +129,6 @@ export default {
           }, 10);
           return true;
         } else {
-          var obj = {
-            "name": newName,
-            "pId": treeNode.pId
-          };
           this.addAreaOne({"name": newName, "pId": treeNode.pId});
           return true;
         }
@@ -146,11 +138,6 @@ export default {
         if (oldName === newName) {
           return true;
         }
-        var obj = {
-          "name": newName,
-          "pId": treeNode.pId,
-          "id": treeNode.id,
-        };
         this.updateArea({"name": newName, "pId": treeNode.pId, "id": treeNode.id});
         return true;
       }
@@ -180,11 +167,11 @@ export default {
         $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
       }
     },
-    updateAreaRes(newval){
+    updateAreaRes(newVal){
       const _this = this;
-      if(newval.status === "0") {
+      if(newVal.status === "0") {
         _this.$Message.success("修改成功");
-      } else if(newval.status === "101") {
+      } else if(newVal.status === "101") {
         $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
         _this.$Message.error("区域已存在");
       } else {
@@ -192,9 +179,9 @@ export default {
         $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
       }
     },
-    deleteAreaRes(newval){
+    deleteAreaRes(newVal){
       const _this = this;
-      if(newval.status === "0") {
+      if(newVal.status === "0") {
         _this.$Message.success("删除成功");
       } else {
         $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);

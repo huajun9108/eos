@@ -250,8 +250,8 @@ export default {
     addOption(obj) {
     var _this = this;
       if(this.validateData()) {
-          _this.addUser(obj); 
-          _this.name=""   
+          _this.addUser(obj);
+          _this.name=""
           _this.pwd=""
           _this.abbname=""
           _this.job=""
@@ -285,13 +285,10 @@ export default {
        if(!this.continueAdd){
         this.$router.push({name:"account"});
        }else{
-
        }
       }else{
         this.$Message.warning('网络问题请稍后再试');
       }
-        
-      
     }
   },
 
@@ -299,7 +296,7 @@ export default {
     if (this.$route.query.userid) {
       this.selectUserById({userid:this.$route.query.userid});
     } else {
-      this.flag=!this.flag; 
+      this.flag=!this.flag;
       $.fn.zTree.init($("#treeDemo"), this.settingNewConstruction);
     }
   }

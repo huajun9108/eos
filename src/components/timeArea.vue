@@ -1,5 +1,5 @@
 <template>
-    <transition name="slide-fade">
+<transition name="slide-fade">
     <div class="TimeAndAreaContainer showchoose">
         <div class="chooseTime box">
             <h1 class="choose">时间选择</h1>
@@ -18,9 +18,8 @@
                 <ul id="treeDemo" class="ztree"></ul>
             </div>
         </div>
-    </div>
-    </transition>
-</div>
+  </div>
+</transition>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
@@ -69,103 +68,74 @@ import { mapState, mapActions } from "vuex";
                 beforeCheck:this.zTreeBeforeCheck
 	        }
         },
-        validareaList:[],
-        }
-    },
-    methods: {
-       ...mapActions([
-        "selectUserById",
-        ]),
-        zTreeOnCheck(event,treeId,treeNode){
-            let _this = this
-            var nodes = treeNode.children
-            var checked = false
-             $.each(nodes,function(i,n){
-                if(checked){
-                    n.checked = false
-                    if(n.children!=null){
-                        _this.cancelSonCheck(n)
-                    }
-                }else{
-                    checked=true;
-                    if(n.children!=null){
-                        _this.checkSonCheck(n)
-                    }
-                }
-            })
-        },
-        zTreeBeforeCheck(treeId,treeNode){
-            if(treeNode.checked){
-                return
-            }
-            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-            var nodes = treeObj.getCheckedNodes(true);
-            $.each(nodes,function(i,n){
-                n.checked = false
-            })
-
-        },
-        cancelSonCheck(treeNode){  
-            let _this = this
-            var nodes = treeNode.children
-             $.each(nodes,function(i,n){
-                n.checked = false
-                if(n.children!=null){
-                    _this.cancelSonCheck(n)
-                }
-            })
-        },
-        checkSonCheck(treeNode){
-            let _this = this
-            var nodes = treeNode.children;
-            var checked = false;
-            $.each(nodes,function(i,n){
-                if(checked){
-                    n.checked = false
-                    if(n.children!=null){
-                        _this.cancelSonCheck(n)
-                    }
-                }else{
-                    if(n.children!=null){
-                        _this.checkSonCheck(n)
-                    }
-                }
-            })
-        }
-        
-    },
-    computed:{
-        ...mapState([
-        "validarea",
-        ])
-    },
-    watch:{
-        startTime(newVal){
-            console.log(newVal)
-        },
-        endTime(newVal){
-            console.log(newVal)
-        },
-        validarea(newVal){
-            this.validareaList=[]
-            this.validarea.forEach(item=> {
-                if(item.checked){
-                    this.validareaList.push(item)
-                }
-            });
-            $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
-        }
-
-    },
-    mounted(){
-        if (sessionStorage.getItem("userid")) {
-            this.selectUserById({userid:sessionStorage.getItem("userid")})
-        } else {
-            console.log(this.$route);
-        }
+      validareaList: [],
+      lineBodys: [],
+      lineBodystr:''
     }
+  },
+  methods: {
+    ...mapActions([
+      "selectUserById",
+      "selectAllByUserIdAndLinebodyIds"
+    ]),
+    zTreeOnCheck(event, treeId, treeNode) {
+      const _this = this;
+      _this.lineBodys = [];
+      var treeObj = $.fn.zTree.getZTreeObj(treeId);
+      var nodes = treeObj.getCheckedNodes(true);
+      nodes.forEach(function(node) {
+        let reg = /^l/g;
+        if (reg.test(node.id)) {
+          _this.lineBodys.push(node.id.substring(1));
+        }
+      });
+      _this.lineBodystr=_this.lineBodys.join(",");
+      console.log(_this.lineBodystr);
+      _this.selectAllByUserIdAndLinebodyIds({"userId":sessionStorage.getItem("userid"), "linebodyIds": _this.lineBodystr});
+      // console.log(nodes)
+    },
+  },
+  computed: {
+    ...mapState([
+      "validarea",
+    ])
+  },
+  watch: {
+    startTime(newVal) {
+      console.log(newVal)
+    },
+    endTime(newVal) {
+      console.log(newVal)
+    },
+    validarea(newVal) {
+      const _this = this;
+      this.validareaList=[]
+      this.validarea.forEach(item => {
+        if (item.checked) {
+          this.validareaList.push(item)
+        }
+      });
+      this.validareaList.forEach(function(node) {
+        let reg = /^l/g;
+        if(reg.test(node.id)) {
+          _this.lineBodys.push(node.id.substring(1));
+        }
+      });
+      _this.lineBodystr=_this.lineBodys.join(",");
+      $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
+      _this.selectAllByUserIdAndLinebodyIds({"userId":sessionStorage.getItem("userid"), "linebodyIds": _this.lineBodystr});
+    }
+  },
+  mounted() {
+    if (sessionStorage.getItem("userid")) {
+      this.selectUserById({
+        userid: sessionStorage.getItem("userid")
+      })
+    } else {
+      console.log(this.$route);
+    }
+  }
 }
-
 </script>
 <style lang="scss" scoped>
 @import "../styles/mobile.scss";
@@ -207,8 +177,8 @@ import { mapState, mapActions } from "vuex";
             }
         }
     }
-    .chooseTime{
-        margin-bottom: P(26)
+    .chooseTime {
+        margin-bottom: P(26);
     }
     .chooseArea {
         flex: 1;
@@ -228,15 +198,15 @@ import { mapState, mapActions } from "vuex";
     }
 }
 .slide-fade-enter-active {
-  transition: all .3s ease;
+    transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all 0.3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
+/* .slide-fade-leave-active for below version 2.1.8 */
+.slide-fade-enter,
+.slide-fade-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
 }
-
 </style>

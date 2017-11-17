@@ -35,11 +35,6 @@ export default {
   data() {
     return {
       settingKpi: {
-        async: {
-          enable: true,
-          url: "http://116.62.10.199:3001/KPISet/showKPIAll",
-          type: "get",
-        },
         callback: {
           beforeRemove: this.zTreeBeforeRemoveKpi,
           beforeRename: this.zTreeBeforeRenameKpi,
@@ -68,11 +63,6 @@ export default {
         }
       },
       settingCategory: {
-        async: {
-          enable: true,
-          url: "http://116.62.10.199:3001/losscategory/selectLossAll",
-          type: "get",
-        },
         callback: {
           beforeRemove: this.zTreeBeforeRemoveCategory,
           beforeRename: this.zTreeBeforeRenameCategory,
@@ -105,13 +95,26 @@ export default {
   },
   computed: {
     ...mapState([
-      "kpiAll"
+      "kpiAll",
+      "addKpiRes",
+      "updateKpiRes",
+      "delKpiRes",
+      "lossAll",
+      "addLossRes",
+      "updateLossRes",
+      "deleteLossRes"
     ])
   },
   methods: {
     ...mapActions([
-      "selectKPIALL",
-      "updateKPItwoLev"
+      "showKPIALL",
+      "addKPItwoLev",
+      "updateKPItwoLev",
+      "deleteKPItwoLev",
+      "selectLossAll",
+      "addLossOne",
+      "updateLossById",
+      "deleteLossById"
     ]),
     hiddenParentBtn: function(treeId, treeNode) {
       var level = treeNode.level;
@@ -154,43 +157,7 @@ export default {
       $("#addBtn_" + treeNode.tId).unbind().remove();
     },
     zTreeBeforeRenameKpi: function(treeId, treeNode, newName, isCancel) {
-      this.cancelEdit(treeId, treeNode, isCancel);
-      this.zTreeAdd(treeId, treeNode, newName, isCancel, "http://116.62.10.199:3001/KPISet/addKPItwoLev");
-      this.zTreeUpdate(treeId, treeNode, newName, isCancel, "http://116.62.10.199:3001/KPISet/updateKPItwoLev");
-    },
-    zTreeBeforeRenameCategory: function(treeId, treeNode, newName, isCancel) {
-      this.cancelEdit(treeId, treeNode, isCancel);
-      this.zTreeAdd(treeId, treeNode, newName, isCancel, "http://116.62.10.199:3001/losscategory/addLossOne");
-      this.zTreeUpdate(treeId, treeNode, newName, isCancel, "http://116.62.10.199:3001/losscategory/updateLossById");
-    },
-    zTreeBeforeRemoveKpi: function(treeId, treeNode) {
-      this.zTreeBeforeRemove(treeId, treeNode, "http://116.62.10.199:3001/KPISet/deleteKPItwoLev");
-    },
-    zTreeBeforeRemoveCategory: function(treeId, treeNode) {
-      this.zTreeBeforeRemove(treeId, treeNode, "http://116.62.10.199:3001/losscategory/deleteLossById");
-    },
-    zTreeBeforeRemove: function(treeId, treeNode, url) {
       var _this = this;
-      if (confirm("确认删除？")) {
-        var obj = {
-          "id": treeNode.id,
-        };
-        $.get(url, obj, function(response, status) {
-          if (response.status === "0") {
-            _this.$Message.success("删除成功");
-            zTree.removeNode(treeNode);
-          } else {
-            _this.$Message.error("删除失败");
-            zTree.reAsyncChildNodes(null, "refresh");
-          }
-        })
-      } else {
-        _this.$Message.error("删除失败");
-        return false;
-      }
-    },
-    cancelEdit: function(treeId, treeNode, isCancel) {
-      console.log(treeId);
       var zTree = $.fn.zTree.getZTreeObj(treeId);
 
       if (isCancel && treeNode.isNew) {
@@ -202,10 +169,6 @@ export default {
       if (isCancel && !treeNode.isNew) {
         return true;
       }
-    },
-    zTreeAdd: function(treeId, treeNode, newName, isCancel, url) {
-      var _this = this;
-      var zTree = $.fn.zTree.getZTreeObj(treeId);
 
       if (!isCancel && newName.length == 0) {
         _this.$Message.error("名称不能为空！");
@@ -219,93 +182,187 @@ export default {
           }, 10);
           return true;
         } else {
-          var obj = {
-            "name": newName,
-            "pId": treeNode.pId
-          };
-          $.post(url, obj,
-            function(data, textStatus) {
-              if (textStatus !== "success") {
-                _this.$Message.error("服务器请求失败");
-                zTree.reAsyncChildNodes(null, "refresh");
-              }
-
-              if (data.status === "101") {
-                _this.$Message.error("该词已存在，请重新输入！");
-                setTimeout(function() {
-                  zTree.editName(treeNode);
-                }, 10);
-              }
-              if (data.id && treeNode.isNew) {
-                treeNode.id = data.id;
-                delete treeNode.isNew;
-                zTree.updateNode(treeNode);
-                _this.$Message.success("添加成功");
-              }
-            })
+          this.addKPItwoLev({"name": newName, "pId": treeNode.pId});
           return true;
         }
       }
-    },
-    zTreeUpdate: function(treeId, treeNode, newName, isCancel, url) {
-			var _this = this;
-      var zTree = $.fn.zTree.getZTreeObj(treeId);
+
       const oldName = treeNode.name;
       if (!isCancel && !treeNode.isNew) {
         if (oldName === newName) {
           return true;
         }
-        var obj = {
-          "name": newName,
-          "pId": treeNode.pId,
-          "id": treeNode.id,
-        };
-        $.post(url, obj,
-          function(data, textStatus) {
-            console.log(data);
-            if (textStatus !== "success") {
-              _this.$Message.error("服务器请求失败");
-              zTree.reAsyncChildNodes(null, "refresh");
-            }
-            if (data.status === "101") {
-              _this.$Message.error("该词已存在！");
-              zTree.reAsyncChildNodes(null, "refresh");
-              return false;
-            }
-            if (data.status === "0") {
-              _this.$Message.success("修改成功");
-              zTree.cancelEditName(newName);
-            } else {
-              _this.$Message.error("修改失败");
-              zTree.reAsyncChildNodes(null, "refresh");
-            }
-          })
+        this.updateKPItwoLev({"name": newName, "pId": treeNode.pId, "id": treeNode.id});
         return true;
       }
     },
-    zTreeOnModifyKpi: function(event, treeId, treeNode) {
-      setTimeout(function() {
-        console.log("zTreeOnModifyBegin");
-        var zTree = $.fn.zTree.getZTreeObj("treeCategory");
-        zTree.reAsyncChildNodes(null, "refresh");
-        console.log("zTreeOnModifyEnd");
-      }, 1000);
-    },
-    zTreeOnModifyCategory: function(event, treeId, treeNode) {
-      setTimeout(function() {
-        console.log("zTreeOnModifyBegin");
-        var zTree = $.fn.zTree.getZTreeObj("treeKpi");
-        zTree.reAsyncChildNodes(null, "refresh");
-        console.log("zTreeOnModifyEnd");
-      }, 1000);
-    },
+    zTreeBeforeRenameCategory: function(treeId, treeNode, newName, isCancel) {
+      var _this = this;
+      var zTree = $.fn.zTree.getZTreeObj(treeId);
 
+      if (isCancel && treeNode.isNew) {
+        setTimeout(function() {
+          zTree.removeNode(treeNode);
+        }, 10);
+        return true;
+      }
+      if (isCancel && !treeNode.isNew) {
+        return true;
+      }
+
+      if (!isCancel && newName.length == 0) {
+        _this.$Message.error("名称不能为空！");
+        return false;
+      }
+
+      if (!isCancel && treeNode.isNew) {
+        if (!confirm("确认添加？")) {
+          setTimeout(function() {
+            zTree.removeNode(treeNode);
+          }, 10);
+          return true;
+        } else {
+          this.addLossOne({"name": newName, "pId": treeNode.pId});
+          return true;
+        }
+      }
+
+      const oldName = treeNode.name;
+      if (!isCancel && !treeNode.isNew) {
+        if (oldName === newName) {
+          return true;
+        }
+        this.updateLossById({"name": newName, "pId": treeNode.pId, "id": treeNode.id});
+        return true;
+      }
+    },
+    zTreeBeforeRemoveKpi: function(treeId, treeNode) {
+      if (confirm("确认删除？")) {
+        this.deleteKPItwoLev({"id": treeNode.id});
+        return true;
+      } else {
+        return false;
+      }
+    },
+    zTreeBeforeRemoveCategory: function(treeId, treeNode) {
+      var _this = this;
+      var zTree = $.fn.zTree.getZTreeObj(treeId);
+      if (confirm("确认删除？")) {
+        this.deleteLossById({"id": treeNode.id});
+      } else {
+        return false;
+      }
+    },
   },
-  watch: {},
-
+  watch: {
+    kpiAll() {
+      $.fn.zTree.init($("#treeKpi"), this.settingKpi, this.kpiAll);
+    },
+    addKpiRes(newVal){
+      console.log(newVal);
+      const _this = this;
+      if(newVal.status === "0" && newVal.data.id) {
+        const zTree = $.fn.zTree.getZTreeObj("treeKpi");
+        const nodes = zTree.getSelectedNodes();
+        if(nodes.length === 1){
+          let newNode = nodes[0];
+          newNode.id = newVal.data.id;
+          delete newNode.isNew;
+          zTree.updateNode(newNode);
+          _this.$Message.success("添加成功");
+          this.selectLossAll();
+        } else {
+          _this.$Message.error("添加失败");
+          this.showKPIALL();
+        }
+      } else if(newVal.status === "101") {
+        this.showKPIALL();
+        _this.$Message.error("名称已存在");
+      } else {
+        _this.$Message.error("添加失败");
+        this.showKPIALL();
+      }
+    },
+    updateKpiRes(newVal){
+      console.log(newVal);
+      const _this = this;
+      if(newVal.status === "0") {
+        _this.$Message.success("修改成功");
+        this.selectLossAll();
+      } else if(newVal.status === "101") {
+        this.showKPIALL();
+        _this.$Message.error("名称已存在");
+      } else {
+        this.showKPIALL();
+        _this.$Message.error("修改失败");
+      }
+    },
+    delKpiRes(newVal) {
+      console.log(newVal);
+      const _this = this;
+      if(newVal.status === "0") {
+        _this.$Message.success("删除成功");
+        this.selectLossAll();
+      } else {
+        this.showKPIALL();
+        _this.$Message.error("删除失败");
+      }
+    },
+    lossAll() {
+      $.fn.zTree.init($("#treeCategory"), this.settingCategory, this.lossAll);
+    },
+    addLossRes(newVal) {
+      const _this = this;
+      if(newVal.status === "0" && newVal.data.id) {
+        const zTree = $.fn.zTree.getZTreeObj("treeCategory");
+        const nodes = zTree.getSelectedNodes();
+        if(nodes.length === 1){
+          let newNode = nodes[0];
+          newNode.id = newVal.data.id;
+          delete newNode.isNew;
+          zTree.updateNode(newNode);
+          _this.$Message.success("添加成功");
+          this.showKPIALL();
+        } else {
+          this.selectLossAll();
+          _this.$Message.error("添加失败");
+        }
+      } else if(newVal.status === "101") {
+        this.selectLossAll();
+        _this.$Message.error("名称已存在");
+      } else {
+        this.selectLossAll();
+        _this.$Message.error("添加失败");
+      }
+    },
+    updateLossRes(newVal) {
+      const _this = this;
+      if(newVal.status === "0") {
+        _this.$Message.success("修改成功");
+        this.showKPIALL();
+      } else if(newVal.status === "101") {
+        this.selectLossAll();
+        _this.$Message.error("名称已存在");
+      } else {
+        this.selectLossAll();
+        _this.$Message.error("修改失败");
+      }
+    },
+    deleteLossRes(newVal) {
+      console.log(newVal);
+      const _this = this;
+      if(newVal.status === "0") {
+        _this.$Message.success("删除成功");
+        this.showKPIALL();
+      } else {
+        this.selectLossAll();
+        _this.$Message.error("删除失败");
+      }
+    }
+  },
   mounted() {
-    $.fn.zTree.init($("#treeKpi"), this.settingKpi);
-    $.fn.zTree.init($("#treeCategory"), this.settingCategory);
+    this.showKPIALL();
+    this.selectLossAll();
   }
 }
 </script>

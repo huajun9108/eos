@@ -25,6 +25,27 @@ export default {
     selectAreaAll(state, json) {
         state.areaAll = json
     },
+    addAreaOne(state, json) {
+        state.newArea = json
+    },
+    updateArea(state, json) {
+        state.updateAreaRes = json
+    },
+    deleteArea(state, json) {
+        state.deleteAreaRes = json
+    },
+    selectLossAll(state, json) {
+        state.lossAll = json
+    },
+    addLossOne(state, json) {
+        state.addLossRes = json
+    },
+    updateLossById(state, json) {
+        state.updateLossRes = json
+    },
+    deleteLossById(state, json) {
+        state.deleteLossRes = json
+    },
     selectUserById(state, json) {
         let str = ""
         state.userinfor = json.user
@@ -40,15 +61,22 @@ export default {
         });
         return state.validmenu = str
     },
-    selectKPIALL(state, json) {
+    showKPIALL(state, json) {
         state.kpiAll = json
     },
-    addFactoryOne(state, json) {},
-    addFactoryOne(state, json) {
-        state.newArea = json
+    addKPItwoLev(state, json) {
+        state.addKpiRes = json
     },
-    updateArea(state, json) {},
-    updateKPItwoLev(state, json) {},
+    updateKPItwoLev(state, json) {
+        state.updateKpiRes = json
+    },
+    deleteKPItwoLev(state, json) {
+        state.delKpiRes = json
+    },
+    findAndCount(state, json) {
+        state.count = json.count
+        state.userAll = json.rows
+    },
     selectLinebodyById(state, json) {
         state.lineBody = json
     },
@@ -59,9 +87,7 @@ export default {
 
     },
     showImpItempool(state, json) {
-
         state.improList = json
-
     },
     showObjectnowBylinedyid(state, json) {
         state.nowline = json
@@ -79,7 +105,7 @@ export default {
     deleteObjectnowBylossid(state, json) {
         state.deleteObject = json
     },
-    selectLossmappingLinebody(state, json) {
+    selectAllByUserIdAndLinebodyIds(state, json) {
         state.lossmappingLinebodyAll = json
     }
 }

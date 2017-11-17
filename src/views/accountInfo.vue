@@ -48,7 +48,7 @@
           <span><i class="icon-Viewing-area"></i>可视区域范围</span>
         </div>
         <div class="visablearea_tree">
-          <ul id="treeDemo" class="ztree"></ul>
+          <ul id="visual_area_tree" class="ztree"></ul>
         </div>
 
       </div>
@@ -83,28 +83,7 @@ export default {
       postOptions:[],           // 初渲染所有选项
       post:null    ,    // 提交选项也是已选中选项
       checkLists: "",
-      settingNewConstruction: {
-        async: {
-          enable: true,
-          type: 'get',
-          url: 'http://116.62.10.199:3001/areaAllSet/showAreaAll',
-        },
-        view: {
-          selectedMulti: false,
-          showIcon: false,
-        },
-        data: {
-          simpleData: {
-            enable: true
-          }
-        },
-        check: {
-          enable: true,
-          chkStyle: "checkbox",
-          radioType: "level"
-        },
-      },
-      settingEdit: {
+      setting: {
         view: {
           selectedMulti: false,
           showIcon: false,
@@ -128,7 +107,8 @@ export default {
       "validmenu",
       "validmenuList",
       "validarea",
-      "addResult"
+      "addResult",
+      "areaAll"
     ])
   },
   methods: {
@@ -174,7 +154,7 @@ export default {
       return o;
     },
     confirm() {
-      var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+      var zTree = $.fn.zTree.getZTreeObj("visual_area_tree");
       var nodes = zTree.getCheckedNodes(true);
       var checkedNodes=[];
       console.log(nodes.length);
@@ -249,14 +229,14 @@ export default {
     addOption(obj) {
     var _this = this;
       if(this.validateData()) {
-          _this.addUser(obj); 
-          _this.name=""   
+          _this.addUser(obj);
+          _this.name=""
           _this.pwd=""
           _this.abbname=""
           _this.job=""
           _this.leader=""
           _this.postOptions=[]
-          var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+          var treeObj = $.fn.zTree.getZTreeObj("visual_area_tree");
           treeObj.checkAllNodes(false);
       }
     }
@@ -265,8 +245,11 @@ export default {
     validmenu(newVal){
       this.getOptions()
     },
+    areaAll(newVal){
+      $.fn.zTree.init($("#visual_area_tree"), this.setting, this.areaAll);
+    },
     validarea(newVal){
-       $.fn.zTree.init($("#treeDemo"), this.settingEdit, this.validarea);
+       $.fn.zTree.init($("#visual_area_tree"), this.setting, this.validarea);
     },
     userinfor(){
       this.name=this.userinfor.username;
@@ -286,8 +269,6 @@ export default {
       }else{
         this.$Message.warning('服务器忙请稍后再试');
       }
-        
-      
     }
   },
 
@@ -295,8 +276,8 @@ export default {
     if (this.$route.query.userid) {
       this.selectUserById({userid:this.$route.query.userid});
     } else {
-      this.flag=!this.flag; 
-      $.fn.zTree.init($("#treeDemo"), this.settingNewConstruction);
+      this.flag=!this.flag;
+      this.selectAreaAll();
     }
   }
 };

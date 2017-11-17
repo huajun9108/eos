@@ -1,236 +1,223 @@
 @import "./mobile.scss";
+
 .datainput {
-    height: 100%;
-    overflow: hidden;
-    .datainputContainer {
-        width: 90%;
-        height: 82%;
-        border: 1px solid #BDBDBD;
+  height: 100%;
+  overflow: hidden;
+
+  .datainputContainer {
+    width: 90%;
+    height: 82%;
+    border: 1px solid #BDBDBD;
+    border-radius: 4px;
+
+    .openCeremony {
+      height: 7%;
+      padding-top: 1%;
+      padding-bottom: 1%;
+
+      .inputBtn {
+        margin-left: P(28);
+        font-size: P(14);
+        display: inline-block;
+        line-height: P(30);
+        text-align: center;
         border-radius: 4px;
-        .openCeremony {
-            height: 7%;
-            padding-top: 1%;
-            padding-bottom: 1%;
-            .inputBtn {
-                margin-left: P(28);
-                font-size: P(14);
-                display: inline-block;
-                line-height: P(30);
-                text-align: center;
-                border-radius: 4px;
-            }
-            .openCeremonyButton {
-                color: #FFF;
-                width: P(76);
-                background-color: #164380;
-            }
-            .historyButton {
-                color: #040404;
-                width: P(142);
-                background-color: #e1e1e1;
-            }
-        }
-        .lengthShift {
-            padding-left: P(28);
-            height: 8%;
-            padding-top: 1%;
-            padding-bottom: 1%;
-            border-top: 1px solid #BDBDBD;
-            border-bottom: 1px solid #BDBDBD;
-            .lengthShiftTime {
-                color: #040404;
-                font-size: P(16);
-                line-height: P(42);
-            }
-        }
-        .tableContainer {
-            overflow-y: auto;
-            height: 85%;
-            .tableBody {
-                width: 100%;
-                height: 100%;
-            }
-            .tableBody tbody {
-                height: 100%;
-            }
-            .tableBody tr {
-                border-bottom: 1px solid #BDBDBD;
-            }
-            .tableBody tr:last-child {
-                border-bottom: none;
-            }
-            .tableBody td {
-                text-align: center;
-                height: P(232);
-            }
-            .firstCol {
-                width: 10%;
-                border-right: 1px solid #BDBDBD;
-            }
-            .secondCol {
-                width: 20%;
-                border-right: 1px solid #BDBDBD;
-                padding: 30px 15px 0;
-                vertical-align: top;
-                .textArea {
-                    width: 90%;
-                    height: 30%;
-                }
-            }
-            .thirdCol {
-                width: 60%;
-                border-right: 1px solid #BDBDBD;
-                .childTableContainer {
-                    width: 100%;
-                    height: 100%;
-                    Table {
-                        width: 100%;
-                        height: 100;
-                    }
-                    // th.ivu-table-column-center, td.ivu-table-column-center {
-                    //   height: P(30);
-                    //   font-size: P(14);
-                    // }
-                    // Table {
-                    //   width: 100%;
-                    // }
-                    // table tbody {
-                    //   display: block;
-                    //   overflow-y: scroll;
-                    // }
-                    //
-                    // table thead,
-                    // tbody tr {
-                    //   display: table;
-                    //   width: 100%;
-                    //   table-layout: fixed;
-                    // }
-                    // table thead {
-                    //   width: calc( 100% - 1em );
-                    // }
-                    // .childTableTitle {
-                    //     padding-right: P(19);
-                    //     font-size: P(0);
-                    //     border-bottom: 1px solid #BDBDBD;
-                    // }
-                    // .childTableBody {
-                    //     overflow-y: scroll;
-                    //     height: P(202);
-                    //     width: 100%;
-                    // }
-                    // .childTableRow {
-                    //     font-size: P(0);
-                    //     width: 100%;
-                    // }
-                    // .childTableCol {
-                    //     height: P(30);
-                    //     display: inline-block;
-                    //     font-size: P(14);
-                    //     border-bottom: 1px solid #BDBDBD;
-                    // }
-                    // .childTableCol:last-child {
-                    //     border-right: none;
-                    // }
-                    // .childTableTitle>.childTableCol {
-                    //     border-bottom: none;
-                    // }
-                    // .childTableTitle>.childTableCol:last-child {
-                    //     border-right: 1px solid #BDBDBD;
-                    // }
-                    // .childFirstCol,
-                    // .childSecondCol {
-                    //     width: 25%;
-                    //     border-right: 1px solid #BDBDBD;
-                    // }
-                    // .childFourthCol,
-                    // .childThirdCol {
-                    //     width: 20%;
-                    //     border-right: 1px solid #BDBDBD;
-                    // }
-                    // .childFifthCol {
-                    //     width: 10%;
-                    //     border-right: 1px solid #BDBDBD;
-                    // }
-                }
-            }
-            .fourthCol {
-                width: 10%;
-                .addLossBtn {
-                    display: inline-block;
-                    width: P(80);
-                    line-height: P(30);
-                    background-color: #e1e1e1;
-                    border-radius: 4px;
-                }
-            }
-        }
-        .lossChoose {
-            z-index: 2000;
-            visibility: hidden;
-            background: #FFF;
-            position: absolute;
-            height: 70%;
-            top: 50%;
-            left: 50%;
-            font-size: P(14);
-            // max-width: P(498);
-            max-height: P(730);
-            padding: P(46) P(40) 0 P(46);
-            transform: translateX(-50%) translateY(-50%);
-            .dropdownTier {
-                width: P(200);
-                height: P(30);
-                margin-bottom: P(46);
-            }
-            .dropdownTier:first-child {
-                margin-right: P(16);
-            }
-            .durationTimeContainer {
-                margin-top: P(54);
-                margin-bottom: P(54);
-            }
-            .timeTitle {
-                color: #040404;
-                margin-right: P(13);
-            }
-            .btnContainer {
-                position: absolute;
-                bottom: P(34);
-                right: P(40);
-                .btn {
-                    font-size: P(14);
-                    width: P(104);
-                    line-height: P(14);
-                    height: P(26);
-                    border-radius: P(14);
-                    color: #FFF;
-                }
-                .confirmBtn {
-                    background-color: #1B3867;
-                }
-                .cancelBtn {
-                    margin-left: P(16);
-                    background-color: #c2c2c2;
-                }
-            }
-        }
-        .shade {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #000;
-            opacity: 0.3;
-            visibility: hidden;
-        }
-        .showchoose {
-            visibility: visible;
-        }
-        .hidechoose {
-            visibility: hidden;
-        }
+      }
+
+      .openCeremonyButton {
+        color: #FFF;
+        width: P(76);
+        background-color: #164380;
+      }
+
+      .historyButton {
+        color: #040404;
+        width: P(142);
+        background-color: #e1e1e1;
+      }
     }
+
+    .lengthShift {
+      padding-left: P(28);
+      height: 8%;
+      padding-top: 1%;
+      padding-bottom: 1%;
+      border-top: 1px solid #BDBDBD;
+      border-bottom: 1px solid #BDBDBD;
+
+      .lengthShiftTime {
+        color: #040404;
+        font-size: P(16);
+        line-height: P(42);
+      }
+    }
+
+    .tableContainer {
+      overflow-y: auto;
+      width: 100%;
+      height: 100%;
+      height: 85%;
+
+      .tableBody {
+        width: 100%;
+        height: 100%;
+      }
+
+      .tableBody tbody {
+        height: 100%;
+      }
+
+      .tableBody tr {
+        border-bottom: 1px solid #BDBDBD;
+      }
+
+      .tableBody tr:last-child {
+        border-bottom: none;
+      }
+
+      .tableBody td {
+        text-align: center;
+        height: P(232);
+      }
+
+      .firstCol {
+        width: 10%;
+        border-right: 1px solid #BDBDBD;
+      }
+
+      .secondCol {
+        width: 20%;
+        border-right: 1px solid #BDBDBD;
+        padding: 30px 15px 0;
+        vertical-align: top;
+
+        .textArea {
+          width: 90%;
+          height: 30%;
+        }
+      }
+
+      .thirdCol {
+        width: 60%;
+        border-right: 1px solid #BDBDBD;
+
+        .childTableContainer {
+          width: 100%;
+          height: 100%;
+
+          .ivu-table th, .ivu-table td {
+            height: P(30);
+          }
+
+          .ivu-table td.childTableThirdCol, .ivu-table td.childTableFourthCol{
+            text-align: center;
+          }
+        }
+      }
+
+      .fourthCol {
+        width: 10%;
+
+        .addLossBtn {
+          display: inline-block;
+          width: P(80);
+          line-height: P(30);
+          background-color: #e1e1e1;
+          border-radius: 4px;
+        }
+      }
+    }
+
+    .lossChoose {
+      z-index: 2000;
+      visibility: hidden;
+      background: #FFF;
+      position: absolute;
+      height: 70%;
+      top: 50%;
+      left: 50%;
+      font-size: P(14);
+      // max-width: P(498);
+      max-height: P(730);
+      padding: P(46) P(40) 0 P(46);
+      transform: translateX(-50%) translateY(-50%);
+
+      .dropdownTier {
+        width: P(200);
+        height: P(30);
+        margin-bottom: P(46);
+
+        .ivu-select-selection {
+          background: #E1E1E1;
+          font-size: P(14);
+          color: #040404;
+        }
+      }
+
+      .dropdownTier:first-child {
+        margin-right: P(16);
+      }
+
+      .ivu-date-picker {
+        width: P(322);
+        height: P(42);
+      }
+
+      .durationTimeContainer {
+        margin-top: P(54);
+        margin-bottom: P(54);
+      }
+
+      .timeTitle {
+        color: #040404;
+        margin-right: P(13);
+      }
+
+      .btnContainer {
+        position: absolute;
+        bottom: P(34);
+        right: P(40);
+
+        .data_btn {
+          display: inline-block;
+          font-size: P(14);
+          width: P(104);
+          line-height: P(26);
+          border-radius: P(14);
+          color: #FFF;
+          text-align: center;
+        }
+
+        .confirmBtn {
+          background-color: #1B3867;
+        }
+
+        .cancelBtn {
+          margin-left: P(16);
+          background-color: #c2c2c2;
+        }
+      }
+    }
+
+    .shade {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #000;
+      opacity: 0.3;
+      visibility: hidden;
+    }
+
+    .showchoose {
+      visibility: visible;
+    }
+
+    .hidechoose {
+      visibility: hidden;
+    }
+  }
 }

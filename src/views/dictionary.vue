@@ -253,22 +253,6 @@ export default {
         return false;
       }
     },
-    zTreeOnModifyKpi: function(event, treeId, treeNode) {
-      setTimeout(function() {
-        console.log("zTreeOnModifyBegin");
-        var zTree = $.fn.zTree.getZTreeObj("treeCategory");
-        zTree.reAsyncChildNodes(null, "refresh");
-        console.log("zTreeOnModifyEnd");
-      }, 1000);
-    },
-    zTreeOnModifyCategory: function(event, treeId, treeNode) {
-      setTimeout(function() {
-        console.log("zTreeOnModifyBegin");
-        var zTree = $.fn.zTree.getZTreeObj("treeKpi");
-        zTree.reAsyncChildNodes(null, "refresh");
-        console.log("zTreeOnModifyEnd");
-      }, 1000);
-    },
   },
   watch: {
     kpiAll() {
@@ -286,16 +270,17 @@ export default {
           delete newNode.isNew;
           zTree.updateNode(newNode);
           _this.$Message.success("添加成功");
+          this.selectLossAll();
         } else {
           _this.$Message.error("添加失败");
-          $.fn.zTree.init($("#treeKpi"), this.settingKpi, this.kpiAll);
+          this.showKPIALL();
         }
       } else if(newVal.status === "101") {
-        $.fn.zTree.init($("#treeKpi"), this.settingKpi, this.kpiAll);
+        this.showKPIALL();
         _this.$Message.error("名称已存在");
       } else {
         _this.$Message.error("添加失败");
-        $.fn.zTree.init($("#treeKpi"), this.settingKpi, this.kpiAll);
+        this.showKPIALL();
       }
     },
     updateKpiRes(newVal){
@@ -303,12 +288,13 @@ export default {
       const _this = this;
       if(newVal.status === "0") {
         _this.$Message.success("修改成功");
+        this.selectLossAll();
       } else if(newVal.status === "101") {
-        $.fn.zTree.init($("#treeKpi"), this.settingKpi, this.kpiAll);
+        this.showKPIALL();
         _this.$Message.error("名称已存在");
       } else {
+        this.showKPIALL();
         _this.$Message.error("修改失败");
-        $.fn.zTree.init($("#treeKpi"), this.settingKpi, this.kpiAll);
       }
     },
     delKpiRes(newVal) {
@@ -316,8 +302,9 @@ export default {
       const _this = this;
       if(newVal.status === "0") {
         _this.$Message.success("删除成功");
+        this.selectLossAll();
       } else {
-        $.fn.zTree.init($("#treeKpi"), this.settingKpi, this.kpiAll);
+        this.showKPIALL();
         _this.$Message.error("删除失败");
       }
     },
@@ -335,28 +322,30 @@ export default {
           delete newNode.isNew;
           zTree.updateNode(newNode);
           _this.$Message.success("添加成功");
+          this.showKPIALL();
         } else {
+          this.selectLossAll();
           _this.$Message.error("添加失败");
-          $.fn.zTree.init($("#treeCategory"), this.settingCategory, this.lossAll);
         }
       } else if(newVal.status === "101") {
-        $.fn.zTree.init($("#treeCategory"), this.settingCategory, this.lossAll);
+        this.selectLossAll();
         _this.$Message.error("名称已存在");
       } else {
+        this.selectLossAll();
         _this.$Message.error("添加失败");
-        $.fn.zTree.init($("#treeCategory"), this.settingCategory, this.lossAll);
       }
     },
     updateLossRes(newVal) {
       const _this = this;
       if(newVal.status === "0") {
         _this.$Message.success("修改成功");
+        this.showKPIALL();
       } else if(newVal.status === "101") {
-        $.fn.zTree.init($("#treeCategory"), this.settingCategory, this.lossAll);
+        this.selectLossAll();
         _this.$Message.error("名称已存在");
       } else {
+        this.selectLossAll();
         _this.$Message.error("修改失败");
-        $.fn.zTree.init($("#treeCategory"), this.settingCategory, this.lossAll);
       }
     },
     deleteLossRes(newVal) {
@@ -364,8 +353,9 @@ export default {
       const _this = this;
       if(newVal.status === "0") {
         _this.$Message.success("删除成功");
+        this.showKPIALL();
       } else {
-        $.fn.zTree.init($("#treeCategory"), this.settingCategory, this.lossAll);
+        this.selectLossAll();
         _this.$Message.error("删除失败");
       }
     }

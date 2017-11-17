@@ -1,7 +1,7 @@
 <template>
   <div class="nav-left">
-    <ul>
-        <router-link :to="{name:'overview'}" ref="overview">
+    <!-- <ul>
+        <router-link :to="{name:'overview'}" v-show = "showFlag">
           <li>
             <span>Overview</span> 
           </li>
@@ -17,7 +17,7 @@
           </li>
         </router-link>
         <router-link :to="{name:'improvement'}">
-          <li>
+          <li>  
             <span>Improvement Project</span>
           </li>
         </router-link>
@@ -36,41 +36,51 @@
             <span>Account</span>
           </li>
         </router-link>
+
+    </ul> -->
+    <ul v-for="(item,idx) in validLeft" :key ="idx">
+      <router-link :to="{name:item.validmenuname}">
+          <li>
+            <span>{{item.validmenuname}}</span> 
+          </li>
+        </router-link>
     </ul>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
   export default {
-    name: 'left-Nav',
     data(){
-      return {
-        current: '',
-        menu: [
-          {name:"Overview",label:"/home"},
-          {name:"Performance",label:"/designer"},
-          {name:"Target",label:"/taskmanger"},
-          {name:"Loss Mapping",label:"/node"},
-          {name:"Improvement Project",label:"/home"},
-          {name:"Saving Book",label:"/designer"},
-          {name:"Data Input",label:"/designer"},
-          {name:"Account",label:"/taskmanger"},
-        ]
+      return{
+
       }
     },
+    computed: {
+      ...mapState([
+        'validLeft'
+      ])
+    },
+    methods: {
+      ...mapActions([
+        'selectUserById'
+      ]),
+    },
     mounted(){
+      if(sessionStorage.getItem("userid")) {
+        this.selectUserById({userid:sessionStorage.getItem("userid")})
+        
+        console.log(this.validmenuList)
+      }else{
+        console.log(this.$route);
+      }
     },
     watch: {
-      $route(to, from){
-        
-
+      validmenu(){
+        console.log(this.validmenu)
       }
     }
   }
 </script>
-<<script lang="scss">
-export default {
-  
-}
-</script>
+
 

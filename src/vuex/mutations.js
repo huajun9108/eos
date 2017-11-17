@@ -11,7 +11,7 @@ export default {
         state.userAll = json
     },
     delUser(state, json) {
-        state.userId = json
+        state.delUserRes = json
     },
     addUser(state, json) {
         state.addResult = json
@@ -30,6 +30,7 @@ export default {
         state.userinfor = json.user
         state.validarea = json.validarea
         state.tier2 = json.tier2
+        state.validLeft = json.validmenu
         json.validmenu.forEach((item) => {
             if (str == null || str == '') {
                 str += item.validmenuid
@@ -43,10 +44,6 @@ export default {
         state.kpiAll = json
     },
     addFactoryOne(state, json) {},
-    findAndCount(state, json) {
-        state.count = json.count
-        state.userAll = json.rows
-    },
     addFactoryOne(state, json) {
         state.newArea = json
     },

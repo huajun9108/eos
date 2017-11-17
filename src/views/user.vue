@@ -17,15 +17,25 @@
 </template>
 <script>
 import leftNav from '../components/leftNav.vue'
+import { mapState, mapActions } from "vuex";
 export default {
-    name: 'app',
-    components:{leftNav},
-    computed: {
-
+    data(){
+        return{
+        }
     },
+    components:{
+        leftNav
+    },
+    
     watch: {
 
-    }
+    },
+    mounted () {
+        
+        
+    },
+    
+    
 }
 </script>
 <style lang="sass" scoped>

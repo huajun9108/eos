@@ -2,9 +2,7 @@
 <div class="area_container">
   <div class="area_nav">
     <div class="nav_header">
-      <span class="header_title">
-				区域范围
-			</span>
+      <span class="header_title">区域范围</span>
     </div>
     <div class="nav_body">
       <ul id="area_tree" class="area_tree_class ztree">
@@ -60,13 +58,11 @@ export default {
   },
   computed: {
     ...mapState([
-      "areaAll",
       "newArea"
     ])
   },
   methods: {
     ...mapActions([
-      "selectAreaAll",
       "addFactoryOne",
       "updateArea"
     ]),

@@ -40,7 +40,8 @@ export default {
                 userId: obj.userId
             }
         }).then(res => {
-            return res.data.data
+            console.log(res.data)
+            return res.data
         }).then(json => {
             commit("delUser", json)
         })
@@ -154,20 +155,6 @@ export default {
             commit("addFactoryOne", json)
         }).catch(error => {
             console.log(error);
-        })
-    },
-    findAndCount({ commit }, obj) {
-        axios.get("/user/findAndCount", {
-            params: {
-                page: obj.page
-            }
-        }).then(res => {
-            console.log(res.data.data)
-            return res.data.data
-        }).then(json => {
-            commit("findAndCount", json)
-        }).catch(err => {
-            console.log(err)
         })
     },
     updateArea({ commit }, obj) {

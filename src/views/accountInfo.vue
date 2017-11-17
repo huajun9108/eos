@@ -127,7 +127,6 @@ export default {
       "userinfor",
       "validmenu",
       "validmenuList",
-      "areaAll",
       "validarea",
       "addResult"
     ])
@@ -143,7 +142,6 @@ export default {
     getOptions(){
       var _this = this;
       if(this.$route.query.userid){
-         _this.options = this.validmenuList;
         this.postOptions =this.validmenu.split(',');
       }else{
         this.postOptions =[];
@@ -185,7 +183,7 @@ export default {
           checkedNodes.push(nodes[i]);
         }
       }
-       this.checkLists = this.clone(checkedNodes, {id:1, pId:1, name:1});
+      this.checkLists = this.clone(checkedNodes, {id:1, pId:1, name:1});
       this.ArrayBlank(this.postOptions)
       if (this.$route.query.userid) {
         this.updateOption({
@@ -227,6 +225,7 @@ export default {
             || !this.empty(this.job)
         ) {
         Ewin.confirm({ message: "确认要取消编辑吗？" }).on(function (e) {
+          _this.$Message.info('已取消编辑');
           _this.$router.push({name:"account"});
         });
       }else{
@@ -242,7 +241,7 @@ export default {
         this.empty(this.pwd) ||
         this.empty(this.job)
       ) {
-        this.$Message.warning('用户信息不能为空');
+        this.$Message.error('用户信息不能为空');
         return false;
       }
       return true;
@@ -277,18 +276,15 @@ export default {
       this.leader=this.userinfor.userleader;
     },
     addResult(newVal){
-      if(newVal.status==3){
+      if(newVal.status==101){
        this.$Message.error('用户名已存在,请勿重复添加');
         return false
       }else if(newVal.status==0){
         this.$Message.success('添加成功');
-       if(!this.continueAdd){
+       if(!this.continueAdd)
         this.$router.push({name:"account"});
-       }else{
-
-       }
       }else{
-        this.$Message.warning('网络问题请稍后再试');
+        this.$Message.warning('服务器忙请稍后再试');
       }
         
       

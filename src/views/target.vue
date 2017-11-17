@@ -2,12 +2,10 @@
     <div class="target">
         <div class="target_nav">
 		    <div class="nav_header">
-			    <span class="header_title">
-				    区域范围
-			    </span>
+			    <span class="header_title">区域范围</span>
 		    </div>
 		    <div class="nav_body">
-			    <ul id="area_tree" class="area_tree_class ztree">
+			    <ul id="target_tree" class="area_tree_class ztree">
 			    </ul>
 		    </div>
 	    </div>
@@ -21,15 +19,12 @@
                     </ul>
                     <ul class="target_setting clearfix">
                         <li class="target_set"> 
-                            <Select
-                            :value="targetNo"
-                            filterable
-                            remote
-                            size="large"
-                            :remote-method="remoteMethod1"
-                            :loading="loading1">
-                            <Option v-for="(option, index) in options1" :value="option.value" :key="index">{{option.label}}</Option>
-                            </Select>
+                            <AutoComplete
+                                v-model="targetNo"
+                                placeholder="input here"
+                                >
+                                <Option v-for="item in targetList" :value="item" :key="item">{{ item }}</Option>
+                            </AutoComplete>
                         </li>
                         <li class="target_set">
                             <DatePicker type="date" v-model="dateStart" placeholder="Select date" :options="optionsStart"></DatePicker>
@@ -70,30 +65,22 @@ export default{
             dateEnd:'',
             vision:'',
             ideal:'',
-            loading1: false,
-            options1: [],
             optionsStart:{
-                // disabledDate (date) {
-                //         return date && date.valueOf() < Date.now() - 86400000;
-                //     }
+                disabledDate: (date) => {
+                let beginDateVal = this.dateEnd;
+                if (beginDateVal) {
+                    return date && date.valueOf() > beginDateVal;
+                }
+            }
             },
             optionsEnd:{
-                // disabledDate (date) {
-                //         return date && date.valueOf() < this.dateStart
-                //     }
+                disabledDate: (date) => {
+                let beginDateVal = this.dateStart;
+                if (beginDateVal) {
+                    return date && date.valueOf() < beginDateVal
+                }
+            }
             },
-            list: ['Alabama', 
-            'Alaska', 'Arizona', 
-            'Arkansas', 'California', 'Colorado',
-            'Connecticut', 'Delaware', 'Florida', 'Georgia', 
-            'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
-            'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland',
-            'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 
-            'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New hampshire', 
-            'New jersey', 'New mexico', 'New york', 'North carolina', 'North dakota',
-            'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode island', 'South carolina', 
-            'South dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 
-            'West virginia', 'Wisconsin', 'Wyoming'],
             setting: {
                 view: {
                     selectedMulti: false,
@@ -109,6 +96,7 @@ export default{
                 }
             },
             nodeId:'',
+            targetList: ['82', '83', '87'],
         }
     },
 
@@ -125,23 +113,6 @@ export default{
             'selectLinebodyById',
             'updateLinebodyInfById'
         ]),
-        remoteMethod1 (query) {
-                if (query !== '') {
-                    this.loading1 = true;
-                    setTimeout(() => {
-                        this.loading1 = false;
-                        const list = this.list.map(item => {
-                            return {
-                                value: item,
-                                label: item
-                            };
-                        });
-                        this.options1 = list.filter(item => item.label.toLowerCase().indexOf(query.toLowerCase()) > -1);
-                    }, 200);
-                } else {
-                    this.options1 = [];
-                }
-            },
         confirm(){
             let _this=this
             this.updateLinebodyInfById({
@@ -161,29 +132,7 @@ export default{
         cancel(){
 
         },
-        querySearch(queryString, cb) {
-            var targetList = this.targetList;
-            var results = queryString ? targetList.filter(this.createFilter(queryString)) : targetList;
-            // 调用 callback 返回建议列表的数据
-            cb(results);
-        },
-        createFilter(queryString) {
-            return (item) => {
-            return (item.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-            };
-        },
-        loadAll() {
-            return [
-                { "value": "73", "address": "长宁区新渔路144号" },
-                { "value": "74", "address": "上海市长宁区淞虹路661号" },
-                { "value": "75", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
-                { "value": "76 ", "address": "天山西路438号" },
-            ];
-        },
-        handleSelect(item) {
-            console.log(item);
-            this.targetList = this.loadAll();
-        },
+       
         clickNode(event, treeId, treeNode){
             let reg=/^l/g;
             if(reg.test(treeNode.id)){
@@ -203,7 +152,7 @@ export default{
     },
     watch: {
         areaAll(){
-            $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+            $.fn.zTree.init($("#target_tree"), this.setting,this.areaAll);
         },
         lineBody(newVal){
             this.targetNo=newVal.targetvalue;
@@ -214,15 +163,11 @@ export default{
             console.log(this.targetNo)
         },
         targetNo(){
-console.log(this.targetNo)
+            console.log(this.targetNo)
         }
     },
     mounted() {
-        this.selectAreaAll(),
-        this.targetList = this.loadAll();
-         console.log(this.targetNo)
-
-
+        this.selectAreaAll()
 	}
 
 }

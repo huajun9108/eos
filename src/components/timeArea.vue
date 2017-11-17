@@ -5,11 +5,11 @@
             <h1 class="choose">时间选择</h1>
             <div class="time">
             <span>开始时间</span>
-                <DatePicker size="small" v-model="startTime" placement="bottom-end" type="date" placeholder="Select date" @on-change="astartTime=$event"></DatePicker>
+                <DatePicker size="small" v-model="startTime"  :options="optionsStart" placement="bottom-end" type="date" placeholder="Select date"></DatePicker>
             </div>
             <div class="time">
             <span>结束时间</span>
-            <DatePicker size="small" v-model="endTime" type="date" placement="bottom-end" placeholder="Select date"></DatePicker>
+            <DatePicker size="small" v-model="endTime" type="date" :options="optionsEnd" placement="bottom-end" placeholder="Select date"></DatePicker>
             </div>
         </div>
         <div class="chooseArea box">
@@ -29,19 +29,23 @@ import { mapState, mapActions } from "vuex";
       return {
         startTime:null,
         endTime:null,
-        pickerBeginDateBefore:{
-            disabledDate: (time) => {
+        optionsStart:{
+            disabledDate: (date) => {
                 let beginDateVal = this.endTime;
                 if (beginDateVal) {
-                    return time.getTime() < beginDateVal;
+                    return date && date.valueOf() > beginDateVal;
+                }else{
+                    return date && date.valueOf() > Date.now();
                 }
             }
         },
-        pickerBeginDateAfter:{
-            disabledDate: (time) => {
+        optionsEnd:{
+            disabledDate: (date) => {
                 let beginDateVal = this.startTime;
                 if (beginDateVal) {
-                    return time.getTime() > beginDateVal;
+                    return (date && date.valueOf() < beginDateVal)||(date && date.valueOf()>Date.now());
+                }else{
+                    return date && date.valueOf() > Date.now();
                 }
             }
         },
@@ -61,24 +65,74 @@ import { mapState, mapActions } from "vuex";
                 chkStyle: "checkbox",
             },
             callback: {
-		        onCheck: this.zTreeOnCheck
+                onCheck: this.zTreeOnCheck,
+                beforeCheck:this.zTreeBeforeCheck
 	        }
         },
         validareaList:[],
         }
     },
-    props: {
-        props:['invitor'],
-    },
     methods: {
        ...mapActions([
         "selectUserById",
         ]),
-        zTreeOnCheck(){
-            var treeObj = $.fn.zTree.getZTreeObj("treeDemo  ");
+        zTreeOnCheck(event,treeId,treeNode){
+            let _this = this
+            var nodes = treeNode.children
+            var checked = false
+             $.each(nodes,function(i,n){
+                if(checked){
+                    n.checked = false
+                    if(n.children!=null){
+                        _this.cancelSonCheck(n)
+                    }
+                }else{
+                    checked=true;
+                    if(n.children!=null){
+                        _this.checkSonCheck(n)
+                    }
+                }
+            })
+        },
+        zTreeBeforeCheck(treeId,treeNode){
+            if(treeNode.checked){
+                return
+            }
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
             var nodes = treeObj.getCheckedNodes(true);
-            console.log(nodes)
+            $.each(nodes,function(i,n){
+                n.checked = false
+            })
+
+        },
+        cancelSonCheck(treeNode){  
+            let _this = this
+            var nodes = treeNode.children
+             $.each(nodes,function(i,n){
+                n.checked = false
+                if(n.children!=null){
+                    _this.cancelSonCheck(n)
+                }
+            })
+        },
+        checkSonCheck(treeNode){
+            let _this = this
+            var nodes = treeNode.children;
+            var checked = false;
+            $.each(nodes,function(i,n){
+                if(checked){
+                    n.checked = false
+                    if(n.children!=null){
+                        _this.cancelSonCheck(n)
+                    }
+                }else{
+                    if(n.children!=null){
+                        _this.checkSonCheck(n)
+                    }
+                }
+            })
         }
+        
     },
     computed:{
         ...mapState([
@@ -93,6 +147,7 @@ import { mapState, mapActions } from "vuex";
             console.log(newVal)
         },
         validarea(newVal){
+            this.validareaList=[]
             this.validarea.forEach(item=> {
                 if(item.checked){
                     this.validareaList.push(item)
@@ -100,15 +155,13 @@ import { mapState, mapActions } from "vuex";
             });
             $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
         }
+
     },
     mounted(){
         if (sessionStorage.getItem("userid")) {
             this.selectUserById({userid:sessionStorage.getItem("userid")})
-            //  $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
         } else {
             console.log(this.$route);
-            // this.selectAreaAll();
-            // $.fn.zTree.init($("#treeDemo"), this.setting, this.areaAll);
         }
     }
 }

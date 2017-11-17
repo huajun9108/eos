@@ -94,7 +94,6 @@ export default {
     },
     zTreeBeforeRemove: function(treeId, treeNode) {
       if (confirm("确认删除？")) {
-        var zTree = $.fn.zTree.getZTreeObj("area_tree");
         this.deleteArea({"id": treeNode.id});
         return true;
       } else {
@@ -103,7 +102,7 @@ export default {
     },
     zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
       var _this = this;
-      var zTree = $.fn.zTree.getZTreeObj("area_tree");
+      var zTree = $.fn.zTree.getZTreeObj(treeId);
       const oldName = treeNode.name;
       /*新增节点直接取消或编辑后取消*/
       if (isCancel && treeNode.isNew) {
@@ -152,7 +151,7 @@ export default {
       if(newVal.id) {
         const zTree = $.fn.zTree.getZTreeObj("area_tree");
         const nodes = zTree.getSelectedNodes();
-        if(nodes.length > 0){
+        if(nodes.length === 1){
           let newNode = nodes[0];
           newNode.id = newVal.id;
           delete newNode.isNew;
@@ -160,11 +159,11 @@ export default {
           _this.$Message.success("添加成功");
         } else {
           _this.$Message.error("添加失败");
-          $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+          $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll);
         }
       } else {
         _this.$Message.error("添加失败");
-        $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+        $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll);
       }
     },
     updateAreaRes(newVal){
@@ -172,11 +171,11 @@ export default {
       if(newVal.status === "0") {
         _this.$Message.success("修改成功");
       } else if(newVal.status === "101") {
-        $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+        $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll);
         _this.$Message.error("区域已存在");
       } else {
         _this.$Message.error("修改失败");
-        $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+        $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll);
       }
     },
     deleteAreaRes(newVal){

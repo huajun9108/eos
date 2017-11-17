@@ -28,8 +28,23 @@ export default {
     addAreaOne(state, json) {
         state.newArea = json
     },
+    updateArea(state, json) {
+        state.updateAreaRes = json
+    },
     deleteArea(state, json) {
       state.deleteAreaRes = json
+    },
+    selectLossAll(state, json) {
+      state.lossAll = json
+    },
+    addLossOne(state, json) {
+      state.addLossRes = json
+    },
+    updateLossById(state, json) {
+      state.updateLossRes = json
+    },
+    deleteLossById(state, json) {
+      state.deleteLossRes = json
     },
     selectUserById(state, json) {
         let str = ""
@@ -45,17 +60,22 @@ export default {
         });
         return state.validmenu = str
     },
-    selectKPIALL(state, json) {
+    showKPIALL(state, json) {
         state.kpiAll = json
+    },
+    addKPItwoLev(state, json) {
+      state.addKpiRes = json
+    },
+    updateKPItwoLev(state, json) {
+      state.updateKpiRes = json
+    },
+    deleteKPItwoLev(state, json) {
+      state.delKpiRes = json
     },
     findAndCount(state, json) {
         state.count = json.count
         state.userAll = json.rows
     },
-    updateArea(state, json) {
-        state.updateAreaRes = json
-    },
-    updateKPItwoLev(state, json) {},
     selectLinebodyById(state, json) {
         state.lineBody = json
     },

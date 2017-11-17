@@ -410,12 +410,15 @@ export default {
             console.log(err)
         })
     },
-    selectLossmappingLinebody({ commit }, obj) {
-        axios.get("/lossmapping/allLinebody", {}).then(res => {
-            console.log(res.data)
+    selectAllByUserIdAndLinebodyIds({ commit }, obj) {
+        axios.post("/lossmapping/selectAllByUserIdAndLinebodyIds", qs.stringify({
+          "userId": obj.userId,
+          "linebodyIds": obj.linebodyIds
+        })).then(res => {
+            // console.log(JSON.stringify(res.data , null , 4))
             return res.data
         }).then(json => {
-            commit("selectLossmappingLinebody", json)
+            commit("selectAllByUserIdAndLinebodyIds", json)
         })
     }
 }

@@ -68,25 +68,40 @@ export default {
         }
       },
       validareaList: [],
+      lineBodys: [],
+      lineBodystr:''
     }
   },
   methods: {
     ...mapActions([
       "selectUserById",
+      "selectAllByUserIdAndLinebodyIds"
     ]),
     zTreeOnCheck(event, treeId, treeNode) {
+      const _this = this;
+      _this.lineBodys = [];
       var treeObj = $.fn.zTree.getZTreeObj(treeId);
       var nodes = treeObj.getCheckedNodes(true);
-      var childNodes = [];
       nodes.forEach(function(node) {
         let reg = /^l/g;
         if (reg.test(node.id)) {
-          childNodes.push(node.id);
+          _this.lineBodys.push(node.id.substring(1));
         }
-      })
-      console.log(childNodes);
+      });
+      _this.lineBodystr=_this.lineBodys.join(",");
+      console.log(_this.lineBodystr);
+      _this.selectAllByUserIdAndLinebodyIds({"userId":sessionStorage.getItem("userid"), "linebodyIds": _this.lineBodystr});
       // console.log(nodes)
-    }
+    },
+    ArrayBlank(arr){
+        for(var i = 0 ;i<arr.length;i++){
+           if(arr[i] == "" || typeof(arr[i]) == "undefined"){
+                arr.splice(i,1);
+                i = i-1;
+           }
+        }
+        return arr;
+    },
   },
   computed: {
     ...mapState([
@@ -101,12 +116,21 @@ export default {
       console.log(newVal)
     },
     validarea(newVal) {
+      const _this = this;
       this.validarea.forEach(item => {
         if (item.checked) {
           this.validareaList.push(item)
         }
       });
+      this.validareaList.forEach(function(node) {
+        let reg = /^l/g;
+        if(reg.test(node.id)) {
+          _this.lineBodys.push(node.id.substring(1));
+        }
+      });
+      _this.lineBodystr=_this.lineBodys.join(",");
       $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
+      _this.selectAllByUserIdAndLinebodyIds({"userId":sessionStorage.getItem("userid"), "linebodyIds": _this.lineBodystr});
     }
   },
   mounted() {
@@ -114,11 +138,8 @@ export default {
       this.selectUserById({
         userid: sessionStorage.getItem("userid")
       })
-      //  $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
     } else {
       console.log(this.$route);
-      // this.selectAreaAll();
-      // $.fn.zTree.init($("#treeDemo"), this.setting, this.areaAll);
     }
   }
 }

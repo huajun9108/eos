@@ -415,6 +415,7 @@ export default {
           "userId": obj.userId,
           "linebodyIds": obj.linebodyIds
         })).then(res => {
+          console.log(res);
             // console.log(JSON.stringify(res.data , null , 4))
             return res.data
         }).then(json => {

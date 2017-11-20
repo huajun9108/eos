@@ -7,7 +7,7 @@
     </div>
     <div class="lengthShift" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <span class="lengthShiftTime">本班次时间：</span>
-      <DatePicker type="datetimerange" placeholder="Select date and time" style="width: 300px"
+      <DatePicker v-model="lengthShiftTimeValue" type="datetimerange" placeholder="Select date and time" style="width: 300px"
       :options="optionsOpenCeremony" @on-change="lengthShiftTimeChange"></DatePicker>
     </div>
     <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
@@ -80,18 +80,27 @@ export default {
       },
       optionsStart: {
         disabledDate: (date) => {
-          // let beginDateVal = this.endTimeValue;
-          // if(beginDateVal) {
-          //   return date && date.valueOf() > beginDateVal;
-          // }
+          let end = this.lengthShiftTimeValue[1];
+          let begin = this.lengthShiftTimeValue[0];
+          if(begin && end) {
+            return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
+          }
         }
       },
       optionsEnd: {
         disabledDate: (date) => {
-          // let beginDateVal = this.startTimeValue;
-          // if(beginDateVal) {
-          //   return (date && date.valueOf() < beginDateVal);
-          // }
+          let end = this.lengthShiftTimeValue[1];
+          let begin = this.lengthShiftTimeValue[0];
+          if(begin && end) {
+            console.log(`start: ${this.startTimeValue}`);
+            if(this.startTimeValue) {
+              let ms = this.startTimeValue.getTime() + (24 * 60 * 60 * 1000);
+              begin = this.startTimeValue;
+              end = new Date(ms);
+              console.log(`end: ${end}`);
+            }
+            return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
+          }
         }
       },
       tierMenuData: [{
@@ -314,6 +323,8 @@ export default {
       startTimeValue: '',
       durationTimeValue: '',
       endTimeValue: '',
+      startTimeFormat: '',
+      endTimeFormat: '',
       openCeremonyFlag: false,
       showFlag: false,
     }
@@ -367,6 +378,7 @@ export default {
         this.endTimeValue = '';
         return;
       }
+      this.startTimeFormat = val;
       const start = new Date(val);
       const startMs = start.getTime();
       if (this.durationTimeValue !== '') {
@@ -403,6 +415,7 @@ export default {
         this.durationTimeValue = '';
         return;
       }
+      this.endTimeFormat = val;
       const end = new Date(val);
       const endMs = end.getTime();
       if (this.durationTimeValue !== '') {
@@ -432,8 +445,8 @@ export default {
       const obj = {
         "tier3": this.tierValue,
         "tier4": this.childTierValue,
-        "开始时间": this.startTimeValue,
-        "结束时间": this.endTimeValue
+        "开始时间": this.startTimeFormat,
+        "结束时间": this.endTimeFormat
       };
       if (obj) {
         this.childTableData.push(obj);

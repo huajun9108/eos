@@ -77,7 +77,15 @@
                         </tr>
                          <tr>
                             <td class="firstCol" width="10%">OEE</td>
-                            <td id="oee" class="secordCol" style="width: 600px;height:220px;" width="60%"></td>
+                            <td id="oee" class="secordCol" style="width: 600px;height:220px;" width="60%">
+                                <!-- <chart
+                                :_id="'testCharts'"
+                                :_titleText="'访问量统计'"
+                                :_xText="'类别'"
+                                :_yText="'总访问量'"
+                                :_chartData="chartData"
+                                :_type="'Pie'"></chart> -->
+                            </td>
                             <td width="30%"></td>
                         </tr>
                          <tr>

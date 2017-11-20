@@ -336,16 +336,13 @@
             
         },
         created(){
-            // console.log(this.proList)
         },
         mounted(){
             let _this = this
             this.showImpItempool()
             setTimeout(function(){
                  _this.showObjectnowBylinedyid()
-            },300)
-           
-            // console.log((this.nowline) instanceof Array)
+            },10)
         }
 	}
 </script>

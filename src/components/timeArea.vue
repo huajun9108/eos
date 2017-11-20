@@ -5,21 +5,21 @@
             <h1 class="choose">时间选择</h1>
             <div class="time">
             <span>开始时间</span>
-                <DatePicker size="small" 
-                v-model="startTime"  
-                :options="optionsStart" 
-                placement="bottom-end" 
-                type="date" 
-                placeholder="Select date"  
+                <DatePicker size="small"
+                v-model="startTime"
+                :options="optionsStart"
+                placement="bottom-end"
+                type="date"
+                placeholder="Select date"
                 @on-change="startChange"></DatePicker>
             </div>
             <div class="time">
             <span>结束时间</span>
-            <DatePicker size="small" 
-            v-model="endTime" 
-            type="date" 
-            :options="optionsEnd" 
-            placement="bottom-end" 
+            <DatePicker size="small"
+            v-model="endTime"
+            type="date"
+            :options="optionsEnd"
+            placement="bottom-end"
             placeholder="Select date"
             @on-change="endChange"></DatePicker>
             </div>
@@ -60,7 +60,7 @@ import { mapState, mapActions } from "vuex";
                 }
             }
         },
-        
+
         setting: {
             view: {
                 selectedMulti: false,

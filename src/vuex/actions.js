@@ -40,7 +40,8 @@ export default {
                 userId: obj.userId
             }
         }).then(res => {
-            return res.data.data
+            console.log(res.data)
+            return res.data
         }).then(json => {
             commit("delUser", json)
         })
@@ -151,16 +152,16 @@ export default {
         })
     },
     deleteArea({ commit }, obj) {
-      axios.get("/areaAllSet/deleteArea", {
-        params: {
-            id: obj.id
-        }
-      }).then(res =>{
-        console.log(res.data)
-        return res.data
-      }).then(json => {
-        commit("deleteArea", json)
-      })
+        axios.get("/areaAllSet/deleteArea", {
+            params: {
+                id: obj.id
+            }
+        }).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("deleteArea", json)
+        })
     },
     selectUserById({ commit }, obj) {
         axios.post("/user/selectUserById", qs.stringify({
@@ -180,17 +181,17 @@ export default {
         })
     },
     addKPItwoLev({ commit }, obj) {
-      axios.post("/KPISet/addKPItwoLev", qs.stringify({
-        "name": obj.name,
-        "pId": obj.pId,
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("addKPItwoLev", json)
-      }).catch(error => {
-        console.log(error)
-      })
+        axios.post("/KPISet/addKPItwoLev", qs.stringify({
+            "name": obj.name,
+            "pId": obj.pId,
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("addKPItwoLev", json)
+        }).catch(error => {
+            console.log(error)
+        })
     },
     updateKPItwoLev({ commit }, obj) {
         axios.post("/KPISet/updateKPItwoLev", qs.stringify({
@@ -207,59 +208,59 @@ export default {
         })
     },
     deleteKPItwoLev({ commit }, obj) {
-      axios.get("/KPISet/deleteKPItwoLev", {
-        params: {
-          id: obj.id
-        }
-      }).then(res => {
-        return res.data
-      }).then(json => {
-        commit("deleteKPItwoLev", json)
-      })
+        axios.get("/KPISet/deleteKPItwoLev", {
+            params: {
+                id: obj.id
+            }
+        }).then(res => {
+            return res.data
+        }).then(json => {
+            commit("deleteKPItwoLev", json)
+        })
     },
     selectLossAll({ commit }, obj) {
-      axios.get("/losscategory/selectLossAll", {}).then(res => {
-        return res.data
-      }).then(json => {
-        commit("selectLossAll", json)
-      })
+        axios.get("/losscategory/selectLossAll", {}).then(res => {
+            return res.data
+        }).then(json => {
+            commit("selectLossAll", json)
+        })
     },
     addLossOne({ commit }, obj) {
-      axios.post("/losscategory/addLossOne", qs.stringify({
-        "name": obj.name,
-        "pId": obj.pId
-      })).then(res => {
-        console.log(res.data)
-        return res.data
-      }).then(json => {
-        commit("addLossOne", json)
-      }).catch(err => {
-        console.log(err)
-      })
+        axios.post("/losscategory/addLossOne", qs.stringify({
+            "name": obj.name,
+            "pId": obj.pId
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("addLossOne", json)
+        }).catch(err => {
+            console.log(err)
+        })
     },
     updateLossById({ commit }, obj) {
-      axios.post("/losscategory/updateLossById", qs.stringify({
-        "id": obj.id,
-        "name": obj.name,
-        "pId": obj.pId
-      })).then(res => {
-        return res.data
-      }).then(json => {
-        commit("updateLossById", json)
-      }).catch(err => {
-        console.log(err)
-      })
+        axios.post("/losscategory/updateLossById", qs.stringify({
+            "id": obj.id,
+            "name": obj.name,
+            "pId": obj.pId
+        })).then(res => {
+            return res.data
+        }).then(json => {
+            commit("updateLossById", json)
+        }).catch(err => {
+            console.log(err)
+        })
     },
     deleteLossById({ commit }, obj) {
-      axios.get("/losscategory/deleteLossById", {
-        params: {
-          id: obj.id
-        }
-      }).then(res => {
-        return res.data
-      }).then(json => {
-        commit("deleteLossById", json)
-      })
+        axios.get("/losscategory/deleteLossById", {
+            params: {
+                id: obj.id
+            }
+        }).then(res => {
+            return res.data
+        }).then(json => {
+            commit("deleteLossById", json)
+        })
     },
     findAndCount({ commit }, obj) {
         axios.get("/user/findAndCount", {
@@ -412,8 +413,8 @@ export default {
     },
     selectAllByUserIdAndLinebodyIds({ commit }, obj) {
         axios.post("/lossmapping/selectAllByUserIdAndLinebodyIds", qs.stringify({
-          "userId": obj.userId,
-          "linebodyIds": obj.linebodyIds
+            "userId": obj.userId,
+            "linebodyIds": obj.linebodyIds
         })).then(res => {
           console.log(res);
             // console.log(JSON.stringify(res.data , null , 4))

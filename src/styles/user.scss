@@ -7,6 +7,8 @@
         width: 15%;
         height: 100%;
         background: #122b54;
+        display: flex;
+        flex-direction: column;
         .logo {
             width: 90%;
             margin: P(44) auto;
@@ -17,7 +19,12 @@
             }
         }
         .nav-left {
+            flex: 1;
             margin-top: P(100);
+            // display: flex;
+            // flex-direction: column;
+            // justify-content: center;
+            // align-items: center;
             ul {
                 width: 100%;
                 overflow: hidden;

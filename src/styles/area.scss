@@ -25,6 +25,10 @@
 	        .nav_body {
 	            height: 90%;
 	            overflow-y: auto;
+	            #area_tree {
+	                margin-top: P(8);
+	                padding: 2px;
+	            }
 	        }
 	        .ztree li a.curSelectedNode {
 	            background-color: #dde4e8;

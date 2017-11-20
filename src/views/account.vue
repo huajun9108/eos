@@ -82,13 +82,12 @@ export default {
   },
   computed: {
     ...mapState([
-      "count",
+      "delUserRes"
     ]),
   },
   methods: {
     ...mapActions([
       "delUser",
-      "findAndCount"
       ]),
       onPagechange:function(currentPage){
        console.log(currentPage);
@@ -111,12 +110,12 @@ export default {
       var _this = this;
       console.log(_this.checkedUserArr);
       //alert(this.checked);
-      if (this.checkedAll) {//实现反选
+      if (this.checkedAll) {//实现反
         _this.checkedUserArr = [];
       }else{//实现全选
         _this.checkedUserArr = [];
         _this.userAll.forEach(function(item) {
-          _this.checkedUserArr.push(item.userid);
+        _this.checkedUserArr.push(item.userid);
         });
       }
     },
@@ -135,20 +134,25 @@ export default {
           //that.userAll.splice(obj.id, 1);
           _this.delUser({ userId: obj.userId });
           _this.loadList();
-          _this.onPagechange(1)
-          _this.$Message.success('删除'+obj.name+'成功');
+          // _this.onPagechange(1)
+         
       });
     },
     dellALL() {
       var _this= this
-      Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
+      if(this.checkedUserArr.length==0){
+        this.$Message.warning('请选择需要删除的数据');
+      }else{
+        Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
           for (var i = _this.checkedUserArr.length - 1; i >= 0; i--) {
               var userId = _this.checkedUserArr[i];
               //that.userAll.splice(userId, 1);
               _this.delUser({ userId:userId });
               _this.loadList();
           }
-      });
+        });
+      }
+      
     },
     loadList:function() {
       axios.get("/user/findAndCount?page="+this.current).then(res => {
@@ -175,6 +179,13 @@ export default {
         }
       },
       deep: true
+    },
+    delUserRes(newVal){
+      if(newVal.status==0){
+        this.$Message.success('删除成功');
+      }else{
+        this.$Message.error('删除失败,请稍后再试');
+      }
     }
   },
   mounted() {

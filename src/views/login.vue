@@ -100,19 +100,35 @@ export default{
     },
     watch:{
         loginResult(newVal){
-            console.log(newVal.status)
-            if(newVal.status==2){
+            // if(newVal.status=="2"){
+            //     this.$refs.hint.setAttribute("class","hint show")
+            //     this.$refs.tip.innerHTML="账号或密码错误"
+            //      setTimeout(()=>{
+            //         this.$refs.hint.setAttribute("class","hint fadeOut hide")
+            //     },3000) 
+            // }else if(newVal.status=="0"&&this.picked=="0"){
+            //     localStorage.setItem("user",newVal.data.adminname);
+            //     this.$router.push({name:"area"})
+            // }else if(newVal.status=="0"&&this.picked=="0"){
+            //     sessionStorage.setItem("userid",newVal.data.userid);
+            //     this.$router.push({name:"Account",params:{userid:sessionStorage.getItem("userid")}})
+            // }
+            if(newVal.status=="0"){
+                if(this.picked=="0"){
+                    localStorage.setItem("user",newVal.data.adminname);
+                    this.$router.push({name:"area"})
+                }else{
+                    sessionStorage.setItem("userid",newVal.data.userid);
+                    this.$router.push({name:"Account",params:{userid:sessionStorage.getItem("userid")}}) 
+                }
+            }else if(newVal.status=="2"){
                 this.$refs.hint.setAttribute("class","hint show")
                 this.$refs.tip.innerHTML="账号或密码错误"
-                 setTimeout(()=>{
+                setTimeout(()=>{
                     this.$refs.hint.setAttribute("class","hint fadeOut hide")
-                },3000) 
-            }else if(this.picked=="0"){
-                localStorage.setItem("user",newVal.data.adminname);
-                this.$router.push({name:"area"})
+                },3000)
             }else{
-                sessionStorage.setItem("userid",newVal.data.userid);
-                this.$router.push({name:"useraccount",params:{userid:sessionStorage.getItem("userid")}})
+                this.$Message.error('登录失败,请稍后再试');
             }
         },
     }

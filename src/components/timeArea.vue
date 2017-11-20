@@ -5,11 +5,23 @@
             <h1 class="choose">时间选择</h1>
             <div class="time">
             <span>开始时间</span>
-                <DatePicker size="small" v-model="startTime"  :options="optionsStart" placement="bottom-end" type="date" placeholder="Select date"></DatePicker>
+                <DatePicker size="small" 
+                v-model="startTime"  
+                :options="optionsStart" 
+                placement="bottom-end" 
+                type="date" 
+                placeholder="Select date"  
+                @on-change="startChange"></DatePicker>
             </div>
             <div class="time">
             <span>结束时间</span>
-            <DatePicker size="small" v-model="endTime" type="date" :options="optionsEnd" placement="bottom-end" placeholder="Select date"></DatePicker>
+            <DatePicker size="small" 
+            v-model="endTime" 
+            type="date" 
+            :options="optionsEnd" 
+            placement="bottom-end" 
+            placeholder="Select date"
+            @on-change="endChange"></DatePicker>
             </div>
         </div>
         <div class="chooseArea box">
@@ -94,6 +106,15 @@ import { mapState, mapActions } from "vuex";
       _this.selectAllByUserIdAndLinebodyIds({"userId":sessionStorage.getItem("userid"), "linebodyIds": _this.lineBodystr});
       // console.log(nodes)
     },
+    startChange(data){
+        this.startTime = data
+        console.log(this.startTime)
+    },
+    endChange(data){
+        this.endTime = data
+        console.log(this.endTime)
+    }
+
   },
   computed: {
     ...mapState([
@@ -101,12 +122,12 @@ import { mapState, mapActions } from "vuex";
     ])
   },
   watch: {
-    startTime(newVal) {
-      console.log(newVal)
-    },
-    endTime(newVal) {
-      console.log(newVal)
-    },
+    // startTime(newVal) {
+    //   console.log(1)
+    // },
+    // endTime(newVal) {
+    //   console.log(newVal)
+    // },
     validarea(newVal) {
       const _this = this;
       this.validareaList=[]

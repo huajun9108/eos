@@ -68,9 +68,5 @@
     }
   }
 </script>
-<<script lang="scss">
-export default {
-  
-}
-</script>
+
 

@@ -1,72 +1,85 @@
 <template>
 <transition name="slide-fade">
-  <div class="TimeAndAreaContainer showchoose">
-    <div class="chooseTime box">
-      <h1 class="choose">时间选择</h1>
-      <div class="time">
-        <span>开始时间</span>
-        <DatePicker size="small" v-model="startTime" placement="bottom-end" type="date" placeholder="Select date" @on-change="astartTime=$event"></DatePicker>
-      </div>
-      <div class="time">
-        <span>结束时间</span>
-        <DatePicker size="small" v-model="endTime" type="date" placement="bottom-end" placeholder="Select date"></DatePicker>
-      </div>
-    </div>
-    <div class="chooseArea box">
-      <h1 class="choose">区域选择</h1>
-      <div class="area">
-        <ul id="treeDemo" class="ztree"></ul>
-      </div>
-    </div>
+    <div class="TimeAndAreaContainer showchoose">
+        <div class="chooseTime box">
+            <h1 class="choose">时间选择</h1>
+            <div class="time">
+            <span>开始时间</span>
+                <DatePicker size="small"
+                v-model="startTime"
+                :options="optionsStart"
+                placement="bottom-end"
+                type="date"
+                placeholder="Select date"
+                @on-change="startChange"></DatePicker>
+            </div>
+            <div class="time">
+            <span>结束时间</span>
+            <DatePicker size="small"
+            v-model="endTime"
+            type="date"
+            :options="optionsEnd"
+            placement="bottom-end"
+            placeholder="Select date"
+            @on-change="endChange"></DatePicker>
+            </div>
+        </div>
+        <div class="chooseArea box">
+            <h1 class="choose">区域选择</h1>
+            <div class="area">
+                <ul id="treeDemo" class="ztree"></ul>
+            </div>
+        </div>
   </div>
 </transition>
-</div>
 </template>
 <script>
-import {
-  mapState,
-  mapActions
-} from "vuex";
-export default {
-  data() {
-    return {
-      startTime: null,
-      endTime: null,
-      pickerBeginDateBefore: {
-        disabledDate: (time) => {
-          let beginDateVal = this.endTime;
-          if (beginDateVal) {
-            return time.getTime() < beginDateVal;
-          }
-        }
-      },
-      pickerBeginDateAfter: {
-        disabledDate: (time) => {
-          let beginDateVal = this.startTime;
-          if (beginDateVal) {
-            return time.getTime() > beginDateVal;
-          }
-        }
-      },
+import { mapState, mapActions } from "vuex";
+ export default {
+    data () {
+      return {
+        startTime:null,
+        endTime:null,
+        optionsStart:{
+            disabledDate: (date) => {
+                let beginDateVal = this.endTime;
+                if (beginDateVal) {
+                    return date && date.valueOf() > beginDateVal;
+                }else{
+                    return date && date.valueOf() > Date.now();
+                }
+            }
+        },
+        optionsEnd:{
+            disabledDate: (date) => {
+                let beginDateVal = this.startTime;
+                if (beginDateVal) {
+                    return (date && date.valueOf() < beginDateVal)||(date && date.valueOf()>Date.now());
+                }else{
+                    return date && date.valueOf() > Date.now();
+                }
+            }
+        },
 
-      setting: {
-        view: {
-          selectedMulti: false,
-          showIcon: false,
+        setting: {
+            view: {
+                selectedMulti: false,
+                showIcon: false,
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            check: {
+                enable: true,
+                chkStyle: "checkbox",
+            },
+            callback: {
+                onCheck: this.zTreeOnCheck,
+                beforeCheck:this.zTreeBeforeCheck
+	        }
         },
-        data: {
-          simpleData: {
-            enable: true
-          }
-        },
-        check: {
-          enable: true,
-          chkStyle: "checkbox",
-        },
-        callback: {
-          onCheck: this.zTreeOnCheck
-        }
-      },
       validareaList: [],
       lineBodys: [],
       lineBodystr:''
@@ -93,15 +106,15 @@ export default {
       _this.selectAllByUserIdAndLinebodyIds({"userId":sessionStorage.getItem("userid"), "linebodyIds": _this.lineBodystr});
       // console.log(nodes)
     },
-    ArrayBlank(arr){
-        for(var i = 0 ;i<arr.length;i++){
-           if(arr[i] == "" || typeof(arr[i]) == "undefined"){
-                arr.splice(i,1);
-                i = i-1;
-           }
-        }
-        return arr;
+    startChange(data){
+        this.startTime = data
+        console.log(this.startTime)
     },
+    endChange(data){
+        this.endTime = data
+        console.log(this.endTime)
+    }
+
   },
   computed: {
     ...mapState([
@@ -109,14 +122,15 @@ export default {
     ])
   },
   watch: {
-    startTime(newVal) {
-      console.log(newVal)
-    },
-    endTime(newVal) {
-      console.log(newVal)
-    },
+    // startTime(newVal) {
+    //   console.log(1)
+    // },
+    // endTime(newVal) {
+    //   console.log(newVal)
+    // },
     validarea(newVal) {
       const _this = this;
+      this.validareaList=[]
       this.validarea.forEach(item => {
         if (item.checked) {
           this.validareaList.push(item)

@@ -9,8 +9,8 @@
               <span class="bef">用户名</span><span class="in">{{userinfor.username}}</span>
           </div>
           <div class="tip pwd">
-             <span class="bef">密码</span><input type="password" v-model="userinfor.userpsd" ref="user" class="in" @focus="showFlag=true"/>
-            <div class="img" @click="showFlag=!showFlag">
+             <span class="bef">密码</span><input type="password" v-model="userinfor.userpsd" ref="user" class="in" readonly/>
+            <div class="img" @click="showFlag=true">
                <img src="../assets/images/edit .png">
             </div>
             <div v-if="showFlag" class="showbox">
@@ -191,30 +191,19 @@ export default {
       this.newPwdCheck=''
     },
     cancel(){
+      let _this = this
       if(this.isShow()&&this.isNewShow()&&this.checkNew()!=0){
-        this.$confirm('确认放弃之前的修改吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$Message({
-             type: 'info',
-            message: '已取消编辑'
-          });
-          this.showFlag=false;
-          this.clearData()
-        }).catch(() => {
-          // this.$message({
-          //   type: 'info',
-          //   message: '已取消编辑'
-          // });  
-          this.showFlag=false;  
-          this.clearData()      
-        })
+        Ewin.confirm({message:'确认要取消编辑吗？'}).on(function(e){
+          _this.$Message.info('已取消编辑');
+          _this.showFlag=false;
+          _this.clearData()
+        })    
       }else{
-        this.showFlag=false;
-        this.oldPwdFlag=false;
-        this.newPwdFlag = false
+        _this.showFlag=false;
+        _this.oldPwdFlag=false;
+        _this.newPwdFlag = false
+        _this.checkPwd = false;
+        _this.clearData()
       }
     },
     confirm(){
@@ -271,6 +260,7 @@ export default {
   },
   watch: {
      validarea(newVal){
+        this.validareaList=[]
         this.validarea.forEach(item=> {
          if(item.checked){
           this.validareaList.push(item)

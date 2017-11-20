@@ -1,6 +1,6 @@
 <template>
-    <div id="performance">
-      performance
+    <div id="summary">
+      summary
     </div>
 </template>
 <script>

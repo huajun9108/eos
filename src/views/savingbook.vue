@@ -48,11 +48,11 @@ export default {
                     bottom: '5%',
                     containLabel: true
                 },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
+                // toolbox: {
+                //     feature: {
+                //         saveAsImage: {}
+                //     }
+                // },
                 xAxis: {
                     type: 'category',
                     boundaryGap : false,

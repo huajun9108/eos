@@ -11,7 +11,7 @@ export default {
         state.userAll = json
     },
     delUser(state, json) {
-        state.userId = json
+        state.delUserRes = json
     },
     addUser(state, json) {
         state.addResult = json
@@ -32,25 +32,26 @@ export default {
         state.updateAreaRes = json
     },
     deleteArea(state, json) {
-      state.deleteAreaRes = json
+        state.deleteAreaRes = json
     },
     selectLossAll(state, json) {
-      state.lossAll = json
+        state.lossAll = json
     },
     addLossOne(state, json) {
-      state.addLossRes = json
+        state.addLossRes = json
     },
     updateLossById(state, json) {
-      state.updateLossRes = json
+        state.updateLossRes = json
     },
     deleteLossById(state, json) {
-      state.deleteLossRes = json
+        state.deleteLossRes = json
     },
     selectUserById(state, json) {
         let str = ""
         state.userinfor = json.user
         state.validarea = json.validarea
         state.tier2 = json.tier2
+        state.validLeft = json.validmenu
         json.validmenu.forEach((item) => {
             if (str == null || str == '') {
                 str += item.validmenuid
@@ -64,13 +65,13 @@ export default {
         state.kpiAll = json
     },
     addKPItwoLev(state, json) {
-      state.addKpiRes = json
+        state.addKpiRes = json
     },
     updateKPItwoLev(state, json) {
-      state.updateKpiRes = json
+        state.updateKpiRes = json
     },
     deleteKPItwoLev(state, json) {
-      state.delKpiRes = json
+        state.delKpiRes = json
     },
     findAndCount(state, json) {
         state.count = json.count

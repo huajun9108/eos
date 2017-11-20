@@ -6,8 +6,8 @@
         .account_content {
             display: flex;
             flex-direction: column;
+            justify-content: space-around;
             border: none !important;
-            overflow-y: auto;
             .acommon {
                 width: 100%;
                 height: auto;
@@ -54,11 +54,12 @@
                                     height: P(24);
                                     width: P(24);
                                 }
+                                cursor: pointer;
                             }
                             .showbox {
                                 position: absolute;
                                 background: #ecf0f1;
-                                z-index: 99999;
+                                z-index: 100;
                                 right: P(30);
                                 top: P(25);
                                 width: P(480);
@@ -165,13 +166,12 @@
                 }
             }
             .tier2 {
-                flex: 1;
+                // flex: 1;
                 margin-top: P(40);
-                // overflow: hidden;
                 .sti-tbl-container {
                     margin-top: P(30);
                     box-sizing: border-box;
-                    height: P(320);
+                    height: auto;
                     overflow: hidden;
                     display: flex;
                     flex-direction: column;

@@ -4,6 +4,8 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
@@ -38,7 +40,9 @@ module.exports = {
         rules: [{
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                options: vueLoaderConfig
+                options: {
+                    postcss: [require('autoprefixer')({ browsers: ['last 10 Chrome versions', 'last 5 Firefox versions', 'Safari >= 6', 'ie > 8'] })]
+                }
             },
             {
                 test: /\.js$/,
@@ -71,7 +75,8 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loaders: ["style-loader", "css", "sass"]
+                loaders: ["style-loader", "postcss-loader", "css", "sass"],
+                exclude: /node_modules/
             },
         ]
     }

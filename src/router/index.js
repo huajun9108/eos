@@ -10,7 +10,7 @@ import Login from "../views/login.vue";
 import User from "../views/user.vue";
 import AccountInfo from "../views/accountInfo.vue";
 import Overview from "../views/overview.vue";
-import Performance from "../views/performance.vue";
+import Summary from "../views/summary.vue";
 import Target from "../views/target.vue"
 import Lossmaping from "../views/lossmaping.vue";
 import Savingbook from "../views/savingbook.vue"
@@ -64,37 +64,37 @@ var routes = [{
         children: [{
                 path: "overview",
                 component: Overview,
-                name: "overview",
+                name: "Overview",
             },
             {
-                path: "performance",
-                component: Performance,
-                name: "performance"
+                path: "summary",
+                component: Summary,
+                name: "Project Summary"
             },
             {
                 path: "lossmaping",
                 component: Lossmaping,
-                name: "lossmaping"
+                name: "Loss Mapping"
             },
             {
                 path: "savingbook",
                 component: Savingbook,
-                name: "savingbook"
+                name: "Saving Book"
             },
             {
                 path: "improvement",
                 component: Improvement,
-                name: "improvement"
+                name: "Improvement Project"
             },
             {
                 path: "datainput",
                 component: Datainput,
-                name: "datainput",
+                name: "Data Input",
             },
             {
                 path: "useraccount",
                 component: Useraccount,
-                name: "useraccount",
+                name: "Account",
             },
             { path: "*", redirect: "/user/overview" }
         ]

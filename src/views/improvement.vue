@@ -50,11 +50,11 @@
                                 <td class="icon-delete_2" @click = "delpro(item.id)"></td>
                             </tr>
 
-                            <!-- <tr v-if="proNowList.length==0">
+                            <tr v-if="proNowList.length==0">
                                 <td colspan="4" class="text-center text-muted">
                                     <p>暂无数据...</p>
                                 </td>
-                            </tr> -->
+                            </tr>
                             </tbody>
                             </table>
                         </div>
@@ -216,7 +216,6 @@
             },
             choose(obj){
                 let _this = this;
-                
                 this.proListItem = this.$refs[obj.id][0].innerHTML
                 this.proListId = obj.id
                 console.log(this.proListItem)
@@ -274,7 +273,7 @@
             
         },
         watch:{
-           improList(){
+           improList(newVal){
                let _this = this;
                 this.improList.forEach((item,index)=>{
                     item.data.forEach(option=>{
@@ -291,10 +290,10 @@
                         // setTimeout(function() {
                             _this.$refs[item.lossid][0].className = "pro_active"
                             // _this.proList=this.nowLine
-                        // }, 100);
+                        // }, 800)
                         
-                    }
-                     this.proNowList.push({id:item.lossid,name:item.name})
+                    }   
+                    this.proNowList.push({id:item.lossid,name:item.name})
                     this.proList.push({id:item.lossid,name:item.name})
                 });
                 console.log(this.proNowList)
@@ -337,12 +336,13 @@
             
         },
         created(){
-            // console.log(this.proList)
         },
         mounted(){
+            let _this = this
             this.showImpItempool()
-            this.showObjectnowBylinedyid()
-            // console.log((this.nowline) instanceof Array)
+            setTimeout(function(){
+                 _this.showObjectnowBylinedyid()
+            },10)
         }
 	}
 </script>

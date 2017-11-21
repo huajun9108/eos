@@ -71,34 +71,28 @@
     </div>
     <div class="tier2 acommon">
         <h1>Tier2参数顺序</h1>
-        <div class="sti-tbl-container">
-          <div class="sti-tbl-header" style="padding-right:45px;">
-            <table class="table text-left">
-              <thead class="fixedThead">
-                <tr>
-                  <td class="text-center" width="5%">编号</td>
-                  <td width="95%" colspan="3">参数</td>
-                </tr>
-              </thead>
-            </table>
-          </div>
-          <div class="sti-tbl-body">
-            <table class="table table-hover">
-            <tbody class="scrollTbody">
+          <table class="table table-hover text-left">
+            <thead>
+              <tr>
+                <td class="text-center" width="5%">编号</td>
+                <td width="95%" colspan="2">参数</td>
+              </tr>
+            </thead>
+            <tbody>
               <tr v-for="(item,idx) in tier2" :key="idx">
                   <td class="text-center num" width="5%">{{idx+1}}</td>
                   <td width="80%" class="tier2item">{{item.name}}</td>
-                  <td width="15%" class="pull-right img_td" :data="item.name" >
-                    <img class="move up" src="../assets/images/move_up.png" @click="moveUp({'userId':userinfor.userid,
-                    'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx,'changedOrder':item.userKpitwolev.sequence-1})"/>
-                    <img class="move down" src="../assets/images/move_down.png" @click="moveDown({'userId':userinfor.userid,
-                    'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx,'changedOrder':item.userKpitwolev.sequence+1})"/>
+                  <td width="15%" class="text-center img_td" :data="item.name" >
+                    <div class="move_click">
+                      <img class="move up" src="../assets/images/move_up.png" @click="moveUp({'userId':userinfor.userid,
+                      'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx,'changedOrder':item.userKpitwolev.sequence-1})"/>
+                      <img class="move down" src="../assets/images/move_down.png" @click="moveDown({'userId':userinfor.userid,
+                      'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx,'changedOrder':item.userKpitwolev.sequence+1})"/>
+                    </div>
                   </td>
               </tr>
             </tbody>
-            </table>
-          </div>
-        </div>
+          </table>
       </div>
       </div>
     </div>

@@ -37,7 +37,6 @@ form {
 }
 
 body {
-    // background: #f5f4f0;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -160,8 +159,8 @@ textarea {
 
 .table>tbody>tr>td,
 .table-bordered>thead>tr>td {
-    border: 1px solid #bdbdbd;
     vertical-align: middle;
+    border: 1px solid #bdbdbd;
 }
 
 .table th {

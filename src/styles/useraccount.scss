@@ -2,17 +2,18 @@
     .account {
         color: #040404;
         padding-left: P(136) !important;
+        padding-top: P(80) !important;
         width: 94% !important;
         .account_content {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
+            // display: flex;
+            // flex-direction: column;
+            // justify-content: space-around;
             border: none !important;
             .acommon {
                 width: 100%;
                 height: auto;
                 h1 {
-                    line-height: P(38);
+                    line-height: P(40);
                     border-bottom: 1px solid #bdbdbd;
                     font-weight: bold;
                     font-size: P(18);
@@ -29,7 +30,7 @@
                         width: 60%;
                         position: relative;
                         .tip {
-                            line-height: P(72);
+                            line-height: P(60);
                             border-bottom: 1px solid #bdbdbd;
                             font-size: P(16);
                             box-sizing: border-box;
@@ -139,7 +140,7 @@
                         }
                         .tree {
                             width: 100%;
-                            height: P(260);
+                            height: P(240);
                             overflow-y: auto;
                             font-size: P(14);
                         }
@@ -150,6 +151,7 @@
                 }
             }
             .lan {
+                margin-top: P(28);
                 .info-content {
                     .laninfo {
                         width: 100%;
@@ -159,68 +161,46 @@
                             overflow: hidden;
                             padding-right: P(2);
                             .vue-switch[data-v-42a76ec8] {
-                                margin-top: 10px;
+                                margin-top: 5px;
                             }
                         }
                     }
                 }
             }
             .tier2 {
-                // flex: 1;
-                margin-top: P(40);
-                .sti-tbl-container {
-                    margin-top: P(30);
-                    box-sizing: border-box;
-                    height: auto;
-                    overflow: hidden;
-                    display: flex;
-                    flex-direction: column;
-                    border: 1px solid #bdbdbd;
-                    /* 设置表格的布局方式，用于宽度对齐 */
-                    .sti-tbl-body>table,
-                    .sti-tbl-header>table {
-                        table-layout: fixed;
-                    }
-                    /* 设置表格内容容器，用于铺满整个剩余空间 */
-                    .sti-tbl-body {
-                        flex-grow: 1;
-                        overflow-y: scroll;
-                    }
-                    .table {
-                        margin-bottom: 0;
-                    }
-                    .table>tbody>tr>td {
-                        border-bottom: none;
-                        border-left: none;
-                        border-right: none;
-                    }
-                    .table>tbody>tr>td:first-child {
-                        border-right: 1px solid #bdbdbd;
-                    }
-                    .table>thead>tr>td:first-child {
-                        border-right: 1px solid #bdbdbd;
-                    }
-                    .table>thead>tr>td:last-child,
-                    .tier2item {
-                        padding-left: 26px;
-                    }
-                    .table>.scrollTbody>tr>td {
-                        border-top: none;
-                    }
-                    .num {
-                        border-right: 1px solid #bdbdbd;
-                    }
-                    .img_td {
-                        padding-right: 56px;
+                margin-top: P(63);
+                .table {
+                    margin-top: 12px;
+                }
+                .table>thead>tr>td {
+                    line-height: P(44);
+                    border-bottom: 1px solid #bdbdbd;
+                }
+                .table>tbody>tr>td {
+                    line-height: P(44);
+                    border-top: none;
+                    border-left: none;
+                    border-right: none;
+                    border-bottom: 1px solid #bdbdbd;
+                }
+                .table>thead>tr>td:last-child,
+                .tier2item {
+                    padding-left: 18px;
+                }
+                .img_td {
+                    height: 100%;
+                    width: 100%;
+                    .move_click {
+                        height: 100%;
+                        width: 100%;
                         display: flex;
                         flex-direction: column;
                         justify-content: space-around;
                         align-items: center;
-                        margin: 0;
                         .move {
-                            margin: P(2);
+                            margin: P(4);
                             width: 12px;
-                            height: 7px;
+                            height: 8px;
                         }
                     }
                 }

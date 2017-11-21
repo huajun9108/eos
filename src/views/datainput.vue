@@ -92,7 +92,6 @@ export default {
     return {
       optionsOpenCeremony: {
         disabledDate(date) {
-          // return date && date.valueOf() < Date.now() - 86400000;
         }
       },
       optionsStart: {
@@ -127,8 +126,6 @@ export default {
                 ms = begin.getTime() + (24 * 60 * 60 * 1000);
               }
               end = new Date(ms);
-              console.log(`begin: ${begin}`);
-              console.log(`end: ${end}`);
             }
             return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
           }

@@ -1,88 +1,79 @@
 <template>
 <transition name="slide-fade">
-    <div class="TimeAndAreaContainer showchoose">
-        <div class="chooseTime box">
-            <h1 class="choose">时间选择</h1>
-            <div class="time">
-            <span>开始时间</span>
-                <DatePicker size="small" 
-                v-model="startTime"  
-                :options="optionsStart" 
-                placement="bottom-end" 
-                type="date" 
-                placeholder="Select date"  
-                @on-change="startChange"></DatePicker>
-            </div>
-            <div class="time">
-            <span>结束时间</span>
-            <DatePicker size="small" 
-            v-model="endTime" 
-            type="date" 
-            :options="optionsEnd" 
-            placement="bottom-end" 
-            placeholder="Select date"
-            @on-change="endChange"></DatePicker>
-            </div>
-        </div>
-        <div class="chooseArea box">
-            <h1 class="choose">区域选择</h1>
-            <div class="area">
-                <ul id="treeDemo" class="ztree"></ul>
-            </div>
-        </div>
+  <div class="TimeAndAreaContainer showchoose">
+    <div class="chooseTime box">
+      <h1 class="choose">时间选择</h1>
+      <div class="time">
+        <span>开始时间</span>
+        <DatePicker size="small" v-model="startTime" :options="optionsStart" placement="bottom-end" type="date" placeholder="Select date" @on-change="startChange"></DatePicker>
+      </div>
+      <div class="time">
+        <span>结束时间</span>
+        <DatePicker size="small" v-model="endTime" type="date" :options="optionsEnd" placement="bottom-end" placeholder="Select date" @on-change="endChange"></DatePicker>
+      </div>
+    </div>
+    <div class="chooseArea box">
+      <h1 class="choose">区域选择</h1>
+      <div class="area">
+        <ul id="treeDemo" class="ztree"></ul>
+      </div>
+    </div>
   </div>
 </transition>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
- export default {
-    data () {
-      return {
-        startTime:null,
-        endTime:null,
-        optionsStart:{
-            disabledDate: (date) => {
-                let beginDateVal = this.endTime;
-                if (beginDateVal) {
-                    return date && date.valueOf() > beginDateVal;
-                }else{
-                    return date && date.valueOf() > Date.now();
-                }
-            }
+import {
+  mapState,
+  mapActions
+} from "vuex";
+export default {
+  data() {
+    return {
+      startTime: null,
+      endTime: null,
+      optionsStart: {
+        disabledDate: (date) => {
+          let beginDateVal = this.endTime;
+          if (beginDateVal) {
+            return date && date.valueOf() > beginDateVal;
+          } else {
+            return date && date.valueOf() > Date.now();
+          }
+        }
+      },
+      optionsEnd: {
+        disabledDate: (date) => {
+          let beginDateVal = this.startTime;
+          if (beginDateVal) {
+            return (date && date.valueOf() < beginDateVal) || (date && date.valueOf() > Date.now());
+          } else {
+            return date && date.valueOf() > Date.now();
+          }
+        }
+      },
+
+      setting: {
+        view: {
+          selectedMulti: false,
+          showIcon: false,
         },
-        optionsEnd:{
-            disabledDate: (date) => {
-                let beginDateVal = this.startTime;
-                if (beginDateVal) {
-                    return (date && date.valueOf() < beginDateVal)||(date && date.valueOf()>Date.now());
-                }else{
-                    return date && date.valueOf() > Date.now();
-                }
-            }
+        data: {
+          simpleData: {
+            enable: true
+          }
         },
-        
-        setting: {
-            view: {
-                selectedMulti: false,
-                showIcon: false,
-            },
-            data: {
-                simpleData: {
-                    enable: true
-                }
-            },
-            check: {
-                enable: true,
-                chkStyle: "checkbox",
-            },
-            callback: {
-                onCheck: this.zTreeOnCheck,
-                beforeCheck:this.zTreeBeforeCheck
-	        }
+        check: {
+          enable: true,
+          chkStyle: "checkbox",
         },
+        callback: {
+          onCheck: this.zTreeOnCheck,
+          beforeCheck: this.zTreeBeforeCheck
+        }
+      },
       validareaList: [],
       lineBodys: [],
-      lineBodystr:''
+      lineBodystr: ''
     }
   },
   methods: {
@@ -101,18 +92,35 @@ import { mapState, mapActions } from "vuex";
           _this.lineBodys.push(node.id.substring(1));
         }
       });
-      _this.lineBodystr=_this.lineBodys.join(",");
+      _this.lineBodystr = _this.lineBodys.join(",");
       console.log(_this.lineBodystr);
-      _this.selectAllByUserIdAndLinebodyIds({"userId":sessionStorage.getItem("userid"), "linebodyIds": _this.lineBodystr});
+      _this.selectAllByUserIdAndLinebodyIds({
+        "userId": sessionStorage.getItem("userid"),
+        "linebodyIds": _this.lineBodystr,
+        "startTime": this.startTime,
+        "endTime": this.endTime
+      });
       // console.log(nodes)
     },
-    startChange(data){
-        this.startTime = data
-        console.log(this.startTime)
+    startChange(data) {
+      this.startTime = data;
+      this.selectAllByUserIdAndLinebodyIds({
+        "userId": sessionStorage.getItem("userid"),
+        "linebodyIds": this.lineBodystr,
+        "startTime": this.startTime,
+        "endTime": this.endTime
+      });
+      console.log(this.startTime)
     },
-    endChange(data){
-        this.endTime = data
-        console.log(this.endTime)
+    endChange(data) {
+      this.endTime = data;
+      this.selectAllByUserIdAndLinebodyIds({
+        "userId": sessionStorage.getItem("userid"),
+        "linebodyIds": this.lineBodystr,
+        "startTime": this.startTime,
+        "endTime": this.endTime
+      });
+      console.log(this.endTime)
     }
 
   },
@@ -130,7 +138,7 @@ import { mapState, mapActions } from "vuex";
     // },
     validarea(newVal) {
       const _this = this;
-      this.validareaList=[]
+      this.validareaList = []
       this.validarea.forEach(item => {
         if (item.checked) {
           this.validareaList.push(item)
@@ -138,13 +146,16 @@ import { mapState, mapActions } from "vuex";
       });
       this.validareaList.forEach(function(node) {
         let reg = /^l/g;
-        if(reg.test(node.id)) {
+        if (reg.test(node.id)) {
           _this.lineBodys.push(node.id.substring(1));
         }
       });
-      _this.lineBodystr=_this.lineBodys.join(",");
+      _this.lineBodystr = _this.lineBodys.join(",");
       $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
-      _this.selectAllByUserIdAndLinebodyIds({"userId":sessionStorage.getItem("userid"), "linebodyIds": _this.lineBodystr});
+      _this.selectAllByUserIdAndLinebodyIds({
+        "userId": sessionStorage.getItem("userid"),
+        "linebodyIds": _this.lineBodystr
+      });
     }
   },
   mounted() {

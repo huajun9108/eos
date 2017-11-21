@@ -7,7 +7,7 @@
     </div>
     <div class="lengthShift" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <span class="lengthShiftTime">本班次时间：</span>
-      <DatePicker type="datetimerange" placeholder="Select date and time" style="width: 300px"
+      <DatePicker v-model="lengthShiftTimeValue" type="datetimerange" placeholder="Select date and time" style="width: 300px"
       :options="optionsOpenCeremony" @on-change="lengthShiftTimeChange"></DatePicker>
     </div>
     <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
@@ -44,8 +44,7 @@
       </div>
       <div class="startTimeContainer">
         <span class="timeTitle">开始时间：</span>
-        <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss"
-        :options="optionsStart" @on-change="startTimeValueChange">
+        <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsStart" @on-ok="startTimeChooseOk">
         </DatePicker>
       </div>
       <div class="durationTimeContainer">
@@ -55,8 +54,7 @@
       </div>
       <div class="endTimeContainer">
         <span class="timeTitle">结束时间：</span>
-        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss"
-        :options="optionsEnd" @on-change="endTimeValueChange">
+        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
         </DatePicker>
       </div>
       <div class="btnContainer text-right">
@@ -69,29 +67,71 @@
 </template>
 <script>
 import echarts from "echarts"
-
+Date.prototype.format = function(format) {
+  var o = {
+    "M+": this.getMonth() + 1,
+    "d+": this.getDate(),
+    "h+": this.getHours(),
+    "m+": this.getMinutes(),
+    "s+": this.getSeconds(),
+    "q+": Math.floor((this.getMonth() + 3) / 3),
+    "S": this.getMilliseconds()
+  }
+  if (/(y+)/.test(format)) {
+    format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  }
+  for (var k in o) {
+    if (new RegExp("(" + k + ")").test(format)) {
+      format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+    }
+  }
+  return format;
+}
 export default {
   data: function() {
     return {
       optionsOpenCeremony: {
-        disabledDate (date) {
+        disabledDate(date) {
           // return date && date.valueOf() < Date.now() - 86400000;
         }
       },
       optionsStart: {
         disabledDate: (date) => {
-          // let beginDateVal = this.endTimeValue;
-          // if(beginDateVal) {
-          //   return date && date.valueOf() > beginDateVal;
-          // }
+          if(!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
+          let end = this.lengthShiftTimeValue[1];
+          let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
+          let begin = new Date(beginFormat + ' 00:00:00');
+          if (begin && end) {
+            return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
+          }
         }
       },
       optionsEnd: {
         disabledDate: (date) => {
-          // let beginDateVal = this.startTimeValue;
-          // if(beginDateVal) {
-          //   return (date && date.valueOf() < beginDateVal);
-          // }
+          if(!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
+          let end = this.lengthShiftTimeValue[1];
+          let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
+          let begin = new Date(beginFormat + ' 00:00:00');
+          if (begin && end) {
+            if (this.startTimeValue) {
+              let hour = this.startTimeValue.getHours();
+              let min = this.startTimeValue.getMinutes();
+              let sec = this.startTimeValue.getSeconds();
+              let ms;
+              if(hour+min+sec === 0) {
+                begin = this.startTimeValue;
+                ms = begin.getTime() + ((23 * 60 * 60 + 59 * 60 + 59) * 1000);
+              }else {
+                let startFormat = this.startTimeValue.format('yyyy-MM-dd');
+                begin = new Date(startFormat + ' 00:00:00');
+                ms = begin.getTime() + (24 * 60 * 60 * 1000);
+              }
+              end = new Date(ms);
+              console.log(`begin: ${begin}`);
+              console.log(`end: ${end}`);
+            }
+            return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
+          }
         }
       },
       tierMenuData: [{
@@ -361,14 +401,13 @@ export default {
         return (hour * 3600 + min * 60 + sec) * 1000;
       }
     },
-    startTimeValueChange: function(val) {
-      if (!val) {
+    startTimeChooseOk: function() {
+      if (!this.startTimeValue) {
         this.durationTimeValue = '';
         this.endTimeValue = '';
         return;
       }
-      const start = new Date(val);
-      const startMs = start.getTime();
+      const startMs = this.startTimeValue.getTime();
       if (this.durationTimeValue !== '') {
         const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
         this.endTimeValue = new Date(startMs + durationMs);
@@ -397,14 +436,13 @@ export default {
         this.startTimeValue = new Date(endMs - durationMs);
       }
     },
-    endTimeValueChange: function(val) {
-      if (!val) {
+    endTimeChooseOk() {
+      if (!this.endTimeValue) {
         this.startTimeValue = '';
         this.durationTimeValue = '';
         return;
       }
-      const end = new Date(val);
-      const endMs = end.getTime();
+      const endMs = this.endTimeValue.getTime();
       if (this.durationTimeValue !== '') {
         const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
         this.startTimeValue = new Date(endMs - durationMs);
@@ -423,17 +461,11 @@ export default {
     },
     confirmClick: function() {
       this.showFlag = !this.showFlag;
-      console.log(typeof this.startTimeValue);
-      console.log(this.startTimeValue);
-      console.log(typeof this.durationTimeValue);
-      console.log(this.durationTimeValue);
-      console.log(typeof this.endTimeValue);
-      console.log(this.endTimeValue);
       const obj = {
         "tier3": this.tierValue,
         "tier4": this.childTierValue,
-        "开始时间": this.startTimeValue,
-        "结束时间": this.endTimeValue
+        "开始时间": this.startTimeValue.format('yyyy-MM-dd hh:mm:ss'),
+        "结束时间": this.endTimeValue.format('yyyy-MM-dd hh:mm:ss')
       };
       if (obj) {
         this.childTableData.push(obj);

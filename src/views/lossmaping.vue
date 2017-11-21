@@ -36,9 +36,8 @@
     data: function() {
       return {
         isShow:false,
-        testList: [],
+        chartList: []
       }
-
     },
     methods: {
       ...mapActions([
@@ -47,12 +46,24 @@
         this.isShow = !this.isShow
       },
       initCharts: function() {
-        if(!this.lossmappingLinebodyAll.data) return;
+        // console.log(this.lossmappingLinebodyAll);
+        for(let i = 0; i < this.chartList.length; i++) {
+          // console.log(this.chartList[i]);
+          if (this.chartList[i] != null && this.chartList[i] != "" && this.chartList[i] != undefined)
+          this.chartList[i].dispose();
+        }
+        if(this.lossmappingLinebodyAll.status === "1"){
+          console.log("参数错误");
+          return;
+        }
+        if(this.lossmappingLinebodyAll.data.length === []) {
+          console.log("数据为空");
+          return;
+        }
+        this.chartList = [];
         for(let i = 0; i < this.lossmappingLinebodyAll.data.length; i++) {
             var myChart = echarts.init(document.getElementById(this.lossmappingLinebodyAll.data[i].title));
-            // if (myChart != null && myChart != "" && myChart != undefined) {
-            //   myChart.dispose();
-            // };
+            this.chartList.push(myChart);
             var option = {
               tooltip: {
                 trigger: 'item',

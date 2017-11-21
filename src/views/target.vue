@@ -96,7 +96,7 @@ export default{
                 }
             },
             nodeId:'',
-            targetList: ['82', '83', '87'],
+            targetList: ['82%', '83%', '87%'],
         }
     },
 
@@ -113,17 +113,27 @@ export default{
             'selectLinebodyById',
             'updateLinebodyInfById'
         ]),
+        toPoint(percent){
+            var str=percent.replace("%","");
+            str= str/100;
+            return str;
+        },
+        toPercent(point){
+            var str=Number(point*100).toFixed();
+            str+="%";
+            return str;
+        },
         confirm(){
             let _this=this
             this.updateLinebodyInfById({
                 "id": this.nodeId,
-                "targetValue": this.targetNo,
+                "targetValue": this.toPoint(this.targetNo),
                 "targetStrattime":this.dateStart,
                 "targetEndtime": this.dateEnd,
-                "visionValue": this.vision,
+                "visionValue": this.toPoint(this.vision),
                 "visionStrattime": '2010-10-21',
                 "visionEndtime":'2010-10-21',
-                "idealValue": this.ideal,
+                "idealValue": this.toPoint(this.ideal),
                 "idealStrattime": '2010-10-21',
                 "idealEndtime":'2010-10-21'
             })
@@ -155,11 +165,11 @@ export default{
             $.fn.zTree.init($("#target_tree"), this.setting,this.areaAll);
         },
         lineBody(newVal){
-            this.targetNo=newVal.targetvalue;
+            this.targetNo=this.toPercent(newVal.targetvalue);
             this.dateStart= newVal.targetstrattime;
             this.dateEnd = newVal.targetendtime;
-            this.vision = newVal.visionvalue;
-            this.ideal = newVal.idealvalue
+            this.vision = this.toPercent(newVal.visionvalue);
+            this.ideal =this.toPercent(newVal.idealvalue)
             console.log(this.targetNo)
         },
         targetNo(){

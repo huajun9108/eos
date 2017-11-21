@@ -5,7 +5,6 @@
     position: relative;
     left: 50%;
     margin-left: -45%;
-    box-shadow: 0 0 10px #726dd1;
     border-radius: 10px;
   }
 </style>
@@ -159,14 +158,14 @@
         tooltip: {
             trigger: 'axis'
         },
-        toolbox: {
-            feature: {
-            magicType:{show: true, type: ['line', 'bar']},
-            saveAsImage: {show: true}
-            },
-            top: 10,
-            right: 40
-        },
+        // toolbox: {
+        //     feature: {
+        //     magicType:{show: true, type: ['line', 'bar']},
+        //     saveAsImage: {show: true}
+        //     },
+        //     top: 10,
+        //     right: 40
+        // },
         calculable: true,
         grid: {
             left: '3%',

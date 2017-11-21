@@ -259,7 +259,8 @@ export default {
                 attrs: {
                   class: "icon-delete_2",
                 },
-                style: {},
+                style: {
+                },
                 on: {
                   click: () => {
                     this.deleteLoss(params.index)

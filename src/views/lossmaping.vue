@@ -54,7 +54,6 @@
         }
         if(this.lossmappingLinebodyAll.status === "1"){
           console.log("参数错误");
-          this.$Message.error("未选择线体");
           return;
         }
         if(this.lossmappingLinebodyAll.data.length === []) {

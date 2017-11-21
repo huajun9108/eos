@@ -84,7 +84,7 @@ var routes = [{
             {
                 path: "improvement",
                 component: Improvement,
-                name: "Improvement Project"
+                name: "Improvement"
             },
             {
                 path: "datainput",

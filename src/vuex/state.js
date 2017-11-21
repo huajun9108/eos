@@ -8,11 +8,11 @@ export default {
     validmenuList: [
         { name: "overview", validmenuid: "1" },
         { name: "saving book", validmenuid: "5" },
-        { name: "project summary", validmenuid: "4" },
         { name: "data input", validmenuid: "6" },
         { name: "account", validmenuid: "7" },
         { name: "loss mapping", validmenuid: "2" },
-        { name: "improvement project", validmenuid: "3" }
+        { name: "improvement", validmenuid: "3" },
+        { name: "project summary", validmenuid: "4" },
     ],
     areaAll: "",
     newArea: "",

@@ -156,12 +156,12 @@ export default {
           zTree.updateNode(newNode);
           _this.$Message.success("添加成功");
         } else {
+          this.selectAreaAll();
           _this.$Message.error("添加失败");
-          $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll);
         }
       } else {
+        this.selectAreaAll();
         _this.$Message.error("添加失败");
-        $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll);
       }
     },
     updateAreaRes(newVal){
@@ -169,11 +169,11 @@ export default {
       if(newVal.status === "0") {
         _this.$Message.success("修改成功");
       } else if(newVal.status === "101") {
-        $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll);
+        this.selectAreaAll();
         _this.$Message.error("区域已存在");
       } else {
+        this.selectAreaAll();
         _this.$Message.error("修改失败");
-        $.fn.zTree.init($("#area_tree"), this.setting, this.areaAll);
       }
     },
     deleteAreaRes(newVal){
@@ -181,7 +181,7 @@ export default {
       if(newVal.status === "0") {
         _this.$Message.success("删除成功");
       } else {
-        $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+        this.selectAreaAll();
         _this.$Message.error("删除失败");
       }
     }

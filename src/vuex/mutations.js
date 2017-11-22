@@ -81,7 +81,7 @@ export default {
         state.lineBody = json
     },
     updateLinebodyInfById(state, json) {
-
+        state.updatelineBodyRes = json
     },
     updateUserKpiTwolveById(state, json) {
 

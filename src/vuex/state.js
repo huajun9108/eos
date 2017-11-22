@@ -8,9 +8,9 @@ export default {
     validmenuList: [
         { name: "overview", validmenuid: "1" },
         { name: "saving book", validmenuid: "5" },
+        { name: "loss mapping", validmenuid: "2" },
         { name: "data input", validmenuid: "6" },
         { name: "account", validmenuid: "7" },
-        { name: "loss mapping", validmenuid: "2" },
         { name: "improvement", validmenuid: "3" },
         { name: "project summary", validmenuid: "4" },
     ],
@@ -32,6 +32,7 @@ export default {
     delUserRes: '',
     updatePwdResult: '',
     lineBody: '',
+    updatelineBodyRes: '',
     tier2: [],
     improList: [],
     nowline: '',

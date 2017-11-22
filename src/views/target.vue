@@ -35,15 +35,31 @@
                     </ul>
                     <ul class="target_title clearfix">
                         <li class="target_tit">Vision</li>
+                        <li class="target_tit">开始时间</li>
+                        <li class="target_tit">结束时间</li>
                     </ul>
                      <ul class="target_setting clearfix">
                         <li class="target_set"><input class="target_no" type="text" v-model="vision"/></li>
+                        <li class="target_set">
+                            <DatePicker type="date" v-model="visionStart" placeholder="Select date" :options="visionOptipnStart"></DatePicker>
+                        </li>
+                        <li class="target_set">
+                            <DatePicker type="date" v-model="visionEnd" placeholder="Select date" :options="visionOptipnEnd"></DatePicker>
+                        </li>
                     </ul>
                      <ul class="target_title clearfix">
                         <li class="target_tit">Ideal</li>
+                        <li class="target_tit">开始时间</li>
+                        <li class="target_tit">结束时间</li>
                     </ul>
                      <ul class="target_setting clearfix">
                         <li class="target_set"><input class="target_no" type="text"  v-model="ideal"/></li>
+                        <li class="target_set">
+                            <DatePicker type="date" v-model="idealStart" placeholder="Select date" :options="idealOptipnStart"></DatePicker>
+                        </li>
+                        <li class="target_set">
+                            <DatePicker type="date" v-model="idealEnd" placeholder="Select date" :options="idealOptipnEnd"></DatePicker>
+                        </li>
                     </ul>
                 </div>
                 <div class="accountinfo_button text-right">
@@ -63,23 +79,59 @@ export default{
             targetNo:'',
             dateStart:'',
             dateEnd:'',
+            visionStart:'',
+            visionEnd:'',
+            idealStart:'',
+            idealEnd:'',
             vision:'',
             ideal:'',
             optionsStart:{
                 disabledDate: (date) => {
-                let beginDateVal = this.dateEnd;
-                if (beginDateVal) {
-                    return date && date.valueOf() > beginDateVal;
+                    let beginDateVal = this.dateEnd;
+                    if (beginDateVal) {
+                        return date && date.valueOf() > beginDateVal;
+                    }
                 }
-            }
             },
             optionsEnd:{
                 disabledDate: (date) => {
-                let beginDateVal = this.dateStart;
-                if (beginDateVal) {
-                    return date && date.valueOf() < beginDateVal
+                    let beginDateVal = this.dateStart;
+                    if (beginDateVal) {
+                        return date && date.valueOf() < beginDateVal
+                    }
                 }
-            }
+            },
+            visionOptipnStart:{
+                disabledDate: (date) => {
+                    let beginDateVal = this.visionEnd;
+                    if (beginDateVal) {
+                        return date && date.valueOf() > beginDateVal;
+                    }
+                }
+            },
+            visionOptipnEnd:{
+                disabledDate: (date) => {
+                    let beginDateVal = this.visionStart;
+                    if (beginDateVal) {
+                        return date && date.valueOf() < beginDateVal
+                    }
+                }
+            },
+            idealOptipnStart:{
+                disabledDate: (date) => {
+                    let beginDateVal = this.idealEnd;
+                    if (beginDateVal) {
+                        return date && date.valueOf() > beginDateVal;
+                    }
+                }
+            },
+            idealOptipnEnd:{
+                disabledDate: (date) => {
+                    let beginDateVal = this.idealStart;
+                    if (beginDateVal) {
+                        return date && date.valueOf() < beginDateVal;
+                    }
+                }
             },
             setting: {
                 view: {
@@ -103,7 +155,8 @@ export default{
     computed:{
         ...mapState([
             'areaAll',
-            'lineBody'
+            'lineBody',
+            'updatelineBodyRes'
 
         ])
     },
@@ -113,6 +166,12 @@ export default{
             'selectLinebodyById',
             'updateLinebodyInfById'
         ]),
+        empty(val) {
+            var reg = /^\s+$/gi;
+            if (reg.test(val) || val.length == 0) {
+                return true;
+            }
+        },
         toPoint(percent){
             var str=percent.replace("%","");
             str= str/100;
@@ -125,24 +184,44 @@ export default{
         },
         confirm(){
             let _this=this
-            this.updateLinebodyInfById({
-                "id": this.nodeId,
-                "targetValue": this.toPoint(this.targetNo),
-                "targetStrattime":this.dateStart,
-                "targetEndtime": this.dateEnd,
-                "visionValue": this.toPoint(this.vision),
-                "visionStrattime": '2010-10-21',
-                "visionEndtime":'2010-10-21',
-                "idealValue": this.toPoint(this.ideal),
-                "idealStrattime": '2010-10-21',
-                "idealEndtime":'2010-10-21'
-            })
-            console.log(this.nodeId+"--"+this.targetNo+"---"+typeof(this.dateStart)+"--"+this.dateEnd+"--"+this.vision+"--"+this.ideal)
+            if(this.validateData()){
+                this.updateLinebodyInfById({
+                    "id": this.nodeId,
+                    "targetValue": this.toPoint(this.targetNo),
+                    "targetStrattime":this.dateStart,
+                    "targetEndtime": this.dateEnd,
+                    "visionValue": this.toPoint(this.vision),
+                    "visionStrattime": this.visionStart,
+                    "visionEndtime":this.visionEnd,
+                    "idealValue": this.toPoint(this.ideal),
+                    "idealStrattime": this.idealStart,
+                    "idealEndtime":this.idealEnd
+                })
+            }
+            
+            // console.log(this.nodeId+"--"+this.targetNo+"---"+typeof(this.dateStart)+"--"+this.dateEnd+"--"+this.visionStart+"--"+this.visionEnd)
         },
         cancel(){
 
         },
-       
+        validateData() {
+        //if (this.empty(this.username)) alert("用户情况不能为空"); this.
+        if (
+            this.empty(this.targetNo) ||
+            this.empty(this.dateStart) ||
+            this.empty(this.dateEnd) ||
+            this.empty(this.vision) ||
+            this.empty(this.visionStart) ||
+            this.empty(this.visionEnd) ||
+            this.empty(this.ideal) ||
+            this.empty(this.idealStart) ||
+            this.empty(this.idealEnd) 
+        ) {
+            this.$Message.error('线体信息不能为空');
+            return false;
+        }
+            return true;
+        },
         clickNode(event, treeId, treeNode){
             let reg=/^l/g;
             if(reg.test(treeNode.id)){
@@ -155,6 +234,10 @@ export default{
                 this.dateEnd='';
                 this.vision='';
                 this.ideal='';
+                this.visionStart = '',
+                this.visionEnd = '',
+                this.idealStart = '',
+                this.idealEnd = ''
             }
 
 
@@ -165,15 +248,22 @@ export default{
             $.fn.zTree.init($("#target_tree"), this.setting,this.areaAll);
         },
         lineBody(newVal){
-            this.targetNo=this.toPercent(newVal.targetvalue);
+            this.targetNo = this.toPercent(newVal.targetvalue);
             this.dateStart= newVal.targetstrattime;
             this.dateEnd = newVal.targetendtime;
             this.vision = this.toPercent(newVal.visionvalue);
-            this.ideal =this.toPercent(newVal.idealvalue)
-            console.log(this.targetNo)
+            this.ideal = this.toPercent(newVal.idealvalue);
+            this.visionStart = newVal.visionstrattime,
+            this.visionEnd = newVal.visionendtime,
+            this.idealStart = newVal.idealstrattime,
+            this.idealEnd = newVal.idealendtime
         },
-        targetNo(){
-            console.log(this.targetNo)
+        updatelineBodyRes(newVal){
+            if(newVal.status=="0"){
+                this.$Message.success("更新成功")
+            }else{
+                this.$Message.error("更新失败,请选择相应的线体进行操作")
+            }
         }
     },
     mounted() {

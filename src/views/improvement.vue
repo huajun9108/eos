@@ -51,7 +51,7 @@
                             </tr>
 
                             <tr v-if="proNowList.length==0">
-                                <td colspan="4" class="text-center text-muted">
+                                <td colspan="3" class="text-center text-muted">
                                     <p>暂无数据...</p>
                                 </td>
                             </tr>
@@ -62,58 +62,45 @@
                     <div class="pro_itemdetail" v-show="detailFlag">
                         <ul class="item_det">
                             <li class="item_li">
-                                <span class="item_title">状态</span>
+                                <span class="item_title">改进项目编号</span>
+                                <input v-model= "projectnumber" class="item_detail" />
+                            </li>
+                            <li class="item_li">
+                                <span class="item_title">改进项目名称</span>
+                                <input v-model= "projectname" class="item_detail" />
+                            </li>
+                            <li class="item_li">
+                                <span class="item_title">针对的损失类别</span>
+                                <input v-model= "losscategory" class="item_detail" />
+                            </li>
+                            <li class="item_li">
+                                <span class="item_title">项目状态</span>
                                 <input v-model= "status" class="item_detail" />
                             </li>
                             <li class="item_li">
-                                <span class="item_title">项目编号</span>
-                                <input v-model= "number" class="item_detail" />
-                            </li>
-                            <li class="item_li">
-                                <span class="item_title">项目名称</span>
-                                <input v-model= "proname" class="item_detail" />
-                            </li>
-                            <li class="item_li">
-                                <span class="item_title">所属车间</span>
-                                <input v-model= "areablong" class="item_detail" />
-                            </li>
-                            <li class="item_li">
-                                <span class="item_title">项目方法</span>
-                                <input v-model="projectmethod" class="item_detail" />
-                            </li>
-                            <li class="item_li">
-                                <span class="item_title">负责人</span>
-                                <input  v-model="projectmanager" class="item_detail" />
-                            </li>
-                            <li class="item_li">
-                                <span class="item_title">团队成员</span>
-                                <input v-model="teammember" class="item_detail" />
-                            </li>
-                            <li class="item_li">
-                                <span class="item_title">计划开始</span>
-                                <input v-model="planstart" class="item_detail" />
-                            </li>
-                            <li class="item_li">
-                                <span class="item_title">实际开始</span>
-                                <input v-model="actualstart" class="item_detail" />
-                            </li>
-                            <li class="item_li">
-                                <span class="item_title">计划结束</span>
-                                <input v-model="planend" class="item_detail" />
-                            </li>
-                            <li class="item_li">
-                                <span class="item_title">实际结束</span>
-                                <input v-model="actualend" class="item_detail" />
+                                <span class="item_title">起点绩效值</span>
+                                <input v-model="startperformance" class="item_detail" />
                             </li>
                             <li class="item_li">
                                 <span class="item_title">目标</span>
-                                <input v-model="target" class="item_detail" />
+                                <input  v-model="target" class="item_detail" />
                             </li>
                             <li class="item_li">
-                                <span class="item_title">当前值</span>
-                                <input v-model="actualvalue" class="item_detail" />
+                                <span class="item_title">当前绩效</span>
+                                <input v-model="performance" class="item_detail" />
                             </li>
-
+                            <li class="item_li">
+                                <span class="item_title">项目开始日期</span>
+                                <input v-model="objectstarttime" class="item_detail" />
+                            </li>
+                            <li class="item_li">
+                                <span class="item_title">项目预期结束日期</span>
+                                <input v-model="planendtime" class="item_detail" />
+                            </li>
+                            <li class="item_li">
+                                <span class="item_title">项目阶段</span>
+                                <input v-model="stage" class="item_detail" />
+                            </li>
                         </ul>
                         <div class="accountinfo_button text-right">
                             <span class="button_confirm button" @click="confirm">确认</span>
@@ -139,20 +126,19 @@
                 arrlength:false,
                 leftId:[],
                 proNowList:[],
+                projectnumber:'',
+                projectname:'',
+                losscategory:'',
                 status:'',
-                number:'',
-                proname:'',
-                areablong:'',
-                projectmethod:'',
-                projectmanager:'',
-                teammember:'',
-                planstart:'',
-                actualstart:'',
-                planend:'',
-                actualend:'',
+                startperformance:'',
                 target:'',
-                actualvalue:'',
-                addObjId:[]
+                performance:'',
+                objectstarttime:'',
+                planendtime:'',
+                stage:'',
+                addObjId:[],
+                validareaList:[],
+                linebodyId:''
             }
                 
         },
@@ -163,7 +149,8 @@
                 'itemstatus',
                 'updateItemResult',
                 'addObject',
-                'deleteObject'
+                'deleteObject',
+                'validarea'
                 
 			])
 		},
@@ -174,7 +161,8 @@
                 'showImpItemstatus',
                 'updateImpItemstatus',
                 'addObjectnowBylossid',
-                'deleteObjectnowBylossid'
+                'deleteObjectnowBylossid',
+                'selectUserById'
             ]),
             ArrayBlank(arr){
                 for(var i = 0 ;i<arr.length;i++){
@@ -191,19 +179,17 @@
             confirm(){
                 this.updateImpItemstatus({
                     "lossId": sessionStorage.getItem("lossId"),
+                    "linebodyId": this.linebodyId,
+                    "projectnumber": this.projectnumber,
+                    "projectname":this.projectname,
+                    "losscategory": this.losscategory,
                     "status": this.status,
-                    "projectNumber":this.number,
-                    "projectName": this.proname,
-                    "areaBlong": this.areablong,
-                    "projectMethod": this.projectmethod,
-                    "projectManager": this.projectmanager,
-                    "teamMember": this.teammember,
-                    "planStart": this.planstart,
-                    "actualStart": this.actualstart,
-                    "planEnd": this.planend,
-                    "actualEnd": this.actualend,
-                    "target":this.target,
-                    "actualValue": this.actualvalue
+                    "startperformance": this.startperformance,
+                    "target": this.target,
+                    "performance": this.performance,
+                    "objectstarttime": this.objectstarttime,
+                    "planendtime": this.planendtime,
+                    "stage": this.stage,
                 })
 
             },
@@ -226,7 +212,6 @@
                     this.arrlength = true
                     }else{
                         console.log(1)
-        
                     }
                 console.log(this.proList)     
             },
@@ -242,16 +227,16 @@
                 console.log(this.addObjId)
                 this.ArrayBlank(this.addObjId)
                 this.addObjectnowBylossid({
-                    lossId:this.addObjId.join(",")
+                    lossId:this.addObjId.join(","),
+                    linebodyId:this.linebodyId
                 })
-                
                 this.addObjId=[]
-
             },
             editpro(lossId){
                 this.detailFlag = true
                 this.showImpItemstatus({
-                    lossId:lossId
+                    lossId:lossId,
+                    linebodyId:this.linebodyId
                 })
                 console.log(lossId);
                 sessionStorage.setItem("lossId",lossId)
@@ -262,7 +247,7 @@
                     if(item.id==idx){
                         this.proNowList.splice(index,1)
                         this.proList.splice(index,1)
-                        this.deleteObjectnowBylossid({lossId:item.id})
+                        this.deleteObjectnowBylossid({lossId:item.id,linebodyId: this.linebodyId})
                     }
                 }, this);
                
@@ -282,51 +267,64 @@
                 })
                console.log(this.leftId)
             },
-            nowline(){
-                 let _this = this;
-                this.nowline.forEach((item)=> {
-                   
-                    if(!this.arrIsContains(this.leftId,item.lossid)){
-                        // setTimeout(function() {
-                            _this.$refs[item.lossid][0].className = "pro_active"
-                            // _this.proList=this.nowLine
-                        // }, 800)
-                        
-                    }   
-                    this.proNowList.push({id:item.lossid,name:item.name})
-                    this.proList.push({id:item.lossid,name:item.name})
+            validarea(newVal) {
+                console.log(this.validarea);
+                let _this = this;
+                this.validareaList = []
+                this.validarea.forEach(item => {
+                    if (item.checked) {
+                    this.validareaList.push(item)
+                    }
                 });
-                console.log(this.proNowList)
+                this.validareaList.forEach(function(node) {
+                    let reg = /^l/g;
+                    if (reg.test(node.id)) {
+                    _this.linebodyId=node.id.substring(1)
+                    }
+                })
+                console.log(this.linebodyId);
+                setTimeout(function(){
+                    _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
+                },10)
+            },
+            nowline(){
+                let _this = this;
+                this.proNowList=[]
+                if(this.nowline.length>0){
+                    this.nowline.forEach((item)=> {
+                    if(!this.arrIsContains(this.leftId,item.losstier3Lossid)){
+                        _this.$refs[item.losstier3Lossid][0].className = "pro_active"
+                    }   
+                    this.proNowList.push({id:item.losstier3Lossid,name:item.projectname})
+                    this.proList.push({id:item.losstier3Lossid,name:item.projectname})
+                    });
+                    console.log(this.proNowList)
+                }
+                
             },
             itemstatus(){
                 if(this.itemstatus){
+                    this.projectnumber = this.itemstatus.projectnumber
+                    this.projectname = this.itemstatus.projectname
+                    this.losscategory = this.itemstatus.losscategory
                     this.status = this.itemstatus.status
-                    this.number = this.itemstatus.projectnumber
-                    this.proname = this.itemstatus.projectname
-                    this.areablong = this.itemstatus.areablong
-                    this.projectmethod = this.itemstatus.projectmethod;
-                    this.projectmanager = this.itemstatus.projectmanager
-                    this.teammember = this.itemstatus.teammember
-                    this.planstart = this.itemstatus.planstart
-                    this.actualstart = this.itemstatus.actualstart
-                    this.planend = this.itemstatus.planend
-                    this.actualend = this.itemstatus.actualend
+                    this.startperformance = this.itemstatus.startperformance;
                     this.target = this.itemstatus.target
-                    this.actualvalue = this.itemstatus.actualvalue
+                    this.performance = this.itemstatus.performance
+                    this.objectstarttime = this.itemstatus.objectstarttime
+                    this.planendtime = this.itemstatus.planendtime
+                    this.stage = this.itemstatus.stage
                 }else{
-                    this.status = ''
-                    this.number = ''
-                    this.proname = ''
-                    this.areablong ='' 
-                    this.projectmethod = '' 
-                    this.projectmanager = ''
-                    this.teammember = ''
-                    this.planstart = ''
-                    this.actualstart = '' 
-                    this.planend = ''
-                    this.actualend = '' 
+                    this.projectnumber = ''
+                    this.projectname = ''
+                    this.losscategory = ''
+                    this.status ='' 
+                    this.startperformance = '' 
                     this.target = ''
-                    this.actualvalue = '' 
+                    this.performance = ''
+                    this.objectstarttime = ''
+                    this.planendtime = '' 
+                    this.stage = ''
                 }
                 
 
@@ -338,11 +336,17 @@
         created(){
         },
         mounted(){
+            if (sessionStorage.getItem("userid")) {
+                this.selectUserById({
+                    userid: sessionStorage.getItem("userid")
+                })
+                
+            } else {
+                console.log(this.$route);
+            }
             let _this = this
             this.showImpItempool()
-            setTimeout(function(){
-                 _this.showObjectnowBylinedyid()
-            },10)
+           
         }
 	}
 </script>

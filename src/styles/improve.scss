@@ -140,11 +140,11 @@
                         .item_li {
                             padding-left: P(2);
                             width: 100%;
-                            line-height: P(50);
+                            line-height: P(60);
                             border-bottom: 1px solid #bdbdbd;
                             .item_title {
                                 display: inline-block;
-                                width: P(70);
+                                width: P(130);
                             }
                             .item_detail {
                                 border: none;
@@ -168,10 +168,12 @@
                         }
                         .button_confirm {
                             background: #1b3867;
+                            cursor: pointer;
                         }
                         .button_cancel {
                             background: #c2c2c2;
-                            margin-left: P(12)
+                            margin-left: P(12);
+                            cursor: pointer;
                         }
                     }
                 }

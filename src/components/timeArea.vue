@@ -68,7 +68,6 @@ export default {
         },
         callback: {
           onCheck: this.zTreeOnCheck,
-          beforeCheck: this.zTreeBeforeCheck
         }
       },
       validareaList: [],
@@ -104,21 +103,25 @@ export default {
     },
     startChange(data) {
       this.startTime = data;
+      let start = data
+      let end = this.endTime.format("yyyy-mm-dd")
       this.selectAllByUserIdAndLinebodyIds({
         "userId": sessionStorage.getItem("userid"),
         "linebodyIds": this.lineBodystr,
-        "startTime": this.startTime,
-        "endTime": this.endTime
+        "startTime": start+" 00:00:00",
+        "endTime": end+" 23:59:59"
       });
       console.log(this.startTime)
     },
     endChange(data) {
       this.endTime = data;
+      let end = data
+      let start = this.endTime.format("yyyy-mm-dd")
       this.selectAllByUserIdAndLinebodyIds({
         "userId": sessionStorage.getItem("userid"),
         "linebodyIds": this.lineBodystr,
-        "startTime": this.startTime,
-        "endTime": this.endTime
+        "startTime": this.startTime+" 00:00:00",
+        "endTime": end+" 23:59:59"
       });
       console.log(this.endTime)
     }

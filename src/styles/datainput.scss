@@ -87,7 +87,7 @@
 
       .secondCol {
         width: 20%;
-        border-right: 1px solid #BDBDBD;
+        // border-right: 1px solid #BDBDBD;
         padding: 30px 15px 0;
         vertical-align: top;
 
@@ -99,18 +99,51 @@
 
       .thirdCol {
         width: 60%;
-        border-right: 1px solid #BDBDBD;
+        // border-right: 1px solid #BDBDBD;
 
         .childTableContainer {
           width: 100%;
           height: 100%;
 
+          .ivu-table-wrapper {
+            border-left: 1px solid #BDBDBD;
+            border-top: none;
+            border-right: 1px solid #BDBDBD;
+          }
+
+          .ivu-table-body {
+            overflow-x: hidden;
+            overflow-y: scroll;
+          }
+
           .ivu-table th, .ivu-table td {
             height: P(30);
+            border-bottom: 1px solid #BDBDBD;
+          }
+
+          .ivu-table-border td, .ivu-table-border th {
+            border-right: 1px solid #BDBDBD;
+          }
+
+          .ivu-table-border td:last-child, .ivu-table-border th:last-child {
+            border-right: none;
+          }
+
+          .ivu-table::before, .ivu-table-border::before, .ivu-table-with-fixed-top::before {
+            height: 0px;
+          }
+
+          .ivu-table::after {
+            background-color: #BDBDBD;
+            width: 0px;
           }
 
           .ivu-table td.childTableThirdCol, .ivu-table td.childTableFourthCol{
             text-align: center;
+          }
+
+          th.childTableFifthCol.ivu-table-column-center .ivu-table-cell {
+            margin-right: P(15);
           }
         }
       }

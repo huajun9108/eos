@@ -108,7 +108,12 @@
           .ivu-table-wrapper {
             border-left: 1px solid #BDBDBD;
             border-top: none;
-            // border-right: 1px solid #BDBDBD;
+            border-right: 1px solid #BDBDBD;
+          }
+
+          .ivu-table-body {
+            overflow-x: hidden;
+            overflow-y: scroll;
           }
 
           .ivu-table th, .ivu-table td {
@@ -130,10 +135,15 @@
 
           .ivu-table::after {
             background-color: #BDBDBD;
+            width: 0px;
           }
 
           .ivu-table td.childTableThirdCol, .ivu-table td.childTableFourthCol{
             text-align: center;
+          }
+
+          th.childTableFifthCol.ivu-table-column-center .ivu-table-cell {
+            margin-right: P(15);
           }
         }
       }

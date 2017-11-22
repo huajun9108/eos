@@ -46,7 +46,7 @@
         this.isShow = !this.isShow
       },
       initCharts: function() {
-        // console.log(this.lossmappingLinebodyAll);
+        console.log(this.lossmappingLinebodyAll);
         for(let i = 0; i < this.chartList.length; i++) {
           // console.log(this.chartList[i]);
           if (this.chartList[i] != null && this.chartList[i] != "" && this.chartList[i] != undefined)
@@ -56,8 +56,8 @@
           console.log("参数错误");
           return;
         }
-        if(this.lossmappingLinebodyAll.data.length === []) {
-          console.log("数据为空");
+        if(!Array.isArray(this.lossmappingLinebodyAll.data)){
+          console.log("数据有误");
           return;
         }
         this.chartList = [];

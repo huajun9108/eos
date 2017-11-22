@@ -83,10 +83,14 @@ export default {
       postOptions:[],           // 初渲染所有选项
       post:null    ,    // 提交选项也是已选中选项
       checkLists: "",
+      maxLevel: 1000,
       setting: {
         view: {
           selectedMulti: false,
           showIcon: false,
+        },
+        callback: {
+          beforeCheck: this.zTreeBeforeCheck,
         },
         data: {
           simpleData: {
@@ -153,16 +157,19 @@ export default {
       }
       return o;
     },
-    confirm() {
-      var zTree = $.fn.zTree.getZTreeObj("visual_area_tree");
-      var nodes = zTree.getCheckedNodes(true);
-      var checkedNodes=[];
-      console.log(nodes.length);
+    filterHalfCheck(zTree) {
+      const nodes = zTree.getCheckedNodes(true);
+      const checkedNodes=[];
       for(let i = 0; i < nodes.length; i++){
         if(nodes[i].getCheckStatus().half==false){
           checkedNodes.push(nodes[i]);
         }
       }
+      return checkedNodes;
+    },
+    confirm() {
+      const zTree = $.fn.zTree.getZTreeObj("visual_area_tree");
+      const checkedNodes = this.filterHalfCheck(zTree);
       this.checkLists = this.clone(checkedNodes, {id:1, pId:1, name:1});
       this.ArrayBlank(this.postOptions)
       if (this.$route.query.userid) {
@@ -238,6 +245,25 @@ export default {
           _this.postOptions=[]
           var treeObj = $.fn.zTree.getZTreeObj("visual_area_tree");
           treeObj.checkAllNodes(false);
+      }
+    },
+    filter(node) {
+      return (node.level == this.maxLevel);
+    },
+    zTreeBeforeCheck(treeId, treeNode) {
+      this.maxLevel = 1000;
+      const zTree = $.fn.zTree.getZTreeObj(treeId);
+      const checkedNodes = this.filterHalfCheck(zTree);
+      if(checkedNodes.length <= 0) return true;
+      for(let i=0; i < checkedNodes.length; i++) {
+        console.log(checkedNodes[i].name);
+        this.maxLevel = checkedNodes[i].level < this.maxLevel ? checkedNodes[i].level : this.maxLevel;
+      }
+      const maxNode = zTree.getNodesByFilter(this.filter, true);
+      if(maxNode.id === treeNode.id) return true;
+      if(this.maxLevel === treeNode.level || treeNode.level > this.maxLevel) {
+        this.$Message.error("请根据职位选择相应最高可视区域范围");
+        return false;
       }
     }
   },

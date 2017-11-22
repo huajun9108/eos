@@ -259,7 +259,7 @@ export default {
     commit
   }, obj) {
     axios.get("/losscategory/selectLossAll", {}).then(res => {
-      return res.data
+      return res.data.data
     }).then(json => {
       commit("selectLossAll", json)
     })

@@ -26,6 +26,26 @@ import {
   mapState,
   mapActions
 } from "vuex";
+Date.prototype.format = function(format) {
+  var o = {
+    "M+": this.getMonth() + 1,
+    "d+": this.getDate(),
+    "h+": this.getHours(),
+    "m+": this.getMinutes(),
+    "s+": this.getSeconds(),
+    "q+": Math.floor((this.getMonth() + 3) / 3),
+    "S": this.getMilliseconds()
+  }
+  if (/(y+)/.test(format)) {
+    format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+  }
+  for (var k in o) {
+    if (new RegExp("(" + k + ")").test(format)) {
+      format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+    }
+  }
+  return format;
+}
 export default {
   data() {
     return {
@@ -94,33 +114,49 @@ export default {
       });
       _this.lineBodystr = _this.lineBodys.join(",");
       console.log(_this.lineBodystr);
-      _this.selectAllByUserIdAndLinebodyIds({
-        "userId": sessionStorage.getItem("userid"),
-        "linebodyIds": _this.lineBodystr,
-        "startTime": this.startTime,
-        "endTime": this.endTime
-      });
+      console.log(typeof sessionStorage.getItem("userid"));
+      if(!this.startTime || !this.endTime) return;
+      const start = this.startTime.format('yyyy-MM-dd') + ' 00:00:00';
+      const end = this.endTime.format('yyyy-MM-dd') + ' 23:59:59';
+      if (sessionStorage.getItem("userid") && _this.lineBodystr && this.startTime && this.endTime) {
+        _this.selectAllByUserIdAndLinebodyIds({
+          "userId": sessionStorage.getItem("userid"),
+          "linebodyIds": _this.lineBodystr,
+          "startTime": start,
+          "endTime": end
+        });
+      }
       // console.log(nodes)
     },
     startChange(data) {
-      this.startTime = data;
-      this.selectAllByUserIdAndLinebodyIds({
-        "userId": sessionStorage.getItem("userid"),
-        "linebodyIds": this.lineBodystr,
-        "startTime": this.startTime,
-        "endTime": this.endTime
-      });
-      console.log(this.startTime)
+      // this.startTime = data;
+      const start = data + ' 00:00:00';
+      if(!this.endTime) return;
+      const end = this.endTime.format('yyyy-MM-dd') + ' 23:59:59';
+      if (sessionStorage.getItem("userid") && this.lineBodystr && this.startTime && this.endTime) {
+        this.selectAllByUserIdAndLinebodyIds({
+          "userId": sessionStorage.getItem("userid"),
+          "linebodyIds": this.lineBodystr,
+          "startTime": start,
+          "endTime": end
+        });
+      }
+      // console.log(this.startTime)
     },
     endChange(data) {
-      this.endTime = data;
-      this.selectAllByUserIdAndLinebodyIds({
-        "userId": sessionStorage.getItem("userid"),
-        "linebodyIds": this.lineBodystr,
-        "startTime": this.startTime,
-        "endTime": this.endTime
-      });
-      console.log(this.endTime)
+      // this.endTime = data;
+      const end = data + ' 23:59:59';
+      if(!this.startTime) return;
+      const start = this.startTime.format('yyyy-MM-dd') + ' 00:00:00';
+      if (sessionStorage.getItem("userid") && this.lineBodystr && this.startTime && this.endTime) {
+        this.selectAllByUserIdAndLinebodyIds({
+          "userId": sessionStorage.getItem("userid"),
+          "linebodyIds": this.lineBodystr,
+          "startTime": start,
+          "endTime": end
+        });
+      }
+      // console.log(this.endTime)
     }
 
   },

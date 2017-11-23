@@ -43,6 +43,29 @@
 	            border: 1px solid #bdbdbd;
 	            border-radius: 2px;
 	            position: relative;
+	            .area_top {
+	                width: 100%;
+	                height: auto;
+	                box-sizing: border-box;
+	                .area_title {
+	                    line-height: P(66);
+	                    font-size: P(14);
+	                    padding-left: P(46);
+	                }
+	                .area_setting {
+	                    background: #f2f2f2;
+	                    padding-left: P(46);
+	                    line-height: P(100);
+	                    .area_set {
+	                        height: 100%;
+	                        float: left;
+	                        width: P(342);
+	                        padding-left: P(60);
+	                        box-sizing: border-box;
+	                        font-size: P(14);
+	                    }
+	                }
+	            }
 	        }
 	    }
 	}

@@ -1,7 +1,9 @@
 <template>
-    <div id="summary">
-      summary
-    </div>
+  <div class="summary user_common">
+  <div class="summary_content user_maincontent">
+    summary
+  </div>
+  </div>
 </template>
 <script>
 export default {

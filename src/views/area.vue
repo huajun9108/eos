@@ -10,7 +10,20 @@
     </div>
   </div>
   <div class="area_content">
-    <div class="area_box"></div>
+    <div class="area_box">
+       <div class="area_top">
+          <ul class="area_title clearfix">
+            <li class="area_tit">线体重要程度</li>
+          </ul>
+          <ul class="area_setting clearfix">
+            <li class="area_set" v-for="(item,idx) in radiopick" :key = "idx">
+              <input type="radio" :id="item.name" :value="item.value" v-model="picked" class="arearadio">
+              <label :for="item.name">{{item.title}}</label>
+            </li>
+          </ul>
+          <span>Picked: {{ picked }}</span>
+      </div>
+    </div>
   </div>
 </div>
 </template>
@@ -22,6 +35,12 @@ import {
 export default {
   data() {
     return {
+      radiopick:[
+        {name:"important",value:"3",title:"重要"},
+				{name:"common",value:"2",title:"一般"},
+				{name:"unimportance",value:"1",title:"不重要"}
+      ],
+      picked:"1",
       sFlag: true,
       setting: {
         callback: {

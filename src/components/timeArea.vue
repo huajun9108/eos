@@ -115,49 +115,52 @@ export default {
       console.log(_this.lineBodystr);
       console.log(typeof sessionStorage.getItem("userid"));
       if(!this.startTime || !this.endTime) return;
-      const start = this.startTime.format('yyyy-MM-dd') + ' 00:00:00';
-      const end = this.endTime.format('yyyy-MM-dd') + ' 23:59:59';
-      if (sessionStorage.getItem("userid") && _this.lineBodystr && this.startTime && this.endTime) {
+      const start = this.startTime.format('yyyy-MM-dd') + ' 08:00:00';
+      const end = new Date(this.endTime.format('yyyy-MM-dd') + ' 23:59:59');
+      if (sessionStorage.getItem("userid") && _this.lineBodystr && start && end) {
+        const endMs = end.getTime() + 8 * 60 * 60 * 1000;
+        const startTime = new Date(start);
+        const endTime = new Date(endMs);
         _this.selectAllByUserIdAndLinebodyIds({
           "userId": sessionStorage.getItem("userid"),
           "linebodyIds": _this.lineBodystr,
-          "startTime": start,
-          "endTime": end
+          "startTime": startTime,
+          "endTime": endTime
         });
       }
-      // console.log(nodes)
     },
     startChange(data) {
-      // this.startTime = data;
-      const start = data + ' 00:00:00';
+      const start = data + ' 08:00:00';
       if(!this.endTime) return;
-      const end = this.endTime.format('yyyy-MM-dd') + ' 23:59:59';
+      const end = new Date(this.endTime.format('yyyy-MM-dd') + ' 23:59:59');
       if (sessionStorage.getItem("userid") && this.lineBodystr && start && end) {
+        const endMs = end.getTime() + 8 * 60 * 60 * 1000;
+        const startTime = new Date(start);
+        const endTime = new Date(endMs);
         this.selectAllByUserIdAndLinebodyIds({
           "userId": sessionStorage.getItem("userid"),
           "linebodyIds": this.lineBodystr,
-          "startTime": start,
-          "endTime": end
+          "startTime": startTime,
+          "endTime": endTime
         });
       }
-      // console.log(this.startTime)
     },
     endChange(data) {
-      // this.endTime = data;
-      const end = data + ' 23:59:59';
+      const end = new Date(data + ' 23:59:59');
       if(!this.startTime) return;
-      const start = this.startTime.format('yyyy-MM-dd') + ' 00:00:00';
+      const start = this.startTime.format('yyyy-MM-dd') + ' 08:00:00';
       if (sessionStorage.getItem("userid") && this.lineBodystr && start && end) {
+        const startTime = new Date(start);
+        const endMs = end.getTime() + 8 * 60 * 60 * 1000;
+        const endTime = new Date(endMs);
         this.selectAllByUserIdAndLinebodyIds({
           "userId": sessionStorage.getItem("userid"),
           "linebodyIds": this.lineBodystr,
-          "startTime": start,
-          "endTime": end
+          "startTime": startTime,
+          "endTime": endTime
         });
       }
-      // console.log(this.endTime)
     }
-
   },
   computed: {
     ...mapState([

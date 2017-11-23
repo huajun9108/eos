@@ -5,11 +5,13 @@
       <h1 class="choose">时间选择</h1>
       <div class="time">
         <span>开始时间</span>
-        <DatePicker size="small" v-model="startTime" :options="optionsStart" placement="bottom-end" type="date" placeholder="Select date" @on-change="startChange"></DatePicker>
+        <DatePicker size="small" v-model="startTime" :options="optionsStart" placement="bottom-end" type="date"
+        placeholder="Select date" @on-change="startChange" @on-clear="this.clearCharts"></DatePicker>
       </div>
       <div class="time">
         <span>结束时间</span>
-        <DatePicker size="small" v-model="endTime" type="date" :options="optionsEnd" placement="bottom-end" placeholder="Select date" @on-change="endChange"></DatePicker>
+        <DatePicker size="small" v-model="endTime" type="date" :options="optionsEnd" placement="bottom-end"
+        placeholder="Select date" @on-change="endChange" @on-clear="this.clearCharts"></DatePicker>
       </div>
     </div>
     <div class="chooseArea box">
@@ -111,66 +113,77 @@ export default {
           _this.lineBodys.push(node.id.substring(1));
         }
       });
+      if(!this.startTime || !this.endTime) return;
+      if(_this.lineBodys.length <= 0) {
+        console.log("lineBodys为空");
+        this.clearCharts();
+        return;
+      }
       _this.lineBodystr = _this.lineBodys.join(",");
       console.log(_this.lineBodystr);
       console.log(typeof sessionStorage.getItem("userid"));
-      if(!this.startTime || !this.endTime) return;
-      const start = this.startTime.format('yyyy-MM-dd') + ' 00:00:00';
-      const end = this.endTime.format('yyyy-MM-dd') + ' 23:59:59';
-      if (sessionStorage.getItem("userid") && _this.lineBodystr && this.startTime && this.endTime) {
+      const start = this.startTime.format('yyyy-MM-dd') + ' 08:00:00';
+      const end = new Date(this.endTime.format('yyyy-MM-dd') + ' 23:59:59');
+      if (sessionStorage.getItem("userid") && _this.lineBodystr && start && end) {
+        const endMs = end.getTime() + 8 * 60 * 60 * 1000;
+        const startTime = new Date(start);
+        const endTime = new Date(endMs);
         _this.selectAllByUserIdAndLinebodyIds({
           "userId": sessionStorage.getItem("userid"),
           "linebodyIds": _this.lineBodystr,
-          "startTime": start,
-          "endTime": end
+          "startTime": startTime,
+          "endTime": endTime
         });
       }
-      // console.log(nodes)
     },
     startChange(data) {
-      // this.startTime = data;
-      const start = data + ' 00:00:00';
+      if(!data) return;
+      const start = data + ' 08:00:00';
       if(!this.endTime) return;
-      const end = this.endTime.format('yyyy-MM-dd') + ' 23:59:59';
+      const end = new Date(this.endTime.format('yyyy-MM-dd') + ' 23:59:59');
       if (sessionStorage.getItem("userid") && this.lineBodystr && start && end) {
+        const endMs = end.getTime() + 8 * 60 * 60 * 1000;
+        const startTime = new Date(start);
+        const endTime = new Date(endMs);
         this.selectAllByUserIdAndLinebodyIds({
           "userId": sessionStorage.getItem("userid"),
           "linebodyIds": this.lineBodystr,
-          "startTime": start,
-          "endTime": end
+          "startTime": startTime,
+          "endTime": endTime
         });
       }
-      // console.log(this.startTime)
     },
     endChange(data) {
-      // this.endTime = data;
-      const end = data + ' 23:59:59';
+      if(!data) return;
+      const end = new Date(data + ' 23:59:59');
       if(!this.startTime) return;
-      const start = this.startTime.format('yyyy-MM-dd') + ' 00:00:00';
+      const start = this.startTime.format('yyyy-MM-dd') + ' 08:00:00';
       if (sessionStorage.getItem("userid") && this.lineBodystr && start && end) {
+        const startTime = new Date(start);
+        const endMs = end.getTime() + 8 * 60 * 60 * 1000;
+        const endTime = new Date(endMs);
         this.selectAllByUserIdAndLinebodyIds({
           "userId": sessionStorage.getItem("userid"),
           "linebodyIds": this.lineBodystr,
-          "startTime": start,
-          "endTime": end
+          "startTime": startTime,
+          "endTime": endTime
         });
       }
-      // console.log(this.endTime)
+    },
+    clearCharts() {
+      console.log("clearDate");
+      this.selectAllByUserIdAndLinebodyIds({
+        "userId": sessionStorage.getItem("userid"),
+      });
     }
-
   },
   computed: {
     ...mapState([
       "validarea",
+      "lossmappingLinebodyAll"
     ])
   },
   watch: {
-    // startTime(newVal) {
-    //   console.log(1)
-    // },
-    // endTime(newVal) {
-    //   console.log(newVal)
-    // },
     validarea(newVal) {
       const _this = this;
       this.validareaList = []

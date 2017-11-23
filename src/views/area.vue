@@ -13,12 +13,12 @@
     <div class="area_box">
        <div class="area_top">
           <ul class="area_title clearfix">
-            <li class="area_tit">线体重要程度</li>
+            <li class="area_tit">线体重要程度选择</li>
           </ul>
           <ul class="area_setting clearfix">
             <li class="area_set" v-for="(item,idx) in radiopick" :key = "idx">
-              <input type="radio" :id="item.name" :value="item.value" v-model="picked" class="arearadio">
-              <label :for="item.name">{{item.title}}</label>
+              <input type="radio" :id="item.name" :value="item.value" v-model="picked" :ref="item.name" class="arearadio">
+              <label :for="item.name"  :ref="item.value">{{item.title}}</label>
             </li>
           </ul>
           <span>Picked: {{ picked }}</span>
@@ -35,17 +35,19 @@ import {
 export default {
   data() {
     return {
+      nodeId:'',
       radiopick:[
         {name:"important",value:"3",title:"重要"},
 				{name:"common",value:"2",title:"一般"},
 				{name:"unimportance",value:"1",title:"不重要"}
       ],
-      picked:"1",
+      picked:"",
       sFlag: true,
       setting: {
         callback: {
           beforeRemove: this.zTreeBeforeRemove,
           beforeRename: this.zTreeBeforeRename,
+          onClick:this.clickNode
         },
         view: {
           addHoverDom: this.addHoverDom,
@@ -85,6 +87,9 @@ export default {
       "updateArea",
       "deleteArea",
     ]),
+    fun(){
+      alert()
+    },
     addHoverDom: function(treeId, treeNode) {
       if (treeNode.level >= 3) return;
       var sObj = $("#" + treeNode.tId + "_span");
@@ -158,6 +163,31 @@ export default {
         return true;
       }
     },
+    clickNode(event, treeId, treeNode){
+      let reg=/^l/g;
+      let _this = this
+      if(reg.test(treeNode.id)){
+        this.nodeId = treeNode.id
+        this.radiopick.forEach(item=>{
+          this.$refs[item.name][0].disabled = false
+          console.log(this.$refs[item.name])
+          this.$refs[item.value][0].removeEventListener("click",
+            _this.tip)
+        })
+      }else{
+        console.log("非线体")
+        let _this = this
+        this.picked=""
+        this.radiopick.forEach(item=>{
+          this.$refs[item.name][0].disabled = true
+          console.log(this.$refs[item.name])
+          this.$refs[item.value][0].addEventListener("click",_this.tip)
+        })
+      }
+    },
+    tip(){
+      this.$Message.error("请在线体进行重要性选择")
+    }
   },
   watch: {
     areaAll(){
@@ -206,8 +236,14 @@ export default {
     }
   },
   mounted() {
+    let _this = this
     this.selectAreaAll();
-  }
+    this.radiopick.forEach(item=>{
+      this.$refs[item.name][0].disabled = true
+      console.log(this.$refs[item.name])
+      this.$refs[item.value][0].addEventListener("click",_this.tip)
+    })
+  }  
 }
 </script>
 <style lang="scss" scoped>

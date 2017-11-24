@@ -201,10 +201,9 @@ export default {
       });
       _this.lineBodystr = _this.lineBodys.join(",");
       $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
-      // _this.selectAllByUserIdAndLinebodyIds({
-      //   "userId": sessionStorage.getItem("userid"),
-      //   "linebodyIds": _this.lineBodystr
-      // });
+      _this.selectAllByUserIdAndLinebodyIds({
+        "userId": sessionStorage.getItem("userid"),
+      });
     }
   },
   mounted() {

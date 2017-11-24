@@ -424,5 +424,64 @@ export default {
         }).then(json => {
             commit("selectAllByUserIdAndLinebodyIds", json)
         })
+    },
+    addClasstime({ commit }, obj) {
+      axios.post("/impobject/addClasstime", qs.stringify({
+        "classStarttime": obj.classStarttime,
+        "classEndtime": obj.classEndtime,
+        "twolevName": obj.twolevName,
+        "linebodyId": obj.linebodyId
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("addClasstime", json)
+      })
+    },
+    showLosstier3({ commit }, obj) {
+      axios.post("/datainput/showLosstier3", qs.stringify({
+        "twolevName": obj.twolevName
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("showLosstier3", json)
+      })
+    },
+    addLosstier3data({ commit }, obj) {
+      axios.post("/datainput/addLosstier3data", qs.stringify({
+        "twolevDataid": obj.twolevDataid,
+        "losstier3Id": obj.losstier3Id,
+        "linebodyId": obj.linebodyId
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("addLosstier3data", json)
+      })
+    },
+    addLosstier4data({ commit }, obj) {
+      axios.post("/datainput/addLosstier4data", qs.stringify({
+        "losstier3Dataid": obj.losstier3Dataid,
+        "losstier4Id": obj.losstier4Id,
+        "linebodyId": obj.linebodyId
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("addLosstier4data", json)
+      })
+    },
+    addLosstier4time({ commit }, obj) {
+      axios.post("/datainput/addLosstier4time", qs.stringify({
+        "losstier4Dataid": obj.losstier4Dataid,
+        "starttime": obj.starttime,
+        "endtime": obj.endtime
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("addLosstier4time", json)
+      })
     }
 }

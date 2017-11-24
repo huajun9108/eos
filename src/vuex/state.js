@@ -41,5 +41,10 @@ export default {
     lossmappingLinebodyAll: [],
     addObject: '',
     deleteObject: '',
-    validLeft: []
+    validLeft: [],
+    classTime: '',
+    lossTier3: '',
+    addLossTier3Res: '',
+    addLossTier4Res: '',
+    addLossTier4TimeRes: ''
 }

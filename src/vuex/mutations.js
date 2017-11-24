@@ -107,5 +107,21 @@ export default {
     },
     selectAllByUserIdAndLinebodyIds(state, json) {
         state.lossmappingLinebodyAll = json
+    },
+    addClasstime(state, json) {
+        state.classTime = json
+    },
+    showLosstier3(state, json) {
+        state.lossTier3 = json
+    },
+    addLosstier3data(state, json) {
+        state.addLossTier3Res = json
+    },
+    addLosstier4data(state, json) {
+        state.addLossTier4Res = json
+    },
+    addLosstier4time(state, json) {
+        state.addLossTier4TimeRes = json
     }
+
 }

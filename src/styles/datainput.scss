@@ -55,12 +55,10 @@
     .tableContainer {
       overflow-y: auto;
       width: 100%;
-      height: 100%;
       height: 85%;
 
       .tableBody {
         width: 100%;
-        height: 100%;
       }
 
       .tableBody tbody {
@@ -71,9 +69,9 @@
         border-bottom: 1px solid #BDBDBD;
       }
 
-      .tableBody tr:last-child {
-        border-bottom: none;
-      }
+      // .tableBody tr:last-child {
+      //   border-bottom: none;
+      // }
 
       .tableBody td {
         text-align: center;

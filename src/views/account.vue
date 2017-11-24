@@ -77,17 +77,20 @@ export default {
       arrayData: [],
       total: null,     // 记录总条数
       display:10,   // 每页显示条数
-      current: 1     // 当前第n页 ， 也可以 watch current 的变化
+      current: 1 ,    // 当前第n页 ， 也可以 watch current 的变化
+      delALL:[]
     };
   },
   computed: {
     ...mapState([
-      "delUserRes"
+      "delUserRes",
+      "deleteUserByUserIds"
     ]),
   },
   methods: {
     ...mapActions([
       "delUser",
+      "massDeleteUserByUserIds"
       ]),
       onPagechange:function(currentPage){
        console.log(currentPage);
@@ -144,12 +147,12 @@ export default {
         this.$Message.warning('请选择需要删除的数据');
       }else{
         Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
-          for (var i = _this.checkedUserArr.length - 1; i >= 0; i--) {
-              var userId = _this.checkedUserArr[i];
+          // for (var i = _this.checkedUserArr.length - 1; i >= 0; i--) {
+          //     var userId = _this.checkedUserArr[i];
               //that.userAll.splice(userId, 1);
-              _this.delUser({ userId:userId });
+              _this.massDeleteUserByUserIds({ userIds:_this.checkedUserArr.join(",") });
               _this.loadList();
-          }
+          // }
         });
       }
       
@@ -182,7 +185,18 @@ export default {
     },
     delUserRes(newVal){
       if(newVal.status==0){
-        this.$Message.success('删除成功');
+        this.$Message.success('删除用户'+newVal.data.username+'成功');
+      }else{
+        this.$Message.error('删除失败,请稍后再试');
+      }
+    },
+    deleteUserByUserIds(newVal){
+      let _this = this
+      if(newVal.status==0){
+        newVal.data.forEach(item=>{
+          _this.delALL.push(item.username)
+        })
+        _this.$Message.success('删除用户'+_this.delALL.join(",")+'成功');
       }else{
         this.$Message.error('删除失败,请稍后再试');
       }

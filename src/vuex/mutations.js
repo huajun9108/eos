@@ -13,6 +13,9 @@ export default {
     delUser(state, json) {
         state.delUserRes = json
     },
+    massDeleteUserByUserIds(state, json) {
+        state.deleteUserByUserIds = json
+    },
     addUser(state, json) {
         state.addResult = json
     },
@@ -107,5 +110,8 @@ export default {
     },
     selectAllByUserIdAndLinebodyIds(state, json) {
         state.lossmappingLinebodyAll = json
+    },
+    updateLinebodyWeightById(state, json) {
+        state.updateLinebodyWeight = json
     }
 }

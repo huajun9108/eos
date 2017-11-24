@@ -83,7 +83,7 @@
                                 </div>
                             </td>
                         </tr>
-                         <tr>
+                         <!-- <tr>
                             <td class="firstCol" width="10%">Safety</td>
                             <td id="safety" class="secordCol" style="width: 600px;height:220px;" width="60%">
                                 <!-- <chart
@@ -93,14 +93,14 @@
                                 :_yText="'总访问量'"
                                 :_chartData="chartData"
                                 :_type="'LineOrBar'"></chart> -->
-                            </td>
+                            <!-- </td>
                             <td width="30%"></td>
                         </tr>
                          <tr>
                             <td class="firstCol" width="10%">Defect</td>
                             <td id="defect" class="secordCol" style="width: 600px;height:220px;" width="60%"></td>
                             <td width="30%"></td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>

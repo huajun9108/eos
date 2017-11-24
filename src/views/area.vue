@@ -20,8 +20,10 @@
               <input type="radio" :id="item.name" :value="item.value" v-model="picked" :ref="item.name" class="arearadio">
               <label :for="item.name"  :ref="item.value">{{item.title}}</label>
             </li>
+            <li class="area_button">
+              <span class="button_confirm" @click = "confirm">确认</span>
+            </li>
           </ul>
-          <span>Picked: {{ picked }}</span>
       </div>
     </div>
   </div>
@@ -78,6 +80,8 @@ export default {
       "newArea",
       "updateAreaRes",
       "deleteAreaRes",
+      "lineBody",
+      "updateLinebodyWeight"
     ])
   },
   methods: {
@@ -86,6 +90,8 @@ export default {
       "addAreaOne",
       "updateArea",
       "deleteArea",
+      "selectLinebodyById",
+      "updateLinebodyWeightById"
     ]),
     fun(){
       alert()
@@ -167,31 +173,50 @@ export default {
       let reg=/^l/g;
       let _this = this
       if(reg.test(treeNode.id)){
+        // this.picked="1"
         this.nodeId = treeNode.id
-        this.radiopick.forEach(item=>{
-          this.$refs[item.name][0].disabled = false
-          console.log(this.$refs[item.name])
-          this.$refs[item.value][0].removeEventListener("click",
-            _this.tip)
-        })
+        this.selectLinebodyById({id:this.nodeId})
+        // console.log(this.picked)
+        this.removeEvent(false,_this.tip)
       }else{
-        console.log("非线体")
         let _this = this
         this.picked=""
-        this.radiopick.forEach(item=>{
-          this.$refs[item.name][0].disabled = true
-          console.log(this.$refs[item.name])
-          this.$refs[item.value][0].addEventListener("click",_this.tip)
-        })
+        this.addEvent(true,_this.tip)
       }
     },
     tip(){
       this.$Message.error("请在线体进行重要性选择")
+    },
+    removeEvent(flag,fun){
+      this.radiopick.forEach(item=>{
+        this.$refs[item.name][0].disabled = flag
+        this.$refs[item.value][0].removeEventListener("click",
+          fun)
+      })
+    },
+    addEvent(flag,fun){
+      this.radiopick.forEach(item=>{
+        this.$refs[item.name][0].disabled = flag
+        this.$refs[item.value][0].addEventListener("click",fun)
+      })
+    },
+    confirm(){
+      if(this.picked){
+        var zTree = $.fn.zTree.getZTreeObj("area_tree");
+        let selectNode = zTree.getSelectedNodes();
+        let selectNodeId = selectNode[0].id.substring(1);
+        this.updateLinebodyWeightById({"linebodyId": selectNodeId,"weight":this.picked});
+      }
+     
+      
     }
   },
   watch: {
     areaAll(){
         $.fn.zTree.init($("#area_tree"), this.setting,this.areaAll);
+    },
+    lineBody(newVal){
+      this.picked = this.lineBody.weight
     },
     newArea(newVal){
       const _this = this;
@@ -203,7 +228,14 @@ export default {
           newNode.id = newVal.id;
           delete newNode.isNew;
           zTree.updateNode(newNode);
-          _this.$Message.success("添加成功");
+          this.$Message.success("添加成功");
+          let reg=/^l/g;
+          if(reg.test(newVal.id)){
+            this.picked=1
+            this.removeEvent(false,_this.tip)
+          }else{
+            this.picked=null
+          }
         } else {
           this.selectAreaAll();
           _this.$Message.error("添加失败");
@@ -211,6 +243,13 @@ export default {
       } else {
         this.selectAreaAll();
         _this.$Message.error("添加失败");
+      }
+    },
+    updateLinebodyWeight(newVal){
+      if(newVal.status==0){
+        this.$Message.success("线体权重修改成功");
+      }else{
+        this.$Message.error("线体权重修改失败，请稍后再试");
       }
     },
     updateAreaRes(newVal){
@@ -240,7 +279,6 @@ export default {
     this.selectAreaAll();
     this.radiopick.forEach(item=>{
       this.$refs[item.name][0].disabled = true
-      console.log(this.$refs[item.name])
       this.$refs[item.value][0].addEventListener("click",_this.tip)
     })
   }  

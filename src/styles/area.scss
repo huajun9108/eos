@@ -53,6 +53,7 @@
 	                    padding-left: P(46);
 	                }
 	                .area_setting {
+	                    position: relative;
 	                    background: #f2f2f2;
 	                    padding-left: P(46);
 	                    line-height: P(100);
@@ -62,6 +63,20 @@
 	                        width: 20%;
 	                        box-sizing: border-box;
 	                        font-size: P(14);
+	                    }
+	                    .area_button {
+	                        line-height: P(28);
+	                        position: absolute;
+	                        bottom: P(50);
+	                        right: P(250);
+	                        color: #fff;
+	                        text-align: center;
+	                        .button_confirm {
+	                            border-radius: P(14);
+	                            width: P(104);
+	                            display: block;
+	                            background: #1b3867;
+	                        }
 	                    }
 	                }
 	            }

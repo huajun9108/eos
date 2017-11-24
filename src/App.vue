@@ -6,16 +6,13 @@
 </div>
 </template>
 <script type="text/javascript">
-    import 'babel-polyfill'
     import "./libs/flexible/flexible"
     import Top from "./components/top.vue";
-    // import Bottom from "./components/bottom.vue";
     import store from './vuex/store';
 
     export default {
         components:{
             etop:Top,
-            // ebottom:Bottom
         },
         store,
         vuex: {

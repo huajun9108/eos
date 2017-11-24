@@ -323,30 +323,7 @@ export default {
       tableData: [{
           "tier": "OEE"
         },
-        {
-          "tier": "OLE"
-        },
-        {
-          "tier": "MaintCosts"
-        },
-        {
-          "tier": "OEE"
-        },
-        {
-          "tier": "OLE"
-        },
-        {
-          "tier": "MaintCosts"
-        },
-        {
-          "tier": "OEE"
-        },
-        {
-          "tier": "OLE"
-        },
-        {
-          "tier": "MaintCosts"
-        },
+        
       ],
       lengthShiftTimeValue: [],
       startTimeValue: '',

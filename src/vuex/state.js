@@ -30,6 +30,7 @@ export default {
     userAll: "",
     addResult: "",
     delUserRes: '',
+    deleteUserByUserIds: '',
     updatePwdResult: '',
     lineBody: '',
     updatelineBodyRes: '',
@@ -41,5 +42,6 @@ export default {
     lossmappingLinebodyAll: [],
     addObject: '',
     deleteObject: '',
-    validLeft: []
+    validLeft: [],
+    updateLinebodyWeight: ''
 }

@@ -40,10 +40,20 @@ export default {
                 userId: obj.userId
             }
         }).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("delUser", json)
+        })
+    },
+    massDeleteUserByUserIds({ commit }, obj) {
+        axios.post("user/massDeleteUserByUserIds ", qs.stringify({
+            userIds: obj.userIds
+        })).then(res => {
+            // console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("massDeleteUserByUserIds", json)
         })
     },
     updateGroupById({ commit }, obj) {
@@ -72,7 +82,7 @@ export default {
             "validMenu": obj.validMenu,
             "validArea": obj.validArea,
         })).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             return res.data
 
         }).then(json => {
@@ -93,7 +103,7 @@ export default {
             "validMenu": obj.validMenu,
             "validArea": obj.validArea
         })).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("updateUserById", json)
@@ -107,7 +117,7 @@ export default {
             "userPsd": obj.userPsd,
             "userNewPsd": obj.userNewPsd,
         })).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("updateUserPsdById", json)
@@ -129,7 +139,7 @@ export default {
             "name": obj.name,
             "pId": obj.pId,
         })).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("addAreaOne", json)
@@ -143,7 +153,7 @@ export default {
             "pId": obj.pId,
             "id": obj.id,
         })).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("updateArea", json)
@@ -423,6 +433,17 @@ export default {
             return res.data
         }).then(json => {
             commit("selectAllByUserIdAndLinebodyIds", json)
+        })
+    },
+    updateLinebodyWeightById({ commit }, obj) {
+        axios.post("/linebodySet/updateLinebodyWeightById", qs.stringify({
+            "linebodyId": obj.linebodyId,
+            "weight": obj.weight
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("updateLinebodyWeightById", json)
         })
     }
 }

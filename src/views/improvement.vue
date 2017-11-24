@@ -243,17 +243,22 @@
             },  
             delpro(idx){
                 console.log(idx)
-                this.proNowList.forEach((item,index)=> {
-                    if(item.id==idx){
-                        this.proNowList.splice(index,1)
-                        this.proList.splice(index,1)
-                        this.deleteObjectnowBylossid({lossId:item.id,linebodyId: this.linebodyId})
-                    }
-                }, this);
-               
-                this.$refs[idx][0].className = ""
-                console.log(this.proNowList)
-                console.log(this.proList)
+                var _this= this
+                Ewin.confirm({ message: "确认要删除该项目吗？" }).on(function (e) {
+                    _this.proNowList.forEach((item,index)=> {
+                        if(item.id==idx){
+                            _this.proNowList.splice(index,1)
+                            _this.proList.splice(index,1)
+                            _this.deleteObjectnowBylossid({lossId:item.id,linebodyId: _this.linebodyId})
+                            _this.$refs[idx][0].className = ""
+                       
+                        };
+                        console.log(_this.proNowList)
+                        console.log(_this.proList)
+                    })
+                    
+                })
+                
             }
             
         },

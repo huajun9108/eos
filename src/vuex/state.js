@@ -42,9 +42,12 @@ export default {
     addObject: '',
     deleteObject: '',
     validLeft: [],
-    classTime: '',
+    // classTime: '',
     lossTier3: '',
-    addLossTier3Res: '',
-    addLossTier4Res: '',
-    addLossTier4TimeRes: ''
+    // addLossTier3Res: '',
+    // addLossTier4Res: '',
+    // addLossTier4TimeRes: '',
+    addLosstier4time2Res: '',
+    kpiTwoLev: '',
+    datainputLoss: []
 }

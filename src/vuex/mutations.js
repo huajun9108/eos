@@ -108,20 +108,34 @@ export default {
     selectAllByUserIdAndLinebodyIds(state, json) {
         state.lossmappingLinebodyAll = json
     },
-    addClasstime(state, json) {
-        state.classTime = json
-    },
+    // addClasstime(state, json) {
+    //     state.classTime = json
+    // },
     showLosstier3(state, json) {
         state.lossTier3 = json
     },
-    addLosstier3data(state, json) {
-        state.addLossTier3Res = json
+    // addLosstier3data(state, json) {
+    //     state.addLossTier3Res = json
+    // },
+    // addLosstier4data(state, json) {
+    //     state.addLossTier4Res = json
+    // },
+    // addLosstier4time(state, json) {
+    //     state.addLossTier4TimeRes = json
+    // },
+    addLosstier4time2(state, json) {
+        state.addLosstier4time2Res = json
     },
-    addLosstier4data(state, json) {
-        state.addLossTier4Res = json
-    },
-    addLosstier4time(state, json) {
-        state.addLossTier4TimeRes = json
+    showKpitwolev(state, json) {
+        state.kpiTwoLev = json
+        let arr=[]
+        json.data.forEach(item=>{
+          let obj = {};
+          obj[item] = []
+          arr.push(obj)
+        })
+        return state.datainputLoss = arr;
+        console.log(arr)
     }
 
 }

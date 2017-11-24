@@ -8,23 +8,23 @@
     <div class="lengthShift" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <span class="lengthShiftTime">本班次时间：</span>
       <DatePicker v-model="lengthShiftTimeValue" type="datetimerange" placeholder="Select date and time" style="width: 300px"
-      :options="optionsOpenCeremony" @on-change="lengthShiftTimeChange"></DatePicker>
+      :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
     </div>
     <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <table class="tableBody">
         <tbody>
-          <tr v-for="d in tableData">
-            <td class="firstCol">{{ d.tier }}</td>
+          <tr v-for="(d,idx) in this.kpiTwoLev.data" :key = "idx">
+            <td class="firstCol">{{ d }}</td>
             <td class="secondCol">
               <textarea class="textArea"></textarea>
             </td>
             <td class="thirdCol">
               <div class="childTableContainer">
-                <Table border width="646" height="202" :columns="childTabCols" :data="childTableData"></Table>
+                <Table border width="646" height="202" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
               </div>
             </td>
             <td class="fourthCol">
-              <span class="addLossBtn" @click="addLoss">添加loss</span>
+              <span class="addLossBtn" @click="addLoss(d)">添加loss</span>
             </td>
           </tr>
         </tbody>
@@ -33,12 +33,12 @@
     <div class="shade" :class="showFlag?'showchoose':'hidechoose'"></div>
     <div class="lossChoose" :class="showFlag?'showchoose':'hidechoose'">
       <div class="dirChoose">
-        <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier($event)">
-          <Option v-for="item in tierMenuData" :key="item.value" :label="item.label" :value="item.value">
+        <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier3($event)">
+          <Option v-for="item in this.lossTier3.data.losstier3" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="item.lossid">
           </Option>
         </Select>
-        <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4">
-          <Option v-for="item in childTierMenuData" :key="item.value" :label="item.label" :value="item.value">
+        <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4" @on-change="getTier4($event)">
+          <Option v-for="item in childTierMenuData" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="item.tier4id">
           </Option>
         </Select>
       </div>
@@ -54,7 +54,8 @@
       </div>
       <div class="endTimeContainer">
         <span class="timeTitle">结束时间：</span>
-        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
+        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd"
+        @on-ok="endTimeChooseOk">
         </DatePicker>
       </div>
       <div class="btnContainer text-right">
@@ -67,6 +68,10 @@
 </template>
 <script>
 import echarts from "echarts"
+import {
+  mapState,
+  mapActions
+} from "vuex";
 Date.prototype.format = function(format) {
   var o = {
     "M+": this.getMonth() + 1,
@@ -131,96 +136,6 @@ export default {
           }
         }
       },
-      tierMenuData: [{
-          "value": "Lack of demand",
-          "label": "Lack of demand"
-        },
-        {
-          "value": "Preventive Maintenance",
-          "label": "Preventive Maintenance"
-        },
-        {
-          "value": "Training, Meetings & Shift Breaks",
-          "label": "Training, Meetings & Shift Breaks"
-        },
-        {
-          "value": "Breakdowns",
-          "label": "Breakdowns"
-        },
-        {
-          "value": "Short Stops",
-          "label": "Short Stops"
-        },
-        {
-          "value": "First Level Maintenance",
-          "label": "First Level Maintenance"
-        },
-        {
-          "value": "Lack Of Resources & Waiting",
-          "label": "Lack Of Resources & Waiting"
-        },
-        {
-          "value": "Setup Time & Adjustment",
-          "label": "Setup Time & Adjustment"
-        },
-        {
-          "value": "Process Incidents",
-          "label": "Process Incidents"
-        },
-        {
-          "value": "Speed Loss",
-          "label": "Speed Loss"
-        },
-        {
-          "value": "Overusage",
-          "label": "Overusage"
-        },
-      ],
-      allChildTier: [{
-          "tier": "Lack of demand",
-          "label": "Lack"
-        },
-        {
-          "tier": "Preventive Maintenance",
-          "label": "Preventive"
-        },
-        {
-          "tier": "Training, Meetings & Shift Breaks",
-          "label": "Training"
-        },
-        {
-          "tier": "Breakdowns",
-          "label": "Breakdowns"
-        },
-        {
-          "tier": "Short Stops",
-          "label": "Short"
-        },
-        {
-          "tier": "First Level Maintenance",
-          "label": "First"
-        },
-        {
-          "tier": "Lack Of Resources & Waiting",
-          "label": "Lack Of"
-        },
-        {
-          "tier": "Setup Time & Adjustment",
-          "label": "Setup"
-        },
-        {
-          "tier": "Process Incidents",
-          "label": "Process"
-        },
-        {
-          "tier": "Speed Loss",
-          "label": "Speed"
-        },
-        {
-          "tier": "Overusage",
-          "label": "Overusage"
-        },
-      ],
       tierValue: '',
       childTierMenuData: [],
       childTierValue: '',
@@ -271,88 +186,84 @@ export default {
           }
         },
       ],
-      childTableData: [{
-          "tier3": "a",
-          "tier4": "aa",
-          "开始时间": "2017-10-11 10:00:00",
-          "结束时间": "2017-10-12 11:00:00",
-        },
-        {
-          "tier3": "b",
-          "tier4": "bb",
-          "开始时间": "2017-10-11 10:00:00",
-          "结束时间": "2017-10-12 11:00:00",
-        },
-        {
-          "tier3": "c",
-          "tier4": "cc",
-          "开始时间": "2017-10-11 10:00:00",
-          "结束时间": "2017-10-12 11:00:00"
-        },
-        {
-          "tier3": "d",
-          "tier4": "dd",
-          "开始时间": "2017-10-11 10:00:00",
-          "结束时间": "2017-10-12 11:00:00"
-        },
-        {
-          "tier3": "a",
-          "tier4": "aa",
-          "开始时间": "2017-10-11 10:00:00",
-          "结束时间": "2017-10-12 11:00:00",
-        },
-        {
-          "tier3": "b",
-          "tier4": "bb",
-          "开始时间": "2017-10-11 10:00:00",
-          "结束时间": "2017-10-12 11:00:00",
-        },
-        {
-          "tier3": "c",
-          "tier4": "cc",
-          "开始时间": "2017-10-11 10:00:00",
-          "结束时间": "2017-10-12 11:00:00"
-        },
-        {
-          "tier3": "d",
-          "tier4": "dd",
-          "开始时间": "2017-10-11 10:00:00",
-          "结束时间": "2017-10-12 11:00:00"
-        },
-      ],
-      tableData: [{
-          "tier": "OEE"
-        },
-        
-      ],
       lengthShiftTimeValue: [],
       startTimeValue: '',
       durationTimeValue: '',
       endTimeValue: '',
       openCeremonyFlag: false,
       showFlag: false,
+      validareaList: [],
+      lineBodys: [],
+      lossTwoLevDataId: [],
+      lossThreeLevStructId: '',
+      lossThreeLevDataId: '',
+      lossFourLevStructId: '',
+      lossFourLevDataId: '',
+      tier3: '',
+      tier4: '',
+      lossTwoLevName: ''
     }
   },
+  computed: {
+    ...mapState([
+      "validarea",
+      // "classTime",
+      "lossTier3",
+      // "addLossTier3Res",
+      // "addLossTier4Res",
+      // "addLossTier4TimeRes",
+      "kpiTwoLev",
+      "addLosstier4time2Res",
+      "datainputLoss"
+    ])
+  },
   methods: {
-    getTier: function(tier) {
+    ...mapActions([
+      // "addClasstime",
+      "selectUserById",
+      "showLosstier3",
+      // "addLosstier3data",
+      // "addLosstier4data",
+      // "addLosstier4time",
+      "showKpitwolev",
+      "addLosstier4time2"
+    ]),
+    getTier3: function(tier) {
+      if(!tier) {
+        this.tierValue = '';
+        this.childTierValue = '';
+        return;
+      }
+      this.tier3 = this.$refs[tier][0].label;
+
+      this.lossThreeLevStructId = tier;
       let tempTier = [];
       this.childTierMenuData = [];
       this.childTierValue = '';
-      for (let val of this.allChildTier) {
-        if (tier === val.tier) {
+      for (let val of this.lossTier3.data.losstier4) {
+        if (tier === val.losstier3Lossid) {
           tempTier.push({
-            "label": val.label,
-            "value": val.label
+            "tier4id": val.tier4id,
+            "name": val.name
           });
         }
       }
       this.childTierMenuData = tempTier;
     },
+    getTier4(tier) {
+      if(!tier) {
+        this.childTierValue = '';
+        return;
+      }
+      this.tier4 = this.$refs[tier][0].label;
+
+      this.lossFourLevStructId = tier;
+    },
     deleteLoss(index) {
       this.childTableData.splice(index, 1);
     },
-    lengthShiftTimeChange: function(val) {
-      console.log(val);
+    lengthShiftTimeClear() {
+      this.lengthShiftTimeValue = [];
     },
     timeFormat: function(mss) {
       var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -428,7 +339,12 @@ export default {
         this.durationTimeValue = this.timeFormat(durationMs);
       }
     },
-    addLoss: function() {
+    addLoss: function(name) {
+      this.lossTwoLevName = name;
+      if(this.lengthShiftTimeValue.length <=0) {
+        this.$Message.error("请先选择开班时间");
+        return;
+      }
       this.showFlag = !this.showFlag;
     },
     openCeremonyClick: function() {
@@ -436,14 +352,37 @@ export default {
     },
     confirmClick: function() {
       this.showFlag = !this.showFlag;
+      // this.addLosstier4time({
+      //   "losstier4Dataid": this.lossFourLevDataId,
+      //   "starttime": this.startTimeValue,
+      //   "endtime": this.endTimeValue
+      // });
+      this.addLosstier4time2({
+        "classStarttime": this.lengthShiftTimeValue[0],
+        "classEndtime": this.lengthShiftTimeValue[1],
+        "twolevName": this.lossTwoLevName,
+        "losstier3Id": this.lossThreeLevStructId,
+        "losstier4Id": this.lossFourLevStructId,
+        "linebodyId": this.lineBodys[0],
+        "starttime": this.startTimeValue,
+        "endtime": this.endTimeValue
+      });
       const obj = {
-        "tier3": this.tierValue,
-        "tier4": this.childTierValue,
+        "tier3": this.tier3,
+        "tier4": this.tier4,
         "开始时间": this.startTimeValue.format('yyyy-MM-dd hh:mm:ss'),
         "结束时间": this.endTimeValue.format('yyyy-MM-dd hh:mm:ss')
       };
+      // childTabData.push(obj);
       if (obj) {
-        this.childTableData.push(obj);
+        for(let i = 0; i < this.datainputLoss.length; i++) {
+          for(var key in this.datainputLoss[i]) {
+            if(key === this.lossTwoLevName) {
+              this.datainputLoss[i][key].push(obj);
+            }
+          }
+        }
+        console.log(this.data);
         this.tierValue = '';
         this.childTierValue = '';
         this.startTimeValue = '';
@@ -460,7 +399,74 @@ export default {
       this.endTimeValue = '';
     }
   },
-  mounted() {}
+  watch: {
+    validarea(newVal) {
+      const _this = this;
+      this.validareaList = []
+      this.validarea.forEach(item => {
+        if (item.checked) {
+          this.validareaList.push(item)
+        }
+      });
+      _this.lineBodys = [];
+      this.validareaList.forEach(function(node) {
+        let reg = /^l/g;
+        if (reg.test(node.id)) {
+          _this.lineBodys.push(node.id.substring(1));
+        }
+      });
+    },
+    classTime(newVal) {
+      if(newVal.status === "0") {
+        this.lossTwoLevDataId.push(newVal.data.id);
+      }
+    },
+    lossTier3(newVal) {
+      if(newVal.status === "0") {
+        for(let i = 0; i < newVal.data.length; i++){
+        }
+      }
+    },
+    addLossTier3Res(newVal) {
+      if(newVal.status === "0") {
+          this.lossThreeLevDataId = newVal.data.id;
+      }
+    },
+    addLossTier4Res(newVal) {
+      if(newVal.status === "0") {
+        this.lossFourLevDataId = newVal.data.id
+      }
+    },
+    addLossTier4TimeRes(newVal) {
+      if(newVal.status === "0") {
+        console.log(newVal.data);
+      }
+    },
+    kpiTwoLev(newVal) {
+      console.log(newVal);
+      if(newVal.status === "0") {
+      }
+    },
+
+    addLosstier4time2Res(newVal) {
+      console.log(`addLosstier4time2Res ${newVal}`);
+    }
+  },
+  mounted() {
+    if (sessionStorage.getItem("userid")) {
+      this.selectUserById({
+        userid: sessionStorage.getItem("userid")
+      });
+      this.showKpitwolev({
+        userId: sessionStorage.getItem("userid")
+      });
+      this.showLosstier3({
+        "twolevName": "OEE",
+      });
+    } else {
+      console.log(this.$route);
+    }
+  }
 }
 </script>
 <style lang="sass" scoped>

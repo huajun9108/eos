@@ -192,6 +192,7 @@ export default {
           this.validareaList.push(item)
         }
       });
+      _this.lineBodys = [];
       this.validareaList.forEach(function(node) {
         let reg = /^l/g;
         if (reg.test(node.id)) {
@@ -202,7 +203,6 @@ export default {
       $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
       _this.selectAllByUserIdAndLinebodyIds({
         "userId": sessionStorage.getItem("userid"),
-        "linebodyIds": _this.lineBodystr
       });
     }
   },

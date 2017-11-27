@@ -9,7 +9,6 @@
       <div class="setting_left">
         <div class="accountinfo_username accountinfo">
           <i class="icon-User-name"></i>
-          <!-- <input type="hidden" value=> -->
           <input class="input_accountinfo" type="text" v-model="name" placeholder="用户名" >
         </div>
 				<div class="accountinfo_name accountinfo">
@@ -118,13 +117,13 @@ export default {
   methods: {
     ...mapActions(["addUser", "updateUserById","selectUserById","selectAreaAll"]),
     empty(val) {
-      var reg = /^\s+$/gi;
+      let reg = /^\s+$/gi;
       if (reg.test(val) || val.length == 0) {
         return true;
       }
     },
     getOptions(){
-      var _this = this;
+      let _this = this;
       if(this.$route.query.userid){
         this.postOptions =this.validmenu.split(',');
       }else{
@@ -134,7 +133,7 @@ export default {
 
     },
     ArrayBlank(arr){
-        for(var i = 0 ;i<arr.length;i++){
+        for(let i = 0 ;i<arr.length;i++){
            if(arr[i] == "" || typeof(arr[i]) == "undefined"){
                 arr.splice(i,1);
                 i= i-1;
@@ -147,9 +146,9 @@ export default {
     },
     clone: function(obj, attrs) {
       if(obj === null) return null;
-      var objIsArray = this.isArray(obj);
-      var o = objIsArray ? [] : {};
-      for(var i in obj){
+      let objIsArray = this.isArray(obj);
+      let o = objIsArray ? [] : {};
+      for(let i in obj){
         if(objIsArray || attrs[i]) {
           o[i] = (obj[i] instanceof Date) ? newDate(obj[i].getTime()) :(typeof obj[i] === "object" ?
           this.clone(obj[i], attrs) : obj[i]);
@@ -158,8 +157,8 @@ export default {
       return o;
     },
     filterHalfCheck(zTree) {
-      const nodes = zTree.getCheckedNodes(true);
-      const checkedNodes=[];
+      let nodes = zTree.getCheckedNodes(true);
+      let checkedNodes=[];
       for(let i = 0; i < nodes.length; i++){
         if(nodes[i].getCheckStatus().half==false){
           checkedNodes.push(nodes[i]);
@@ -168,8 +167,8 @@ export default {
       return checkedNodes;
     },
     confirm() {
-      const zTree = $.fn.zTree.getZTreeObj("visual_area_tree");
-      const checkedNodes = this.filterHalfCheck(zTree);
+      let zTree = $.fn.zTree.getZTreeObj("visual_area_tree");
+      let checkedNodes = this.filterHalfCheck(zTree);
       this.checkLists = this.clone(checkedNodes, {id:1, pId:1, name:1});
       this.ArrayBlank(this.postOptions)
       if (this.$route.query.userid) {
@@ -196,7 +195,7 @@ export default {
       }
     },
     updateOption(obj) {
-      var _this = this;
+      let _this = this;
       if(this.validateData()) {
         Ewin.confirm({ message: "确认要更新数据吗？" }).on(function (e) {
           _this.updateUserById(obj);
@@ -205,7 +204,7 @@ export default {
       }
     },
     cancel(){
-      var _this=this;
+      let _this=this;
       if (!this.empty(this.name)
             || !this.empty(this.abbname)
             || !this.empty(this.pwd)
@@ -234,7 +233,7 @@ export default {
       return true;
     },
     addOption(obj) {
-    var _this = this;
+    let _this = this;
       if(this.validateData()) {
           _this.addUser(obj);
           _this.name=""
@@ -243,7 +242,7 @@ export default {
           _this.job=""
           _this.leader=""
           _this.postOptions=[]
-          var treeObj = $.fn.zTree.getZTreeObj("visual_area_tree");
+          let treeObj = $.fn.zTree.getZTreeObj("visual_area_tree");
           treeObj.checkAllNodes(false);
       }
     },
@@ -252,14 +251,14 @@ export default {
     },
     zTreeBeforeCheck(treeId, treeNode) {
       this.maxLevel = 1000;
-      const zTree = $.fn.zTree.getZTreeObj(treeId);
-      const checkedNodes = this.filterHalfCheck(zTree);
+      let zTree = $.fn.zTree.getZTreeObj(treeId);
+      let checkedNodes = this.filterHalfCheck(zTree);
       if(checkedNodes.length <= 0) return true;
       for(let i=0; i < checkedNodes.length; i++) {
-        console.log(checkedNodes[i].name);
+        // console.log(checkedNodes[i].name);
         this.maxLevel = checkedNodes[i].level < this.maxLevel ? checkedNodes[i].level : this.maxLevel;
       }
-      const maxNode = zTree.getNodesByFilter(this.filter, true);
+      let maxNode = zTree.getNodesByFilter(this.filter, true);
       if(maxNode.id === treeNode.id) return true;
       if(this.maxLevel === treeNode.level || treeNode.level > this.maxLevel) {
         this.$Message.error("请根据职位选择相应最高可视区域范围");

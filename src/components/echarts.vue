@@ -156,16 +156,19 @@
         var yAxisData = chartData.map(function (item) {return item[1]})
         chart.setOption({
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
         },
-        // toolbox: {
-        //     feature: {
-        //     magicType:{show: true, type: ['line', 'bar']},
-        //     saveAsImage: {show: true}
-        //     },
-        //     top: 10,
-        //     right: 40
-        // },
+        toolbox: {
+            // feature: {
+            // magicType:{show: true, type: ['line', 'bar']},
+            // saveAsImage: {show: true}
+            // },
+            // top: 10,
+            // right: 40
+        },
         calculable: true,
         grid: {
             left: '3%',
@@ -182,31 +185,31 @@
         yAxis: [
             {
             type: 'value',
-            name: yText,
-            max: Math.max.apply(Math,yAxisData)
+            // name: yText,
+            // max: Math.max.apply(Math,yAxisData)
             }
         ],
         series: [
             {
             name: yText,
             type: 'bar',
-            markPoint: {
-                data: [
-                {type: 'max', name: '最大值'},
-                {type: 'min', name: '最小值'}
-                ]
-            },
-            markLine: {
-                data: [
-                {type: 'average', name: '平均值'}
-                ]
-            },
+            // markPoint: {
+            //     data: [
+            //     {type: 'max', name: '最大值'},
+            //     {type: 'min', name: '最小值'}
+            //     ]
+            // },
+            // markLine: {
+            //     data: [
+            //     {type: 'average', name: '平均值'}
+            //     ]
+            // },
             itemStyle: {
                 normal: {
-                barBorderRadius: 20,
-                color: '#726dd1',
+                // barBorderRadius: 20,
+                color: '#3670be',
                 shadowColor: 'rgba(0, 0, 0, 0.4)',
-                shadowBlur: 20
+                // shadowBlur: 20
                 }
             },
             data: yAxisData
@@ -361,7 +364,13 @@
                             opacity: 0.5,
                             color:"#a54141"
                         }
-                    }
+                    },
+                    itemStyle:{
+                        normal:{
+                            color:"#a54141"
+                        }
+                    },
+
                 },
                 {
                     name: 'target',
@@ -373,7 +382,12 @@
                             opacity: 0.5,
                             color:"#cb8b2e"
                         }
-                    }
+                    },
+                    itemStyle:{
+                        normal:{
+                            color:"#cb8b2e"
+                        }
+                    },
                 },
                 {
                     name: 'ideal',
@@ -385,7 +399,12 @@
                             opacity: 0.5,
                             color:"#476f7b"
                         }
-                    }
+                    },
+                    itemStyle:{
+                        normal:{
+                            color:"#476f7b"
+                        }
+                    },
                 },
             ]
             

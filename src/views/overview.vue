@@ -83,24 +83,24 @@
                                 </div>
                             </td>
                         </tr>
-                         <!-- <tr>
+                         <tr>
                             <td class="firstCol" width="10%">Safety</td>
                             <td id="safety" class="secordCol" style="width: 600px;height:220px;" width="60%">
-                                <!-- <chart
+                                <chart
                                 :_id="'testCharts'"
                                 :_titleText="'访问量统计'"
                                 :_xText="'类别'"
                                 :_yText="'总访问量'"
                                 :_chartData="chartData"
-                                :_type="'LineOrBar'"></chart> -->
-                            <!-- </td>
+                                :_type="'LineOrBar'"></chart>
+                            </td>
                             <td width="30%"></td>
                         </tr>
                          <tr>
                             <td class="firstCol" width="10%">Defect</td>
                             <td id="defect" class="secordCol" style="width: 600px;height:220px;" width="60%"></td>
                             <td width="30%"></td>
-                        </tr> -->
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -108,7 +108,6 @@
     </div>   
 </template>
 <script>
-import echarts from "echarts"
 import timearea from "../components/timeArea"
 import chart from '../components/echarts'
 export default {

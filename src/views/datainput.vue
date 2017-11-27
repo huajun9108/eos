@@ -7,13 +7,12 @@
     </div>
     <div class="lengthShift" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <span class="lengthShiftTime">本班次时间：</span>
-      <DatePicker v-model="lengthShiftTimeValue" type="datetimerange" placeholder="Select date and time" style="width: 300px"
-      :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
+      <DatePicker v-model="lengthShiftTimeValue" type="datetimerange" placeholder="Select date and time" style="width: 300px" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
     </div>
     <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <table class="tableBody">
         <tbody>
-          <tr v-for="(d,idx) in this.kpiTwoLev.data" :key = "idx">
+          <tr v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
             <td class="firstCol">{{ d }}</td>
             <td class="secondCol">
               <textarea class="textArea"></textarea>
@@ -34,7 +33,7 @@
     <div class="lossChoose" :class="showFlag?'showchoose':'hidechoose'">
       <div class="dirChoose">
         <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier3($event)">
-          <Option v-for="item in this.lossTier3.data.losstier3" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="item.lossid">
+          <Option v-for="item in this.lossTier3Array" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="item.lossid">
           </Option>
         </Select>
         <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4" @on-change="getTier4($event)">
@@ -54,8 +53,7 @@
       </div>
       <div class="endTimeContainer">
         <span class="timeTitle">结束时间：</span>
-        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd"
-        @on-ok="endTimeChooseOk">
+        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
         </DatePicker>
       </div>
       <div class="btnContainer text-right">
@@ -96,12 +94,11 @@ export default {
   data: function() {
     return {
       optionsOpenCeremony: {
-        disabledDate(date) {
-        }
+        disabledDate(date) {}
       },
       optionsStart: {
         disabledDate: (date) => {
-          if(!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
+          if (!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
           let end = this.lengthShiftTimeValue[1];
           let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
           let begin = new Date(beginFormat + ' 00:00:00');
@@ -112,7 +109,7 @@ export default {
       },
       optionsEnd: {
         disabledDate: (date) => {
-          if(!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
+          if (!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
           let end = this.lengthShiftTimeValue[1];
           let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
           let begin = new Date(beginFormat + ' 00:00:00');
@@ -122,10 +119,10 @@ export default {
               let min = this.startTimeValue.getMinutes();
               let sec = this.startTimeValue.getSeconds();
               let ms;
-              if(hour+min+sec === 0) {
+              if (hour + min + sec === 0) {
                 begin = this.startTimeValue;
                 ms = begin.getTime() + ((23 * 60 * 60 + 59 * 60 + 59) * 1000);
-              }else {
+              } else {
                 let startFormat = this.startTimeValue.format('yyyy-MM-dd');
                 begin = new Date(startFormat + ' 00:00:00');
                 ms = begin.getTime() + (24 * 60 * 60 * 1000);
@@ -174,8 +171,7 @@ export default {
                 attrs: {
                   class: "icon-delete_2",
                 },
-                style: {
-                },
+                style: {},
                 on: {
                   click: () => {
                     this.deleteLoss(params.index)
@@ -201,17 +197,14 @@ export default {
       lossFourLevDataId: '',
       tier3: '',
       tier4: '',
-      lossTwoLevName: ''
+      lossTwoLevName: '',
+      lossTier3Array: [],
     }
   },
   computed: {
     ...mapState([
       "validarea",
-      // "classTime",
       "lossTier3",
-      // "addLossTier3Res",
-      // "addLossTier4Res",
-      // "addLossTier4TimeRes",
       "kpiTwoLev",
       "addLosstier4time2Res",
       "datainputLoss"
@@ -219,17 +212,13 @@ export default {
   },
   methods: {
     ...mapActions([
-      // "addClasstime",
       "selectUserById",
       "showLosstier3",
-      // "addLosstier3data",
-      // "addLosstier4data",
-      // "addLosstier4time",
       "showKpitwolev",
       "addLosstier4time2"
     ]),
     getTier3: function(tier) {
-      if(!tier) {
+      if (!tier) {
         this.tierValue = '';
         this.childTierValue = '';
         return;
@@ -251,7 +240,7 @@ export default {
       this.childTierMenuData = tempTier;
     },
     getTier4(tier) {
-      if(!tier) {
+      if (!tier) {
         this.childTierValue = '';
         return;
       }
@@ -341,7 +330,10 @@ export default {
     },
     addLoss: function(name) {
       this.lossTwoLevName = name;
-      if(this.lengthShiftTimeValue.length <=0) {
+      this.showLosstier3({
+        "twolevName": name,
+      });
+      if (this.lengthShiftTimeValue.length <= 0) {
         this.$Message.error("请先选择开班时间");
         return;
       }
@@ -352,11 +344,6 @@ export default {
     },
     confirmClick: function() {
       this.showFlag = !this.showFlag;
-      // this.addLosstier4time({
-      //   "losstier4Dataid": this.lossFourLevDataId,
-      //   "starttime": this.startTimeValue,
-      //   "endtime": this.endTimeValue
-      // });
       this.addLosstier4time2({
         "classStarttime": this.lengthShiftTimeValue[0],
         "classEndtime": this.lengthShiftTimeValue[1],
@@ -373,11 +360,10 @@ export default {
         "开始时间": this.startTimeValue.format('yyyy-MM-dd hh:mm:ss'),
         "结束时间": this.endTimeValue.format('yyyy-MM-dd hh:mm:ss')
       };
-      // childTabData.push(obj);
       if (obj) {
-        for(let i = 0; i < this.datainputLoss.length; i++) {
-          for(var key in this.datainputLoss[i]) {
-            if(key === this.lossTwoLevName) {
+        for (let i = 0; i < this.datainputLoss.length; i++) {
+          for (var key in this.datainputLoss[i]) {
+            if (key === this.lossTwoLevName) {
               this.datainputLoss[i][key].push(obj);
             }
           }
@@ -416,36 +402,14 @@ export default {
         }
       });
     },
-    classTime(newVal) {
-      if(newVal.status === "0") {
-        this.lossTwoLevDataId.push(newVal.data.id);
-      }
-    },
     lossTier3(newVal) {
-      if(newVal.status === "0") {
-        for(let i = 0; i < newVal.data.length; i++){
-        }
-      }
-    },
-    addLossTier3Res(newVal) {
-      if(newVal.status === "0") {
-          this.lossThreeLevDataId = newVal.data.id;
-      }
-    },
-    addLossTier4Res(newVal) {
-      if(newVal.status === "0") {
-        this.lossFourLevDataId = newVal.data.id
-      }
-    },
-    addLossTier4TimeRes(newVal) {
-      if(newVal.status === "0") {
-        console.log(newVal.data);
+      console.log(`lossTier3: ${newVal.data.losstier3}`);
+      if(newVal.status === "0"){
+        this.lossTier3Array = newVal.data.losstier3;
       }
     },
     kpiTwoLev(newVal) {
-      console.log(newVal);
-      if(newVal.status === "0") {
-      }
+      console.log(`kpiTwoLev: ${newVal}`);
     },
 
     addLosstier4time2Res(newVal) {
@@ -459,9 +423,6 @@ export default {
       });
       this.showKpitwolev({
         userId: sessionStorage.getItem("userid")
-      });
-      this.showLosstier3({
-        "twolevName": "OEE",
       });
     } else {
       console.log(this.$route);

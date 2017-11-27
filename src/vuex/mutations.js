@@ -117,15 +117,6 @@ export default {
     showLosstier3(state, json) {
         state.lossTier3 = json
     },
-    // addLosstier3data(state, json) {
-    //     state.addLossTier3Res = json
-    // },
-    // addLosstier4data(state, json) {
-    //     state.addLossTier4Res = json
-    // },
-    // addLosstier4time(state, json) {
-    //     state.addLossTier4TimeRes = json
-    // },
     addLosstier4time2(state, json) {
         state.addLosstier4time2Res = json
     },

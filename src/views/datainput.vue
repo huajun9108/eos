@@ -5,7 +5,7 @@
       <span class="inputBtn openCeremonyButton" @click="openCeremonyClick">开班</span>
       <span class="inputBtn historyButton">班次历史记录</span>
     </div>
-    <div class="basicInfo">
+    <div class="basicInfo" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <div class="classInfo">
         <span class="classInfoTitle">
           Basic Info
@@ -26,29 +26,36 @@
         </div>
       </div>
       <div class="productInfo">
-        <Table height='220' border :columns="productInfoCols" :data="productInfoData"></Table>
+        <Table height='218' border :columns="productInfoCols" :data="productInfoData"></Table>
       </div>
       <div class="addProductInfo">
         <i class="icon-add_add flex-item"></i>
       </div>
     </div>
-    <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
-      <table class="tableBody">
-        <tbody>
-          <tr v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
-            <td class="firstCol">{{ d }}</td>
-            <td class="secondCol">
-              <!-- <div class="childTableContainer">
-                <Table border height="202" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
-              </div> -->
-            </td>
-            <td class="thirdCol">
-              <span class="addLossBtn" @click="addLoss(d)">添加loss</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="lossContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
+      <div class="lossRow" v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
+        <div class="lossName">
+          <span class="flex-item">{{ d }}</span>
+        </div>
+        <div class="lossTable">
+          <Table border height="200" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
+        </div>
+        <div class="lossBtnContainer">
+          <span class="addLossBtn flex-item" @click="addLoss(d)">添加loss</span>
+        </div>
+      </div>
     </div>
+    <!-- <div class="lossContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
+      <Row v-for="(d,idx) in this.kpiTwoLev.data" :key="idx" type="flex" justify="center" align="middle" class="code-row-bg">
+        <Col span="3">{{ d }}</Col>
+        <Col span="18">
+          <Table border height="200" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
+        </Col>
+        <Col span="3">
+          <span class="addLossBtn" @click="addLoss(d)">添加loss</span>
+        </Col>
+      </Row>
+    </div> -->
     <!-- <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <table class="tableBody">
         <tbody>
@@ -218,36 +225,51 @@ export default {
         }
       ],
       productInfoData: [
-      //   {
-      //   '产品': 'A',
-      //   '良品数量': '100',
-      //   'Cycle': '30s',
-      // },
-      // {
-      //   '产品': 'B',
-      //   '良品数量': '150',
-      //   'Cycle': '45s',
-      // },
-      // {
-      //   '产品': 'C',
-      //   '良品数量': '200',
-      //   'Cycle': '60s',
-      // },
-      // {
-      //   '产品': 'A',
-      //   '良品数量': '100',
-      //   'Cycle': '30s',
-      // },
-      // {
-      //   '产品': 'B',
-      //   '良品数量': '150',
-      //   'Cycle': '45s',
-      // },
-      // {
-      //   '产品': 'C',
-      //   '良品数量': '200',
-      //   'Cycle': '60s',
-      // }
+        {
+        '产品': 'A',
+        '良品数量': '100',
+        'Cycle': '30s',
+      },
+      {
+        '产品': 'B',
+        '良品数量': '150',
+        'Cycle': '45s',
+      },
+      {
+        '产品': 'C',
+        '良品数量': '200',
+        'Cycle': '60s',
+      },
+      {
+        '产品': 'A',
+        '良品数量': '100',
+        'Cycle': '30s',
+      },
+      {
+        '产品': 'B',
+        '良品数量': '150',
+        'Cycle': '45s',
+      },
+      {
+        '产品': 'C',
+        '良品数量': '200',
+        'Cycle': '60s',
+      },
+      {
+        '产品': 'A',
+        '良品数量': '100',
+        'Cycle': '30s',
+      },
+      {
+        '产品': 'B',
+        '良品数量': '150',
+        'Cycle': '45s',
+      },
+      {
+        '产品': 'C',
+        '良品数量': '200',
+        'Cycle': '60s',
+      }
 
       ],
       childTabCols: [{

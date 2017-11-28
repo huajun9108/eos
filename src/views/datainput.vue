@@ -37,21 +37,35 @@
         <tbody>
           <tr v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
             <td class="firstCol">{{ d }}</td>
-            <!-- <td class="secondCol">
-              <textarea class="textArea"></textarea>
-            </td> -->
-            <td class="thirdCol">
-              <div class="childTableContainer">
-                <Table border width="646" height="202" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
-              </div>
+            <td class="secondCol">
+              <!-- <div class="childTableContainer">
+                <Table border height="202" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
+              </div> -->
             </td>
-            <td class="fourthCol">
+            <td class="thirdCol">
               <span class="addLossBtn" @click="addLoss(d)">添加loss</span>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    <!-- <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
+      <table class="tableBody">
+        <tbody>
+          <tr v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
+            <td class="firstCol">{{ d }}</td>
+            <td class="secondCol">
+              <div class="childTableContainer">
+                <Table border height="202" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
+              </div>
+            </td>
+            <td class="thirdCol">
+              <span class="addLossBtn" @click="addLoss(d)">添加loss</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
     <div class="shade" :class="showFlag?'showchoose':'hidechoose'"></div>
     <div class="lossChoose" :class="showFlag?'showchoose':'hidechoose'">
       <div class="dirChoose">
@@ -59,7 +73,8 @@
           <Option v-for="item in this.lossTier3Array" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="item.lossid">
           </Option>
         </Select>
-        <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4" @on-change="getTier4($event)">
+        <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4"
+        @on-change="getTier4($event)">
           <Option v-for="item in childTierMenuData" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="item.tier4id">
           </Option>
         </Select>
@@ -76,7 +91,8 @@
       </div>
       <div class="endTimeContainer">
         <span class="timeTitle">结束时间：</span>
-        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
+        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd"
+        @on-ok="endTimeChooseOk">
         </DatePicker>
       </div>
       <div class="btnContainer text-right">
@@ -201,36 +217,37 @@ export default {
           }
         }
       ],
-      productInfoData: [{
-        '产品': 'A',
-        '良品数量': '100',
-        'Cycle': '30s',
-      },
-      {
-        '产品': 'B',
-        '良品数量': '150',
-        'Cycle': '45s',
-      },
-      {
-        '产品': 'C',
-        '良品数量': '200',
-        'Cycle': '60s',
-      },
-      {
-        '产品': 'A',
-        '良品数量': '100',
-        'Cycle': '30s',
-      },
-      {
-        '产品': 'B',
-        '良品数量': '150',
-        'Cycle': '45s',
-      },
-      {
-        '产品': 'C',
-        '良品数量': '200',
-        'Cycle': '60s',
-      }
+      productInfoData: [
+      //   {
+      //   '产品': 'A',
+      //   '良品数量': '100',
+      //   'Cycle': '30s',
+      // },
+      // {
+      //   '产品': 'B',
+      //   '良品数量': '150',
+      //   'Cycle': '45s',
+      // },
+      // {
+      //   '产品': 'C',
+      //   '良品数量': '200',
+      //   'Cycle': '60s',
+      // },
+      // {
+      //   '产品': 'A',
+      //   '良品数量': '100',
+      //   'Cycle': '30s',
+      // },
+      // {
+      //   '产品': 'B',
+      //   '良品数量': '150',
+      //   'Cycle': '45s',
+      // },
+      // {
+      //   '产品': 'C',
+      //   '良品数量': '200',
+      //   'Cycle': '60s',
+      // }
 
       ],
       childTabCols: [{

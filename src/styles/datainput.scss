@@ -1,20 +1,11 @@
 @import "./mobile.scss";
 
 .datainput {
-  height: 100%;
-  overflow: hidden;
-
   .datainputContainer {
-    width: 90%;
-    height: 82%;
-    border: 1px solid #BDBDBD;
-    border-radius: 4px;
-
     .openCeremony {
       height: 7%;
       padding-top: 1%;
       padding-bottom: 1%;
-
       .inputBtn {
         margin-left: P(28);
         font-size: P(14);
@@ -23,132 +14,156 @@
         text-align: center;
         border-radius: 4px;
       }
-
       .openCeremonyButton {
         color: #FFF;
         width: P(76);
         background-color: #164380;
       }
-
       .historyButton {
         color: #040404;
         width: P(142);
         background-color: #e1e1e1;
       }
     }
-
-    .lengthShift {
-      padding-left: P(28);
-      height: 8%;
-      padding-top: 1%;
-      padding-bottom: 1%;
-      border-top: 1px solid #BDBDBD;
-      border-bottom: 1px solid #BDBDBD;
-
-      .lengthShiftTime {
-        color: #040404;
+    .basicInfo {
+      width: 100%;
+      height: 220px;
+      font-size: 0;
+      .classInfo {
         font-size: P(16);
-        line-height: P(42);
+        vertical-align: top;
+        width: 40%;
+        height: 100%;
+        padding-left: P(28);
+        padding-right: P(28);
+        padding-top: P(32);
+        display: inline-block;
+
+        .classInfoTitle {
+          display: inline-block;
+          padding-bottom: P(39);
+        }
+        .classInfoTime {
+          padding-bottom: P(26);
+        }
+        .classInfoNumAttendance {
+          padding-bottom: P(26);
+          .ivu-input-wrapper {
+            width: P(134);
+          }
+          .classInfoActualAttendance {
+            margin-left: P(34);
+          }
+        }
+        .classInfoSubmit {
+          text-align: right;
+          padding-bottom: P(36);
+          .classInfoClearBtn {
+            margin-right: P(16);
+            background-color: #e1e1e1;
+          }
+          .classInfoConfirmBtn {
+            background-color: #dbe9ff;
+          }
+          .classInfoBtn {
+            display: inline-block;
+            text-align: center;
+            font-size: P(14);
+            color: #040404;
+            width: P(60);
+            line-height: P(24);
+            border-radius: P(10);
+          }
+        }
+      }
+      .productInfo {
+        vertical-align: top;
+        width: 50%;
+        height: auto;
+        display: inline-block;
+      }
+      .addProductInfo {
+        vertical-align: top;
+        width: 10%;
+        height: 100%;
+        display: inline-flex;
+        .flex-item {
+          font-size: P(48);
+          margin: auto;
+        }
       }
     }
-
     .tableContainer {
       overflow-y: auto;
       width: 100%;
-      height: 85%;
-
+      height: 60%;
       .tableBody {
         width: 100%;
+        tbody {
+          height: 100%;
+        }
+        tr {
+          border-bottom: 1px solid #BDBDBD;
+        }
+        td {
+          text-align: center;
+          height: P(232);
+        }
       }
-
-      .tableBody tbody {
-        height: 100%;
-      }
-
-      .tableBody tr {
-        border-bottom: 1px solid #BDBDBD;
-      }
-
-      // .tableBody tr:last-child {
-      //   border-bottom: none;
-      // }
-
-      .tableBody td {
-        text-align: center;
-        height: P(232);
-      }
-
       .firstCol {
         width: 10%;
         border-right: 1px solid #BDBDBD;
       }
-
       .secondCol {
         width: 20%;
-        // border-right: 1px solid #BDBDBD;
         padding: 30px 15px 0;
         vertical-align: top;
-
         .textArea {
           width: 90%;
           height: 30%;
         }
       }
-
       .thirdCol {
         width: 60%;
-        // border-right: 1px solid #BDBDBD;
-
         .childTableContainer {
           width: 100%;
           height: 100%;
-
           .ivu-table-wrapper {
             border-left: 1px solid #BDBDBD;
             border-top: none;
             border-right: 1px solid #BDBDBD;
-          }
-
-          .ivu-table-body {
-            overflow-x: hidden;
-            overflow-y: scroll;
-          }
-
-          .ivu-table th, .ivu-table td {
-            height: P(30);
-            border-bottom: 1px solid #BDBDBD;
-          }
-
-          .ivu-table-border td, .ivu-table-border th {
-            border-right: 1px solid #BDBDBD;
-          }
-
-          .ivu-table-border td:last-child, .ivu-table-border th:last-child {
-            border-right: none;
-          }
-
-          .ivu-table::before, .ivu-table-border::before, .ivu-table-with-fixed-top::before {
-            height: 0px;
-          }
-
-          .ivu-table::after {
-            background-color: #BDBDBD;
-            width: 0px;
-          }
-
-          .ivu-table td.childTableThirdCol, .ivu-table td.childTableFourthCol{
-            text-align: center;
-          }
-
-          th.childTableFifthCol.ivu-table-column-center .ivu-table-cell {
-            margin-right: P(15);
+            .ivu-table::before, .ivu-table-border::before, .ivu-table-with-fixed-top::before {
+              height: 0px;
+            }
+            .ivu-table::after {
+              background-color: #BDBDBD;
+              width: 0px;
+            }
+            .ivu-table-body {
+              overflow-x: hidden;
+              overflow-y: scroll;
+            }
+            .ivu-table th, .ivu-table td {
+              height: P(30);
+              border-bottom: 1px solid #BDBDBD;
+            }
+            .ivu-table-border td, .ivu-table-border th {
+              border-right: 1px solid #BDBDBD;
+            }
+            .ivu-table-border td:last-child, .ivu-table-border th:last-child {
+              border-right: none;
+            }
+            .ivu-table td.childTableThirdCol, .ivu-table td.childTableFourthCol{
+              text-align: center;
+            }
+            th.childTableFifthCol.ivu-table-column-center .ivu-table-cell {
+              margin-right: P(15);
+            }
           }
         }
       }
-
       .fourthCol {
         width: 10%;
-
         .addLossBtn {
           display: inline-block;
           width: P(80);
@@ -158,7 +173,6 @@
         }
       }
     }
-
     .lossChoose {
       z-index: 2000;
       visibility: hidden;
@@ -168,47 +182,38 @@
       top: 50%;
       left: 50%;
       font-size: P(14);
-      // max-width: P(498);
       max-height: P(730);
       padding: P(46) P(40) 0 P(46);
       transform: translateX(-50%) translateY(-50%);
-
       .dropdownTier {
         width: P(200);
         height: P(30);
         margin-bottom: P(46);
-
         .ivu-select-selection {
           background: #E1E1E1;
           font-size: P(14);
           color: #040404;
         }
       }
-
       .dropdownTier:first-child {
         margin-right: P(16);
       }
-
       .ivu-date-picker {
         width: P(322);
         height: P(42);
       }
-
       .durationTimeContainer {
         margin-top: P(54);
         margin-bottom: P(54);
       }
-
       .timeTitle {
         color: #040404;
         margin-right: P(13);
       }
-
       .btnContainer {
         position: absolute;
         bottom: P(34);
         right: P(40);
-
         .data_btn {
           display: inline-block;
           font-size: P(14);
@@ -218,18 +223,15 @@
           color: #FFF;
           text-align: center;
         }
-
         .confirmBtn {
           background-color: #1B3867;
         }
-
         .cancelBtn {
           margin-left: P(16);
           background-color: #c2c2c2;
         }
       }
     }
-
     .shade {
       width: 100%;
       height: 100%;
@@ -242,11 +244,9 @@
       opacity: 0.3;
       visibility: hidden;
     }
-
     .showchoose {
       visibility: visible;
     }
-
     .hidechoose {
       visibility: hidden;
     }

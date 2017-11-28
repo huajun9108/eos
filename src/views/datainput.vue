@@ -5,18 +5,41 @@
       <span class="inputBtn openCeremonyButton" @click="openCeremonyClick">开班</span>
       <span class="inputBtn historyButton">班次历史记录</span>
     </div>
-    <div class="lengthShift" :class="openCeremonyFlag?'showchoose':'hidechoose'">
-      <span class="lengthShiftTime">本班次时间：</span>
-      <DatePicker v-model="lengthShiftTimeValue" type="datetimerange" placeholder="Select date and time" style="width: 300px" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
+    <div class="basicInfo">
+      <div class="classInfo">
+        <span class="classInfoTitle">
+          Basic Info
+        </span>
+        <div class="classInfoTime">
+          <span>本班次时间：</span>
+          <DatePicker v-model="lengthShiftTimeValue" type="datetimerange" placeholder="Select date and time" style="width: 300px" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
+        </div>
+        <div class="classInfoNumAttendance">
+          <span>应出勤人数：</span>
+          <Input></Input>
+          <span class="classInfoActualAttendance">实出勤人数：</span>
+          <Input></Input>
+        </div>
+        <div class="classInfoSubmit">
+          <span class="classInfoClearBtn classInfoBtn">清空</span>
+          <span class="classInfoConfirmBtn classInfoBtn">确定</span>
+        </div>
+      </div>
+      <div class="productInfo">
+        <Table height='220' border :columns="productInfoCols" :data="productInfoData"></Table>
+      </div>
+      <div class="addProductInfo">
+        <i class="icon-add_add flex-item"></i>
+      </div>
     </div>
     <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
       <table class="tableBody">
         <tbody>
           <tr v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
             <td class="firstCol">{{ d }}</td>
-            <td class="secondCol">
+            <!-- <td class="secondCol">
               <textarea class="textArea"></textarea>
-            </td>
+            </td> -->
             <td class="thirdCol">
               <div class="childTableContainer">
                 <Table border width="646" height="202" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
@@ -136,6 +159,80 @@ export default {
       tierValue: '',
       childTierMenuData: [],
       childTierValue: '',
+      productInfoCols: [{
+          title: '产品',
+          key: '产品',
+          align: 'center'
+        },
+        {
+          title: '良品数量',
+          key: '良品数量',
+          align: 'center'
+        },
+        {
+          title: 'Cycle',
+          key: 'Cycle',
+          align: 'center'
+        },
+        {
+          title: '编辑',
+          key: '编辑',
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h('i', {
+                attrs: {
+                  class: "icon-edit",
+                },
+                style: {
+                  marginRight: '10px'
+                }
+              }),
+              h('i', {
+                attrs: {
+                  class: "icon-delete_2",
+                },
+                style: {},
+                // click: () => {
+                //   this.deleteLoss(params.index)
+                // }
+              })
+            ]);
+          }
+        }
+      ],
+      productInfoData: [{
+        '产品': 'A',
+        '良品数量': '100',
+        'Cycle': '30s',
+      },
+      {
+        '产品': 'B',
+        '良品数量': '150',
+        'Cycle': '45s',
+      },
+      {
+        '产品': 'C',
+        '良品数量': '200',
+        'Cycle': '60s',
+      },
+      {
+        '产品': 'A',
+        '良品数量': '100',
+        'Cycle': '30s',
+      },
+      {
+        '产品': 'B',
+        '良品数量': '150',
+        'Cycle': '45s',
+      },
+      {
+        '产品': 'C',
+        '良品数量': '200',
+        'Cycle': '60s',
+      }
+
+      ],
       childTabCols: [{
           title: 'Tier3',
           key: 'tier3',
@@ -161,23 +258,29 @@ export default {
           align: 'center'
         },
         {
-          title: '操作',
-          key: '操作',
+          title: '编辑',
+          key: '编辑',
           className: 'childTableFifthCol',
           align: 'center',
           render: (h, params) => {
             return h('div', [
               h('i', {
                 attrs: {
+                  class: "icon-edit",
+                },
+                style: {
+                  marginRight: '10px'
+                }
+              }),
+              h('i', {
+                attrs: {
                   class: "icon-delete_2",
                 },
                 style: {},
-                on: {
-                  click: () => {
-                    this.deleteLoss(params.index)
-                  }
+                click: () => {
+                  this.deleteLoss(params.index)
                 }
-              }),
+              })
             ]);
           }
         },
@@ -404,7 +507,7 @@ export default {
     },
     lossTier3(newVal) {
       console.log(`lossTier3: ${newVal.data.losstier3}`);
-      if(newVal.status === "0"){
+      if (newVal.status === "0") {
         this.lossTier3Array = newVal.data.losstier3;
       }
     },

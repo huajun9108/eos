@@ -103,8 +103,10 @@ export default {
       "selectAllByUserIdAndLinebodyIds"
     ]),
     zTreeOnCheck(event, treeId, treeNode) {
+      console.log("zTreeOnCheck");
       const _this = this;
       _this.lineBodys = [];
+      _this.lineBodystr = '';
       var treeObj = $.fn.zTree.getZTreeObj(treeId);
       var nodes = treeObj.getCheckedNodes(true);
       nodes.forEach(function(node) {
@@ -193,6 +195,7 @@ export default {
         }
       });
       _this.lineBodys = [];
+      _this.lineBodystr = '';
       this.validareaList.forEach(function(node) {
         let reg = /^l/g;
         if (reg.test(node.id)) {

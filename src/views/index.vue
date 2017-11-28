@@ -11,6 +11,7 @@
     export default {
         components:{
             etop:Top,
-        }
+        },
+        
     }
 </script>

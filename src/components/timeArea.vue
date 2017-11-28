@@ -4,12 +4,12 @@
     <div class="chooseTime box">
       <h1 class="choose">时间选择</h1>
       <div class="time">
-        <span>开始时间</span>
+        <span>{{timeFlag?'开始时间':'选择时间点(上)'}}</span>
         <DatePicker size="small" v-model="startTime" :options="optionsStart" placement="bottom-end" type="date"
         placeholder="Select date" @on-change="startChange" @on-clear="this.clearCharts"></DatePicker>
       </div>
       <div class="time">
-        <span>结束时间</span>
+        <span>{{timeFlag?'结束时间':'选择时间点(下)'}}</span>
         <DatePicker size="small" v-model="endTime" type="date" :options="optionsEnd" placement="bottom-end"
         placeholder="Select date" @on-change="endChange" @on-clear="this.clearCharts"></DatePicker>
       </div>
@@ -27,7 +27,7 @@
 import {
   mapState,
   mapActions
-} from "vuex";
+} from "vuex"
 Date.prototype.format = function(format) {
   var o = {
     "M+": this.getMonth() + 1,
@@ -51,6 +51,7 @@ Date.prototype.format = function(format) {
 export default {
   data() {
     return {
+      timeFlag:null,
       startTime: null,
       endTime: null,
       optionsStart: {
@@ -175,7 +176,8 @@ export default {
       this.selectAllByUserIdAndLinebodyIds({
         "userId": sessionStorage.getItem("userid"),
       });
-    }
+    },
+   
   },
   computed: {
     ...mapState([
@@ -204,7 +206,13 @@ export default {
       _this.selectAllByUserIdAndLinebodyIds({
         "userId": sessionStorage.getItem("userid"),
       });
+    },
+    '$route'(to,from){
+      console.log(to);  //  
+      console.log(from)
+      console.log(this.$route);
     }
+    
   },
   mounted() {
     if (sessionStorage.getItem("userid")) {
@@ -212,7 +220,12 @@ export default {
         userid: sessionStorage.getItem("userid")
       })
     } else {
-      console.log(this.$route);
+      // console.log(this.$route);
+    }
+    if(this.$route.name=="Project Summary"){
+      this.timeFlag = false
+    }else{
+      this.timeFlag = true
     }
   }
 }
@@ -222,7 +235,7 @@ export default {
 
 .showchoose {
     display: block;
-    width: P(360);
+    width: P(380);
     height: 100%;
     position: absolute;
     right: 0;
@@ -232,28 +245,30 @@ export default {
     flex-direction: column;
     z-index: 100;
     .box {
-        width: P(320);
+        width: P(365);
         margin: P(66) auto;
         .choose {
-            color: #131313;
-            font-size: P(14);
-            line-height: P(38);
-            padding-left: P(15);
-            border-bottom: 1px solid #b4b4b4;
-            font-weight: bold;
+          color: #131313;
+          font-size: P(14);
+          line-height: P(38);
+          padding-left: P(15);
+          border-bottom: 1px solid #b4b4b4;
+          font-weight: bold;
         }
         .time {
             margin: P(18) auto;
             padding-left: P(15);
+            font-size: 0;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             span {
-                font-size: P(12);
-                line-height: P(30);
-                display: inline-block;
+              font-size: P(12);
+              line-height: P(30);
+              display: inline-block;
             }
-            .cov-vue-date {
-                display: inline-block;
+            .ivu-date-picker {
+              margin-left: P(10);
+              display: inline-block;
             }
         }
     }

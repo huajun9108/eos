@@ -162,12 +162,7 @@
             }
         },
         toolbox: {
-            // feature: {
-            // magicType:{show: true, type: ['line', 'bar']},
-            // saveAsImage: {show: true}
-            // },
-            // top: 10,
-            // right: 40
+          
         },
         calculable: true,
         grid: {
@@ -185,31 +180,15 @@
         yAxis: [
             {
             type: 'value',
-            // name: yText,
-            // max: Math.max.apply(Math,yAxisData)
             }
         ],
         series: [
             {
             name: yText,
             type: 'bar',
-            // markPoint: {
-            //     data: [
-            //     {type: 'max', name: '最大值'},
-            //     {type: 'min', name: '最小值'}
-            //     ]
-            // },
-            // markLine: {
-            //     data: [
-            //     {type: 'average', name: '平均值'}
-            //     ]
-            // },
             itemStyle: {
                 normal: {
-                // barBorderRadius: 20,
                 color: '#3670be',
-                shadowColor: 'rgba(0, 0, 0, 0.4)',
-                // shadowBlur: 20
                 }
             },
             data: yAxisData

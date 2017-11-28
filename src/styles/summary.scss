@@ -3,6 +3,7 @@
     .summary_content {
         display: flex;
         flex-direction: column;
+        position: relative;
         .summary_top {
             line-height: P(56);
             border-bottom: 1px solid #bdbdbd;
@@ -57,7 +58,7 @@
                     #phaseCharts_top {
                         width: 100%;
                         flex: 1;
-                        #phaseCharts {
+                        #phasetop {
                             width: 100%;
                             height: 100%;
                         }

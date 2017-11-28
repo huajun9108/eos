@@ -1,6 +1,11 @@
 <template>
     <div class="summary user_common ">
         <div class="summary_content  user_maincontent">
+            <div class="showTimeAndArea" @click="showlDialog">
+                <span :class="isShow?'iconfont icon-drop-down2 rotate':'iconfont icon-drop-down2'"></span>
+                <span class="areaAndShift">时间/区域</span>
+            </div>
+            <v-timearea v-show="isShow"></v-timearea>
             <div class="summary_top">
                 <span :class="flag?'summary_title active':'summary_title'" @click="flag=true">项目状态</span>
                 <span :class="flag?'summary_title':'summary_title active'" @click="flag=false">运行阶段</span>
@@ -206,7 +211,8 @@
                 chartData1:[["明确问题",10],
                 ["把握现状",20],["设定目标",10],
                 ["分析根因",20],["对策计划",10],
-                ["对策落实",20],["效果确认",10],["成果巩固",20]]
+                ["对策落实",20],["效果确认",10],["成果巩固",20]],
+                isShow:false,
             }
                 
         },
@@ -220,7 +226,10 @@
             ...mapActions([
                 
             ]),
-             initCharts(){
+            showlDialog(data){
+                this.isShow = !this.isShow 
+            },
+            initCharts(){
                 var myChart1 = echarts.init(document.getElementById("charts_status_top"));
                 var myChart2 = echarts.init(document.getElementById("charts_status_bottom"));
                 var option = {

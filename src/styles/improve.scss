@@ -1,146 +1,93 @@
 @import "./mobile.scss";
 .improvement {
     .improve_content {
-        .project_pool {
-            float: left;
-            width: 35%;
-            height: 100%;
-            border-right: 1px solid #bdbdbd;
-            display: flex;
-            flex-direction: column;
-            .pro_title {
-                display: block;
-                line-height: P(52);
-                padding-left: P(42);
-                font-size: P(18);
-                border-bottom: 1px solid #bdbdbd;
+        display: flex;
+        flex-direction: column;
+        .summary_top {
+            line-height: P(56);
+            border-bottom: 1px solid #bdbdbd;
+            a {
+                font-size: P(14);
+                display: inline-block;
+                line-height: P(30);
+                width: P(80);
+                text-align: center;
+                margin-left: P(28);
+                background: #e1e1e1;
+                border-radius: P(4);
+                cursor: pointer;
             }
-            .pro_table {
-                width: 100%;
-                height: 100%;
-                overflow-y: auto;
-                .table>tbody>tr>td {
-                    border-top: 0;
-                    border-left: 0;
-                    cursor: pointer;
-                }
-                .table>tbody>tr>td:last-child {
-                    border-right: 0;
-                }
-                .pro_active {
-                    background: #5b7ba6;
-                    color: #fff;
-                }
-                .pro_table_item {
-                    display: block;
-                    width: 100%;
-                    border-bottom: 1px solid #bdbdbd;
-                }
-                .table {
-                    margin-bottom: 0
-                }
-                .table>tbody+tbody {
-                    border: 0;
-                }
+            .router-link-active {
+                background: #164380;
+                color: #fff;
             }
         }
-        .project_icon {
-            float: left;
-            width: 10%;
-            height: 100%;
-            border-right: 1px solid #bdbdbd;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            .pro_title {
-                display: block;
-                height: P(53);
-                border-bottom: 1px solid #bdbdbd;
-            }
-            .project_iconfont {
-                width: 100%;
-                flex: 1;
-                font-size: P(66);
+        .project {
+            width: 100%;
+            flex: 1;
+            .project_item {
+                float: left;
+                height: 100%;
                 display: flex;
-                justify-content: center;
-                align-items: center;
-                .project_add {
-                    color: #d2d2d2;
-                    display: inline-block;
-                    cursor: pointer;
-                }
-                .project_add_active {
-                    color: #5b7ba6;
-                    cursor: pointer;
+                border-right: 1px solid #bdbdbd;
+                flex-direction: column;
+                .pro_title {
+                    display: block;
+                    line-height: P(52);
+                    padding-left: P(28);
+                    font-size: P(16);
+                    border-bottom: 1px solid #bdbdbd;
+                    .project_add {
+                        padding-left: P(26);
+                        color: #5b7ba6;
+                        cursor: pointer;
+                        font-size: P(18);
+                    }
                 }
             }
-        }
-        .project_now {
-            float: left;
-            width: 55%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            .pro_title {
-                display: block;
-                line-height: P(52);
-                padding-left: P(42);
-                font-size: P(18);
-                border-bottom: 1px solid #bdbdbd;
-            }
-            .pro_detail {
-                width: 100%;
-                height: 100%;
-                overflow-y: auto;
-                flex: 1;
+            .project_now {
+                width: 40%;
                 .pro_item {
-                    width: 55%;
-                    height: 100%;
-                    float: left;
-                    border-right: 1px solid #bdbdbd;
-                    box-sizing: border-box;
-                    overflow: hidden;
-                    display: flex;
-                    flex-direction: column;
-                    // border: 1px solid #bdbdbd;
-                    /* 设置表格的布局方式，用于宽度对齐 */
-                    .sti-tbl-body>table,
-                    .sti-tbl-header>table {
-                        table-layout: fixed;
-                    }
-                    /* 设置表格内容容器，用于铺满整个剩余空间 */
-                    .sti-tbl-body {
-                        flex-grow: 1;
-                        overflow-y: scroll;
-                    }
+                    width: 100%;
+                    flex: 1;
                     .table {
                         margin-bottom: 0;
-                    }
-                    .table>thead>tr>td {
-                        border-right: 1px solid #bdbdbd;
-                        border-bottom: 1px solid #bdbdbd;
-                    }
-                    .table>tbody>tr:first-child>td {
-                        border-top: 0;
-                    }
-                    .table>tbody>tr>td {
-                        border-left: 0;
+                        .fixedThead {
+                            tr>td {
+                                border-bottom: 1px solid #bdbdbd;
+                            }
+                            .pro_name {
+                                border-right: 1px solid #bdbdbd
+                            }
+                        }
+                        .scrollTbody {
+                            tr>td {
+                                border-left: 0;
+                                border-right: 0;
+                            }
+                            .icon-edit {
+                                border-right: 1px solid #bdbdbd;
+                                border-left: 1px solid #bdbdbd;
+                            }
+                        }
                     }
                 }
+            }
+            .project_detail {
+                width: 30%;
                 .pro_itemdetail {
-                    width: 45%;
-                    height: 100%;
-                    float: left;
-                    box-sizing: border-box;
-                    padding: 0 P(43);
+                    width: 100%;
+                    flex: 1;
                     position: relative;
+                    box-sizing: border-box;
+                    padding: P(34) P(40) 0 P(40);
                     .item_det {
                         width: 100%;
-                        margin-top: P(46);
+                        font-size: P(14);
                         .item_li {
                             padding-left: P(2);
                             width: 100%;
-                            line-height: P(60);
+                            line-height: P(50);
                             border-bottom: 1px solid #bdbdbd;
                             .item_title {
                                 display: inline-block;
@@ -156,8 +103,8 @@
                     }
                     .accountinfo_button {
                         position: absolute;
-                        bottom: P(36);
-                        right: P(43);
+                        bottom: P(30);
+                        right: P(40);
                         color: #fff;
                         .button {
                             line-height: P(28);
@@ -165,18 +112,72 @@
                             display: inline-block;
                             border-radius: P(14);
                             width: P(104);
+                            cursor: pointer;
                         }
                         .button_confirm {
                             background: #1b3867;
-                            cursor: pointer;
                         }
                         .button_cancel {
                             background: #c2c2c2;
-                            margin-left: P(12);
-                            cursor: pointer;
+                            margin-left: P(22);
                         }
                     }
                 }
+            }
+            .project_pool {
+                float: left;
+                width: 35%;
+                height: 100%;
+                border-right: 1px solid #bdbdbd;
+                display: flex;
+                flex-direction: column;
+                .pro_title {
+                    display: block;
+                    line-height: P(52);
+                    padding-left: P(42);
+                    font-size: P(18);
+                    border-bottom: 1px solid #bdbdbd;
+                }
+                .pro_table {
+                    width: 100%;
+                    height: 100%;
+                    overflow-y: auto;
+                    .table>tbody>tr>td {
+                        border-top: 0;
+                        border-left: 0;
+                        cursor: pointer;
+                    }
+                    .table>tbody>tr>td:last-child {
+                        border-right: 0;
+                    }
+                    .pro_active {
+                        // background: #5b7ba6;
+                        color: #bdbdbd;
+                    }
+                    .pro_active:hover {
+                        cursor: not-allowed;
+                    }
+                    .pro_table_item {
+                        display: block;
+                        width: 100%;
+                        border-bottom: 1px solid #bdbdbd;
+                    }
+                    .table {
+                        margin-bottom: 0
+                    }
+                    .table>tbody+tbody {
+                        border: 0;
+                    }
+                }
+            }
+            .project_change {
+                width: 30%;
+                border-right: 0;
+            }
+            .pro_shadow {
+                width: 100%;
+                height: 100%;
+                position: fixed
             }
         }
     }

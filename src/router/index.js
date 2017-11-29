@@ -18,6 +18,11 @@ import Datainput from "../views/datainput.vue"
 import Useraccount from "../views/userAccount.vue"
 import target from "../views/target.vue"
 import Improvement from "../views/improvement.vue"
+import Status from "../views/status.vue"
+import Phase from "../views/phase.vue"
+import Project from "../views/project.vue"
+import Rca from "../views/rca.vue"
+
 
 var routes = [{
         path: "/",
@@ -69,7 +74,20 @@ var routes = [{
             {
                 path: "summary",
                 component: Summary,
-                name: "Project Summary"
+                name: "Project Summary",
+                children: [{
+                        path: "status",
+                        component: Status,
+                        name: "status",
+                    },
+                    {
+                        path: "phase",
+                        component: Phase,
+                        name: "phase",
+                    },
+
+                ],
+                redirect: "/user/summary/status",
             },
             {
                 path: "lossmaping",
@@ -84,7 +102,20 @@ var routes = [{
             {
                 path: "improvement",
                 component: Improvement,
-                name: "Improvement"
+                name: "Improvement",
+                children: [{
+                        path: "project",
+                        component: Project,
+                        name: "project",
+                    },
+                    {
+                        path: "rca",
+                        component: Rca,
+                        name: "rca",
+                    },
+
+                ],
+                redirect: "/user/improvement/project",
             },
             {
                 path: "datainput",

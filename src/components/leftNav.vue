@@ -1,6 +1,6 @@
 <template>
   <div class="nav-left">
-    <ul>
+    <!-- <ul>
         <router-link :to="{name:'Overview'}">
           <li>
             <span>Overview</span> 
@@ -37,7 +37,7 @@
           </li>
         </router-link>
 
-    </ul>
+    </ul> -->
     <ul v-for="(item,idx) in validLeft" :key ="idx">
       <router-link :to="{name:item.validmenuname}">
           <li>

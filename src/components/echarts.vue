@@ -1,11 +1,13 @@
 <style scoped>
   .chart {
-    width: 90%;
-    height: 200px;
-    position: relative;
-    left: 50%;
-    margin-left: -45%;
-    border-radius: 10px;
+    width: 100%;
+    height: 90%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
   }
 </style>
 <template>
@@ -46,6 +48,9 @@
             case "Candlestick":
             drawCandlestick(val,this._id,this._titleText,this._xText,this._yText);
             break
+            case "Bar":
+            drawBar(val,this._id,this._titleText,this._xText,this._yText);
+            break
             default:
             drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
             break
@@ -65,6 +70,9 @@
             break
             case "Candlestick":
             drawCandlestick(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            break
+            case "Bar":
+            drawBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
             break
             default:
             drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
@@ -161,25 +169,33 @@
                 type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
             }
         },
-        toolbox: {
-          
+        legend: {
+            // orient: 'horizontal',
+            // left: 'left',
+            data: [{name:yText}]
         },
-        calculable: true,
         grid: {
             left: '3%',
             right: '6%',
-            bottom: '3%',
+            // bottom: '3%',
             containLabel: true
         },
         xAxis: [
             {
-            type: 'category',
-            data: xAxisData
-            }
+                type: 'category',
+                data: xAxisData,
+                axisTick:{
+                    show:false
+                },
+            },
+            
         ],
         yAxis: [
             {
-            type: 'value',
+                type: 'value',
+                axisTick:{
+                    show:false
+                },
             }
         ],
         series: [
@@ -194,6 +210,90 @@
             data: yAxisData
             }
         ]
+        })
+    }
+    function drawBar(chartData,id,titleText,xText,yText) {
+        var chart = echarts.init(document.getElementById(id))
+        var keys = [];
+        var xAxisData = chartData.map(function (item) {
+            console.log(item)
+                return item.key
+            })
+        console.log(xAxisData)
+        var yAxisData = chartData.map(function (item) {
+                return item.value;
+            })
+            console.log(yAxisData )
+        let machineColor ='#3670be';
+        let materialColor ='#ffd189';
+        let humanColor = '#b7b7b7';
+        chart.setOption({
+        tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data:xAxisData
+            },
+            grid: {
+                left: 0,
+                // right: '4%',
+                // bottom: '3%',
+                // top:'-3%',
+                containLabel: true
+            },
+            xAxis:  {
+                type: 'category',
+                data: ['项目池','准备启动','实施运行','实施延迟','成果跟踪','项目关闭'],
+                axisTick:{
+                    show:false
+                }
+            },
+            yAxis: {
+                type: 'value',
+                axisTick:{
+                    show:false
+                },
+            },
+            series: [
+                {
+                    name: xAxisData[0],
+                    type: 'bar',
+                    stack: '总量',
+                    itemStyle:{
+                        normal:{
+                            color:machineColor
+                        }
+                    },
+                    data: yAxisData[0]
+                },
+                {
+                    name: xAxisData[1],
+                    type: 'bar',
+                    stack: '总量',
+                    itemStyle:{
+                        normal:{
+                            color:materialColor
+                        }
+                    },
+                    data: yAxisData[1]
+                },
+                {
+                    name: xAxisData[2],
+                    type: 'bar',
+                    stack: '总量',
+                    itemStyle:{
+                        normal:{
+                            color:humanColor
+                        }
+                    },
+                    data:  yAxisData[2]
+                },
+            ]
+                    
+                
         })
     }
     function drawPie(chartData,id,titleText,xText,yText) {
@@ -272,7 +372,7 @@
             grid: {
                 left: '10%',
                 right: '10%',
-                bottom: '15%'
+                // bottom: '15%'
             },
             xAxis: {
                 type: 'category',

@@ -92,7 +92,7 @@
                                 :_xText="'类别'"
                                 :_yText="'总访问量'"
                                 :_chartData="chartData"
-                                :_type="'LineOrBar'"></chart>
+                                :_type="'Pie'"></chart>
                             </td>
                             <td width="30%"></td>
                         </tr>

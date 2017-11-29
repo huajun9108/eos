@@ -7,7 +7,7 @@
         .summary_top {
             line-height: P(56);
             border-bottom: 1px solid #bdbdbd;
-            .summary_title {
+            a {
                 font-size: P(14);
                 display: inline-block;
                 line-height: P(30);
@@ -17,8 +17,11 @@
                 background: #e1e1e1;
                 border-radius: P(4);
                 cursor: pointer;
+                // .summary_title {
+                //     margin-left: P(28);
+                // }
             }
-            .active {
+            .router-link-active {
                 background: #164380;
                 color: #fff;
             }
@@ -48,28 +51,24 @@
                         }
                     }
                     #charts_status_top {
+                        position: relative;
                         width: 100%;
                         flex: 1;
                     }
                     #charts_status_bottom {
+                        position: relative;
                         width: 100%;
                         flex: 1;
                     }
                     #phaseCharts_top {
+                        position: relative;
                         width: 100%;
                         flex: 1;
-                        #phasetop {
-                            width: 100%;
-                            height: 100%;
-                        }
                     }
                     #phaseCharts_bottom {
+                        position: relative;
                         width: 100%;
                         flex: 1;
-                        #phasebottom {
-                            width: 100%;
-                            height: 100%;
-                        }
                     }
                 }
                 .status_detail {
@@ -99,9 +98,6 @@
             .top {
                 border-bottom: 1px solid #bdbdbd;
             }
-            // .content_bottom {
-            //     height: 50%;
-            // }
         }
     }
 }

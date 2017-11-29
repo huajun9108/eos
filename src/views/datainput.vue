@@ -5,7 +5,7 @@
       <span class="inputBtn openCeremonyButton" @click="openCeremonyClick">开班</span>
       <span class="inputBtn historyButton">班次历史记录</span>
     </div>
-    <div class="basicInfo" :class="openCeremonyFlag?'showchoose':'hidechoose'">
+    <div class="basicInfo" :class="openCeremonyFlag?'showOpenCeremony':'hideOpenCeremony'">
       <div class="classInfo">
         <span class="classInfoTitle">
           Basic Info
@@ -29,10 +29,10 @@
         <Table height='218' border :columns="productInfoCols" :data="productInfoData"></Table>
       </div>
       <div class="addProductInfo">
-        <i class="icon-add_add flex-item"></i>
+        <i class="icon-add_add flex-item" @click="addProductInfo"></i>
       </div>
     </div>
-    <div class="lossContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
+    <div class="lossContainer" :class="openCeremonyFlag?'showOpenCeremony':'hideOpenCeremony'">
       <div class="lossRow" v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
         <div class="lossName">
           <span class="flex-item">{{ d }}</span>
@@ -45,43 +45,21 @@
         </div>
       </div>
     </div>
-    <!-- <div class="lossContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
-      <Row v-for="(d,idx) in this.kpiTwoLev.data" :key="idx" type="flex" justify="center" align="middle" class="code-row-bg">
-        <Col span="3">{{ d }}</Col>
-        <Col span="18">
-          <Table border height="200" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
-        </Col>
-        <Col span="3">
-          <span class="addLossBtn" @click="addLoss(d)">添加loss</span>
-        </Col>
-      </Row>
-    </div> -->
-    <!-- <div class="tableContainer" :class="openCeremonyFlag?'showchoose':'hidechoose'">
-      <table class="tableBody">
-        <tbody>
-          <tr v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
-            <td class="firstCol">{{ d }}</td>
-            <td class="secondCol">
-              <div class="childTableContainer">
-                <Table border height="202" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
-              </div>
-            </td>
-            <td class="thirdCol">
-              <span class="addLossBtn" @click="addLoss(d)">添加loss</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div> -->
-    <div class="shade" :class="showFlag?'showchoose':'hidechoose'"></div>
-    <div class="lossChoose" :class="showFlag?'showchoose':'hidechoose'">
-      <div class="dirChoose">
+    <div class="lossShade" :class="showLossFlag?'showLossChoose':'hideLossChoose'"></div>
+    <div class="productInfoShade" :class="showProductInfoFlag?'showProductInfoChoose':'hideProductInfoChoose'"></div>
+    <div class="lossChoose" :class="showLossFlag?'showLossChoose':'hideLossChoose'">
+      <div v-if="editLossDirFlag" class="editLossDir">
+        <span>Tier3：</span>
+        <span></span>
+        <span>Tier4：</span>
+        <span></span>
+      </div>
+      <div v-else class="dirChoose">
         <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier3($event)">
           <Option v-for="item in this.lossTier3Array" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="item.lossid">
           </Option>
         </Select>
-        <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4"
-        @on-change="getTier4($event)">
+        <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4" @on-change="getTier4($event)">
           <Option v-for="item in childTierMenuData" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="item.tier4id">
           </Option>
         </Select>
@@ -98,13 +76,35 @@
       </div>
       <div class="endTimeContainer">
         <span class="timeTitle">结束时间：</span>
-        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd"
-        @on-ok="endTimeChooseOk">
+        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
         </DatePicker>
       </div>
       <div class="btnContainer text-right">
-        <span class="confirmBtn data_btn" @click="confirmClick">确定</span>
-        <span class="cancelBtn data_btn" @click="cancelClick">取消</span>
+        <span class="confirmBtn data_btn" @click="lossConfirmClick">确定</span>
+        <span class="cancelBtn data_btn" @click="lossCancelClick">取消</span>
+      </div>
+    </div>
+    <div class="productInfoAddContainer" :class="showProductInfoFlag?'showProductInfoChoose':'hideProductInfoChoose'">
+      <div class="productChoose">
+        <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
+          <span>产品：</span>
+          <span>{{ this.productName }}</span>
+        </div>
+        <Select v-else v-model="productValue" class="dropdownProduct" clearable placeholder="产品">
+            <Option v-for="item in productList" :value="item.value" :key="item.value">
+              {{ item.label }}
+            </Option>
+          </Select>
+      </div>
+      <div class="productInfoSetting">
+        <span>良品数量：</span>
+        <Input v-model="shouldNumAttendanceValue" placeholder="请填写数量"></Input>
+        <span class="cycleTitle">Cycle：</span>
+        <Input v-model="actualNumAttendanceValue" placeholder="请填写时间"></Input>
+      </div>
+      <div class="btnContainer text-right">
+        <span class="confirmBtn data_btn" @click="productInfoConfirmClick">确定</span>
+        <span class="cancelBtn data_btn" @click="productInfoCancelClick">取消</span>
       </div>
     </div>
   </div>
@@ -208,69 +208,89 @@ export default {
                   class: "icon-edit",
                 },
                 style: {
-                  marginRight: '10px'
+                  marginRight: '20px'
+                },
+                on: {
+                  click: () => {
+                    this.showProductInfoFlag = true;
+                    this.editProduct(params.index)
+                  }
                 }
               }),
               h('i', {
                 attrs: {
                   class: "icon-delete_2",
                 },
-                style: {},
-                // click: () => {
-                //   this.deleteLoss(params.index)
-                // }
+                style: {
+                },
+                on: {
+                  click: () => {
+                    this.deleteProduct(params.index)
+                  }
+                }
               })
             ]);
           }
         }
       ],
-      productInfoData: [
+      productInfoData: [{
+          '产品': 'A',
+          '良品数量': '100',
+          'Cycle': '30s',
+        },
         {
-        '产品': 'A',
-        '良品数量': '100',
-        'Cycle': '30s',
-      },
-      {
-        '产品': 'B',
-        '良品数量': '150',
-        'Cycle': '45s',
-      },
-      {
-        '产品': 'C',
-        '良品数量': '200',
-        'Cycle': '60s',
-      },
-      {
-        '产品': 'A',
-        '良品数量': '100',
-        'Cycle': '30s',
-      },
-      {
-        '产品': 'B',
-        '良品数量': '150',
-        'Cycle': '45s',
-      },
-      {
-        '产品': 'C',
-        '良品数量': '200',
-        'Cycle': '60s',
-      },
-      {
-        '产品': 'A',
-        '良品数量': '100',
-        'Cycle': '30s',
-      },
-      {
-        '产品': 'B',
-        '良品数量': '150',
-        'Cycle': '45s',
-      },
-      {
-        '产品': 'C',
-        '良品数量': '200',
-        'Cycle': '60s',
-      }
-
+          '产品': 'B',
+          '良品数量': '150',
+          'Cycle': '45s',
+        },
+        {
+          '产品': 'C',
+          '良品数量': '200',
+          'Cycle': '60s',
+        },
+        {
+          '产品': 'A',
+          '良品数量': '100',
+          'Cycle': '30s',
+        },
+        {
+          '产品': 'B',
+          '良品数量': '150',
+          'Cycle': '45s',
+        },
+        {
+          '产品': 'C',
+          '良品数量': '200',
+          'Cycle': '60s',
+        },
+        {
+          '产品': 'A',
+          '良品数量': '100',
+          'Cycle': '30s',
+        },
+        {
+          '产品': 'B',
+          '良品数量': '150',
+          'Cycle': '45s',
+        },
+        {
+          '产品': 'C',
+          '良品数量': '200',
+          'Cycle': '60s',
+        }
+      ],
+      productList: [{
+          value: 'A',
+          label: 'A'
+        },
+        {
+          value: 'B',
+          label: 'B'
+        },
+        {
+          value: 'C',
+          label: 'C'
+        }
       ],
       childTabCols: [{
           title: 'Tier3',
@@ -308,7 +328,13 @@ export default {
                   class: "icon-edit",
                 },
                 style: {
-                  marginRight: '10px'
+                  marginRight: '20px'
+                },
+                on: {
+                  click: () => {
+                    this.showLossFlag = true;
+                    this.editLoss(params.index)
+                  }
                 }
               }),
               h('i', {
@@ -316,8 +342,10 @@ export default {
                   class: "icon-delete_2",
                 },
                 style: {},
-                click: () => {
-                  this.deleteLoss(params.index)
+                on: {
+                  click: () => {
+                    this.deleteLoss(params.index)
+                  }
                 }
               })
             ]);
@@ -329,7 +357,8 @@ export default {
       durationTimeValue: '',
       endTimeValue: '',
       openCeremonyFlag: false,
-      showFlag: false,
+      showLossFlag: false,
+      showProductInfoFlag: false,
       validareaList: [],
       lineBodys: [],
       lossTwoLevDataId: [],
@@ -341,6 +370,11 @@ export default {
       tier4: '',
       lossTwoLevName: '',
       lossTier3Array: [],
+      productValue: '',
+      shouldNumAttendanceValue: '',
+      actualNumAttendanceValue: '',
+      editProductInfoFlag: false,
+      editLossDirFlag: false
     }
   },
   computed: {
@@ -390,12 +424,49 @@ export default {
 
       this.lossFourLevStructId = tier;
     },
+    addLoss: function(name) {
+      this.lossTwoLevName = name;
+      this.showLosstier3({
+        "twolevName": name,
+      });
+      // if (this.lengthShiftTimeValue.length <= 0) {
+      //   this.$Message.error("请先选择开班时间");
+      //   return;
+      // }
+      this.editLossDirFlag = false;
+      this.showLossFlag = true;
+    },
+    addProductInfo: function(name) {
+      this.editProductInfoFlag = false;
+      this.showProductInfoFlag = true;
+      this.shouldNumAttendanceValue = '';
+      this.actualNumAttendanceValue = '';
+    },
     deleteLoss(index) {
-      this.childTableData.splice(index, 1);
+      alert("deleteLoss");
+      // this.childTableData.splice(index, 1);
+    },
+    deleteProduct(index) {
+      this.productInfoData.splice(index, 1);
+    },
+    editProduct(index) {
+      this.editProductInfoFlag = true;
+      let editInfo = this.productInfoData.slice(index, index + 1);
+      console.log(`editInfo: ${editInfo[0]['产品']} ${editInfo[0]['良品数量']} ${editInfo[0].Cycle}`);
+      this.productName = editInfo[0]['产品'];
+      this.shouldNumAttendanceValue = parseInt(editInfo[0]['良品数量']);
+      this.actualNumAttendanceValue = parseInt(editInfo[0].Cycle);
+    },
+    editLoss(index) {
+      this.editLossDirFlag = true;
+      console.log(`editLoss ${index} ${this.datainputLoss[index]}`);
+
+      // this.datainputLoss[idx][d].slice(index, index + 1);
     },
     lengthShiftTimeClear() {
       this.lengthShiftTimeValue = [];
     },
+
     timeFormat: function(mss) {
       var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
@@ -470,22 +541,11 @@ export default {
         this.durationTimeValue = this.timeFormat(durationMs);
       }
     },
-    addLoss: function(name) {
-      this.lossTwoLevName = name;
-      this.showLosstier3({
-        "twolevName": name,
-      });
-      if (this.lengthShiftTimeValue.length <= 0) {
-        this.$Message.error("请先选择开班时间");
-        return;
-      }
-      this.showFlag = !this.showFlag;
-    },
     openCeremonyClick: function() {
-      this.openCeremonyFlag = !this.openCeremonyFlag;
+      this.openCeremonyFlag = true;
     },
-    confirmClick: function() {
-      this.showFlag = !this.showFlag;
+    lossConfirmClick: function() {
+      this.showLossFlag = false;
       this.addLosstier4time2({
         "classStarttime": this.lengthShiftTimeValue[0],
         "classEndtime": this.lengthShiftTimeValue[1],
@@ -518,13 +578,33 @@ export default {
         this.endTimeValue = '';
       }
     },
-    cancelClick: function() {
-      this.showFlag = !this.showFlag;
+    lossCancelClick: function() {
+      this.showLossFlag = false;
       this.tierValue = '';
       this.childTierValue = '';
       this.durationTimeValue = '';
       this.startTimeValue = '';
       this.endTimeValue = '';
+    },
+    productInfoConfirmClick() {
+      this.showProductInfoFlag = false;
+      const obj = {
+        "产品": this.productValue,
+        "良品数量": this.shouldNumAttendanceValue,
+        "Cycle": this.actualNumAttendanceValue + 's',
+      };
+      if(obj && this.productValue && this.shouldNumAttendanceValue && this.actualNumAttendanceValue) {
+        this.productInfoData.push(obj);
+      }
+      this.productValue = '';
+      this.shouldNumAttendanceValue = '';
+      this.actualNumAttendanceValue = '';
+    },
+    productInfoCancelClick() {
+      this.showProductInfoFlag = false;
+      this.productValue = '';
+      this.shouldNumAttendanceValue = '';
+      this.actualNumAttendanceValue = '';
     }
   },
   watch: {

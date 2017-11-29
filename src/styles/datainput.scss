@@ -54,13 +54,19 @@
 
         .classInfoTime {
           padding-bottom: P(26);
+          .ivu-input {
+            width: P(418);
+          }
+          i.ivu-input-icon {
+            text-align: right;
+          }
         }
 
         .classInfoNumAttendance {
           padding-bottom: P(26);
 
           .ivu-input-wrapper {
-            width: P(134);
+            width: P(139);
           }
 
           .classInfoActualAttendance {
@@ -180,6 +186,9 @@
             border-left: 1px solid #BDBDBD;
             border-right: 1px solid #BDBDBD;
 
+            .ivu-table-body {
+              overflow-x: hidden;
+            }
 
             .ivu-table td,
             .ivu-table th {
@@ -215,9 +224,91 @@
 
           .flex-item {
             margin: auto;
-            font-size: P(16);
+            text-align: center;
+            font-size: P(12);
             color: #040404;
+            display: inline-block;
+            width: P(80);
+            line-height: 24px;
+            background-color: #e1e1e1;
+            border-radius: P(4);
           }
+        }
+      }
+    }
+    .productInfoAddContainer{
+      z-index: 2000;
+      visibility: hidden;
+      background-color: #FFF;
+      position: absolute;
+      height: P(498);
+      width: P(464);
+      top: 50%;
+      left: 50%;
+      max-width: P(498);
+      max-height: P(464);
+      padding: P(46) P(40) 0 P(46);
+      transform: translateX(-50%) translateY(-50%);
+      .editProductInfoNameContainer {
+        font-size: P(14);
+        color: #040404;
+        padding-bottom: P(20);
+        margin-bottom: P(30);
+        border-bottom: 1px solid #BDBDBD;
+      }
+      .dropdownProduct {
+        font-size: P(14);
+        width: P(187);
+        height: P(30);
+        margin-bottom: P(46);
+        .ivu-select-selection {
+          background: #E1E1E1;
+          font-size: P(14);
+          color: #040404;
+        }
+      }
+      .productInfoSetting {
+        height: P(40);
+        font-size: 0;
+        vertical-align: top;
+        span {
+          line-height: P(40);
+          display: inline-block;
+          font-size: P(12);
+          color: #040404;
+          text-align: center;
+        }
+        .ivu-input-wrapper {
+          width: P(106);
+          margin-top: -10px;
+        }
+        .cycleTitle {
+          margin-left: P(30);
+        }
+      }
+
+      .btnContainer {
+        position: absolute;
+        bottom: P(34);
+        right: P(40);
+
+        .data_btn {
+          display: inline-block;
+          font-size: P(14);
+          width: P(104);
+          line-height: P(26);
+          border-radius: P(14);
+          color: #FFF;
+          text-align: center;
+        }
+
+        .confirmBtn {
+          background-color: #1B3867;
+        }
+
+        .cancelBtn {
+          margin-left: P(16);
+          background-color: #c2c2c2;
         }
       }
     }
@@ -233,6 +324,16 @@
       max-height: P(730);
       padding: P(46) P(40) 0 P(46);
       transform: translateX(-50%) translateY(-50%);
+
+      .editLossDir {
+        padding-bottom: P(22);
+        margin-bottom: P(30);
+        border-bottom: 1px solid #BDBDBD;
+        span:nth-child(3) {
+          margin-left: P(112);
+        }
+
+      }
 
       .dropdownTier {
         width: P(200);
@@ -291,7 +392,7 @@
       }
     }
 
-    .shade {
+    .lossShade, .productInfoShade {
       width: 100%;
       height: 100%;
       position: absolute;
@@ -304,11 +405,11 @@
       visibility: hidden;
     }
 
-    .showchoose {
+    .showOpenCeremony, .showLossChoose, .showProductInfoChoose {
       visibility: visible;
     }
 
-    .hidechoose {
+    .hideOpenCeremony, .hideLossChoose, .hideProductInfoChoose {
       visibility: hidden;
     }
   }

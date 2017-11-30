@@ -429,7 +429,6 @@ export default {
             "endTime": obj.endTime
         })).then(res => {
             console.log(res.data);
-            // console.log(JSON.stringify(res.data , null , 4))
             return res.data
         }).then(json => {
             commit("selectAllByUserIdAndLinebodyIds", json)
@@ -446,19 +445,7 @@ export default {
             commit("updateLinebodyWeightById", json)
         })
     },
-    // addClasstime({ commit }, obj) {
-    //   axios.post("/impobject/addClasstime", qs.stringify({
-    //     "classStarttime": obj.classStarttime,
-    //     "classEndtime": obj.classEndtime,
-    //     "twolevName": obj.twolevName,
-    //     "linebodyId": obj.linebodyId
-    //   })).then(res => {
-    //     console.log(res.data);
-    //     return res.data
-    //   }).then(json => {
-    //     commit("addClasstime", json)
-    //   })
-    // },
+
     showLosstier3({ commit }, obj) {
         axios.post("/datainput/showLosstier3", qs.stringify({
             "twolevName": obj.twolevName
@@ -469,42 +456,7 @@ export default {
             commit("showLosstier3", json)
         })
     },
-    // addLosstier3data({ commit }, obj) {
-    //   axios.post("/datainput/addLosstier3data", qs.stringify({
-    //     "twolevDataid": obj.twolevDataid,
-    //     "losstier3Id": obj.losstier3Id,
-    //     "linebodyId": obj.linebodyId
-    //   })).then(res => {
-    //     console.log(res.data);
-    //     return res.data
-    //   }).then(json => {
-    //     commit("addLosstier3data", json)
-    //   })
-    // },
-    // addLosstier4data({ commit }, obj) {
-    //   axios.post("/datainput/addLosstier4data", qs.stringify({
-    //     "losstier3Dataid": obj.losstier3Dataid,
-    //     "losstier4Id": obj.losstier4Id,
-    //     "linebodyId": obj.linebodyId
-    //   })).then(res => {
-    //     console.log(res.data);
-    //     return res.data
-    //   }).then(json => {
-    //     commit("addLosstier4data", json)
-    //   })
-    // },
-    // addLosstier4time({ commit }, obj) {
-    //   axios.post("/datainput/addLosstier4time", qs.stringify({
-    //     "losstier4Dataid": obj.losstier4Dataid,
-    //     "starttime": obj.starttime,
-    //     "endtime": obj.endtime
-    //   })).then(res => {
-    //     console.log(res.data);
-    //     return res.data
-    //   }).then(json => {
-    //     commit("addLosstier4time", json)
-    //   })
-    // },
+
     addLosstier4time2({ commit }, obj) {
         axios.post("/datainput/addLosstier4time2", qs.stringify({
             "classStarttime": obj.classStarttime,
@@ -531,5 +483,6 @@ export default {
         }).then(json => {
             commit("showKpitwolev", json)
         })
-    }
+    },
+
 }

@@ -50,9 +50,9 @@
     <div class="lossChoose" :class="showLossFlag?'showLossChoose':'hideLossChoose'">
       <div v-if="editLossDirFlag" class="editLossDir">
         <span>Tier3：</span>
-        <span></span>
+        <span>{{ this.editTier3Value }}</span>
         <span>Tier4：</span>
-        <span></span>
+        <span>{{ this.editTier4Value }}</span>
       </div>
       <div v-else class="dirChoose">
         <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier3($event)">
@@ -333,7 +333,7 @@ export default {
                 on: {
                   click: () => {
                     this.showLossFlag = true;
-                    this.editLoss(params.index)
+                    this.editLoss(params)
                   }
                 }
               }),
@@ -374,7 +374,9 @@ export default {
       shouldNumAttendanceValue: '',
       actualNumAttendanceValue: '',
       editProductInfoFlag: false,
-      editLossDirFlag: false
+      editLossDirFlag: false,
+      editTier3Value: '',
+      editTier4Value: ''
     }
   },
   computed: {
@@ -457,11 +459,24 @@ export default {
       this.shouldNumAttendanceValue = parseInt(editInfo[0]['良品数量']);
       this.actualNumAttendanceValue = parseInt(editInfo[0].Cycle);
     },
-    editLoss(index) {
+    editLoss(params) {
       this.editLossDirFlag = true;
-      console.log(`editLoss ${index} ${this.datainputLoss[index]}`);
-
-      // this.datainputLoss[idx][d].slice(index, index + 1);
+      this.editTier3Value = params.row["tier3"];
+      this.editTier4Value = params.row["tier4"];
+      this.startTimeValue = new Date(params.row["开始时间"]);
+      this.endTimeValue = new Date(params.row["结束时间"]);
+      this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
+      // for (let i = 0; i < this.datainputLoss.length; i++) {
+      //   for (var key in this.datainputLoss[i]) {
+      //     if(this.datainputLoss[i][key]) {
+      //       for(var k in this.datainputLoss[i][key][params.index]) {
+      //         if(this.datainputLoss[i][key][params.index][k] === params.row["tier3"]) {
+      //           params.rows[""]
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
     },
     lengthShiftTimeClear() {
       this.lengthShiftTimeValue = [];

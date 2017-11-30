@@ -484,5 +484,17 @@ export default {
             commit("showKpitwolev", json)
         })
     },
+    selectProjectStateByTimeAndLinebodyIds({ commit }, obj) {
+        axios.post("/summary/selectProjectStateByTimeAndLinebodyIds", qs.stringify({
+            linebodyIds: obj.linebodyIds,
+            time: obj.time,
+            type: obj.type
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("selectProjectStateByTimeAndLinebodyIds", json)
+        })
+    }
 
 }

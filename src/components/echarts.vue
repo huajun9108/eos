@@ -1,25 +1,26 @@
 <style scoped>
-  .chart {
-    width: 100%;
-    height: 90%;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    margin: auto;
-  }
+    .chart {
+        width: 100%;
+        height: 90%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+    }
 </style>
 <template>
-  <div :id="_id" class="chart"></div>
+    <div :id="_id" class="chart"></div>
 </template>
 
 <script>
-  import echarts from 'echarts';
-  export default {
+    import {mapActions,mapState} from "vuex";
+    import echarts from 'echarts';
+    var startChart,endChart;
+    export default {
     data() {
         return {
-           
         }
     },
     props:{
@@ -27,7 +28,7 @@
         _titleText:String,
         _xText:String,
         _yText:String,
-        _chartData:Array,
+        _chartData:Object,
         _type:String
     },
     methods: {
@@ -36,47 +37,51 @@
     watch:{
       _chartData(val){
         switch (this._type){
-            case "LineAndBar":
-            drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
-            break
-            case "LineOrBar":
-            drawLineOrBar(val,this._id,this._titleText,this._xText,this._yText);
-            break
-            case "Pie":
-            drawPie(val,this._id,this._titleText,this._xText,this._yText);
-            break
-            case "Candlestick":
-            drawCandlestick(val,this._id,this._titleText,this._xText,this._yText);
-            break
+            // case "LineAndBar":
+            // drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
+            // break
+            // case "LineOrBar":
+            // drawLineOrBar(val,this._id,this._titleText,this._xText,this._yText);
+            // break
+            // case "Pie":
+            // drawPie(val,this._id,this._titleText,this._xText,this._yText);
+            // break
+            // case "Candlestick":
+            // drawCandlestick(val,this._id,this._titleText,this._xText,this._yText);
+            // break
             case "Bar":
             drawBar(val,this._id,this._titleText,this._xText,this._yText);
             break
-            default:
-            drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
-            break
+            // default:
+            // drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
+            // break
         }
       }
     },
+    computed: {
+        ...mapState(["projectStatus"])
+    },
     mounted() {
+        
       switch (this._type){
-            case "LineAndBar":
-            drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            break
-            case "LineOrBar":
-            drawLineOrBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            break
-            case "Pie":
-            drawPie(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            break
-            case "Candlestick":
-            drawCandlestick(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            break
+            // case "LineAndBar":
+            // drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            // break
+            // case "LineOrBar":
+            // drawLineOrBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            // break
+            // case "Pie":
+            // drawPie(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            // break
+            // case "Candlestick":
+            // drawCandlestick(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            // break
             case "Bar":
             drawBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
             break
-            default:
-            drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            break
+            // default:
+            // drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            // break
         }
     }
   }
@@ -213,22 +218,56 @@
         })
     }
     function drawBar(chartData,id,titleText,xText,yText) {
-        var chart = echarts.init(document.getElementById(id))
+        console.log(chartData)
+        if(!chartData){
+            console.log(1)
+            return
+        }
+        if(chartData.status==1){
+            startChart.dispose();
+            endChart.dispose();
+        }
+        
+        if(chartData.status==0){
+            if(chartData.data.type=="start"){
+                if (startChart != null && startChart != "" && startChart != undefined) {
+                    startChart.dispose();
+                }
+                var chart = echarts.init(document.getElementById(id))
+                startChart = chart
+            }
+            if(chartData.data.type=="end"){
+                if (endChart != null && endChart != "" && endChart != undefined) {
+                    endChart.dispose();
+                }
+                var chart = echarts.init(document.getElementById(id))
+                endChart = chart
+            }
+        }
+        if(chartData=== ""){
+          return;
+        }
         var keys = [];
-        var xAxisData = chartData.map(function (item) {
-            console.log(item)
+        var xAxisData = chartData.data.status.map(function (item) {
                 return item.key
             })
-        console.log(xAxisData)
-        var yAxisData = chartData.map(function (item) {
+        var yAxisData = chartData.data.status.map(function (item) {
                 return item.value;
             })
-            console.log(yAxisData )
         let machineColor ='#3670be';
         let materialColor ='#ffd189';
         let humanColor = '#b7b7b7';
         chart.setOption({
-        tooltip : {
+            noDataLoadingOption: {
+                text: '暂无数据',
+                effect: 'bubble',
+                effectOption: {
+                    effect: {
+                        n: 0
+                    }
+                }
+            },
+            tooltip : {
                 trigger: 'axis',
                 axisPointer : {            // 坐标轴指示器，坐标轴触发有效
                     type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
@@ -239,9 +278,6 @@
             },
             grid: {
                 left: 0,
-                // right: '4%',
-                // bottom: '3%',
-                // top:'-3%',
                 containLabel: true
             },
             xAxis:  {
@@ -294,7 +330,7 @@
             ]
                     
                 
-        })
+        },true)
     }
     function drawPie(chartData,id,titleText,xText,yText) {
         var chart = echarts.init(document.getElementById(id))

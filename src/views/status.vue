@@ -3,42 +3,43 @@
         <div class="status_content top">
             <div class="status_echarts">
                 <span class="status_pro">项目状态分布&nbsp&nbsp<i class="status_pos">(上)</i></span>
-                <div id="charts_status_top"  ref="status">
-                     <chart
+                <div id="charts_status_top">
+                    <chart
                         :_id="'statustop'"
                         :_titleText="'访问量统计'"
                         :_xText="'类别'"
                         :_yText="'项目阶段的数量'"
-                        :_chartData="chartData1"
+                        :_chartData="statusData1"
                         :_type="'Bar'">
                     </chart>
+                    <div class="pro_tip" v-if = "statusData1==''">暂无数据</div>
                 </div>
             </div>
             <div class="status_detail">
                 <ul class="status_det">
                     <li class="status_li">
                         <span class="status_title">项目池中的项目数量</span>
-                        <input class="item_detail" readonly placeholder="45"/>
+                        <input v-model="projectNumber" class="item_detail" readonly placeholder="无" />
                     </li>
                     <li class="status_li">
                         <span class="status_title">准备启动的项目数量</span>
-                        <input class="item_detail" readonly placeholder="6"/>
+                        <input v-model="beganNumber" class="item_detail" readonly placeholder="无"/>
                     </li>
                     <li class="status_li">
                         <span class="status_title">实施运行的项目数量</span>
-                        <input class="item_detail" readonly placeholder="12"/>
+                        <input v-model="runNumber" class="item_detail" readonly placeholder="无"/>
                     </li>
                     <li class="status_li">
                         <span class="status_title">实施延迟的项目数量</span>
-                        <input class="item_detail" readonly placeholder="2"/>
+                        <input v-model="delayNumber" class="item_detail" readonly placeholder="无"/>
                     </li>
                     <li class="status_li">
                         <span class="status_title">成果跟踪的项目数量</span>
-                        <input class="item_detail" readonly placeholder="24"/>
+                        <input v-model="followNumber" class="item_detail" readonly placeholder="无"/>
                     </li>
                     <li class="status_li">
                         <span class="status_title">当年度关闭项目数量</span>
-                        <input class="item_detail" readonly placeholder="12"/>
+                        <input v-model="closeNumber" class="item_detail" readonly placeholder="无"/>
                     </li>
                 </ul>
             </div>
@@ -47,41 +48,42 @@
             <div class="status_echarts">
                 <span class="status_pro">项目状态分布&nbsp&nbsp<i class="status_pos">(下)</i></span>
                 <div id="charts_status_bottom">
-                     <chart
+                    <chart
                         :_id="'statusbottom'"
                         :_titleText="'访问量统计'"
                         :_xText="'类别'"
                         :_yText="'项目阶段的数量'"
-                        :_chartData="chartData2"
+                        :_chartData="statusData2"
                         :_type="'Bar'">
                     </chart>
+                    <div class="pro_tip" v-if = "statusData2==''">暂无数据</div>
                 </div>
             </div>
             <div class="status_detail">
                 <ul class="status_det">
                     <li class="status_li">
                         <span class="status_title">项目池中的项目数量</span>
-                        <input class="item_detail" readonly placeholder="45"/>
+                        <input v-model="projectNumber_b" class="item_detail" readonly placeholder="无"/>
                     </li>
                     <li class="status_li">
                         <span class="status_title">准备启动的项目数量</span>
-                        <input class="item_detail" readonly placeholder="6"/>
+                        <input v-model="beganNumber_b" class="item_detail" readonly placeholder="无"/>
                     </li>
                     <li class="status_li">
                         <span class="status_title">实施运行的项目数量</span>
-                        <input class="item_detail" readonly placeholder="12"/>
+                        <input v-model="runNumber_b" class="item_detail" readonly placeholder="无"/>
                     </li>
                     <li class="status_li">
                         <span class="status_title">实施延迟的项目数量</span>
-                        <input class="item_detail" readonly placeholder="2"/>
+                        <input v-model="delayNumber_b" class="item_detail" readonly placeholder="无"/>
                     </li>
                     <li class="status_li">
                         <span class="status_title">成果跟踪的项目数量</span>
-                        <input class="item_detail" readonly placeholder="24"/>
+                        <input v-model="followNumber_b" class="item_detail" readonly placeholder="无"/>
                     </li>
                     <li class="status_li">
                         <span class="status_title">当年度关闭项目数量</span>
-                        <input class="item_detail" readonly placeholder="12"/>
+                        <input v-model="closeNumber_b" class="item_detail" readonly placeholder="无"/>
                     </li>
                 </ul>
             </div>
@@ -96,70 +98,68 @@ export default {
     chart: chart
   },
   data() {
-    return {
-      chartData1: [
-        {
-          key: "设备损失",
-          value: [39, 4, 9, 1, 22, 8]
-        },
-
-        {
-          key: "物料损失",
-          value: [5, 2, 3, 1, 2, 4]
-        },
-        {
-          key: "人力损失",
-          value: [1, 3, 2, 1, 2, 2]
+        return {
+            statusData1: null,
+            statusData2: null
+        };
+    },
+    computed: {
+        ...mapState(["projectStatus"])
+    },
+    methods: {
+        ...mapActions([]),
+        showlDialog(data) {
+            this.isShow = !this.isShow;
         }
-      ],
-      chartData2: [
-        {
-          key: "设备损失",
-          value: [39, 4, 9, 1, 22, 8]
-        },
-
-        {
-          key: "物料损失",
-          value: [5, 2, 3, 1, 2, 4]
-        },
-        {
-          key: "人力损失",
-          value: [1, 3, 2, 1, 2, 2]
+    },
+    watch: {
+        projectStatus(newVal){
+            if(newVal.status==="0"){
+                if(newVal.data.type=="start"){
+                    this.statusData1 = newVal
+                    this.projectNumber = newVal.data.statusOther.projectNumber
+                    this.beganNumber = newVal.data.statusOther.beganNumber
+                    this.runNumber =  newVal.data.statusOther.runNumber
+                    this.delayNumber = newVal.data.statusOther.delayNumber
+                    this.followNumber = newVal.data.statusOther.followNumber
+                    this.closeNumber = newVal.data.statusOther.closeNumber
+                }
+                
+                if(newVal.data.type=="end"){
+                    this.statusData2 = newVal
+                    this.projectNumber_b = newVal.data.statusOther.projectNumber
+                    this.beganNumber_b = newVal.data.statusOther.beganNumber
+                    this.runNumber_b =  newVal.data.statusOther.runNumber
+                    this.delayNumber_b = newVal.data.statusOther.delayNumber
+                    this.followNumber_b = newVal.data.statusOther.followNumber
+                    this.closeNumber_b = newVal.data.statusOther.closeNumber
+                }
+                
+            }else{
+                this.statusData1=""
+                this.statusData2=""
+                this.projectNumber = "无"
+                this.beganNumber = "无"
+                this.runNumber =  "无"
+                this.delayNumber = "无"
+                this.followNumber = "无"
+                this.closeNumber = "无"
+                this.projectNumber_b = "无"
+                this.beganNumber_b = "无"
+                this.runNumber_b =  "无"
+                this.delayNumber_b = "无"
+                this.followNumber_b = "无"
+                this.closeNumber_b = "无"
+            }
+            
         }
-      ]
-    };
-  },
-  computed: {
-    ...mapState([])
-  },
-  methods: {
-    ...mapActions([]),
-    showlDialog(data) {
-      this.isShow = !this.isShow;
+    },
+    created() {
+       
+    },
+    mounted() {
+        
     }
-  },
-  watch: {},
-  created() {},
-  mounted() {
-    // if (sessionStorage.getItem("userid")) {
-    //     this.selectUserById({
-    //         userid: sessionStorage.getItem("userid")
-    //     })
-    // } else {
-    //     console.log(this.$route);
-    // }
-    // let _this = this
-    // this.showImpItempool()
-    // let height =  this.$refs.status.offsetHeight
-    // let width =  this.$refs.status.offsetWidth
-    // console.log(height+"==="+width)
-    // // this.$nextTick(() => {
-    //     this.$refs.phase.style.height = 300+"px"
-    //     console.log(this.$refs.phase.style.height )
-    //     this.$refs.phase.style.width = 300+"px"
-    //     console.log(this.$refs.phase.style.width )
-    // // })
-  }
 };
 </script>
 <style lang="scss" scoped>

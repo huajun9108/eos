@@ -4,14 +4,14 @@
             <div class="status_echarts">
                 <span class="status_pro">项目运行阶段分布&nbsp&nbsp<i class="status_pos">(上)</i></span>
                 <div id="phaseCharts_top" ref="phase">
-                    <chart
+                    <!-- <chart
                         :_id="'phasetop'"
                         :_titleText="'访问量统计'"
                         :_xText="'类别'"
                         :_yText="'项目阶段的数量'"
                         :_chartData="chartData"
                         :_type="'LineOrBar'">
-                    </chart>
+                    </chart> -->
                 </div>
             </div>
             <div class="status_detail">
@@ -55,14 +55,14 @@
             <div class="status_echarts">
                 <span class="status_pro">项目运行阶段分布&nbsp&nbsp<i class="status_pos">(下)</i></span>
                 <div id="phaseCharts_bottom">
-                    <chart
+                    <!-- <chart
                         :_id="'phasebottom'"
                         :_titleText="'访问量统计'"
                         :_xText="'类别'"
                         :_yText="'项目阶段的数量'"
                         :_chartData="chartData1"
                         :_type="'LineOrBar'">
-                    </chart>
+                    </chart> -->
                 </div>
             </div>
             <div class="status_detail">
@@ -109,7 +109,6 @@
     import chart from '../components/echarts'
 	export default{
         components: {
-            // "v-timearea": timearea,
             "chart":chart
         },
         data(){
@@ -129,7 +128,7 @@
         },
 		computed:{
 			...mapState([
-               
+               "projectStatus"
                 
 			])
 		},
@@ -143,34 +142,27 @@
             
         },
         watch:{
-           
-           
-             
-            
+           projectStatus(newVal){
+                if(newVal.data){
+                    if(newVal.data.type=="end")
+                    this.statusData1 = newVal.data.status
+                    this.projectNumber = newVal.data.statusOther.projectNumber
+                    this.beganNumber = newVal.data.statusOther.beganNumber
+                    this.runNumber =  newVal.data.statusOther.runNumber
+                    this.delayNumber = newVal.data.statusOther.delayNumber
+                    this.followNumber = newVal.data.statusOther.followNumber
+                    this.closeNumber = newVal.data.statusOther.closeNumber
+                }else{
+                    this.statusData1=''
+                    this.statusData2=''
+                }
+                
+            }
         },
         created(){
         },
         mounted(){
-            // if (sessionStorage.getItem("userid")) {
-            //     this.selectUserById({
-            //         userid: sessionStorage.getItem("userid")
-            //     })
-                
-            // } else {
-            //     console.log(this.$route);
-            // }
-            // let _this = this
-            // this.showImpItempool()
-            // this.initCharts()
-            // let height =  this.$refs.status.offsetHeight
-            // let width =  this.$refs.status.offsetWidth
-            // console.log(height+"==="+width)
-            // // this.$nextTick(() => {
-            //     this.$refs.phase.style.height = 300+"px"
-            //     console.log(this.$refs.phase.style.height )
-            //     this.$refs.phase.style.width = 300+"px"
-            //     console.log(this.$refs.phase.style.width )
-            // // })
+           
         }
 	}
 </script>

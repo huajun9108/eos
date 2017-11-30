@@ -44,12 +44,9 @@ export default {
     deleteObject: '',
     validLeft: [],
     updateLinebodyWeight: '',
-    // classTime: '',
     lossTier3: '',
-    // addLossTier3Res: '',
-    // addLossTier4Res: '',
-    // addLossTier4TimeRes: '',
     addLosstier4time2Res: '',
     kpiTwoLev: '',
-    datainputLoss: []
+    datainputLoss: [],
+    projectStatus: [],
 }

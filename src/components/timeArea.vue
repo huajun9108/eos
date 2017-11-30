@@ -7,13 +7,13 @@
         <span>{{timeFlag?'开始时间':'选择时间点(上)'}}</span>
         <DatePicker size="small" v-model="startTime" :options="timeFlag?optionsStart:optionsStarts" placement="bottom-end" :type="timeFlag?'date':'datetime'" 
         :format="timeFlag?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
-        placeholder="Select date" @on-change="startChange" @on-clear="this.clearCharts"></DatePicker>
+        placeholder="Select date" @on-change="startChange" @on-ok="startOk" @on-clear="this.clearCharts"></DatePicker>
       </div>
       <div class="time">
         <span>{{timeFlag?'结束时间':'选择时间点(下)'}}</span>
         <DatePicker size="small" v-model="endTime" :options="timeFlag?optionsEnd:optionsEnds" placement="bottom-end" :type="timeFlag?'date':'datetime'"
         :format="timeFlag?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
-        placeholder="Select date" @on-change="endChange" @on-clear="this.clearCharts"></DatePicker>
+        placeholder="Select date" @on-change="endChange" @on-ok="endOk" @on-clear="this.clearCharts"></DatePicker>
       </div>
     </div>
     <div class="chooseArea box">
@@ -72,7 +72,6 @@ export default {
       },
       optionsStarts: {
         disabledDate: (date) => {
-          console.log(this.endTime)
           if(this.endTime){
             let beginFormat = this.endTime.format('yyyy-MM-dd');
             return date && date.valueOf() >new Date(beginFormat+" 00:00:00");
@@ -142,9 +141,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["selectUserById", "selectAllByUserIdAndLinebodyIds"]),
+    ...mapActions(["selectUserById", "selectAllByUserIdAndLinebodyIds","selectProjectStateByTimeAndLinebodyIds"]),
     zTreeOnCheck(event, treeId, treeNode) {
-      console.log("zTreeOnCheck");
       const _this = this;
       _this.lineBodys = [];
       _this.lineBodystr = "";
@@ -158,13 +156,10 @@ export default {
       });
       if (!this.startTime || !this.endTime) return;
       if (_this.lineBodys.length <= 0) {
-        console.log("lineBodys为空");
         this.clearCharts();
         return;
       }
       _this.lineBodystr = _this.lineBodys.join(",");
-      console.log(_this.lineBodystr);
-      console.log(typeof sessionStorage.getItem("userid"));
       const start = this.startTime.format("yyyy-MM-dd") + " 08:00:00";
       const end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
       if (
@@ -185,58 +180,101 @@ export default {
       }
     },
     startChange(data) {
-      if (!data) return;
-      const start = data + " 08:00:00";
-      if (!this.endTime) return;
-      const end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
-      if (
-        sessionStorage.getItem("userid") &&
-        this.lineBodystr &&
-        start &&
-        end
-      ) {
-        const endMs = end.getTime() + 8 * 60 * 60 * 1000;
-        const startTime = new Date(start);
-        const endTime = new Date(endMs);
-        this.selectAllByUserIdAndLinebodyIds({
-          userId: sessionStorage.getItem("userid"),
+      // if (!data) return;
+      // const start = data + " 08:00:00";
+      // if (!this.endTime) return;
+      // const end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
+      // if (
+      //   sessionStorage.getItem("userid") &&
+      //   this.lineBodystr &&
+      //   start &&
+      //   end
+      // ) {
+      //   const endMs = end.getTime() + 8 * 60 * 60 * 1000;
+      //   const startTime = new Date(start);
+      //   const endTime = new Date(endMs);
+      //   this.selectAllByUserIdAndLinebodyIds({
+      //     userId: sessionStorage.getItem("userid"),
+      //     linebodyIds: this.lineBodystr,
+      //     startTime: startTime,
+      //     endTime: endTime
+      //   });
+      // }
+      
+      
+    },
+    startOk(){
+      if(this.routeIsroute("summary")){
+        if (sessionStorage.getItem("userid") 
+        && this.lineBodystr
+        && this.startTime){
+          let startTime = new Date(this.startTime.getTime()+ 8 * 60 * 60 * 1000)
+          this.selectProjectStateByTimeAndLinebodyIds({
+            linebodyIds: this.lineBodystr,
+            time: startTime,
+            type:"start"
+            
+          })
+        }
+      }
+    },
+    endOk(){
+      if (sessionStorage.getItem("userid") 
+      && this.lineBodystr
+      && this.endTime){
+        let endTime = new Date(this.endTime.getTime()+ 8 * 60 * 60 * 1000)
+        this.selectProjectStateByTimeAndLinebodyIds({
           linebodyIds: this.lineBodystr,
-          startTime: startTime,
-          endTime: endTime
-        });
+          time: endTime,
+          type:"end"
+          
+        })
       }
     },
     endChange(data) {
-      if (!data) return;
-      const end = new Date(data + " 23:59:59");
-      if (!this.startTime) return;
-      const start = this.startTime.format("yyyy-MM-dd") + " 08:00:00";
-      if (
-        sessionStorage.getItem("userid") &&
-        this.lineBodystr &&
-        start &&
-        end
-      ) {
-        const startTime = new Date(start);
-        const endMs = end.getTime() + 8 * 60 * 60 * 1000;
-        const endTime = new Date(endMs);
-        this.selectAllByUserIdAndLinebodyIds({
-          userId: sessionStorage.getItem("userid"),
-          linebodyIds: this.lineBodystr,
-          startTime: startTime,
-          endTime: endTime
-        });
-      }
+      // if (!data) return;
+      // const end = new Date(data + " 23:59:59");
+      // if (!this.startTime) return;
+      // const start = this.startTime.format("yyyy-MM-dd") + " 08:00:00";
+      // if (
+      //   sessionStorage.getItem("userid") &&
+      //   this.lineBodystr &&
+      //   start &&
+      //   end
+      // ) {
+      //   const startTime = new Date(start);
+      //   const endMs = end.getTime() + 8 * 60 * 60 * 1000;
+      //   const endTime = new Date(endMs);
+      //   this.selectAllByUserIdAndLinebodyIds({
+      //     userId: sessionStorage.getItem("userid"),
+      //     linebodyIds: this.lineBodystr,
+      //     startTime: startTime,
+      //     endTime: endTime
+      //   });
+      // }
+    
     },
     clearCharts() {
-      console.log("clearDate");
       this.selectAllByUserIdAndLinebodyIds({
         userId: sessionStorage.getItem("userid")
       });
+      if(this.routeIsroute("summary")){
+        this.selectProjectStateByTimeAndLinebodyIds({
+          type:"start"
+        })
+      }
+    },
+    routeIsroute(route){
+      let reg = this.$route.path.split("/")[2];
+      if (reg == route) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   computed: {
-    ...mapState(["validarea", "lossmappingLinebodyAll"])
+    ...mapState(["validarea"])
   },
   watch: {
     validarea(newVal) {
@@ -268,12 +306,11 @@ export default {
         userid: sessionStorage.getItem("userid")
       });
     } else {
-      console.log(this.$route);
     }
-    let reg = this.$route.path.split("/")[2];
-    if (reg == "summary") {
+    
+    if(this.routeIsroute("summary")){
       this.timeFlag = false;
-    } else {
+    }else{
       this.timeFlag = true;
     }
   }

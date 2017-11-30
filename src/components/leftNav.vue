@@ -69,8 +69,6 @@ import { mapState, mapActions } from "vuex";
     mounted(){
       if(sessionStorage.getItem("userid")) {
         this.selectUserById({userid:sessionStorage.getItem("userid")})
-        
-        console.log(this.validmenuList)
       }else{
         console.log(this.$route);
       }

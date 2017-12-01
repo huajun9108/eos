@@ -16,9 +16,9 @@
         </div>
         <div class="classInfoNumAttendance">
           <span>应出勤人数：</span>
-          <Input v-model="shouldNumAttendanceValue"></Input>
+          <InputNumber v-model="shouldNumAttendanceValue"></InputNumber>
           <span class="classInfoActualAttendance">实出勤人数：</span>
-          <Input v-model="actualNumAttendanceValue"></Input>
+          <InputNumber v-model="actualNumAttendanceValue"></InputNumber>
         </div>
         <div class="classInfoSubmit">
           <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
@@ -98,9 +98,9 @@
       </div>
       <div class="productInfoSetting">
         <span>良品数量：</span>
-        <Input v-model="conformProductValue" placeholder="请填写数量"></Input>
+        <InputNumber v-model="conformProductValue" placeholder="请填写数量"></InputNumber>
         <span class="cycleTitle">Cycle：</span>
-        <Input v-model="normalCycletimeValue" placeholder="请填写时间"></Input>
+        <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间"></InputNumber>
       </div>
       <div class="btnContainer text-right">
         <span class="confirmBtn data_btn" @click="productInfoConfirmClick">确定</span>
@@ -389,6 +389,7 @@ export default {
       "kpiTwoLev",
       "addLosstier4time2Res",
       "datainputLoss",
+      "datainputLossId",
       "addClassinfRes",
       "addProductRes"
     ])
@@ -461,8 +462,8 @@ export default {
       let editInfo = this.productInfoData.slice(index, index + 1);
       console.log(`editInfo: ${editInfo[0]['产品']} ${editInfo[0]['良品数量']} ${editInfo[0].Cycle}`);
       this.productName = editInfo[0]['产品'];
-      this.shouldNumAttendanceValue = parseInt(editInfo[0]['良品数量']);
-      this.actualNumAttendanceValue = parseInt(editInfo[0].Cycle);
+      this.conformProductValue = parseInt(editInfo[0]['良品数量']);
+      this.normalCycletimeValue = parseInt(editInfo[0].Cycle);
     },
     editLoss(params) {
       this.editLossDirFlag = true;
@@ -571,8 +572,6 @@ export default {
       "shouldAttendance": this.shouldNumAttendanceValue,
       "actualAttendance": this.actualNumAttendanceValue
     });
-      console.log(`${this.lengthShiftTimeValue[0]} ${this.lengthShiftTimeValue[1]} ${this.shouldNumAttendanceValue}
-        ${this.actualNumAttendanceValue}`);
     },
     clearClassInfoClick() {
       this.lengthShiftTimeValue = '';
@@ -582,8 +581,6 @@ export default {
     lossConfirmClick: function() {
       this.showLossFlag = false;
       this.addLosstier4time2({
-        // "classStarttime": this.lengthShiftTimeValue[0],
-        // "classEndtime": this.lengthShiftTimeValue[1],
         "classinfIdList": this.classInfoIdList,
         "twolevName": this.lossTwoLevName,
         "losstier3Id": this.lossThreeLevStructId,
@@ -678,13 +675,25 @@ export default {
 
     addLosstier4time2Res(newVal) {
       console.log(`addLosstier4time2Res ${newVal}`);
+      if(newVal.status === "0") {
+        if(newVal.data.losstier4Dataid) {
+          console.log(newVal.data.losstier2name);
+          for(let i = 0; i < this.datainputLossId.length; i++) {
+            for(var key in this.datainputLossId[i]) {
+              if(key === newVal.data.losstier2name) {
+                console.log("hhhhhh");
+                this.datainputLossId[i][key].push(newVal.data[0].losstier2name);
+              }
+            }
+          }
+        }
+      }
     },
     addClassinfRes(newVal) {
       console.log(`addClassinfRes ${newVal}`);
       let classInfoIdArr = [];
       if(this.addClassinfRes.status === "0") {
         for(let i = 0; i < this.addClassinfRes.date.length; i++) {
-          console.log(this.addClassinfRes.date[i].classinfid);
           classInfoIdArr.push(this.addClassinfRes.date[i].classinfid);
         }
       }

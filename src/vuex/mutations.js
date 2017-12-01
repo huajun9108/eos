@@ -128,7 +128,8 @@ export default {
       obj[item] = []
       arr.push(obj)
     })
-    return state.datainputLoss = arr;
+    state.datainputLoss = arr;
+    state.datainputLossId = arr;
     console.log(arr)
   },
   addClassinf(state, json) {

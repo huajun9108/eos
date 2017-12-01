@@ -1,19 +1,12 @@
 @import "./mobile.scss";
 
 .datainput {
-  height: 100%;
-  overflow: hidden;
-
   .datainputContainer {
-    width: 90%;
-    height: 82%;
-    border: 1px solid #BDBDBD;
-    border-radius: 4px;
-
     .openCeremony {
       height: 7%;
       padding-top: 1%;
       padding-bottom: 1%;
+      border-bottom: 1px solid #BDBDBD;
 
       .inputBtn {
         margin-left: P(28);
@@ -37,128 +30,288 @@
       }
     }
 
-    .lengthShift {
-      padding-left: P(28);
-      height: 8%;
-      padding-top: 1%;
-      padding-bottom: 1%;
-      border-top: 1px solid #BDBDBD;
+    .basicInfo {
+      width: 100%;
+      height: 220px;
+      font-size: 0;
+      box-sizing: border-box;
       border-bottom: 1px solid #BDBDBD;
 
-      .lengthShiftTime {
-        color: #040404;
+      .classInfo {
         font-size: P(16);
-        line-height: P(42);
-      }
-    }
-
-    .tableContainer {
-      overflow-y: auto;
-      width: 100%;
-      height: 85%;
-
-      .tableBody {
-        width: 100%;
-      }
-
-      .tableBody tbody {
-        height: 100%;
-      }
-
-      .tableBody tr {
-        border-bottom: 1px solid #BDBDBD;
-      }
-
-      // .tableBody tr:last-child {
-      //   border-bottom: none;
-      // }
-
-      .tableBody td {
-        text-align: center;
-        height: P(232);
-      }
-
-      .firstCol {
-        width: 10%;
-        border-right: 1px solid #BDBDBD;
-      }
-
-      .secondCol {
-        width: 20%;
-        // border-right: 1px solid #BDBDBD;
-        padding: 30px 15px 0;
         vertical-align: top;
+        width: 40%;
+        height: 100%;
+        padding-left: P(28);
+        padding-right: P(28);
+        padding-top: P(32);
+        display: inline-block;
 
-        .textArea {
-          width: 90%;
-          height: 30%;
+        .classInfoTitle {
+          display: inline-block;
+          padding-bottom: P(39);
+        }
+
+        .classInfoTime {
+          padding-bottom: P(26);
+          .ivu-input {
+            width: P(418);
+          }
+          i.ivu-input-icon {
+            text-align: right;
+          }
+        }
+
+        .classInfoNumAttendance {
+          padding-bottom: P(26);
+
+          .ivu-input-wrapper {
+            width: P(139);
+          }
+
+          .classInfoActualAttendance {
+            margin-left: P(34);
+          }
+        }
+
+        .classInfoSubmit {
+          text-align: right;
+          padding-bottom: P(36);
+
+          .classInfoClearBtn {
+            margin-right: P(16);
+            background-color: #e1e1e1;
+          }
+
+          .classInfoConfirmBtn {
+            background-color: #dbe9ff;
+          }
+
+          .classInfoBtn {
+            display: inline-block;
+            text-align: center;
+            font-size: P(14);
+            color: #040404;
+            width: P(60);
+            line-height: P(24);
+            border-radius: P(10);
+          }
         }
       }
 
-      .thirdCol {
-        width: 60%;
-        // border-right: 1px solid #BDBDBD;
+      .productInfo {
+        box-sizing: border-box;
+        vertical-align: top;
+        width: 50%;
+        height: 100%;
+        display: inline-block;
 
-        .childTableContainer {
-          width: 100%;
-          height: 100%;
+        .ivu-table-wrapper {
+          border: none;
+          border-left: 1px solid #BDBDBD;
+          border-right: 1px solid #BDBDBD;
 
-          .ivu-table-wrapper {
-            border-left: 1px solid #BDBDBD;
-            border-top: none;
-            border-right: 1px solid #BDBDBD;
-          }
 
-          .ivu-table-body {
-            overflow-x: hidden;
-            overflow-y: scroll;
-          }
-
-          .ivu-table th, .ivu-table td {
+          .ivu-table td,
+          .ivu-table th {
             height: P(30);
             border-bottom: 1px solid #BDBDBD;
           }
 
-          .ivu-table-border td, .ivu-table-border th {
+          .ivu-table-border td,
+          .ivu-table-border th {
             border-right: 1px solid #BDBDBD;
           }
 
-          .ivu-table-border td:last-child, .ivu-table-border th:last-child {
+          .ivu-table-border td:last-child,
+          .ivu-table-border th:last-child {
             border-right: none;
           }
 
-          .ivu-table::before, .ivu-table-border::before, .ivu-table-with-fixed-top::before {
-            height: 0px;
+          div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::before {
+            height: 0;
           }
 
-          .ivu-table::after {
-            background-color: #BDBDBD;
-            width: 0px;
-          }
-
-          .ivu-table td.childTableThirdCol, .ivu-table td.childTableFourthCol{
-            text-align: center;
-          }
-
-          th.childTableFifthCol.ivu-table-column-center .ivu-table-cell {
-            margin-right: P(15);
+          div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::after {
+            width: 0;
           }
         }
       }
 
-      .fourthCol {
+      .addProductInfo {
+        vertical-align: top;
         width: 10%;
+        height: 100%;
+        display: inline-flex;
 
-        .addLossBtn {
-          display: inline-block;
-          width: P(80);
-          line-height: P(30);
-          background-color: #e1e1e1;
-          border-radius: 4px;
+        .flex-item {
+          color: #e1e1e1;
+          font-size: P(32);
+          margin: auto;
         }
       }
     }
 
+    .lossContainer {
+      width: 100%;
+      height: calc(93% - 220px);
+      overflow-y: scroll;
+      font-size: 0;
+
+      .lossRow {
+        font-size: 0;
+        height: 201px;
+        width: 100%;
+        border-bottom: 1px solid #BDBDBD;
+
+        .lossName {
+          width: 15%;
+          height: 100%;
+          display: inline-flex;
+          vertical-align: top;
+
+          .flex-item {
+            margin: auto;
+            font-size: P(16);
+            color: #040404;
+          }
+        }
+
+        .lossTable {
+          width: calc(75% + 13px);
+          display: inline-block;
+
+          .ivu-table-wrapper {
+            border: none;
+            border-left: 1px solid #BDBDBD;
+            border-right: 1px solid #BDBDBD;
+
+            .ivu-table-body {
+              overflow-x: hidden;
+            }
+
+            .ivu-table td,
+            .ivu-table th {
+              height: P(30);
+              border-bottom: 1px solid #BDBDBD;
+            }
+
+            .ivu-table-border td,
+            .ivu-table-border th {
+              border-right: 1px solid #BDBDBD;
+            }
+
+            .ivu-table-border td:last-child,
+            .ivu-table-border th:last-child {
+              border-right: none;
+            }
+
+            div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::before {
+              height: 0;
+            }
+
+            div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::after {
+              width: 0;
+            }
+          }
+        }
+
+        .lossBtnContainer {
+          width: calc(10% - 13px);
+          height: 100%;
+          display: inline-flex;
+          vertical-align: top;
+
+          .flex-item {
+            margin: auto;
+            text-align: center;
+            font-size: P(12);
+            color: #040404;
+            display: inline-block;
+            width: P(80);
+            line-height: 24px;
+            background-color: #e1e1e1;
+            border-radius: P(4);
+          }
+        }
+      }
+    }
+    .productInfoAddContainer{
+      z-index: 2000;
+      visibility: hidden;
+      background-color: #FFF;
+      position: absolute;
+      height: P(498);
+      width: P(464);
+      top: 50%;
+      left: 50%;
+      max-width: P(498);
+      max-height: P(464);
+      padding: P(46) P(40) 0 P(46);
+      transform: translateX(-50%) translateY(-50%);
+      .editProductInfoNameContainer {
+        font-size: P(14);
+        color: #040404;
+        padding-bottom: P(20);
+        margin-bottom: P(30);
+        border-bottom: 1px solid #BDBDBD;
+      }
+      .dropdownProduct {
+        font-size: P(14);
+        width: P(187);
+        height: P(30);
+        margin-bottom: P(46);
+        .ivu-select-selection {
+          background: #E1E1E1;
+          font-size: P(14);
+          color: #040404;
+        }
+      }
+      .productInfoSetting {
+        height: P(40);
+        font-size: 0;
+        vertical-align: top;
+        span {
+          line-height: P(40);
+          display: inline-block;
+          font-size: P(12);
+          color: #040404;
+          text-align: center;
+        }
+        .ivu-input-wrapper {
+          width: P(106);
+          margin-top: -10px;
+        }
+        .cycleTitle {
+          margin-left: P(30);
+        }
+      }
+
+      .btnContainer {
+        position: absolute;
+        bottom: P(34);
+        right: P(40);
+
+        .data_btn {
+          display: inline-block;
+          font-size: P(14);
+          width: P(104);
+          line-height: P(26);
+          border-radius: P(14);
+          color: #FFF;
+          text-align: center;
+        }
+
+        .confirmBtn {
+          background-color: #1B3867;
+        }
+
+        .cancelBtn {
+          margin-left: P(16);
+          background-color: #c2c2c2;
+        }
+      }
+    }
     .lossChoose {
       z-index: 2000;
       visibility: hidden;
@@ -168,10 +321,19 @@
       top: 50%;
       left: 50%;
       font-size: P(14);
-      // max-width: P(498);
       max-height: P(730);
       padding: P(46) P(40) 0 P(46);
       transform: translateX(-50%) translateY(-50%);
+
+      .editLossDir {
+        padding-bottom: P(22);
+        margin-bottom: P(30);
+        border-bottom: 1px solid #BDBDBD;
+        span:nth-child(3) {
+          margin-left: P(112);
+        }
+
+      }
 
       .dropdownTier {
         width: P(200);
@@ -230,7 +392,7 @@
       }
     }
 
-    .shade {
+    .lossShade, .productInfoShade {
       width: 100%;
       height: 100%;
       position: absolute;
@@ -243,11 +405,11 @@
       visibility: hidden;
     }
 
-    .showchoose {
+    .showOpenCeremony, .showLossChoose, .showProductInfoChoose {
       visibility: visible;
     }
 
-    .hidechoose {
+    .hideOpenCeremony, .hideLossChoose, .hideProductInfoChoose {
       visibility: hidden;
     }
   }

@@ -143,9 +143,10 @@ export default {
   methods: {
     ...mapActions(["selectUserById", "selectAllByUserIdAndLinebodyIds","selectProjectStateByTimeAndLinebodyIds"]),
     zTreeOnCheck(event, treeId, treeNode) {
+      console.log("zTreeOnCheck");
       const _this = this;
       _this.lineBodys = [];
-      _this.lineBodystr = "";
+      _this.lineBodystr = '';
       var treeObj = $.fn.zTree.getZTreeObj(treeId);
       var nodes = treeObj.getCheckedNodes(true);
       nodes.forEach(function(node) {
@@ -256,18 +257,7 @@ export default {
       // }
     
     },
-    clearStart() {
-      this.selectAllByUserIdAndLinebodyIds({
-        userId: sessionStorage.getItem("userid")
-      });
-      sessionStorage.removeItem("statusStart")
-      if(this.routeIsroute("summary")){
-        this.selectProjectStateByTimeAndLinebodyIds({
-          type:"start"
-        })
-      }
-      
-    },
+  
     clearEnd() {
       this.selectAllByUserIdAndLinebodyIds({
         userId: sessionStorage.getItem("userid")
@@ -275,6 +265,17 @@ export default {
       if(this.routeIsroute("summary")){
         this.selectProjectStateByTimeAndLinebodyIds({
         type:"end"
+      })
+      }
+    },
+    clearStart() {
+      this.selectAllByUserIdAndLinebodyIds({
+        userId: sessionStorage.getItem("userid")
+      });
+      sessionStorage.removeItem("statusStart")
+      if(this.routeIsroute("summary")){
+        this.selectProjectStateByTimeAndLinebodyIds({
+        type:"start"
       })
       }
     },
@@ -301,7 +302,7 @@ export default {
         }
       });
       _this.lineBodys = [];
-      _this.lineBodystr = "";
+      _this.lineBodystr = '';
       this.validareaList.forEach(function(node) {
         let reg = /^l/g;
         if (reg.test(node.id)) {

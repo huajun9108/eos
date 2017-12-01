@@ -80,7 +80,7 @@
     <div class="project_change project_item">
         <span class="pro_title">变更信息</span>
         <div class="pro_itemdetail" >
-            <ul class="item_det" >
+            <!-- <ul class="item_det" >
                 <li class="item_li">
                     <span class="item_title">改进项目编号</span>
                     <input v-model= "projectnumber" class="item_detail" />
@@ -121,11 +121,7 @@
                     <span class="item_title">项目阶段</span>
                     <input v-model="stage" class="item_detail" />
                 </li>
-            </ul>
-            <div class="accountinfo_button text-right">
-                <span class="button_confirm button" @click="confirm">确认</span>
-                <span class="button_cancel button" @click="cancel">取消</span>
-            </div>
+            </ul> -->
         </div>
     </div>
     <Modal

@@ -128,8 +128,15 @@ export default {
             obj[item] = []
             arr.push(obj)
         })
-        return state.datainputLoss = arr;
+        state.datainputLoss = arr;
+        state.datainputLossId = arr;
         console.log(arr)
+    },
+    addClassinf(state, json) {
+        state.addClassinfRes = json
+    },
+    addProduct(state, json) {
+        state.addProductRes = json
     },
     selectProjectStateByTimeAndLinebodyIds(state, json) {
         state.projectStatus = json

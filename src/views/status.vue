@@ -3,7 +3,7 @@
         <div class="status_content top">
             <div class="status_echarts">
                 <span class="status_pro">项目状态分布&nbsp&nbsp<i class="status_pos">(上)</i></span>
-                <div id="charts_status_top">
+                <div class="charts_status top">
                     <chart
                         :_id="'statustop'"
                         :_titleText="'访问量统计'"
@@ -12,7 +12,7 @@
                         :_chartData="statusData1"
                         :_type="'Bar'">
                     </chart>
-                    <div class="pro_tip" v-if = "statusData1==''">暂无数据</div>
+                    <div class="pro_tip" v-if = "statusData1==null||statusData1==''||statusData1.status!='0'">暂无数据</div>
                 </div>
             </div>
             <div class="status_detail">
@@ -47,7 +47,7 @@
         <div class="status_content bottom">
             <div class="status_echarts">
                 <span class="status_pro">项目状态分布&nbsp&nbsp<i class="status_pos">(下)</i></span>
-                <div id="charts_status_bottom">
+                <div class="charts_status bottom">
                     <chart
                         :_id="'statusbottom'"
                         :_titleText="'访问量统计'"
@@ -56,7 +56,7 @@
                         :_chartData="statusData2"
                         :_type="'Bar'">
                     </chart>
-                    <div class="pro_tip" v-if = "statusData2==''">暂无数据</div>
+                    <div class="pro_tip" v-if = "statusData2==''||statusData2==null||statusData2.status!='0'">暂无数据</div>
                 </div>
             </div>
             <div class="status_detail">
@@ -107,10 +107,7 @@ export default {
         ...mapState(["projectStatus"])
     },
     methods: {
-        ...mapActions([]),
-        showlDialog(data) {
-            this.isShow = !this.isShow;
-        }
+       
     },
     watch: {
         projectStatus(newVal){
@@ -136,20 +133,24 @@ export default {
                 }
                 
             }else{
-                this.statusData1=""
-                this.statusData2=""
-                this.projectNumber = "无"
-                this.beganNumber = "无"
-                this.runNumber =  "无"
-                this.delayNumber = "无"
-                this.followNumber = "无"
-                this.closeNumber = "无"
-                this.projectNumber_b = "无"
-                this.beganNumber_b = "无"
-                this.runNumber_b =  "无"
-                this.delayNumber_b = "无"
-                this.followNumber_b = "无"
-                this.closeNumber_b = "无"
+                if(newVal.type=="start"){
+                    this.statusData1=newVal
+                    this.projectNumber = "无"
+                    this.beganNumber = "无"
+                    this.runNumber =  "无"
+                    this.delayNumber = "无"
+                    this.followNumber = "无"
+                    this.closeNumber = "无"
+                }
+                if(newVal.type=="end"){
+                    this.statusData2=newVal
+                    this.projectNumber_b = "无"
+                    this.beganNumber_b = "无"
+                    this.runNumber_b =  "无"
+                    this.delayNumber_b = "无"
+                    this.followNumber_b = "无"
+                    this.closeNumber_b = "无"
+                }
             }
             
         }

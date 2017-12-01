@@ -40,9 +40,9 @@
             // case "LineAndBar":
             // drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
             // break
-            // case "LineOrBar":
-            // drawLineOrBar(val,this._id,this._titleText,this._xText,this._yText);
-            // break
+            case "LineOrBar":
+            drawLineOrBar(val,this._id,this._titleText,this._xText,this._yText);
+            break
             // case "Pie":
             // drawPie(val,this._id,this._titleText,this._xText,this._yText);
             // break
@@ -67,9 +67,9 @@
             // case "LineAndBar":
             // drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
             // break
-            // case "LineOrBar":
-            // drawLineOrBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            // break
+            case "LineOrBar":
+            drawLineOrBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            break
             // case "Pie":
             // drawPie(this._chartData,this._id,this._titleText,this._xText,this._yText);
             // break
@@ -164,9 +164,47 @@
         })
     }
     function drawLineOrBar(chartData,id,titleText,xText,yText) {
+        console.log(chartData)
+        if(!chartData){
+            console.log(1)
+            console.log(chartData)
+            return
+        }
+        if(chartData.status!="0"){
+            if(chartData.type=="start"){
+                if (startChart != null && startChart != "" && startChart != undefined) {
+                    startChart.dispose();
+                    return
+                }
+                
+            }
+            if(chartData.type=="end"){
+                if (endChart != null && endChart != "" && endChart != undefined) {
+                    endChart.dispose();
+                    return
+                }
+            }
+            return
+        }
+        if(chartData.status=="0"){
+            if(chartData.data.type=="start"){
+                if (startChart != null && startChart != "" && startChart != undefined) {
+                    startChart.dispose();
+                }
+                var chart = echarts.init(document.getElementById(id))
+                startChart = chart
+            }
+            if(chartData.data.type=="end"){
+                if (endChart != null && endChart != "" && endChart != undefined) {
+                    endChart.dispose();
+                }
+                var chart = echarts.init(document.getElementById(id))
+                endChart = chart
+            }
+        }
         var chart = echarts.init(document.getElementById(id))
-        var xAxisData = chartData.map(function (item) {return item[0]})
-        var yAxisData = chartData.map(function (item) {return item[1]})
+        var xAxisData = chartData.data.stage.map(function (item) {return item.key})
+        var yAxisData = chartData.data.stage.map(function (item) {return item.value})
         chart.setOption({
         tooltip: {
             trigger: 'axis',
@@ -175,14 +213,12 @@
             }
         },
         legend: {
-            // orient: 'horizontal',
-            // left: 'left',
+            
             data: [{name:yText}]
         },
         grid: {
             left: '3%',
-            right: '6%',
-            // bottom: '3%',
+            right: '3%',
             containLabel: true
         },
         xAxis: [
@@ -221,14 +257,28 @@
         console.log(chartData)
         if(!chartData){
             console.log(1)
+            console.log(chartData)
             return
         }
-        if(chartData.status==1){
-            startChart.dispose();
-            endChart.dispose();
+        if(chartData.status!="0"){
+            if(chartData.type=="start"){
+                if (startChart != null && startChart != "" && startChart != undefined) {
+                    startChart.dispose();
+                    return
+                }
+                
+            }
+            if(chartData.type=="end"){
+                if (endChart != null && endChart != "" && endChart != undefined) {
+                    endChart.dispose();
+                    return
+                }
+            }
+            return
         }
         
-        if(chartData.status==0){
+        
+        if(chartData.status=="0"){
             if(chartData.data.type=="start"){
                 if (startChart != null && startChart != "" && startChart != undefined) {
                     startChart.dispose();

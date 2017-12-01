@@ -7,13 +7,13 @@
         <span>{{timeFlag?'开始时间':'选择时间点(上)'}}</span>
         <DatePicker size="small" v-model="startTime" :options="timeFlag?optionsStart:optionsStarts" placement="bottom-end" :type="timeFlag?'date':'datetime'" 
         :format="timeFlag?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
-        placeholder="Select date" @on-change="startChange" @on-ok="startOk" @on-clear="this.clearCharts"></DatePicker>
+        placeholder="Select date" @on-change="startChange" @on-ok="startOk" @on-clear="clearStart"></DatePicker>
       </div>
       <div class="time">
         <span>{{timeFlag?'结束时间':'选择时间点(下)'}}</span>
         <DatePicker size="small" v-model="endTime" :options="timeFlag?optionsEnd:optionsEnds" placement="bottom-end" :type="timeFlag?'date':'datetime'"
         :format="timeFlag?'yyyy-MM-dd':'yyyy-MM-dd HH:mm:ss'"
-        placeholder="Select date" @on-change="endChange" @on-ok="endOk" @on-clear="this.clearCharts"></DatePicker>
+        placeholder="Select date" @on-change="endChange" @on-ok="endOk" @on-clear="clearEnd"></DatePicker>
       </div>
     </div>
     <div class="chooseArea box">
@@ -219,16 +219,18 @@ export default {
       }
     },
     endOk(){
-      if (sessionStorage.getItem("userid") 
-      && this.lineBodystr
-      && this.endTime){
-        let endTime = new Date(this.endTime.getTime()+ 8 * 60 * 60 * 1000)
-        this.selectProjectStateByTimeAndLinebodyIds({
-          linebodyIds: this.lineBodystr,
-          time: endTime,
-          type:"end"
-          
-        })
+      if(this.routeIsroute("summary")){
+        if (sessionStorage.getItem("userid") 
+        && this.lineBodystr
+        && this.endTime){
+          let endTime = new Date(this.endTime.getTime()+ 8 * 60 * 60 * 1000)
+          this.selectProjectStateByTimeAndLinebodyIds({
+            linebodyIds: this.lineBodystr,
+            time: endTime,
+            type:"end"
+            
+          })
+        }
       }
     },
     endChange(data) {
@@ -254,7 +256,7 @@ export default {
       // }
     
     },
-    clearCharts() {
+    clearStart() {
       this.selectAllByUserIdAndLinebodyIds({
         userId: sessionStorage.getItem("userid")
       });
@@ -263,7 +265,19 @@ export default {
           type:"start"
         })
       }
+      
     },
+    clearEnd() {
+      this.selectAllByUserIdAndLinebodyIds({
+        userId: sessionStorage.getItem("userid")
+      });
+      if(this.routeIsroute("summary")){
+        this.selectProjectStateByTimeAndLinebodyIds({
+        type:"end"
+      })
+      }
+    },
+   
     routeIsroute(route){
       let reg = this.$route.path.split("/")[2];
       if (reg == route) {

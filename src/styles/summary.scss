@@ -50,7 +50,7 @@
                             color: #3065ab
                         }
                     }
-                    #charts_status_top {
+                    .charts_status {
                         position: relative;
                         width: 100%;
                         flex: 1;
@@ -67,34 +67,6 @@
                             font-size: P(20);
                             line-height: P(30);
                         }
-                    }
-                    #charts_status_bottom {
-                        position: relative;
-                        width: 100%;
-                        flex: 1;
-                        .pro_tip {
-                            width: 50%;
-                            height: P(30);
-                            position: absolute;
-                            margin: auto;
-                            left: 0;
-                            right: 0;
-                            bottom: 0;
-                            top: 0;
-                            text-align: center;
-                            font-size: P(20);
-                            line-height: P(30);
-                        }
-                    }
-                    #phaseCharts_top {
-                        position: relative;
-                        width: 100%;
-                        flex: 1;
-                    }
-                    #phaseCharts_bottom {
-                        position: relative;
-                        width: 100%;
-                        flex: 1;
                     }
                 }
                 .status_detail {

@@ -3,15 +3,16 @@
         <div class="status_content top">
             <div class="status_echarts">
                 <span class="status_pro">项目运行阶段分布&nbsp&nbsp<i class="status_pos">(上)</i></span>
-                <div id="phaseCharts_top" ref="phase">
-                    <!-- <chart
+                <div class="charts_status top">
+                    <chart
                         :_id="'phasetop'"
                         :_titleText="'访问量统计'"
                         :_xText="'类别'"
                         :_yText="'项目阶段的数量'"
-                        :_chartData="chartData"
+                        :_chartData="phaseData1"
                         :_type="'LineOrBar'">
-                    </chart> -->
+                    </chart>
+                    <div class="pro_tip" v-if = "phaseData1==null||phaseData1==''||phaseData1.status!='0'">暂无数据</div>
                 </div>
             </div>
             <div class="status_detail">
@@ -54,15 +55,16 @@
         <div class="status_content bottom">
             <div class="status_echarts">
                 <span class="status_pro">项目运行阶段分布&nbsp&nbsp<i class="status_pos">(下)</i></span>
-                <div id="phaseCharts_bottom">
-                    <!-- <chart
+                <div class="charts_status bottom">
+                    <chart
                         :_id="'phasebottom'"
                         :_titleText="'访问量统计'"
                         :_xText="'类别'"
                         :_yText="'项目阶段的数量'"
-                        :_chartData="chartData1"
+                        :_chartData="phaseData2"
                         :_type="'LineOrBar'">
-                    </chart> -->
+                    </chart>
+                    <div class="pro_tip" v-if = "phaseData2==null||phaseData2==''||phaseData2.status!='0'">暂无数据</div>
                 </div>
             </div>
             <div class="status_detail">
@@ -113,16 +115,8 @@
         },
         data(){
             return{
-                flag:true,
-                chartData:[["明确问题",10],
-                ["把握现状",20],["设定目标",10],
-                ["分析根因",20],["对策计划",10],
-                ["对策落实",20],["效果确认",10],["成果巩固",20]],
-                chartData1:[["明确问题",10],
-                ["把握现状",20],["设定目标",10],
-                ["分析根因",20],["对策计划",10],
-                ["对策落实",20],["效果确认",10],["成果巩固",20]],
-                isShow:false,
+                phaseData1:null,
+                phaseData2:null,
             }
                 
         },
@@ -143,21 +137,49 @@
         },
         watch:{
            projectStatus(newVal){
-                if(newVal.data){
-                    if(newVal.data.type=="end")
-                    this.statusData1 = newVal.data.status
+            if(newVal.status==="0"){
+                if(newVal.data.type=="start"){
+                    this.phaseData1 = newVal
                     this.projectNumber = newVal.data.statusOther.projectNumber
                     this.beganNumber = newVal.data.statusOther.beganNumber
                     this.runNumber =  newVal.data.statusOther.runNumber
                     this.delayNumber = newVal.data.statusOther.delayNumber
                     this.followNumber = newVal.data.statusOther.followNumber
                     this.closeNumber = newVal.data.statusOther.closeNumber
-                }else{
-                    this.statusData1=''
-                    this.statusData2=''
                 }
                 
+                if(newVal.data.type=="end"){
+                    this.phaseData2 = newVal
+                    this.projectNumber_b = newVal.data.statusOther.projectNumber
+                    this.beganNumber_b = newVal.data.statusOther.beganNumber
+                    this.runNumber_b =  newVal.data.statusOther.runNumber
+                    this.delayNumber_b = newVal.data.statusOther.delayNumber
+                    this.followNumber_b = newVal.data.statusOther.followNumber
+                    this.closeNumber_b = newVal.data.statusOther.closeNumber
+                }
+                
+            }else{
+                if(newVal.type=="start"){
+                    this.phaseData1=newVal
+                    this.projectNumber = "无"
+                    this.beganNumber = "无"
+                    this.runNumber =  "无"
+                    this.delayNumber = "无"
+                    this.followNumber = "无"
+                    this.closeNumber = "无"
+                }
+                if(newVal.type=="end"){
+                    this.phaseData2=newVal
+                    this.projectNumber_b = "无"
+                    this.beganNumber_b = "无"
+                    this.runNumber_b =  "无"
+                    this.delayNumber_b = "无"
+                    this.followNumber_b = "无"
+                    this.closeNumber_b = "无"
+                }
             }
+            
+        }
         },
         created(){
         },

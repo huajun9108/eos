@@ -457,8 +457,9 @@ export default {
     },
     addLosstier4time2({ commit }, obj) {
         axios.post("/datainput/addLosstier4time2", qs.stringify({
-            "classStarttime": obj.classStarttime,
-            "classEndtime": obj.classEndtime,
+            // "classStarttime": obj.classStarttime,
+            // "classEndtime": obj.classEndtime,
+            "classinfIdList": obj.classinfIdList,
             "twolevName": obj.twolevName,
             "losstier3Id": obj.losstier3Id,
             "losstier4Id": obj.losstier4Id,
@@ -481,5 +482,32 @@ export default {
         }).then(json => {
             commit("showKpitwolev", json)
         })
+    },
+    addClassinf({ commit }, obj) {
+      axios.post("/datainput/addClassinf", qs.stringify({
+        "classStarttime": obj.classStarttime,
+        "classEndtime": obj.classEndtime,
+        "shouldAttendance": obj.shouldAttendance,
+        "actualAttendance": obj.actualAttendance
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("addClassinf", json)
+      })
+    },
+    addProduct({ commit }, obj) {
+      axios.post("/datainput/addProduct", qs.stringify({
+        "classinfIdList": obj.classinfIdList,
+        "productType": obj.productType,
+        "conformProduct": obj.conformProduct,
+        "normalCycletime": obj.normalCycletime
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("addProduct", json)
+      })
     }
+
 }

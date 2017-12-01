@@ -16,13 +16,13 @@
         </div>
         <div class="classInfoNumAttendance">
           <span>应出勤人数：</span>
-          <Input></Input>
+          <Input v-model="shouldNumAttendanceValue"></Input>
           <span class="classInfoActualAttendance">实出勤人数：</span>
-          <Input></Input>
+          <Input v-model="actualNumAttendanceValue"></Input>
         </div>
         <div class="classInfoSubmit">
-          <span class="classInfoClearBtn classInfoBtn">清空</span>
-          <span class="classInfoConfirmBtn classInfoBtn">确定</span>
+          <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
+          <span class="classInfoConfirmBtn classInfoBtn" @click="addClassInfoClick">确定</span>
         </div>
       </div>
       <div class="productInfo">
@@ -98,9 +98,9 @@
       </div>
       <div class="productInfoSetting">
         <span>良品数量：</span>
-        <Input v-model="shouldNumAttendanceValue" placeholder="请填写数量"></Input>
+        <Input v-model="conformProductValue" placeholder="请填写数量"></Input>
         <span class="cycleTitle">Cycle：</span>
-        <Input v-model="actualNumAttendanceValue" placeholder="请填写时间"></Input>
+        <Input v-model="normalCycletimeValue" placeholder="请填写时间"></Input>
       </div>
       <div class="btnContainer text-right">
         <span class="confirmBtn data_btn" @click="productInfoConfirmClick">确定</span>
@@ -376,7 +376,10 @@ export default {
       editProductInfoFlag: false,
       editLossDirFlag: false,
       editTier3Value: '',
-      editTier4Value: ''
+      editTier4Value: '',
+      classInfoIdList: '',
+      conformProductValue: '',
+      normalCycletimeValue: ''
     }
   },
   computed: {
@@ -385,7 +388,9 @@ export default {
       "lossTier3",
       "kpiTwoLev",
       "addLosstier4time2Res",
-      "datainputLoss"
+      "datainputLoss",
+      "addClassinfRes",
+      "addProductRes"
     ])
   },
   methods: {
@@ -393,7 +398,9 @@ export default {
       "selectUserById",
       "showLosstier3",
       "showKpitwolev",
-      "addLosstier4time2"
+      "addLosstier4time2",
+      "addClassinf",
+      "addProduct"
     ]),
     getTier3: function(tier) {
       if (!tier) {
@@ -441,8 +448,6 @@ export default {
     addProductInfo: function(name) {
       this.editProductInfoFlag = false;
       this.showProductInfoFlag = true;
-      this.shouldNumAttendanceValue = '';
-      this.actualNumAttendanceValue = '';
     },
     deleteLoss(index) {
       alert("deleteLoss");
@@ -559,11 +564,27 @@ export default {
     openCeremonyClick: function() {
       this.openCeremonyFlag = true;
     },
+    addClassInfoClick() {
+      this.addClassinf({
+      "classStarttime": this.lengthShiftTimeValue[0],
+      "classEndtime": this.lengthShiftTimeValue[1],
+      "shouldAttendance": this.shouldNumAttendanceValue,
+      "actualAttendance": this.actualNumAttendanceValue
+    });
+      console.log(`${this.lengthShiftTimeValue[0]} ${this.lengthShiftTimeValue[1]} ${this.shouldNumAttendanceValue}
+        ${this.actualNumAttendanceValue}`);
+    },
+    clearClassInfoClick() {
+      this.lengthShiftTimeValue = '';
+      this.shouldNumAttendanceValue = '';
+      this.actualNumAttendanceValue = '';
+    },
     lossConfirmClick: function() {
       this.showLossFlag = false;
       this.addLosstier4time2({
-        "classStarttime": this.lengthShiftTimeValue[0],
-        "classEndtime": this.lengthShiftTimeValue[1],
+        // "classStarttime": this.lengthShiftTimeValue[0],
+        // "classEndtime": this.lengthShiftTimeValue[1],
+        "classinfIdList": this.classInfoIdList,
         "twolevName": this.lossTwoLevName,
         "losstier3Id": this.lossThreeLevStructId,
         "losstier4Id": this.lossFourLevStructId,
@@ -603,23 +624,29 @@ export default {
     },
     productInfoConfirmClick() {
       this.showProductInfoFlag = false;
+      this.addProduct({
+        "classinfIdList": this.classInfoIdList,
+        "productType": this.productValue,
+        "conformProduct": this.conformProductValue,
+        "normalCycletime": this.normalCycletimeValue
+    });
       const obj = {
         "产品": this.productValue,
-        "良品数量": this.shouldNumAttendanceValue,
-        "Cycle": this.actualNumAttendanceValue + 's',
+        "良品数量": this.conformProductValue,
+        "Cycle": this.normalCycletimeValue + 's',
       };
-      if(obj && this.productValue && this.shouldNumAttendanceValue && this.actualNumAttendanceValue) {
+      if(obj && this.productValue && this.conformProductValue && this.normalCycletimeValue) {
         this.productInfoData.push(obj);
       }
       this.productValue = '';
-      this.shouldNumAttendanceValue = '';
-      this.actualNumAttendanceValue = '';
+      this.conformProductValue = '';
+      this.normalCycletimeValue = '';
     },
     productInfoCancelClick() {
       this.showProductInfoFlag = false;
       this.productValue = '';
-      this.shouldNumAttendanceValue = '';
-      this.actualNumAttendanceValue = '';
+      this.conformProductValue = '';
+      this.normalCycletimeValue = '';
     }
   },
   watch: {
@@ -646,11 +673,28 @@ export default {
       }
     },
     kpiTwoLev(newVal) {
-      console.log(`kpiTwoLev: ${newVal}`);
+      // console.log(`kpiTwoLev: ${newVal}`);
     },
 
     addLosstier4time2Res(newVal) {
       console.log(`addLosstier4time2Res ${newVal}`);
+    },
+    addClassinfRes(newVal) {
+      console.log(`addClassinfRes ${newVal}`);
+      let classInfoIdArr = [];
+      if(this.addClassinfRes.status === "0") {
+        for(let i = 0; i < this.addClassinfRes.date.length; i++) {
+          console.log(this.addClassinfRes.date[i].classinfid);
+          classInfoIdArr.push(this.addClassinfRes.date[i].classinfid);
+        }
+      }
+      this.classInfoIdList = classInfoIdArr.join(",");
+    },
+    addProductRes(newVal) {
+      console.log(`addProductRes: ${addProductRes}`);
+    },
+    addProduct(newVal) {
+      console.log(`addProduct: ${addProductRes}`);
     }
   },
   mounted() {

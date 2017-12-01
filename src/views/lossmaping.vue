@@ -51,7 +51,6 @@
       initCharts: function() {
         console.log(this.lossmappingLinebodyAll);
         for(let i = 0; i < this.chartList.length; i++) {
-          // console.log(this.chartList[i]);
           if (this.chartList[i] != null && this.chartList[i] != "" && this.chartList[i] != undefined)
           this.chartList[i].dispose();
         }

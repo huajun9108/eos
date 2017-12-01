@@ -47,5 +47,7 @@ export default {
     lossTier3: '',
     addLosstier4time2Res: '',
     kpiTwoLev: '',
-    datainputLoss: []
+    datainputLoss: [],
+    addClassinfRes: '',
+    addProductRes: ''
 }

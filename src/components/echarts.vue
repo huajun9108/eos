@@ -164,24 +164,18 @@
         })
     }
     function drawLineOrBar(chartData,id,titleText,xText,yText) {
-        console.log(chartData)
         if(!chartData){
-            console.log(1)
-            console.log(chartData)
             return
         }
         if(chartData.status!="0"){
             if(chartData.type=="start"){
                 if (startChart != null && startChart != "" && startChart != undefined) {
                     startChart.dispose();
-                    return
                 }
-                
             }
             if(chartData.type=="end"){
                 if (endChart != null && endChart != "" && endChart != undefined) {
                     endChart.dispose();
-                    return
                 }
             }
             return
@@ -254,10 +248,7 @@
         })
     }
     function drawBar(chartData,id,titleText,xText,yText) {
-        console.log(chartData)
         if(!chartData){
-            console.log(1)
-            console.log(chartData)
             return
         }
         if(chartData.status!="0"){

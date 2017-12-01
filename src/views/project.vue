@@ -392,7 +392,7 @@ import {mapActions,mapState} from "vuex"
                 console.log(this.$route);
             }
             let _this = this
-            this.showImpItempool()
+            this.showImpItempool({userid: sessionStorage.getItem("userid")})
            
         }
 	}

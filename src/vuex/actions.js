@@ -337,7 +337,9 @@ export default {
         })
     },
     showImpItempool({ commit }, obj) {
-        axios.post("/impobject/showImpItempool", qs.stringify({})).then(res => {
+        axios.post("/impobject/showImpItempool", qs.stringify({
+            "userId": obj.userid
+        })).then(res => {
             console.log(res.data)
             return res.data
         }).then(json => {

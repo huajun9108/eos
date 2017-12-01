@@ -260,6 +260,7 @@ export default {
       this.selectAllByUserIdAndLinebodyIds({
         userId: sessionStorage.getItem("userid")
       });
+      sessionStorage.removeItem("statusStart")
       if(this.routeIsroute("summary")){
         this.selectProjectStateByTimeAndLinebodyIds({
           type:"start"

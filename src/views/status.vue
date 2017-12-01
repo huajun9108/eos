@@ -3,7 +3,7 @@
         <div class="status_content top">
             <div class="status_echarts">
                 <span class="status_pro">项目状态分布&nbsp&nbsp<i class="status_pos">(上)</i></span>
-                <div class="charts_status top">
+                <div class="charts_status">
                     <chart
                         :_id="'statustop'"
                         :_titleText="'访问量统计'"
@@ -47,7 +47,7 @@
         <div class="status_content bottom">
             <div class="status_echarts">
                 <span class="status_pro">项目状态分布&nbsp&nbsp<i class="status_pos">(下)</i></span>
-                <div class="charts_status bottom">
+                <div class="charts_status">
                     <chart
                         :_id="'statusbottom'"
                         :_titleText="'访问量统计'"
@@ -111,8 +111,11 @@ export default {
     },
     watch: {
         projectStatus(newVal){
+           
             if(newVal.status==="0"){
                 if(newVal.data.type=="start"){
+                    sessionStorage.setItem("statusStart",JSON.stringify(newVal))
+                    console.log(sessionStorage.getItem("statusStart"));
                     this.statusData1 = newVal
                     this.projectNumber = newVal.data.statusOther.projectNumber
                     this.beganNumber = newVal.data.statusOther.beganNumber
@@ -159,6 +162,18 @@ export default {
        
     },
     mounted() {
+        if(sessionStorage.getItem("statusStart")){
+            let status = JSON.parse(sessionStorage.getItem("statusStart"))
+            // let a = JSON.stringify(tatus)
+            console.log(status)
+            this.statusData1 = status
+            this.projectNumber = status.data.statusOther.projectNumber
+            this.beganNumber = status.data.statusOther.beganNumber
+            this.runNumber =  status.data.statusOther.runNumber
+            this.delayNumber = status.data.statusOther.delayNumber
+            this.followNumber = status.data.statusOther.followNumber
+            this.closeNumber = status.data.statusOther.closeNumber
+        }
         
     }
 };

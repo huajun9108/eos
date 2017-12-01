@@ -126,6 +126,7 @@ export default {
                 }
                 
                 if(newVal.data.type=="end"){
+                    sessionStorage.setItem("statusEnd",JSON.stringify(newVal))
                     this.statusData2 = newVal
                     this.projectNumber_b = newVal.data.statusOther.projectNumber
                     this.beganNumber_b = newVal.data.statusOther.beganNumber
@@ -173,6 +174,18 @@ export default {
             this.delayNumber = status.data.statusOther.delayNumber
             this.followNumber = status.data.statusOther.followNumber
             this.closeNumber = status.data.statusOther.closeNumber
+        }
+         if(sessionStorage.getItem("statusEnd")){
+            let status = JSON.parse(sessionStorage.getItem("statusEnd"))
+            // let a = JSON.stringify(tatus)
+            console.log(status)
+            this.statusData2 = status
+            this.projectNumber_b = status.data.statusOther.projectNumber
+            this.beganNumber_b = status.data.statusOther.beganNumber
+            this.runNumber_b =  status.data.statusOther.runNumber
+            this.delayNumber_b = status.data.statusOther.delayNumber
+            this.followNumber_b = status.data.statusOther.followNumber
+            this.closeNumber_b = status.data.statusOther.closeNumber
         }
         
     }

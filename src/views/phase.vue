@@ -139,6 +139,7 @@
            projectStatus(newVal){
             if(newVal.status==="0"){
                 if(newVal.data.type=="start"){
+                    sessionStorage.setItem("phaseStart",JSON.stringify(newVal))
                     this.phaseData1 = newVal
                     this.IdentifyProblem = newVal.data.stageOther.IdentifyProblem
                     this.GraspStatus = newVal.data.stageOther.IdentifyProblem
@@ -151,8 +152,9 @@
                 }
                 
                 if(newVal.data.type=="end"){
+                    sessionStorage.setItem("phaseEnd",JSON.stringify(newVal))
                     this.phaseData2 = newVal
-                     this.IdentifyProblem_b = newVal.data.stageOther.IdentifyProblem
+                    this.IdentifyProblem_b = newVal.data.stageOther.IdentifyProblem
                     this.GraspStatus_b = newVal.data.stageOther.IdentifyProblem
                     this.SetGoals_b =  newVal.data.stageOther.SetGoals
                     this.AnalysisCause_b = newVal.data.stageOther.AnalysisCause
@@ -192,7 +194,32 @@
         created(){
         },
         mounted(){
-           
+           if(sessionStorage.getItem("phaseStart")){
+                let status = JSON.parse(sessionStorage.getItem("phaseStart"))
+                console.log(status)
+                this.phaseData1 = status
+                this.IdentifyProblem = status.data.stageOther.IdentifyProblem
+                this.GraspStatus = status.data.stageOther.IdentifyProblem
+                this.SetGoals =  status.data.stageOther.SetGoals
+                this.AnalysisCause = status.data.stageOther.AnalysisCause
+                this.CountermeasuresPlan = status.data.stageOther.CountermeasuresPlan
+                this.Countermeasures = status.data.stageOther.Countermeasures
+                this.EffectConfirmation = status.data.stageOther.EffectConfirmation
+                this.ConsolidationResults = status.data.stageOther.ConsolidationResults
+            }
+            if(sessionStorage.getItem("phaseEnd")){
+                let status = JSON.parse(sessionStorage.getItem("phaseEnd"))
+                console.log(status)
+                this.phaseData2 = status
+                this.IdentifyProblem_b = status.data.stageOther.IdentifyProblem
+                this.GraspStatus_b = status.data.stageOther.IdentifyProblem
+                this.SetGoals_b =  status.data.stageOther.SetGoals
+                this.AnalysisCause_b = status.data.stageOther.AnalysisCause
+                this.CountermeasuresPlan_b = status.data.stageOther.CountermeasuresPlan
+                this.Countermeasures_b = status.data.stageOther.Countermeasures
+                this.EffectConfirmation_b = status.data.stageOther.EffectConfirmation
+                this.ConsolidationResults_b = status.data.stageOther.ConsolidationResults
+            }
         }
 	}
 </script>

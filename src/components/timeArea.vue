@@ -263,6 +263,8 @@ export default {
         userId: sessionStorage.getItem("userid")
       });
       if(this.routeIsroute("summary")){
+        sessionStorage.removeItem("statusEnd")
+        sessionStorage.removeItem("phaseEnd")
         this.selectProjectStateByTimeAndLinebodyIds({
         type:"end"
       })
@@ -272,8 +274,10 @@ export default {
       this.selectAllByUserIdAndLinebodyIds({
         userId: sessionStorage.getItem("userid")
       });
-      sessionStorage.removeItem("statusStart")
+     
       if(this.routeIsroute("summary")){
+        sessionStorage.removeItem("statusStart")
+        sessionStorage.removeItem("phaseStart")
         this.selectProjectStateByTimeAndLinebodyIds({
         type:"start"
       })

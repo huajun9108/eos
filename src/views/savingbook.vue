@@ -60,7 +60,7 @@ export default {
                 },
                 yAxis: {
                     type: 'value',
-                     axisLabel: {  
+                    axisLabel: {  
                         show: true,  
                         interval: 'auto',  
                         formatter: '{value} %'  

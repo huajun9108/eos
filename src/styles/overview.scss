@@ -27,8 +27,17 @@
                     height: 100%;
                 }
                 .secordCol {
-                    // width: 100%;
                     height: 100%;
+                    overflow: hidden;
+                    position: relative;
+                    #oee {
+                        width: 100%;
+                        height: 100%;
+                    }
+                    #testCharts {
+                        width: 100%;
+                        height: 100%;
+                    }
                 }
                 .item_td {
                     padding: 0;

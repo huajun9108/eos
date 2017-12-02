@@ -185,3 +185,60 @@ label {
     color: #ff9c00;
     cursor: pointer;
 }
+
+.vertical-center-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .ivu-modal {
+        top: 0;
+        .ivu-modal-content {
+            .ivu-modal-header {
+                border-bottom: 0;
+                padding: P(30) P(45) P(14) P(45);
+                .ivu-modal-header-inner {
+                    font-size: P(20);
+                    font-weight: 100;
+                    color: #040404;
+                }
+            }
+            .ivu-modal-body {
+                padding: 0 P(45);
+                .table>tbody>tr>td {
+                    cursor: pointer;
+                }
+                .pro_active {
+                    color: #bdbdbd;
+                    // background-color: #1b3867;
+                }
+                .pro_active:hover {
+                    cursor: not-allowed;
+                    background-color: #fff;
+                }
+                .table {
+                    margin-bottom: 0
+                }
+                .table>tbody+tbody {
+                    border: 0;
+                }
+            }
+            .ivu-modal-footer {
+                border-top: 0;
+                padding: P(28) P(45);
+                .ivu-btn-large {
+                    font-size: P(14);
+                    padding: P(5) P(35);
+                    border-radius: P(20);
+                }
+                .ivu-btn-text {
+                    color: #fff;
+                    background-color: #c2c2c2;
+                }
+                .ivu-btn-primary {
+                    background-color: #1b3867;
+                    border-color: #1b3867;
+                }
+            }
+        }
+    }
+}

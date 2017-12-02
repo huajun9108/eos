@@ -1,23 +1,26 @@
 <style scoped>
-  .chart {
-    width: 90%;
-    height: 200px;
-    position: relative;
-    left: 50%;
-    margin-left: -45%;
-    border-radius: 10px;
-  }
+    .chart {
+        width: 100%;
+        height: 90%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+    }
 </style>
 <template>
-  <div :id="_id" class="chart"></div>
+    <div :id="_id" class="chart"></div>
 </template>
 
 <script>
-  import echarts from 'echarts';
-  export default {
+    import {mapActions,mapState} from "vuex";
+    import echarts from 'echarts';
+    var startChart,endChart;
+    export default {
     data() {
         return {
-           
         }
     },
     props:{
@@ -25,7 +28,7 @@
         _titleText:String,
         _xText:String,
         _yText:String,
-        _chartData:Array,
+        _chartData:Object,
         _type:String
     },
     methods: {
@@ -34,41 +37,51 @@
     watch:{
       _chartData(val){
         switch (this._type){
-            case "LineAndBar":
-            drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
-            break
+            // case "LineAndBar":
+            // drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
+            // break
             case "LineOrBar":
             drawLineOrBar(val,this._id,this._titleText,this._xText,this._yText);
             break
-            case "Pie":
-            drawPie(val,this._id,this._titleText,this._xText,this._yText);
+            // case "Pie":
+            // drawPie(val,this._id,this._titleText,this._xText,this._yText);
+            // break
+            // case "Candlestick":
+            // drawCandlestick(val,this._id,this._titleText,this._xText,this._yText);
+            // break
+            case "Bar":
+            drawBar(val,this._id,this._titleText,this._xText,this._yText);
             break
-            case "Candlestick":
-            drawCandlestick(val,this._id,this._titleText,this._xText,this._yText);
-            break
-            default:
-            drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
-            break
+            // default:
+            // drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
+            // break
         }
       }
     },
+    computed: {
+        ...mapState(["projectStatus"])
+    },
     mounted() {
+        
       switch (this._type){
-            case "LineAndBar":
-            drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            break
+            // case "LineAndBar":
+            // drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            // break
             case "LineOrBar":
             drawLineOrBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
             break
-            case "Pie":
-            drawPie(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            // case "Pie":
+            // drawPie(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            // break
+            // case "Candlestick":
+            // drawCandlestick(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            // break
+            case "Bar":
+            drawBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
             break
-            case "Candlestick":
-            drawCandlestick(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            break
-            default:
-            drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            break
+            // default:
+            // drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            // break
         }
     }
   }
@@ -151,68 +164,214 @@
         })
     }
     function drawLineOrBar(chartData,id,titleText,xText,yText) {
+        if(!chartData){
+            return
+        }
+        if(chartData.status!="0"){
+            if(chartData.type=="start"){
+                if (startChart != null && startChart != "" && startChart != undefined) {
+                    startChart.dispose();
+                }
+            }
+            if(chartData.type=="end"){
+                if (endChart != null && endChart != "" && endChart != undefined) {
+                    endChart.dispose();
+                }
+            }
+            return
+        }
+        if(chartData.status=="0"){
+            if(chartData.data.type=="start"){
+                if (startChart != null && startChart != "" && startChart != undefined) {
+                    startChart.dispose();
+                }
+                var chart = echarts.init(document.getElementById(id))
+                startChart = chart
+            }
+            if(chartData.data.type=="end"){
+                if (endChart != null && endChart != "" && endChart != undefined) {
+                    endChart.dispose();
+                }
+                var chart = echarts.init(document.getElementById(id))
+                endChart = chart
+            }
+        }
         var chart = echarts.init(document.getElementById(id))
-        var xAxisData = chartData.map(function (item) {return item[0]})
-        var yAxisData = chartData.map(function (item) {return item[1]})
+        var xAxisData = chartData.data.stage.map(function (item) {return item.key})
+        var yAxisData = chartData.data.stage.map(function (item) {return item.value})
         chart.setOption({
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
         },
-        // toolbox: {
-        //     feature: {
-        //     magicType:{show: true, type: ['line', 'bar']},
-        //     saveAsImage: {show: true}
-        //     },
-        //     top: 10,
-        //     right: 40
-        // },
-        calculable: true,
+        legend: {
+            
+            data: [{name:yText}]
+        },
         grid: {
             left: '3%',
-            right: '6%',
-            bottom: '3%',
+            right: '3%',
             containLabel: true
         },
         xAxis: [
             {
-            type: 'category',
-            data: xAxisData
-            }
+                type: 'category',
+                data: xAxisData,
+                axisTick:{
+                    show:false
+                },
+            },
+            
         ],
         yAxis: [
             {
-            type: 'value',
-            name: yText,
-            max: Math.max.apply(Math,yAxisData)
+                type: 'value',
+                axisTick:{
+                    show:false
+                },
             }
         ],
         series: [
             {
             name: yText,
             type: 'bar',
-            markPoint: {
-                data: [
-                {type: 'max', name: '最大值'},
-                {type: 'min', name: '最小值'}
-                ]
-            },
-            markLine: {
-                data: [
-                {type: 'average', name: '平均值'}
-                ]
-            },
             itemStyle: {
                 normal: {
-                barBorderRadius: 20,
-                color: '#726dd1',
-                shadowColor: 'rgba(0, 0, 0, 0.4)',
-                shadowBlur: 20
+                color: '#3670be',
                 }
             },
             data: yAxisData
             }
         ]
         })
+    }
+    function drawBar(chartData,id,titleText,xText,yText) {
+        if(!chartData){
+            return
+        }
+        if(chartData.status!="0"){
+            if(chartData.type=="start"){
+                if (startChart != null && startChart != "" && startChart != undefined) {
+                    startChart.dispose();
+                    return
+                }
+                
+            }
+            if(chartData.type=="end"){
+                if (endChart != null && endChart != "" && endChart != undefined) {
+                    endChart.dispose();
+                    return
+                }
+            }
+            return
+        }
+        
+        
+        if(chartData.status=="0"){
+            if(chartData.data.type=="start"){
+                if (startChart != null && startChart != "" && startChart != undefined) {
+                    startChart.dispose();
+                }
+                var chart = echarts.init(document.getElementById(id))
+                startChart = chart
+            }
+            if(chartData.data.type=="end"){
+                if (endChart != null && endChart != "" && endChart != undefined) {
+                    endChart.dispose();
+                }
+                var chart = echarts.init(document.getElementById(id))
+                endChart = chart
+            }
+        }
+        if(chartData=== ""){
+          return;
+        }
+        var keys = [];
+        var xAxisData = chartData.data.status.map(function (item) {
+                return item.key
+            })
+        var yAxisData = chartData.data.status.map(function (item) {
+                return item.value;
+            })
+        let machineColor ='#3670be';
+        let materialColor ='#ffd189';
+        let humanColor = '#b7b7b7';
+        chart.setOption({
+            noDataLoadingOption: {
+                text: '暂无数据',
+                effect: 'bubble',
+                effectOption: {
+                    effect: {
+                        n: 0
+                    }
+                }
+            },
+            tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data:xAxisData
+            },
+            grid: {
+                left: 0,
+                containLabel: true
+            },
+            xAxis:  {
+                type: 'category',
+                data: ['项目池','准备启动','实施运行','实施延迟','成果跟踪','项目关闭'],
+                axisTick:{
+                    show:false
+                }
+            },
+            yAxis: {
+                type: 'value',
+                axisTick:{
+                    show:false
+                },
+            },
+            series: [
+                {
+                    name: xAxisData[0],
+                    type: 'bar',
+                    stack: '总量',
+                    itemStyle:{
+                        normal:{
+                            color:machineColor
+                        }
+                    },
+                    data: yAxisData[0]
+                },
+                {
+                    name: xAxisData[1],
+                    type: 'bar',
+                    stack: '总量',
+                    itemStyle:{
+                        normal:{
+                            color:materialColor
+                        }
+                    },
+                    data: yAxisData[1]
+                },
+                {
+                    name: xAxisData[2],
+                    type: 'bar',
+                    stack: '总量',
+                    itemStyle:{
+                        normal:{
+                            color:humanColor
+                        }
+                    },
+                    data:  yAxisData[2]
+                },
+            ]
+                    
+                
+        },true)
     }
     function drawPie(chartData,id,titleText,xText,yText) {
         var chart = echarts.init(document.getElementById(id))
@@ -290,7 +449,7 @@
             grid: {
                 left: '10%',
                 right: '10%',
-                bottom: '15%'
+                // bottom: '15%'
             },
             xAxis: {
                 type: 'category',
@@ -361,7 +520,13 @@
                             opacity: 0.5,
                             color:"#a54141"
                         }
-                    }
+                    },
+                    itemStyle:{
+                        normal:{
+                            color:"#a54141"
+                        }
+                    },
+
                 },
                 {
                     name: 'target',
@@ -373,7 +538,12 @@
                             opacity: 0.5,
                             color:"#cb8b2e"
                         }
-                    }
+                    },
+                    itemStyle:{
+                        normal:{
+                            color:"#cb8b2e"
+                        }
+                    },
                 },
                 {
                     name: 'ideal',
@@ -385,7 +555,12 @@
                             opacity: 0.5,
                             color:"#476f7b"
                         }
-                    }
+                    },
+                    itemStyle:{
+                        normal:{
+                            color:"#476f7b"
+                        }
+                    },
                 },
             ]
             

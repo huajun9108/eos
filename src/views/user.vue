@@ -28,12 +28,13 @@ export default {
     },
     
     watch: {
-
+        
     },
     mounted () {
-        
+    
         
     },
+    
     
     
 }

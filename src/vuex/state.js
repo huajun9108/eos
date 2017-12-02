@@ -48,6 +48,7 @@ export default {
     addLosstier4time2Res: '',
     kpiTwoLev: '',
     datainputLoss: [],
+    projectStatus: [],
     datainputLossId: [],
     addClassinfRes: '',
     addProductRes: ''

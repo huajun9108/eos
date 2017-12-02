@@ -111,7 +111,6 @@
 </div>
 </template>
 <script>
-import echarts from "echarts"
 import {
   mapState,
   mapActions

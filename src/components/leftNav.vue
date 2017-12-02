@@ -1,37 +1,37 @@
 <template>
   <div class="nav-left">
     <!-- <ul>
-        <router-link :to="{name:'overview'}" v-show = "showFlag">
+        <router-link :to="{name:'Overview'}">
           <li>
             <span>Overview</span> 
           </li>
         </router-link>
-        <router-link :to="{name:'performance'}">
+        <router-link :to="{name:'Loss Mapping'}">
           <li>
-            <span>Performance</span> 
+            <span>Loss Mapping</span> 
           </li>
         </router-link>
-        <router-link :to="{name:'lossmaping'}">
+        <router-link :to="{name:'Improvement'}">
           <li>
-           <span>Loss Mapping</span>
+           <span>Improvement</span>
           </li>
         </router-link>
-        <router-link :to="{name:'improvement'}">
+        <router-link :to="{name:'Project Summary'}">
           <li>  
-            <span>Improvement Project</span>
+            <span>Project Summary</span>
           </li>
         </router-link>
-        <router-link :to="{name:'savingbook'}">
+        <router-link :to="{name:'Saving Book'}">
           <li>
             <span>Saving Book</span>
           </li>
         </router-link>
-        <router-link :to="{name:'datainput'}">
+        <router-link :to="{name:'Data Input'}">
           <li>
             <span>Data Input</span>
           </li>
         </router-link>
-        <router-link :to="{name:'useraccount'}">
+        <router-link :to="{name:'Account'}">
           <li>
             <span>Account</span>
           </li>
@@ -69,16 +69,12 @@ import { mapState, mapActions } from "vuex";
     mounted(){
       if(sessionStorage.getItem("userid")) {
         this.selectUserById({userid:sessionStorage.getItem("userid")})
-        
-        console.log(this.validmenuList)
       }else{
         console.log(this.$route);
       }
     },
     watch: {
-      validmenu(){
-        console.log(this.validmenu)
-      }
+      
     }
   }
 </script>

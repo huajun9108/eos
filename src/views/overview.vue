@@ -13,13 +13,13 @@
                         <tr>
                             <td class="firstCol" width="10%">OEE</td>
                             <td id="toee" class="secordCol" width="60%">
-                                <chart
+                                <!-- <chart
                                 :_id="'oee'"
                                 :_titleText="'访问量统计'"
                                 :_xText="'类别'"
                                 :_yText="'总访问量'"
                                 :_chartData="chartDataoee"
-                                :_type="'Candlestick'"></chart>
+                                :_type="'Candlestick'"></chart> -->
                             </td>
                             <td width="30%" class="text-left item_td">
                                 <div class="item_table item_top">
@@ -83,7 +83,7 @@
                                 </div>
                             </td>
                         </tr>
-                         <!-- <tr>
+                         <tr>
                             <td class="firstCol" width="10%">Safety</td>
                             <td id="safety" class="secordCol" style="width: 600px;height:220px;" width="60%">
                                 <!-- <chart
@@ -92,15 +92,15 @@
                                 :_xText="'类别'"
                                 :_yText="'总访问量'"
                                 :_chartData="chartData"
-                                :_type="'LineOrBar'"></chart> -->
-                            <!-- </td>
+                                :_type="'Pie'"></chart> -->
+                            </td>
                             <td width="30%"></td>
                         </tr>
                          <tr>
                             <td class="firstCol" width="10%">Defect</td>
                             <td id="defect" class="secordCol" style="width: 600px;height:220px;" width="60%"></td>
                             <td width="30%"></td>
-                        </tr> -->
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -108,7 +108,6 @@
     </div>   
 </template>
 <script>
-import echarts from "echarts"
 import timearea from "../components/timeArea"
 import chart from '../components/echarts'
 export default {
@@ -156,250 +155,7 @@ export default {
         showlDialog(data){
             this.isShow = !this.isShow 
         },
-        // splitData(rawData) {
-        //     var categoryData = [];
-        //     var values = []
-        //     for (var i = 0; i < rawData.length; i++) {
-        //         categoryData.push(rawData[i].splice(0, 1)[0]);
-        //         values.push(rawData[i])
-        //     }
-        //     return {
-        //         categoryData: categoryData,
-        //         values: values
-        //     };
-        // },
-        // calculateMA(dayCount) {
-        //     var result = [];
-        //     for (var i = 0, len = this.data0.values.length; i < len; i++) {
-        //         if (i < dayCount) {
-        //             result.push('-');
-        //             continue;
-        //         }
-        //         var sum = 0;
-        //         for (var j = 0; j < dayCount; j++) {
-        //             sum += this.data0.values[i - j][1];
-        //         }
-        //         result.push(sum / dayCount);
-        //     }
-        //     return result;
-        // },
-    //    initCharts(){
-    //         var myChart1 = echarts.init(document.getElementById('oee'));
-    //         var option = {
-    //             // title: {
-    //             //     text: '上证指数',
-    //             //     left: 0
-    //             // },
-    //             tooltip: {
-    //                 trigger: 'axis',
-    //                 axisPointer: {
-    //                     type: 'cross'
-    //                 }
-    //             },
-    //             // legend: {
-    //             //     data: ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
-    //             // },
-    //             grid: {
-    //                 left: '10%',
-    //                 right: '10%',
-    //                 bottom: '15%'
-    //             },
-    //             xAxis: {
-    //                 type: 'category',
-    //                 data: this.data0.categoryData,
-    //                 scale: true,
-    //                 boundaryGap : false,
-    //                 axisLine: {
-    //                     onZero: false,
-    //                     lineStyle:{
-    //                         color:"#e4e4e4"
-    //                     }
-    //                 },
-    //                 splitLine: {show: false},
-    //                 splitNumber: 20,
-    //                 min: 'dataMin',
-    //                 max: 'dataMax',
-    //                 axisLabel:{
-    //                     color:"#040404"
-    //                 }
-            
-                    
-    //             },
-    //             yAxis: {
-    //                 // scale: true,
-    //                 type: 'value',
-    //                 min: 0,
-    //                 max: 100,
-    //                 splitArea: {
-    //                     show: true
-    //                 },
-    //                 axisLine: {
-    //                     lineStyle:{
-    //                         color:"#e4e4e4"
-    //                     }
-    //                 },
-    //                 axisLabel:{
-    //                     color:"#040404",
-    //                     formatter: '{value} %'  
-    //                 }
-
-    //             },
-    //             // dataZoom: [
-    //             //     {
-    //             //         type: 'inside',
-    //             //         start: 50,
-    //             //         end: 100
-    //             //     },
-    //             //     {
-    //             //         show: true,
-    //             //         type: 'slider',
-    //             //         y: '90%',
-    //             //         start: 50,
-    //             //         end: 100
-    //             //     }
-    //             // ],
-    //             series: [
-    //                 {
-    //                     name: '日K',
-    //                     type: 'candlestick',
-    //                     data: this.data0.values,
-    //                     itemStyle: {
-    //                         normal: {
-    //                             color: this.upColor,
-    //                             color0: this.downColor,
-    //                             borderColor:this.upBorderColor,
-    //                             borderColor0: this.downBorderColor
-    //                         }
-    //                     },
-    //                     markPoint: {
-    //                         // label: {
-    //                         //     normal: {
-    //                         //         formatter: function (param) {
-    //                         //             return param != null ? Math.round(param.value) : '';
-    //                         //         }
-    //                         //     }
-    //                         // },
-    //                         data: [
-    //                             // {
-    //                             //     name: 'XX标点',
-    //                             //     coord: ['2013/5/31', 2300],
-    //                             //     value: 2300,
-    //                             //     itemStyle: {
-    //                             //         normal: {color: 'rgb(41,60,85)'}
-    //                             //     }
-    //                             // },
-    //                             // {
-    //                             //     name: 'highest value',
-    //                             //     type: 'max',
-    //                             //     valueDim: 'highest'
-    //                             // },
-    //                             // {
-    //                             //     name: 'lowest value',
-    //                             //     type: 'min',
-    //                             //     valueDim: 'lowest'
-    //                             // },
-    //                             // {
-    //                             //     name: 'average value on close',
-    //                             //     type: 'average',
-    //                             //     valueDim: 'close'
-    //                             // }
-    //                         ],
-    //                         tooltip: {
-    //                             formatter: function (param) {
-    //                                 return param.name + '<br>' + (param.data.coord || '');
-    //                             }
-    //                         }
-    //                     },
-    //                     // markLine: {
-    //                     //     symbol: ['none', 'none'],
-    //                     //     data: [
-    //                     //         [
-    //                     //             {
-    //                     //                 name: 'from lowest to highest',
-    //                     //                 type: 'min',
-    //                     //                 valueDim: 'lowest',
-    //                     //                 symbol: 'circle',
-    //                     //                 symbolSize: 10,
-    //                     //                 label: {
-    //                     //                     normal: {show: false},
-    //                     //                     emphasis: {show: false}
-    //                     //                 }
-    //                     //             },
-    //                     //             {
-    //                     //                 type: 'max',
-    //                     //                 valueDim: 'highest',
-    //                     //                 symbol: 'circle',
-    //                     //                 symbolSize: 10,
-    //                     //                 label: {
-    //                     //                     normal: {show: false},
-    //                     //                     emphasis: {show: false}
-    //                     //                 }
-    //                     //             }
-    //                     //         ],
-    //                     //         {
-    //                     //             name: 'min line on close',
-    //                     //             type: 'min',
-    //                     //             valueDim: 'close'
-    //                     //         },
-    //                     //         {
-    //                     //             name: 'max line on close',
-    //                     //             type: 'max',
-    //                     //             valueDim: 'close'
-    //                     //         }
-    //                     //     ]
-    //                     // }
-    //                 },
-    //                 {
-    //                     name: 'vision',
-    //                     type: 'line',
-    //                     data: [99,99,99,99,99,99,99,99,99,99,99,99,99,99,99],
-    //                     smooth: true,
-    //                     lineStyle: {
-    //                         normal: {
-    //                             opacity: 0.5,
-    //                             color:"#a54141"
-    //                         }
-    //                     }
-    //                 },
-    //                 {
-    //                     name: 'target',
-    //                     type: 'line',
-    //                     data: [80,73.2,65.3,96,77.3,98.3,85.2,85.3,99.3,95.3,85.2,86.3,84.2,94.3,96.3],
-    //                     smooth: true,
-    //                     lineStyle: {
-    //                         normal: {
-    //                             opacity: 0.5,
-    //                             color:"#cb8b2e"
-    //                         }
-    //                     }
-    //                 },
-    //                 {
-    //                     name: 'ideal',
-    //                     type: 'line',
-    //                     data: [99.5,88.3,99.5,88.3,99.5,88.3,99.5,88.3,99.5,99.5,99.5,88.3,99.5,88.3,99.5],
-    //                     smooth: true,
-    //                     lineStyle: {
-    //                         normal: {
-    //                             opacity: 0.5,
-    //                             color:"#476f7b"
-    //                         }
-    //                     }
-    //                 },
-    //                 // {
-    //                 //     name: 'MA30',
-    //                 //     type: 'line',
-    //                 //     data: this.calculateMA(30),
-    //                 //     smooth: true,
-    //                 //     lineStyle: {
-    //                 //         normal: {opacity: 0.5}
-    //                 //     }
-    //                 // },
-
-    //             ]
-    //         }
-    //         myChart1.setOption(option, true);
-
-    //    },
+      
    },
    mounted () {
     //    this.initCharts();

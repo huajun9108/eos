@@ -337,7 +337,9 @@ export default {
         })
     },
     showImpItempool({ commit }, obj) {
-        axios.post("/impobject/showImpItempool", qs.stringify({})).then(res => {
+        axios.post("/impobject/showImpItempool", qs.stringify({
+            "userId": obj.userid
+        })).then(res => {
             console.log(res.data)
             return res.data
         }).then(json => {
@@ -445,6 +447,7 @@ export default {
             commit("updateLinebodyWeightById", json)
         })
     },
+
     showLosstier3({ commit }, obj) {
         axios.post("/datainput/showLosstier3", qs.stringify({
             "twolevName": obj.twolevName
@@ -455,6 +458,7 @@ export default {
             commit("showLosstier3", json)
         })
     },
+
     addLosstier4time2({ commit }, obj) {
         axios.post("/datainput/addLosstier4time2", qs.stringify({
             // "classStarttime": obj.classStarttime,
@@ -483,31 +487,43 @@ export default {
             commit("showKpitwolev", json)
         })
     },
+    selectProjectStateByTimeAndLinebodyIds({ commit }, obj) {
+        axios.post("/summary/selectProjectStateByTimeAndLinebodyIds", qs.stringify({
+            linebodyIds: obj.linebodyIds,
+            time: obj.time,
+            type: obj.type
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("selectProjectStateByTimeAndLinebodyIds", json)
+        })
+    },
     addClassinf({ commit }, obj) {
-      axios.post("/datainput/addClassinf", qs.stringify({
-        "classStarttime": obj.classStarttime,
-        "classEndtime": obj.classEndtime,
-        "shouldAttendance": obj.shouldAttendance,
-        "actualAttendance": obj.actualAttendance
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("addClassinf", json)
-      })
+        axios.post("/datainput/addClassinf", qs.stringify({
+            "classStarttime": obj.classStarttime,
+            "classEndtime": obj.classEndtime,
+            "shouldAttendance": obj.shouldAttendance,
+            "actualAttendance": obj.actualAttendance
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("addClassinf", json)
+        })
     },
     addProduct({ commit }, obj) {
-      axios.post("/datainput/addProduct", qs.stringify({
-        "classinfIdList": obj.classinfIdList,
-        "productType": obj.productType,
-        "conformProduct": obj.conformProduct,
-        "normalCycletime": obj.normalCycletime
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("addProduct", json)
-      })
+        axios.post("/datainput/addProduct", qs.stringify({
+            "classinfIdList": obj.classinfIdList,
+            "productType": obj.productType,
+            "conformProduct": obj.conformProduct,
+            "normalCycletime": obj.normalCycletime
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("addProduct", json)
+        })
     }
 
 }

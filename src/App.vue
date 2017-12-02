@@ -43,4 +43,5 @@
     @import "./styles/lossmapping.scss"
     @import "./styles/improve.scss"
     @import "./styles/savingbook.scss"
+    @import "./styles/summary.scss"
 </style>

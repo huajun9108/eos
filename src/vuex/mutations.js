@@ -123,13 +123,15 @@ export default {
   showKpitwolev(state, json) {
     state.kpiTwoLev = json
     let arr = []
+    let arrId = []
     json.data.forEach(item => {
       let obj = {};
       obj[item] = []
       arr.push(obj)
+      arrId.push(obj)
     })
     state.datainputLoss = arr;
-    state.datainputLossId = arr;
+    state.datainputLossId = arrId;
     console.log(arr)
   },
   addClassinf(state, json) {

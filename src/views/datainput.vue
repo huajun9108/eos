@@ -371,15 +371,15 @@ export default {
       lossTwoLevName: '',
       lossTier3Array: [],
       productValue: '',
-      shouldNumAttendanceValue: '',
-      actualNumAttendanceValue: '',
+      shouldNumAttendanceValue: null,
+      actualNumAttendanceValue: null,
       editProductInfoFlag: false,
       editLossDirFlag: false,
       editTier3Value: '',
       editTier4Value: '',
       classInfoIdList: '',
-      conformProductValue: '',
-      normalCycletimeValue: ''
+      conformProductValue: null,
+      normalCycletimeValue: null
     }
   },
   computed: {
@@ -672,17 +672,19 @@ export default {
     kpiTwoLev(newVal) {
       // console.log(`kpiTwoLev: ${newVal}`);
     },
-
     addLosstier4time2Res(newVal) {
       console.log(`addLosstier4time2Res ${newVal}`);
+      console.log(`datainputLossId: ${this.datainputLossId}`);
       if(newVal.status === "0") {
+        console.log(`${newVal.data.losstier4Dataid} ${newVal.data.losstier2name}`)
         if(newVal.data.losstier4Dataid) {
           console.log(newVal.data.losstier2name);
           for(let i = 0; i < this.datainputLossId.length; i++) {
             for(var key in this.datainputLossId[i]) {
               if(key === newVal.data.losstier2name) {
-                console.log("hhhhhh");
-                this.datainputLossId[i][key].push(newVal.data[0].losstier2name);
+                console.log(newVal.data.losstier4Dataid);
+                console.log(this.datainputLossId[i][key])
+                this.datainputLossId[i][key].push(newVal.data.losstier4Dataid);
               }
             }
           }

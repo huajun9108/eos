@@ -122,15 +122,18 @@ export default {
     },
     showKpitwolev(state, json) {
         state.kpiTwoLev = json
-        let arr = []
+        state.datainputLoss = []
+        state.datainputLossId = []
         json.data.forEach(item => {
             let obj = {};
             obj[item] = []
-            arr.push(obj)
+            state.datainputLoss.push(obj)
         })
-        state.datainputLoss = arr;
-        state.datainputLossId = arr;
-        console.log(arr)
+        json.data.forEach(item1 => {
+          let obj1 = {};
+          obj1[item1] = []
+          state.datainputLossId.push(obj1);
+        })
     },
     addClassinf(state, json) {
         state.addClassinfRes = json
@@ -140,5 +143,11 @@ export default {
     },
     selectProjectStateByTimeAndLinebodyIds(state, json) {
         state.projectStatus = json
+    },
+    showProduct(state, json) {
+      state.showProductRes = json
+    },
+    updateObjectimeAfteradd(state, json) {
+      state.updateObjectimeAfteraddRes = json
     }
 }

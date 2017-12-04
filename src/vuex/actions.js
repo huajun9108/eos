@@ -524,6 +524,28 @@ export default {
         }).then(json => {
             commit("addProduct", json)
         })
+    },
+    showProduct({ commit }, obj) {
+      axios.post("/datainput/showProduct", qs.stringify({
+        "classinfIdList": obj.classinfIdList
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("showProduct", json)
+      })
+    },
+    updateObjectimeAfteradd({ commit }, obj) {
+      axios.post("/datainput/updateObjectimeAfteradd", qs.stringify({
+        "losstier4Dataid": obj.losstier4Dataid,
+        "starttime": obj.starttime,
+        "endtime": obj.endtime
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("updateObjectimeAfteradd", json)
+      })
     }
 
 }

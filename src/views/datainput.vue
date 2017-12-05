@@ -635,20 +635,29 @@ export default {
                       if (key === this.lossTwoLevName) {
                         this.datainputLoss[i][key].push(obj);
                         this.$Message.success("添加成功");
-                        this.tierValue = '';
-                        this.childTierValue = '';
-                        this.startTimeValue = '';
-                        this.durationTimeValue = '';
-                        this.endTimeValue = '';
                       }
                     }
                   }
                 }
+                else {
+                  this.$Message.error("添加失败");
+                }
+              } else {
+                this.$Message.error("添加失败");
               }
             }
           }
+        } else {
+          this.$message.error("添加失败");
         }
+      } else {
+        this.$message.error("添加失败");
       }
+      this.tierValue = '';
+      this.childTierValue = '';
+      this.startTimeValue = '';
+      this.durationTimeValue = '';
+      this.endTimeValue = '';
     },
     addClassinfRes(newVal) {
       console.log(`addClassinfRes ${newVal}`);
@@ -662,10 +671,9 @@ export default {
         this.showProduct({
           "classinfIdList": this.classInfoIdList
         })
+      } else {
+        this.$Message.error("班次信息添加失败");
       }
-    },
-    addProductRes(newVal) {
-      console.log(`addProductRes: ${newVal}`);
     },
     addProductRes(newVal) {
       console.log(`addProduct: ${newVal}`);
@@ -677,11 +685,16 @@ export default {
         };
         if (obj && newVal.data.productname && this.conformProductValue && this.normalCycletimeValue) {
           this.productInfoData.push(obj);
+          this.$Message.success("添加成功");
+        } else {
+          this.$Message.error("添加失败");
         }
-        this.productValue = '';
-        this.conformProductValue = '';
-        this.normalCycletimeValue = '';
+      } else {
+        this.$Message.error("添加失败");
       }
+      this.productValue = '';
+      this.conformProductValue = '';
+      this.normalCycletimeValue = '';
     },
     showProductRes(newVal) {
       console.log("showProductRes:" + newVal);
@@ -700,17 +713,24 @@ export default {
                 if (this.datainputLoss[i][key][this.lossIndex][k] === this.lossParams.row["tier3"]) {
                   this.datainputLoss[i][key][this.lossIndex]["开始时间"] = this.startTimeValue.format('yyyy-MM-dd hh:mm:ss');
                   this.datainputLoss[i][key][this.lossIndex]["结束时间"] = this.endTimeValue.format('yyyy-MM-dd hh:mm:ss');
-                  this.tierValue = '';
-                  this.childTierValue = '';
-                  this.startTimeValue = '';
-                  this.durationTimeValue = '';
-                  this.endTimeValue = '';
+                  this.$Message.success("修改成功");
+                } else {
+                  this.$Message.error("修改失败");
                 }
               }
+            } else {
+              this.$Message.error("修改失败");
             }
           }
         }
+      } else {
+        this.$Message.error("修改失败");
       }
+      this.tierValue = '';
+      this.childTierValue = '';
+      this.startTimeValue = '';
+      this.durationTimeValue = '';
+      this.endTimeValue = '';
     },
     showProductNameRes(newVal) {
       console.log("showProductNameRes:" + newVal);

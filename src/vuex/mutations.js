@@ -149,5 +149,8 @@ export default {
     },
     updateObjectimeAfteradd(state, json) {
       state.updateObjectimeAfteraddRes = json
+    },
+    showProductName(state, json) {
+      state.showProductNameRes = json
     }
 }

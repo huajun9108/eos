@@ -16,9 +16,9 @@
         </div>
         <div class="classInfoNumAttendance">
           <span>应出勤人数：</span>
-          <InputNumber v-model="shouldNumAttendanceValue"></InputNumber>
+          <InputNumber v-model="shouldNumAttendanceValue" :min="1"></InputNumber>
           <span class="classInfoActualAttendance">实出勤人数：</span>
-          <InputNumber v-model="actualNumAttendanceValue"></InputNumber>
+          <InputNumber v-model="actualNumAttendanceValue" :min="0"></InputNumber>
         </div>
         <div class="classInfoSubmit">
           <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
@@ -91,16 +91,16 @@
           <span>{{ this.productName }}</span>
         </div>
         <Select v-else v-model="productValue" class="dropdownProduct" clearable placeholder="产品">
-            <Option v-for="item in productList" :value="item.value" :key="item.value">
-              {{ item.label }}
+            <Option v-for="item in productList" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
+              {{ item.name }}
             </Option>
           </Select>
       </div>
       <div class="productInfoSetting">
         <span>良品数量：</span>
-        <InputNumber v-model="conformProductValue" placeholder="请填写数量"></InputNumber>
+        <InputNumber v-model="conformProductValue" placeholder="请填写数量" :min="0"></InputNumber>
         <span class="cycleTitle">Cycle：</span>
-        <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间"></InputNumber>
+        <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间" :min="0"></InputNumber>
       </div>
       <div class="btnContainer text-right">
         <span class="confirmBtn data_btn" @click="productInfoConfirmClick">确定</span>
@@ -277,19 +277,20 @@ export default {
           'Cycle': '60s',
         }
       ],
-      productList: [{
-          value: 'A',
-          label: 'A'
-        },
-        {
-          value: 'B',
-          label: 'B'
-        },
-        {
-          value: 'C',
-          label: 'C'
-        }
-      ],
+      productList: [],
+      // productList: [{
+      //     value: 'A',
+      //     label: 'A'
+      //   },
+      //   {
+      //     value: 'B',
+      //     label: 'B'
+      //   },
+      //   {
+      //     value: 'C',
+      //     label: 'C'
+      //   }
+      // ],
       childTabCols: [{
           title: 'Tier3',
           key: 'tier3',
@@ -393,7 +394,8 @@ export default {
       "addClassinfRes",
       "addProductRes",
       "showProductRes",
-      "updateObjectimeAfteraddRes"
+      "updateObjectimeAfteraddRes",
+      "showProductNameRes"
     ])
   },
   methods: {
@@ -405,7 +407,8 @@ export default {
       "addClassinf",
       "addProduct",
       "showProduct",
-      "updateObjectimeAfteradd"
+      "updateObjectimeAfteradd",
+      "showProductName"
     ]),
     getTier3: function(tier) {
       console.log(tier);
@@ -457,9 +460,12 @@ export default {
     addProductInfo: function(name) {
       this.editProductInfoFlag = false;
       this.showProductInfoFlag = true;
-      this.showProduct({
-        "classinfIdList": this.classInfoIdList
-      });
+      this.showProductName({
+        "linebodyId": this.lineBodys[0]
+      })
+      // this.showProduct({
+      //   "classinfIdList": this.classInfoIdList
+      // });
     },
     deleteLoss(index) {
       alert("deleteLoss");
@@ -577,8 +583,8 @@ export default {
     },
     clearClassInfoClick() {
       this.lengthShiftTimeValue = '';
-      this.shouldNumAttendanceValue = '';
-      this.actualNumAttendanceValue = '';
+      this.shouldNumAttendanceValue = null;
+      this.actualNumAttendanceValue = null;
       this.showKpitwolev({
         userId: sessionStorage.getItem("userid")
       });
@@ -627,21 +633,10 @@ export default {
       this.showProductInfoFlag = false;
       this.addProduct({
         "classinfIdList": this.classInfoIdList,
-        "productType": this.productValue,
+        "productNameId": this.productValue,
         "conformProduct": this.conformProductValue,
         "normalCycletime": this.normalCycletimeValue
       });
-      const obj = {
-        "产品": this.productValue,
-        "良品数量": this.conformProductValue,
-        "Cycle": this.normalCycletimeValue + 's',
-      };
-      if (obj && this.productValue && this.conformProductValue && this.normalCycletimeValue) {
-        this.productInfoData.push(obj);
-      }
-      this.productValue = '';
-      this.conformProductValue = '';
-      this.normalCycletimeValue = '';
     },
     productInfoCancelClick() {
       this.showProductInfoFlag = false;
@@ -719,21 +714,40 @@ export default {
           classInfoIdArr.push(this.addClassinfRes.date[i].classinfid);
         }
         this.classInfoIdList = classInfoIdArr.join(",");
+        this.showProduct({
+          "classinfIdList": this.classInfoIdList
+        })
       }
     },
     addProductRes(newVal) {
       console.log(`addProductRes: ${newVal}`);
     },
-    addProduct(newVal) {
+    addProductRes(newVal) {
       console.log(`addProduct: ${newVal}`);
+      if(newVal.status === "0") {
+        const obj = {
+          "产品": newVal.data.productname,
+          "良品数量": this.conformProductValue,
+          "Cycle": this.normalCycletimeValue + 's',
+        };
+        if (obj && newVal.data.productname && this.conformProductValue && this.normalCycletimeValue) {
+          this.productInfoData.push(obj);
+        }
+        this.productValue = '';
+        this.conformProductValue = '';
+        this.normalCycletimeValue = '';
+      }
     },
     showProductRes(newVal) {
-      console.log(`showProductRes: ${newVal}`);
+      console.log("showProductRes:" + newVal);
+      if(newVal.status === "0") {
+
+      }
     },
     updateObjectimeAfteraddRes(newVal) {
       console.log("updateObjectimeAfteraddRes:");
       console.log(newVal);
-      if(newVal.status === "0") {
+      if (newVal.status === "0") {
         for (let i = 0; i < this.datainputLoss.length; i++) {
           for (var key in this.datainputLoss[i]) {
             if (this.datainputLoss[i][key]) {
@@ -751,6 +765,12 @@ export default {
             }
           }
         }
+      }
+    },
+    showProductNameRes(newVal) {
+      console.log("showProductNameRes:" + newVal);
+      if (newVal.status === "0") {
+        this.productList = newVal.data;
       }
     }
   },

@@ -515,7 +515,7 @@ export default {
     addProduct({ commit }, obj) {
         axios.post("/datainput/addProduct", qs.stringify({
             "classinfIdList": obj.classinfIdList,
-            "productType": obj.productType,
+            "productNameId": obj.productNameId,
             "conformProduct": obj.conformProduct,
             "normalCycletime": obj.normalCycletime
         })).then(res => {
@@ -545,6 +545,16 @@ export default {
         return res.data
       }).then(json => {
         commit("updateObjectimeAfteradd", json)
+      })
+    },
+    showProductName({ commit }, obj) {
+      axios.post("/datainput/showProductName", qs.stringify({
+        "linebodyId": obj.linebodyId
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("showProductName", json)
       })
     }
 

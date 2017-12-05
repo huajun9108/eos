@@ -53,5 +53,6 @@ export default {
     addClassinfRes: '',
     addProductRes: '',
     showProductRes: '',
-    updateObjectimeAfteraddRes: ''
+    updateObjectimeAfteraddRes: '',
+    showProductNameRes: ''
 }

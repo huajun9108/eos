@@ -231,66 +231,14 @@ export default {
           }
         }
       ],
-      productInfoData: [{
-          '产品': 'A',
-          '良品数量': '100',
-          'Cycle': '30s',
-        },
-        {
-          '产品': 'B',
-          '良品数量': '150',
-          'Cycle': '45s',
-        },
-        {
-          '产品': 'C',
-          '良品数量': '200',
-          'Cycle': '60s',
-        },
-        {
-          '产品': 'A',
-          '良品数量': '100',
-          'Cycle': '30s',
-        },
-        {
-          '产品': 'B',
-          '良品数量': '150',
-          'Cycle': '45s',
-        },
-        {
-          '产品': 'C',
-          '良品数量': '200',
-          'Cycle': '60s',
-        },
-        {
-          '产品': 'A',
-          '良品数量': '100',
-          'Cycle': '30s',
-        },
-        {
-          '产品': 'B',
-          '良品数量': '150',
-          'Cycle': '45s',
-        },
-        {
-          '产品': 'C',
-          '良品数量': '200',
-          'Cycle': '60s',
-        }
+      productInfoData: [
+        // {
+        //   '产品': 'A',
+        //   '良品数量': '100',
+        //   'Cycle': '30s',
+        // }
       ],
       productList: [],
-      // productList: [{
-      //     value: 'A',
-      //     label: 'A'
-      //   },
-      //   {
-      //     value: 'B',
-      //     label: 'B'
-      //   },
-      //   {
-      //     value: 'C',
-      //     label: 'C'
-      //   }
-      // ],
       childTabCols: [{
           title: 'Tier3',
           key: 'tier3',
@@ -463,9 +411,6 @@ export default {
       this.showProductName({
         "linebodyId": this.lineBodys[0]
       })
-      // this.showProduct({
-      //   "classinfIdList": this.classInfoIdList
-      // });
     },
     deleteLoss(index) {
       alert("deleteLoss");

@@ -598,11 +598,6 @@ export default {
                   });
                   this.datainputLoss[i][key][this.lossIndex]["开始时间"] = this.startTimeValue.format('yyyy-MM-dd hh:mm:ss');
                   this.datainputLoss[i][key][this.lossIndex]["结束时间"] = this.endTimeValue.format('yyyy-MM-dd hh:mm:ss');
-                  this.tierValue = '';
-                  this.childTierValue = '';
-                  this.startTimeValue = '';
-                  this.durationTimeValue = '';
-                  this.endTimeValue = '';
                 }
               }
             }
@@ -738,6 +733,25 @@ export default {
     updateObjectimeAfteraddRes(newVal) {
       console.log("updateObjectimeAfteraddRes:");
       console.log(newVal);
+      if(newVal.status === "0") {
+        for (let i = 0; i < this.datainputLoss.length; i++) {
+          for (var key in this.datainputLoss[i]) {
+            if (this.datainputLoss[i][key]) {
+              for (var k in this.datainputLoss[i][key][this.lossIndex]) {
+                if (this.datainputLoss[i][key][this.lossIndex][k] === this.lossParams.row["tier3"]) {
+                  this.datainputLoss[i][key][this.lossIndex]["开始时间"] = this.startTimeValue.format('yyyy-MM-dd hh:mm:ss');
+                  this.datainputLoss[i][key][this.lossIndex]["结束时间"] = this.endTimeValue.format('yyyy-MM-dd hh:mm:ss');
+                  this.tierValue = '';
+                  this.childTierValue = '';
+                  this.startTimeValue = '';
+                  this.durationTimeValue = '';
+                  this.endTimeValue = '';
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   mounted() {

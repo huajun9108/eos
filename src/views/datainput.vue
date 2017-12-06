@@ -4,8 +4,8 @@
     <div class="openCeremony">
       <span class="inputBtn openCeremonyButton" @click="openCeremonyClick">开班</span>
       <span class="inputBtn historyButton">班次历史记录</span>
-      <Button type="primary" @click="modal1 = true">choose Loss</Button>
-      <Button type="primary" @click="modal2 = true">choose product</Button>
+      <!-- <Button type="primary" @click="modal1 = true">choose Loss</Button>
+      <Button type="primary" @click="modal2 = true">choose product</Button> -->
     </div>
     <div class="basicInfo" :class="openCeremonyFlag?'showOpenCeremony':'hideOpenCeremony'">
       <div class="classInfo">
@@ -471,19 +471,24 @@ export default {
       })
     },
     deleteLoss(params) {
-      for(let i = 0; i < this.datainputLoss.length; i++) {
-        for(let key in this.datainputLoss[i]) {
-          for(let j = 0; j < this.datainputLoss[i][key].length; j++) {
-            if(this.datainputLoss[i][key][j].losstier3name === params.row["losstier3name"]) {
-              this.deleteLoss4data({
-                "losstier4Dataid": this.datainputLoss[i][key][j].losstier4Dataid
-              })
-            }
-          }
-        }
-      }
       this.lossIndex = params.index;
       this.lossParams = params;
+      console.log(this.lossIndex);
+      console.log(this.datainputLoss);
+      for(let i = 0; i < this.datainputLoss.length; i++) {
+        console.log(this.datainputLoss[i]);
+        for(let key in this.datainputLoss[i]) {
+            /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+            console.log(this.datainputLoss[i][key][this.lossIndex]);
+            if(this.datainputLoss[i][key].length > 0) {
+              if(this.datainputLoss[i][key][this.lossIndex].losstier3name === params.row["losstier3name"]) {
+                this.deleteLoss4data({
+                  "losstier4Dataid": this.datainputLoss[i][key][this.lossIndex].losstier4Dataid
+                })
+              }
+            }
+        }
+      }
     },
     deleteProductClick(index) {
       const productIdList = this.productInfoData[index].productid;
@@ -617,15 +622,16 @@ export default {
       if (this.editLossDirFlag) {
         for(let i = 0; i < this.datainputLoss.length; i++) {
           for(var key in this.datainputLoss[i]) {
-            for(let j = 0; j < this.datainputLoss[i][key].length; j++) {
-              if(this.datainputLoss[i][key][j].losstier3name === this.lossParams.row["losstier3name"]) {
-                this.updateObjectimeAfteradd({
-                  "losstier4Dataid": this.datainputLoss[i][key][j].losstier4Dataid,
-                  "starttime": this.startTimeValue,
-                  "endtime": this.endTimeValue
-                });
+              /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+              if(this.datainputLoss[i][key].length > 0) {
+                if(this.datainputLoss[i][key][this.lossIndex].losstier3name === this.lossParams.row["losstier3name"]) {
+                  this.updateObjectimeAfteradd({
+                    "losstier4Dataid": this.datainputLoss[i][key][this.lossIndex].losstier4Dataid,
+                    "starttime": this.startTimeValue,
+                    "endtime": this.endTimeValue
+                  });
+                }
               }
-            }
           }
         }
       } else {
@@ -708,7 +714,6 @@ export default {
             if(key === addLossData.losstier2name) {
               this.datainputLoss[i][key].push(addLossData);
               this.$Message.success("添加成功");
-              console.log(this.datainputLoss);
             }
           }
         }
@@ -748,21 +753,15 @@ export default {
       console.log("showProductRes:" + newVal);
     },
     updateObjectimeAfteraddRes(newVal) {
-      console.log("updateObjectimeAfteraddRes:" + newVal);
       let editLossData = newVal.data;
-      console.log(this.lossIndex);
-      console.log(typeof editLossData.losstier4Dataid);
       const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
       const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
-      console.log(editLossStartTime);
-      console.log(editLossEndTime);
       if (newVal.status === "0") {
         for(let i = 0; i < this.datainputLoss.length; i++) {
           for(let key in this.datainputLoss[i]) {
             if(key === editLossData.losstier2name) {
-              console.log(typeof this.datainputLoss[i][key][this.lossIndex].losstier4Dataid);
+              /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
               if(this.datainputLoss[i][key][this.lossIndex].losstier3name === editLossData.losstier3name) {
-                console.log("修改成功");
                 this.datainputLoss[i][key][this.lossIndex].starttime = editLossStartTime;
                 this.datainputLoss[i][key][this.lossIndex].endtime = editLossEndTime;
                 this.$Message.success("修改成功");
@@ -778,8 +777,8 @@ export default {
       this.startTimeValue = '';
       this.durationTimeValue = '';
       this.endTimeValue = '';
-      this.lossIndex = params.index;
-      this.lossParams = params;
+      this.lossIndex = null;
+      this.lossParams = null;
     },
     showProductNameRes(newVal) {
       console.log("showProductNameRes:" + newVal);
@@ -788,32 +787,44 @@ export default {
       }
     },
     deleteProductRes(newVal) {
-      console.log("deleteProductRes:" + newVal);
       if(newVal.status === "0") {
         this.productInfoData = newVal.data;
+        this.$Message.success("删除成功");
+      } else {
+        this.$Message.error("删除失败");
       }
     },
     updateProductRes(newVal) {
       if(newVal.status === "0") {
         this.productInfoData = newVal.data;
+        this.$Message.success("修改成功");
+      } else {
+        this.$Message.error("修改失败");
       }
       this.editProductIndex = null;
+      this.productValue = '';
+      this.conformProductValue = '';
+      this.normalCycletimeValue = '';
     },
     deleteLoss4dataRes(newVal) {
       if(newVal.status === "0") {
         for(let i = 0; i < this.datainputLoss.length; i++) {
           for(let key in this.datainputLoss[i]) {
-            for(let j = 0; j < this.datainputLoss[i][key].length; j++) {
-              if(this.datainputLoss[i][key][j].losstier3name === this.lossParams.row["losstier3name"]) {
-                this.datainputLoss[i][key].splice(j, 1);
+              /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+              if(this.datainputLoss[i][key].length > 0) {
+                if(this.datainputLoss[i][key][this.lossIndex].losstier3name === this.lossParams.row["losstier3name"]) {
+                  this.datainputLoss[i][key].splice(this.lossIndex, 1);
+                  this.$Message.success("删除成功");
+                }
               }
-            }
           }
         }
+      } else {
+        this.$Message.error("删除失败");
       }
+      this.lossIndex = null;
+      this.lossParams = null;
     }
-    this.lossIndex = null;
-    this.lossParams = null;
   },
   mounted() {
     if (sessionStorage.getItem("userid")) {

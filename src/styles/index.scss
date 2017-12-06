@@ -271,3 +271,76 @@ label {
         margin-left: P(18)
     }
 }
+
+.product-vertical-center-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .ivu-modal {
+        top: 0;
+        .ivu-modal-content {
+            padding: P(46) P(40) 0 P(46);
+            .ivu-modal-body {
+                padding: 0;
+                padding-bottom: P(300);
+                .editProductInfoNameContainer {
+                    font-size: P(14);
+                    color: #040404;
+                    padding-bottom: P(20);
+                    margin-bottom: P(30);
+                    border-bottom: 1px solid #BDBDBD;
+                }
+                .dropdownProduct {
+                    font-size: P(14);
+                    width: P(208);
+                    height: P(30);
+                    margin-bottom: P(46);
+                    .ivu-select-selection {
+                        background: #E1E1E1;
+                        font-size: P(14);
+                        color: #040404;
+                    }
+                }
+                .productInfoSetting {
+                    height: P(40);
+                    font-size: 0;
+                    vertical-align: top;
+                    span {
+                        line-height: P(40);
+                        display: inline-block;
+                        font-size: P(12);
+                        color: #040404;
+                        text-align: center;
+                    }
+                    .ivu-input-number {
+                        width: P(128);
+                        margin-top: -10px;
+                        .ivu-input-number-handler-up-inner.ivu-icon.ivu-icon-ios-arrow-up,
+                        .ivu-input-number-handler-down-inner.ivu-icon.ivu-icon-ios-arrow-down {
+                            margin-top: -8px;
+                        }
+                    }
+                    .cycleTitle {
+                        margin-left: P(30);
+                    }
+                }
+            }
+            .ivu-modal-footer {
+                border-top: 0;
+                .ivu-btn-large {
+                    font-size: P(14);
+                    padding: P(5) P(35);
+                    border-radius: P(20);
+                }
+                .ivu-btn-text {
+                    color: #fff;
+                    background-color: #c2c2c2;
+                }
+                .ivu-btn-primary {
+                    background-color: #1b3867;
+                    border-color: #1b3867;
+                }
+            }
+        }
+    }
+}

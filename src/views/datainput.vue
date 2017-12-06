@@ -4,6 +4,8 @@
     <div class="openCeremony">
       <span class="inputBtn openCeremonyButton" @click="openCeremonyClick">开班</span>
       <span class="inputBtn historyButton">班次历史记录</span>
+      <!-- <Button type="primary" @click="modal1 = true">choose Loss</Button>
+      <Button type="primary" @click="modal2 = true">choose product</Button> -->
     </div>
     <div class="basicInfo" :class="openCeremonyFlag?'showOpenCeremony':'hideOpenCeremony'">
       <div class="classInfo">
@@ -16,9 +18,9 @@
         </div>
         <div class="classInfoNumAttendance">
           <span>应出勤人数：</span>
-          <InputNumber v-model="shouldNumAttendanceValue"></InputNumber>
+          <InputNumber v-model="shouldNumAttendanceValue" :min="1"></InputNumber>
           <span class="classInfoActualAttendance">实出勤人数：</span>
-          <InputNumber v-model="actualNumAttendanceValue"></InputNumber>
+          <InputNumber v-model="actualNumAttendanceValue" :min="0"></InputNumber>
         </div>
         <div class="classInfoSubmit">
           <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
@@ -56,11 +58,11 @@
       </div>
       <div v-else class="dirChoose">
         <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier3($event)">
-          <Option v-for="item in this.lossTier3Array" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="item.lossid">
+          <Option v-for="item in this.lossTier3Array" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
           </Option>
         </Select>
         <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4" @on-change="getTier4($event)">
-          <Option v-for="item in childTierMenuData" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="item.tier4id">
+          <Option v-for="item in childTierMenuData" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
           </Option>
         </Select>
       </div>
@@ -91,16 +93,16 @@
           <span>{{ this.productName }}</span>
         </div>
         <Select v-else v-model="productValue" class="dropdownProduct" clearable placeholder="产品">
-            <Option v-for="item in productList" :value="item.value" :key="item.value">
-              {{ item.label }}
+            <Option v-for="item in productList" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
+              {{ item.name }}
             </Option>
           </Select>
       </div>
       <div class="productInfoSetting">
         <span>良品数量：</span>
-        <InputNumber v-model="conformProductValue" placeholder="请填写数量"></InputNumber>
+        <InputNumber v-model="conformProductValue" placeholder="请填写数量" :min="0"></InputNumber>
         <span class="cycleTitle">Cycle：</span>
-        <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间"></InputNumber>
+        <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间" :min="0"></InputNumber>
       </div>
       <div class="btnContainer text-right">
         <span class="confirmBtn data_btn" @click="productInfoConfirmClick">确定</span>
@@ -108,6 +110,58 @@
       </div>
     </div>
   </div>
+  <Modal class="lossChoose" v-model="modal1" @on-ok="ok" @on-cancel="cancel" :closable="false">
+    <div v-if="editLossDirFlag" class="editLossDir">
+      <span>Tier3：</span>
+      <span>{{ this.editTier3Value }}</span>
+      <span>Tier4：</span>
+      <span>{{ this.editTier4Value }}</span>
+    </div>
+    <div v-else class="dirChoose">
+      <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier3($event)">
+            <Option v-for="item in this.lossTier3Array" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
+            </Option>
+          </Select>
+      <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4" @on-change="getTier4($event)">
+            <Option v-for="item in childTierMenuData" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
+            </Option>
+          </Select>
+    </div>
+    <div class="startTimeContainer">
+      <span class="timeTitle">开始时间：</span>
+      <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsStart" @on-ok="startTimeChooseOk">
+      </DatePicker>
+    </div>
+    <div class="durationTimeContainer">
+      <span class="timeTitle">持续时间：</span>
+      <TimePicker v-model="durationTimeValue" placeholder="任意时间点" format="HH:mm:ss" @on-change="durationTimeValueChange">
+      </TimePicker>
+    </div>
+    <div class="endTimeContainer">
+      <span class="timeTitle">结束时间：</span>
+      <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
+      </DatePicker>
+    </div>
+  </Modal>
+  <Modal v-model="modal2" @on-ok="ok" @on-cancel="cancel" class-name="product-vertical-center-modal" :closable="false" width="498">
+    <div class="productChoose">
+      <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
+        <span>产品：</span>
+        <span>{{ this.productName }}</span>
+      </div>
+      <Select v-else v-model="productValue" class="dropdownProduct" clearable placeholder="产品">
+              <Option v-for="item in productList" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
+                {{ item.name }}
+              </Option>
+            </Select>
+    </div>
+    <div class="productInfoSetting">
+      <span>良品数量：</span>
+      <InputNumber v-model="conformProductValue" placeholder="请填写数量" :min="0"></InputNumber>
+      <span class="cycleTitle">Cycle：</span>
+      <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间" :min="0"></InputNumber>
+    </div>
+  </Modal>
 </div>
 </template>
 <script>
@@ -183,17 +237,17 @@ export default {
       childTierValue: '',
       productInfoCols: [{
           title: '产品',
-          key: '产品',
+          key: 'productname',
           align: 'center'
         },
         {
           title: '良品数量',
-          key: '良品数量',
+          key: 'conformproduct',
           align: 'center'
         },
         {
           title: 'Cycle',
-          key: 'Cycle',
+          key: 'normalcycletime',
           align: 'center'
         },
         {
@@ -220,11 +274,10 @@ export default {
                 attrs: {
                   class: "icon-delete_2",
                 },
-                style: {
-                },
+                style: {},
                 on: {
                   click: () => {
-                    this.deleteProduct(params.index)
+                    this.deleteProductClick(params.index)
                   }
                 }
               })
@@ -232,86 +285,29 @@ export default {
           }
         }
       ],
-      productInfoData: [{
-          '产品': 'A',
-          '良品数量': '100',
-          'Cycle': '30s',
-        },
-        {
-          '产品': 'B',
-          '良品数量': '150',
-          'Cycle': '45s',
-        },
-        {
-          '产品': 'C',
-          '良品数量': '200',
-          'Cycle': '60s',
-        },
-        {
-          '产品': 'A',
-          '良品数量': '100',
-          'Cycle': '30s',
-        },
-        {
-          '产品': 'B',
-          '良品数量': '150',
-          'Cycle': '45s',
-        },
-        {
-          '产品': 'C',
-          '良品数量': '200',
-          'Cycle': '60s',
-        },
-        {
-          '产品': 'A',
-          '良品数量': '100',
-          'Cycle': '30s',
-        },
-        {
-          '产品': 'B',
-          '良品数量': '150',
-          'Cycle': '45s',
-        },
-        {
-          '产品': 'C',
-          '良品数量': '200',
-          'Cycle': '60s',
-        }
-      ],
-      productList: [{
-          value: 'A',
-          label: 'A'
-        },
-        {
-          value: 'B',
-          label: 'B'
-        },
-        {
-          value: 'C',
-          label: 'C'
-        }
-      ],
+      productInfoData: [],
+      productList: [],
       childTabCols: [{
           title: 'Tier3',
-          key: 'tier3',
+          key: 'losstier3name',
           className: 'childTableFirstCol',
           align: 'center',
         },
         {
           title: 'Tier4',
-          key: 'tier4',
+          key: 'losstier4name',
           className: 'childTableSecondCol',
           align: 'center',
         },
         {
           title: '开始时间',
-          key: '开始时间',
+          key: 'starttime',
           className: 'childTableThirdCol',
           align: 'center'
         },
         {
           title: '结束时间',
-          key: '结束时间',
+          key: 'endtime',
           className: 'childTableFourthCol',
           align: 'center'
         },
@@ -343,7 +339,7 @@ export default {
                 style: {},
                 on: {
                   click: () => {
-                    this.deleteLoss(params.index)
+                    this.deleteLoss(params)
                   }
                 }
               })
@@ -370,15 +366,20 @@ export default {
       lossTwoLevName: '',
       lossTier3Array: [],
       productValue: '',
-      shouldNumAttendanceValue: '',
-      actualNumAttendanceValue: '',
+      shouldNumAttendanceValue: null,
+      actualNumAttendanceValue: null,
       editProductInfoFlag: false,
       editLossDirFlag: false,
       editTier3Value: '',
       editTier4Value: '',
       classInfoIdList: '',
-      conformProductValue: '',
-      normalCycletimeValue: ''
+      conformProductValue: null,
+      normalCycletimeValue: null,
+      lossIndex: null,
+      lossParams: null,
+      modal1: false,
+      modal2: false,
+      editProductIndex: null
     }
   },
   computed: {
@@ -388,9 +389,14 @@ export default {
       "kpiTwoLev",
       "addLosstier4time2Res",
       "datainputLoss",
-      "datainputLossId",
       "addClassinfRes",
-      "addProductRes"
+      "addProductRes",
+      "showProductRes",
+      "updateObjectimeAfteraddRes",
+      "showProductNameRes",
+      "deleteProductRes",
+      "updateProductRes",
+      "deleteLoss4dataRes"
     ])
   },
   methods: {
@@ -400,15 +406,27 @@ export default {
       "showKpitwolev",
       "addLosstier4time2",
       "addClassinf",
-      "addProduct"
+      "addProduct",
+      "showProduct",
+      "updateObjectimeAfteradd",
+      "showProductName",
+      "deleteProduct",
+      "updateProduct",
+      "deleteLoss4data"
     ]),
+    ok() {
+      this.$Message.info('Clicked ok');
+    },
+    cancel() {
+      this.$Message.info('Clicked cancel');
+    },
     getTier3: function(tier) {
       if (!tier) {
         this.tierValue = '';
         this.childTierValue = '';
         return;
       }
-      this.tier3 = this.$refs[tier][0].label;
+      this.tier3 = this.$refs['tierThree' + tier][0].label;
 
       this.lossThreeLevStructId = tier;
       let tempTier = [];
@@ -429,7 +447,7 @@ export default {
         this.childTierValue = '';
         return;
       }
-      this.tier4 = this.$refs[tier][0].label;
+      this.tier4 = this.$refs['tierFour' + tier][0].label;
 
       this.lossFourLevStructId = tier;
     },
@@ -438,55 +456,74 @@ export default {
       this.showLosstier3({
         "twolevName": name,
       });
-      // if (this.lengthShiftTimeValue.length <= 0) {
-      //   this.$Message.error("请先选择开班时间");
-      //   return;
-      // }
+      if (this.lengthShiftTimeValue.length <= 0) {
+        this.$Message.error("请先选择开班时间");
+        return;
+      }
       this.editLossDirFlag = false;
       this.showLossFlag = true;
     },
     addProductInfo: function(name) {
       this.editProductInfoFlag = false;
       this.showProductInfoFlag = true;
+      this.showProductName({
+        "linebodyId": this.lineBodys[0]
+      })
     },
-    deleteLoss(index) {
-      alert("deleteLoss");
-      // this.childTableData.splice(index, 1);
+    deleteLoss(params) {
+      this.lossIndex = params.index;
+      this.lossParams = params;
+      console.log(this.lossIndex);
+      console.log(this.datainputLoss);
+      for(let i = 0; i < this.datainputLoss.length; i++) {
+        console.log(this.datainputLoss[i]);
+        for(let key in this.datainputLoss[i]) {
+            /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+            console.log(this.datainputLoss[i][key][this.lossIndex]);
+            if(this.datainputLoss[i][key].length > 0) {
+              if(this.datainputLoss[i][key][this.lossIndex].losstier3name === params.row["losstier3name"]) {
+                this.deleteLoss4data({
+                  "losstier4Dataid": this.datainputLoss[i][key][this.lossIndex].losstier4Dataid
+                })
+              }
+            }
+        }
+      }
     },
-    deleteProduct(index) {
-      this.productInfoData.splice(index, 1);
+    deleteProductClick(index) {
+      const productIdList = this.productInfoData[index].productid;
+      this.deleteProduct({
+        "productIdList": productIdList,
+        "classinfIdList": this.classInfoIdList
+      });
     },
     editProduct(index) {
       this.editProductInfoFlag = true;
       let editInfo = this.productInfoData.slice(index, index + 1);
-      console.log(`editInfo: ${editInfo[0]['产品']} ${editInfo[0]['良品数量']} ${editInfo[0].Cycle}`);
-      this.productName = editInfo[0]['产品'];
-      this.conformProductValue = parseInt(editInfo[0]['良品数量']);
-      this.normalCycletimeValue = parseInt(editInfo[0].Cycle);
+      let timeArr = editInfo[0].normalcycletime.split(':');
+      if(timeArr.length === 3) {
+        let hour = parseInt(timeArr[0]);
+        let min = parseInt(timeArr[1]);
+        let sec = parseInt(timeArr[2]);
+        this.normalCycletimeValue = hour * 3600 + min * 60 + sec;
+      }
+      this.productName = editInfo[0].productname;
+      this.conformProductValue = parseInt(editInfo[0].conformproduct);
+      this.editProductIndex = index;
     },
     editLoss(params) {
       this.editLossDirFlag = true;
-      this.editTier3Value = params.row["tier3"];
-      this.editTier4Value = params.row["tier4"];
-      this.startTimeValue = new Date(params.row["开始时间"]);
-      this.endTimeValue = new Date(params.row["结束时间"]);
+      this.editTier3Value = params.row["losstier3name"];
+      this.editTier4Value = params.row["losstier4name"];
+      this.startTimeValue = new Date(params.row["starttime"]);
+      this.endTimeValue = new Date(params.row["endtime"]);
       this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
-      // for (let i = 0; i < this.datainputLoss.length; i++) {
-      //   for (var key in this.datainputLoss[i]) {
-      //     if(this.datainputLoss[i][key]) {
-      //       for(var k in this.datainputLoss[i][key][params.index]) {
-      //         if(this.datainputLoss[i][key][params.index][k] === params.row["tier3"]) {
-      //           params.rows[""]
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
+      this.lossIndex = params.index;
+      this.lossParams = params;
     },
     lengthShiftTimeClear() {
       this.lengthShiftTimeValue = [];
     },
-
     timeFormat: function(mss) {
       var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
@@ -566,48 +603,47 @@ export default {
     },
     addClassInfoClick() {
       this.addClassinf({
-      "classStarttime": this.lengthShiftTimeValue[0],
-      "classEndtime": this.lengthShiftTimeValue[1],
-      "shouldAttendance": this.shouldNumAttendanceValue,
-      "actualAttendance": this.actualNumAttendanceValue
-    });
+        "classStarttime": this.lengthShiftTimeValue[0],
+        "classEndtime": this.lengthShiftTimeValue[1],
+        "shouldAttendance": this.shouldNumAttendanceValue,
+        "actualAttendance": this.actualNumAttendanceValue
+      });
     },
     clearClassInfoClick() {
       this.lengthShiftTimeValue = '';
-      this.shouldNumAttendanceValue = '';
-      this.actualNumAttendanceValue = '';
+      this.shouldNumAttendanceValue = null;
+      this.actualNumAttendanceValue = null;
+      this.showKpitwolev({
+        userId: sessionStorage.getItem("userid")
+      });
     },
     lossConfirmClick: function() {
       this.showLossFlag = false;
-      this.addLosstier4time2({
-        "classinfIdList": this.classInfoIdList,
-        "twolevName": this.lossTwoLevName,
-        "losstier3Id": this.lossThreeLevStructId,
-        "losstier4Id": this.lossFourLevStructId,
-        "linebodyId": this.lineBodys[0],
-        "starttime": this.startTimeValue,
-        "endtime": this.endTimeValue
-      });
-      const obj = {
-        "tier3": this.tier3,
-        "tier4": this.tier4,
-        "开始时间": this.startTimeValue.format('yyyy-MM-dd hh:mm:ss'),
-        "结束时间": this.endTimeValue.format('yyyy-MM-dd hh:mm:ss')
-      };
-      if (obj) {
-        for (let i = 0; i < this.datainputLoss.length; i++) {
-          for (var key in this.datainputLoss[i]) {
-            if (key === this.lossTwoLevName) {
-              this.datainputLoss[i][key].push(obj);
-            }
+      if (this.editLossDirFlag) {
+        for(let i = 0; i < this.datainputLoss.length; i++) {
+          for(var key in this.datainputLoss[i]) {
+              /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+              if(this.datainputLoss[i][key].length > 0) {
+                if(this.datainputLoss[i][key][this.lossIndex].losstier3name === this.lossParams.row["losstier3name"]) {
+                  this.updateObjectimeAfteradd({
+                    "losstier4Dataid": this.datainputLoss[i][key][this.lossIndex].losstier4Dataid,
+                    "starttime": this.startTimeValue,
+                    "endtime": this.endTimeValue
+                  });
+                }
+              }
           }
         }
-        console.log(this.data);
-        this.tierValue = '';
-        this.childTierValue = '';
-        this.startTimeValue = '';
-        this.durationTimeValue = '';
-        this.endTimeValue = '';
+      } else {
+        this.addLosstier4time2({
+          "classinfIdList": this.classInfoIdList,
+          "twolevName": this.lossTwoLevName,
+          "losstier3Id": this.lossThreeLevStructId,
+          "losstier4Id": this.lossFourLevStructId,
+          "linebodyId": this.lineBodys[0],
+          "starttime": this.startTimeValue,
+          "endtime": this.endTimeValue
+        });
       }
     },
     lossCancelClick: function() {
@@ -620,30 +656,28 @@ export default {
     },
     productInfoConfirmClick() {
       this.showProductInfoFlag = false;
-      this.addProduct({
-        "classinfIdList": this.classInfoIdList,
-        "productType": this.productValue,
-        "conformProduct": this.conformProductValue,
-        "normalCycletime": this.normalCycletimeValue
-    });
-      const obj = {
-        "产品": this.productValue,
-        "良品数量": this.conformProductValue,
-        "Cycle": this.normalCycletimeValue + 's',
-      };
-      if(obj && this.productValue && this.conformProductValue && this.normalCycletimeValue) {
-        this.productInfoData.push(obj);
+      if(this.editProductInfoFlag) {
+        this.updateProduct({
+          "productIdList": this.productInfoData[this.editProductIndex].productid,
+          "conformProduct": this.conformProductValue,
+          "normalCycletime": this.normalCycletimeValue,
+          "classinfIdList": this.classInfoIdList
+        })
+      } else {
+        this.addProduct({
+          "classinfIdList": this.classInfoIdList,
+          "productNameId": this.productValue,
+          "conformProduct": this.conformProductValue,
+          "normalCycletime": this.normalCycletimeValue
+        });
       }
-      this.productValue = '';
-      this.conformProductValue = '';
-      this.normalCycletimeValue = '';
     },
     productInfoCancelClick() {
       this.showProductInfoFlag = false;
       this.productValue = '';
       this.conformProductValue = '';
       this.normalCycletimeValue = '';
-    }
+    },
   },
   watch: {
     validarea(newVal) {
@@ -663,46 +697,133 @@ export default {
       });
     },
     lossTier3(newVal) {
-      console.log(`lossTier3: ${newVal.data.losstier3}`);
       if (newVal.status === "0") {
         this.lossTier3Array = newVal.data.losstier3;
       }
     },
     kpiTwoLev(newVal) {
-      // console.log(`kpiTwoLev: ${newVal}`);
     },
-
     addLosstier4time2Res(newVal) {
-      console.log(`addLosstier4time2Res ${newVal}`);
-      if(newVal.status === "0") {
-        if(newVal.data.losstier4Dataid) {
-          console.log(newVal.data.losstier2name);
-          for(let i = 0; i < this.datainputLossId.length; i++) {
-            for(var key in this.datainputLossId[i]) {
-              if(key === newVal.data.losstier2name) {
-                console.log("hhhhhh");
-                this.datainputLossId[i][key].push(newVal.data[0].losstier2name);
+      if (newVal.status === "0") {
+        let addLossData = newVal.data;
+        addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
+        addLossData.endtime = new Date(addLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
+
+        for(let i = 0; i < this.datainputLoss.length; i++) {
+          for(let key in this.datainputLoss[i]) {
+            if(key === addLossData.losstier2name) {
+              this.datainputLoss[i][key].push(addLossData);
+              this.$Message.success("添加成功");
+            }
+          }
+        }
+      } else {
+        this.$message.error("添加失败");
+      }
+      this.tierValue = '';
+      this.childTierValue = '';
+      this.startTimeValue = '';
+      this.durationTimeValue = '';
+      this.endTimeValue = '';
+    },
+    addClassinfRes(newVal) {
+      let classInfoIdArr = [];
+      if (newVal.status === "0") {
+        this.$Message.success("班次信息添加成功");
+        for (let i = 0; i < this.addClassinfRes.date.length; i++) {
+          classInfoIdArr.push(this.addClassinfRes.date[i].classinfid);
+        }
+        this.classInfoIdList = classInfoIdArr.join(",");
+      } else {
+        this.$Message.error("班次信息添加失败");
+      }
+    },
+    addProductRes(newVal) {
+      if (newVal.status === "0") {
+        this.productInfoData = newVal.data;
+        this.$Message.success("添加成功");
+      } else {
+        this.$Message.error("添加失败");
+      }
+      this.productValue = '';
+      this.conformProductValue = '';
+      this.normalCycletimeValue = '';
+    },
+    showProductRes(newVal) {
+      console.log("showProductRes:" + newVal);
+    },
+    updateObjectimeAfteraddRes(newVal) {
+      let editLossData = newVal.data;
+      const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
+      const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
+      if (newVal.status === "0") {
+        for(let i = 0; i < this.datainputLoss.length; i++) {
+          for(let key in this.datainputLoss[i]) {
+            if(key === editLossData.losstier2name) {
+              /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+              if(this.datainputLoss[i][key][this.lossIndex].losstier3name === editLossData.losstier3name) {
+                this.datainputLoss[i][key][this.lossIndex].starttime = editLossStartTime;
+                this.datainputLoss[i][key][this.lossIndex].endtime = editLossEndTime;
+                this.$Message.success("修改成功");
               }
             }
           }
         }
+      } else {
+        this.$Message.error("修改失败");
+      }
+      this.tierValue = '';
+      this.childTierValue = '';
+      this.startTimeValue = '';
+      this.durationTimeValue = '';
+      this.endTimeValue = '';
+      this.lossIndex = null;
+      this.lossParams = null;
+    },
+    showProductNameRes(newVal) {
+      console.log("showProductNameRes:" + newVal);
+      if (newVal.status === "0") {
+        this.productList = newVal.data;
       }
     },
-    addClassinfRes(newVal) {
-      console.log(`addClassinfRes ${newVal}`);
-      let classInfoIdArr = [];
-      if(this.addClassinfRes.status === "0") {
-        for(let i = 0; i < this.addClassinfRes.date.length; i++) {
-          classInfoIdArr.push(this.addClassinfRes.date[i].classinfid);
+    deleteProductRes(newVal) {
+      if(newVal.status === "0") {
+        this.productInfoData = newVal.data;
+        this.$Message.success("删除成功");
+      } else {
+        this.$Message.error("删除失败");
+      }
+    },
+    updateProductRes(newVal) {
+      if(newVal.status === "0") {
+        this.productInfoData = newVal.data;
+        this.$Message.success("修改成功");
+      } else {
+        this.$Message.error("修改失败");
+      }
+      this.editProductIndex = null;
+      this.productValue = '';
+      this.conformProductValue = '';
+      this.normalCycletimeValue = '';
+    },
+    deleteLoss4dataRes(newVal) {
+      if(newVal.status === "0") {
+        for(let i = 0; i < this.datainputLoss.length; i++) {
+          for(let key in this.datainputLoss[i]) {
+              /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+              if(this.datainputLoss[i][key].length > 0) {
+                if(this.datainputLoss[i][key][this.lossIndex].losstier3name === this.lossParams.row["losstier3name"]) {
+                  this.datainputLoss[i][key].splice(this.lossIndex, 1);
+                  this.$Message.success("删除成功");
+                }
+              }
+          }
         }
+      } else {
+        this.$Message.error("删除失败");
       }
-      this.classInfoIdList = classInfoIdArr.join(",");
-    },
-    addProductRes(newVal) {
-      console.log(`addProductRes: ${addProductRes}`);
-    },
-    addProduct(newVal) {
-      console.log(`addProduct: ${addProductRes}`);
+      this.lossIndex = null;
+      this.lossParams = null;
     }
   },
   mounted() {

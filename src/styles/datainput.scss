@@ -112,6 +112,10 @@
           border-right: 1px solid #BDBDBD;
 
 
+          .ivu-table-body {
+            overflow-x: hidden;
+          }
+
           .ivu-table td,
           .ivu-table th {
             height: P(30);

@@ -49,7 +49,12 @@ export default {
     kpiTwoLev: '',
     datainputLoss: [],
     projectStatus: [],
-    datainputLossId: [],
     addClassinfRes: '',
     addProductRes: '',
+    showProductRes: '',
+    updateObjectimeAfteraddRes: '',
+    showProductNameRes: '',
+    deleteProductRes: '',
+    updateProductRes: '',
+    deleteLoss4dataRes: ''
 }

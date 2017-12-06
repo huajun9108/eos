@@ -54,5 +54,7 @@ export default {
     addProductRes: '',
     showProductRes: '',
     updateObjectimeAfteraddRes: '',
-    showProductNameRes: ''
+    showProductNameRes: '',
+    deleteProductRes: '',
+    updateProductRes: ''
 }

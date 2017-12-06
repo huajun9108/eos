@@ -4,6 +4,8 @@
     <div class="openCeremony">
       <span class="inputBtn openCeremonyButton" @click="openCeremonyClick">开班</span>
       <span class="inputBtn historyButton">班次历史记录</span>
+      <Button type="primary" @click="modal1 = true">choose Loss</Button>
+      <Button type="primary" @click="modal2 = true">choose product</Button>
     </div>
     <div class="basicInfo" :class="openCeremonyFlag?'showOpenCeremony':'hideOpenCeremony'">
       <div class="classInfo">
@@ -108,6 +110,58 @@
       </div>
     </div>
   </div>
+  <Modal class="lossChoose" v-model="modal1" @on-ok="ok" @on-cancel="cancel" :closable="false">
+    <div v-if="editLossDirFlag" class="editLossDir">
+      <span>Tier3：</span>
+      <span>{{ this.editTier3Value }}</span>
+      <span>Tier4：</span>
+      <span>{{ this.editTier4Value }}</span>
+    </div>
+    <div v-else class="dirChoose">
+      <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier3($event)">
+            <Option v-for="item in this.lossTier3Array" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
+            </Option>
+          </Select>
+      <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4" @on-change="getTier4($event)">
+            <Option v-for="item in childTierMenuData" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
+            </Option>
+          </Select>
+    </div>
+    <div class="startTimeContainer">
+      <span class="timeTitle">开始时间：</span>
+      <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsStart" @on-ok="startTimeChooseOk">
+      </DatePicker>
+    </div>
+    <div class="durationTimeContainer">
+      <span class="timeTitle">持续时间：</span>
+      <TimePicker v-model="durationTimeValue" placeholder="任意时间点" format="HH:mm:ss" @on-change="durationTimeValueChange">
+      </TimePicker>
+    </div>
+    <div class="endTimeContainer">
+      <span class="timeTitle">结束时间：</span>
+      <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
+      </DatePicker>
+    </div>
+  </Modal>
+  <Modal v-model="modal2" @on-ok="ok" @on-cancel="cancel" class-name="product-vertical-center-modal" :closable="false" width="498">
+    <div class="productChoose">
+      <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
+        <span>产品：</span>
+        <span>{{ this.productName }}</span>
+      </div>
+      <Select v-else v-model="productValue" class="dropdownProduct" clearable placeholder="产品">
+              <Option v-for="item in productList" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
+                {{ item.name }}
+              </Option>
+            </Select>
+    </div>
+    <div class="productInfoSetting">
+      <span>良品数量：</span>
+      <InputNumber v-model="conformProductValue" placeholder="请填写数量" :min="0"></InputNumber>
+      <span class="cycleTitle">Cycle：</span>
+      <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间" :min="0"></InputNumber>
+    </div>
+  </Modal>
 </div>
 </template>
 <script>
@@ -183,17 +237,17 @@ export default {
       childTierValue: '',
       productInfoCols: [{
           title: '产品',
-          key: '产品',
+          key: 'productname',
           align: 'center'
         },
         {
           title: '良品数量',
-          key: '良品数量',
+          key: 'conformproduct',
           align: 'center'
         },
         {
           title: 'Cycle',
-          key: 'Cycle',
+          key: 'normalcycletime',
           align: 'center'
         },
         {
@@ -223,7 +277,7 @@ export default {
                 style: {},
                 on: {
                   click: () => {
-                    this.deleteProduct(params.index)
+                    this.deleteProductClick(params.index)
                   }
                 }
               })
@@ -328,7 +382,11 @@ export default {
       conformProductValue: null,
       normalCycletimeValue: null,
       lossIndex: null,
-      lossParams: null
+      lossParams: null,
+      modal1: false,
+      modal2: false,
+      deleteProductIndex: null,
+      editProductIndex: null
     }
   },
   computed: {
@@ -343,7 +401,9 @@ export default {
       "addProductRes",
       "showProductRes",
       "updateObjectimeAfteraddRes",
-      "showProductNameRes"
+      "showProductNameRes",
+      "deleteProductRes",
+      "updateProductRes"
     ])
   },
   methods: {
@@ -356,8 +416,16 @@ export default {
       "addProduct",
       "showProduct",
       "updateObjectimeAfteradd",
-      "showProductName"
+      "showProductName",
+      "deleteProduct",
+      "updateProduct"
     ]),
+    ok() {
+      this.$Message.info('Clicked ok');
+    },
+    cancel() {
+      this.$Message.info('Clicked cancel');
+    },
     getTier3: function(tier) {
       console.log(tier);
       if (!tier) {
@@ -416,16 +484,25 @@ export default {
       alert("deleteLoss");
       // this.childTableData.splice(index, 1);
     },
-    deleteProduct(index) {
-      this.productInfoData.splice(index, 1);
+    deleteProductClick(index) {
+      const productIdList = this.productInfoData[index].productid;
+      this.deleteProduct({"productIdList": productIdList});
+      this.deleteProductIndex = index;
     },
     editProduct(index) {
       this.editProductInfoFlag = true;
       let editInfo = this.productInfoData.slice(index, index + 1);
-      console.log(`editInfo: ${editInfo[0]['产品']} ${editInfo[0]['良品数量']} ${editInfo[0].Cycle}`);
-      this.productName = editInfo[0]['产品'];
-      this.conformProductValue = parseInt(editInfo[0]['良品数量']);
-      this.normalCycletimeValue = parseInt(editInfo[0].Cycle);
+      let timeArr = editInfo[0].normalcycletime.split(':');
+      if(timeArr.length === 3) {
+        let hour = parseInt(timeArr[0]);
+        let min = parseInt(timeArr[1]);
+        let sec = parseInt(timeArr[2]);
+        this.normalCycletimeValue = hour * 3600 + min * 60 + sec;
+      }
+      // console.log(`editInfo: ${editInfo[0]['productname']} ${editInfo[0]['conformproduct']} ${editInfo[0].Cycle}`);
+      this.productName = editInfo[0].productname;
+      this.conformProductValue = parseInt(editInfo[0].conformproduct);
+      this.editProductIndex = index;
     },
     editLoss(params) {
       this.editLossDirFlag = true;
@@ -576,12 +653,23 @@ export default {
     },
     productInfoConfirmClick() {
       this.showProductInfoFlag = false;
-      this.addProduct({
-        "classinfIdList": this.classInfoIdList,
-        "productNameId": this.productValue,
-        "conformProduct": this.conformProductValue,
-        "normalCycletime": this.normalCycletimeValue
-      });
+      if(this.editProductInfoFlag) {
+        // console.log(this.productInfoData[this.editProductIndex].productid);
+        // console.log(this.productInfoData[this.editProductIndex].conformProduct);
+        // console.log(this.productInfoData[this.editProductIndex].normalCycletime);
+        this.updateProduct({
+          "productIdList": this.productInfoData[this.editProductIndex].productid,
+          "conformProduct": this.conformProductValue,
+          "normalCycletime": this.normalCycletimeValue
+        })
+      } else {
+        this.addProduct({
+          "classinfIdList": this.classInfoIdList,
+          "productNameId": this.productValue,
+          "conformProduct": this.conformProductValue,
+          "normalCycletime": this.normalCycletimeValue
+        });
+      }
     },
     productInfoCancelClick() {
       this.showProductInfoFlag = false;
@@ -639,11 +727,6 @@ export default {
                     }
                   }
                 }
-                else {
-                  this.$Message.error("添加失败");
-                }
-              } else {
-                this.$Message.error("添加失败");
               }
             }
           }
@@ -668,39 +751,38 @@ export default {
           classInfoIdArr.push(this.addClassinfRes.date[i].classinfid);
         }
         this.classInfoIdList = classInfoIdArr.join(",");
-        this.showProduct({
-          "classinfIdList": this.classInfoIdList
-        })
       } else {
         this.$Message.error("班次信息添加失败");
       }
     },
     addProductRes(newVal) {
       console.log(`addProduct: ${newVal}`);
-      if(newVal.status === "0") {
-        const obj = {
-          "产品": newVal.data.productname,
-          "良品数量": this.conformProductValue,
-          "Cycle": this.normalCycletimeValue + 's',
-        };
-        if (obj && newVal.data.productname && this.conformProductValue && this.normalCycletimeValue) {
-          this.productInfoData.push(obj);
-          this.$Message.success("添加成功");
-        } else {
-          this.$Message.error("添加失败");
-        }
+      if (newVal.status === "0") {
+        this.productInfoData = newVal.data;
+        this.$Message.success("添加成功");
       } else {
         this.$Message.error("添加失败");
       }
+      //   const obj = {
+      //     "产品": newVal.data.productname,
+      //     "良品数量": this.conformProductValue,
+      //     "Cycle": this.normalCycletimeValue + 's',
+      //   };
+      //   if (obj && newVal.data.productname && this.conformProductValue && this.normalCycletimeValue) {
+      //     this.productInfoData.push(obj);
+      //     this.$Message.success("添加成功");
+      //   } else {
+      //     this.$Message.error("添加失败");
+      //   }
+      // } else {
+      //   this.$Message.error("添加失败");
+      // }
       this.productValue = '';
       this.conformProductValue = '';
       this.normalCycletimeValue = '';
     },
     showProductRes(newVal) {
       console.log("showProductRes:" + newVal);
-      if(newVal.status === "0") {
-
-      }
     },
     updateObjectimeAfteraddRes(newVal) {
       console.log("updateObjectimeAfteraddRes:");
@@ -737,6 +819,24 @@ export default {
       if (newVal.status === "0") {
         this.productList = newVal.data;
       }
+    },
+    deleteProductRes(newVal) {
+      console.log("deleteProductRes:" + newVal);
+      if(newVal.status === "0") {
+        this.productInfoData.splice(this.deleteProductIndex, 1);
+      }
+      this.deleteProductIndex = null;
+    },
+    updateProductRes(newVal) {
+      if(newVal.status === "0") {
+        console.log(newVal.data.conformproduct);
+        console.log(newVal.data.normalcycletime);
+
+        this.productInfoData[this.editProductIndex].conformproduct = newVal.data.conformproduct;
+        this.productInfoData[this.editProductIndex].normalcycletime = newVal.data.normalcycletime;
+        console.log(this.productInfoData);
+      }
+      this.editProductIndex = null;
     }
   },
   mounted() {

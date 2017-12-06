@@ -152,5 +152,11 @@ export default {
     },
     showProductName(state, json) {
       state.showProductNameRes = json
+    },
+    deleteProduct(state, json) {
+      state.deleteProductRes = json
+    },
+    updateProduct(state, json) {
+      state.updateProductRes = json
     }
 }

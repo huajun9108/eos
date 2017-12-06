@@ -178,7 +178,7 @@ import {mapActions,mapState} from "vuex"
                 validareaList:[],
                 linebodyId:''
             }
-                
+
         },
 		computed:{
 			...mapState([
@@ -189,7 +189,7 @@ import {mapActions,mapState} from "vuex"
                 'addObject',
                 'deleteObject',
                 'validarea'
-                
+
 			])
 		},
         methods:{
@@ -231,7 +231,7 @@ import {mapActions,mapState} from "vuex"
                 })
 
             },
-            arrIsContains(arr, obj) {  
+            arrIsContains(arr, obj) {
                 if(JSON.stringify(arr).indexOf(JSON.stringify(obj))!=-1){
                     return false
                 }else{
@@ -251,7 +251,7 @@ import {mapActions,mapState} from "vuex"
                     }else{
                         console.log(1)
                     }
-                console.log(this.proList)     
+                console.log(this.proList)
             },
             add_item(){
                 this.proList.forEach(item=> {
@@ -278,7 +278,7 @@ import {mapActions,mapState} from "vuex"
                 })
                 console.log(lossId);
                 sessionStorage.setItem("lossId",lossId)
-            },  
+            },
             delpro(idx){
                 console.log(idx)
                 var _this= this
@@ -289,16 +289,16 @@ import {mapActions,mapState} from "vuex"
                             _this.proList.splice(index,1)
                             _this.deleteObjectnowBylossid({lossId:item.id,linebodyId: _this.linebodyId})
                             _this.$refs[idx][0].className = ""
-                       
+
                         };
                         console.log(_this.proNowList)
                         console.log(_this.proList)
                     })
-                    
+
                 })
-                
+
             }
-            
+
         },
         watch:{
            improList(newVal){
@@ -337,13 +337,13 @@ import {mapActions,mapState} from "vuex"
                     this.nowline.forEach((item)=> {
                     if(!this.arrIsContains(this.leftId,item.losstier3Lossid)){
                         _this.$refs[item.losstier3Lossid][0].className = "pro_active"
-                    }   
+                    }
                     this.proNowList.push({id:item.losstier3Lossid,name:item.projectname})
                     this.proList.push({id:item.losstier3Lossid,name:item.projectname})
                     });
                     console.log(this.proNowList)
                 }
-                
+
             },
             itemstatus(){
                 if(this.itemstatus){
@@ -361,20 +361,20 @@ import {mapActions,mapState} from "vuex"
                     this.projectnumber = ''
                     this.projectname = ''
                     this.losscategory = ''
-                    this.status ='' 
-                    this.startperformance = '' 
+                    this.status =''
+                    this.startperformance = ''
                     this.target = ''
                     this.performance = ''
                     this.objectstarttime = ''
-                    this.planendtime = '' 
+                    this.planendtime = ''
                     this.stage = ''
                 }
-                
+
 
             }
-           
-             
-            
+
+
+
         },
         created(){
         },
@@ -383,17 +383,16 @@ import {mapActions,mapState} from "vuex"
                 this.selectUserById({
                     userid: sessionStorage.getItem("userid")
                 })
-                
+
             } else {
                 console.log(this.$route);
             }
             let _this = this
             this.showImpItempool({userid: sessionStorage.getItem("userid")})
-           
+
         }
 	}
 </script>
 <style lang="scss" scoped>
-    
-</style>
 
+</style>

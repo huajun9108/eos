@@ -556,6 +556,28 @@ export default {
       }).then(json => {
         commit("showProductName", json)
       })
+    },
+    deleteProduct({ commit }, obj) {
+      axios.post("/datainput/deleteProduct", qs.stringify({
+        "productIdList": obj.productIdList
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("deleteProduct", json)
+      })
+    },
+    updateProduct({ commit }, obj) {
+      axios.post("/datainput/updateProduct", qs.stringify({
+        "productIdList": obj.productIdList,
+        "conformProduct": obj.conformProduct,
+        "normalCycletime": obj.normalCycletime
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("updateProduct", json)
+      })
     }
 
 }

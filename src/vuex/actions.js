@@ -559,7 +559,8 @@ export default {
     },
     deleteProduct({ commit }, obj) {
       axios.post("/datainput/deleteProduct", qs.stringify({
-        "productIdList": obj.productIdList
+        "productIdList": obj.productIdList,
+        "classinfIdList": obj.classinfIdList
       })).then(res => {
         console.log(res.data);
         return res.data
@@ -571,7 +572,8 @@ export default {
       axios.post("/datainput/updateProduct", qs.stringify({
         "productIdList": obj.productIdList,
         "conformProduct": obj.conformProduct,
-        "normalCycletime": obj.normalCycletime
+        "normalCycletime": obj.normalCycletime,
+        "classinfIdList": obj.classinfIdList
       })).then(res => {
         console.log(res.data);
         return res.data

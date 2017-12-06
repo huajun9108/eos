@@ -379,7 +379,6 @@ export default {
       lossParams: null,
       modal1: false,
       modal2: false,
-      deleteProductIndex: null,
       editProductIndex: null
     }
   },
@@ -390,7 +389,6 @@ export default {
       "kpiTwoLev",
       "addLosstier4time2Res",
       "datainputLoss",
-      // "datainputLossId",
       "addClassinfRes",
       "addProductRes",
       "showProductRes",
@@ -485,12 +483,14 @@ export default {
         }
       }
       this.lossIndex = params.index;
-      this.lossParams = params
+      this.lossParams = params;
     },
     deleteProductClick(index) {
       const productIdList = this.productInfoData[index].productid;
-      this.deleteProduct({"productIdList": productIdList});
-      this.deleteProductIndex = index;
+      this.deleteProduct({
+        "productIdList": productIdList,
+        "classinfIdList": this.classInfoIdList
+      });
     },
     editProduct(index) {
       this.editProductInfoFlag = true;
@@ -514,12 +514,11 @@ export default {
       this.endTimeValue = new Date(params.row["endtime"]);
       this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
       this.lossIndex = params.index;
-      this.lossParams = params
+      this.lossParams = params;
     },
     lengthShiftTimeClear() {
       this.lengthShiftTimeValue = [];
     },
-
     timeFormat: function(mss) {
       var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
@@ -655,7 +654,8 @@ export default {
         this.updateProduct({
           "productIdList": this.productInfoData[this.editProductIndex].productid,
           "conformProduct": this.conformProductValue,
-          "normalCycletime": this.normalCycletimeValue
+          "normalCycletime": this.normalCycletimeValue,
+          "classinfIdList": this.classInfoIdList
         })
       } else {
         this.addProduct({
@@ -750,13 +750,19 @@ export default {
     updateObjectimeAfteraddRes(newVal) {
       console.log("updateObjectimeAfteraddRes:" + newVal);
       let editLossData = newVal.data;
+      console.log(this.lossIndex);
+      console.log(typeof editLossData.losstier4Dataid);
       const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
       const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
+      console.log(editLossStartTime);
+      console.log(editLossEndTime);
       if (newVal.status === "0") {
         for(let i = 0; i < this.datainputLoss.length; i++) {
           for(let key in this.datainputLoss[i]) {
             if(key === editLossData.losstier2name) {
-              if(this.datainputLoss[i][key][this.lossIndex].losstier4Dataid === editLossData.losstier4Dataid) {
+              console.log(typeof this.datainputLoss[i][key][this.lossIndex].losstier4Dataid);
+              if(this.datainputLoss[i][key][this.lossIndex].losstier3name === editLossData.losstier3name) {
+                console.log("修改成功");
                 this.datainputLoss[i][key][this.lossIndex].starttime = editLossStartTime;
                 this.datainputLoss[i][key][this.lossIndex].endtime = editLossEndTime;
                 this.$Message.success("修改成功");
@@ -772,6 +778,8 @@ export default {
       this.startTimeValue = '';
       this.durationTimeValue = '';
       this.endTimeValue = '';
+      this.lossIndex = params.index;
+      this.lossParams = params;
     },
     showProductNameRes(newVal) {
       console.log("showProductNameRes:" + newVal);
@@ -782,18 +790,12 @@ export default {
     deleteProductRes(newVal) {
       console.log("deleteProductRes:" + newVal);
       if(newVal.status === "0") {
-        this.productInfoData.splice(this.deleteProductIndex, 1);
+        this.productInfoData = newVal.data;
       }
-      this.deleteProductIndex = null;
     },
     updateProductRes(newVal) {
       if(newVal.status === "0") {
-        console.log(newVal.data.conformproduct);
-        console.log(newVal.data.normalcycletime);
-
-        this.productInfoData[this.editProductIndex].conformproduct = newVal.data.conformproduct;
-        this.productInfoData[this.editProductIndex].normalcycletime = newVal.data.normalcycletime;
-        console.log(this.productInfoData);
+        this.productInfoData = newVal.data;
       }
       this.editProductIndex = null;
     },
@@ -810,6 +812,8 @@ export default {
         }
       }
     }
+    this.lossIndex = null;
+    this.lossParams = null;
   },
   mounted() {
     if (sessionStorage.getItem("userid")) {

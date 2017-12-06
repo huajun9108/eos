@@ -285,35 +285,29 @@ export default {
           }
         }
       ],
-      productInfoData: [
-        // {
-        //   '产品': 'A',
-        //   '良品数量': '100',
-        //   'Cycle': '30s',
-        // }
-      ],
+      productInfoData: [],
       productList: [],
       childTabCols: [{
           title: 'Tier3',
-          key: 'tier3',
+          key: 'losstier3name',
           className: 'childTableFirstCol',
           align: 'center',
         },
         {
           title: 'Tier4',
-          key: 'tier4',
+          key: 'losstier4name',
           className: 'childTableSecondCol',
           align: 'center',
         },
         {
           title: '开始时间',
-          key: '开始时间',
+          key: 'starttime',
           className: 'childTableThirdCol',
           align: 'center'
         },
         {
           title: '结束时间',
-          key: '结束时间',
+          key: 'endtime',
           className: 'childTableFourthCol',
           align: 'center'
         },
@@ -345,7 +339,7 @@ export default {
                 style: {},
                 on: {
                   click: () => {
-                    this.deleteLoss(params.index)
+                    this.deleteLoss(params)
                   }
                 }
               })
@@ -396,14 +390,15 @@ export default {
       "kpiTwoLev",
       "addLosstier4time2Res",
       "datainputLoss",
-      "datainputLossId",
+      // "datainputLossId",
       "addClassinfRes",
       "addProductRes",
       "showProductRes",
       "updateObjectimeAfteraddRes",
       "showProductNameRes",
       "deleteProductRes",
-      "updateProductRes"
+      "updateProductRes",
+      "deleteLoss4dataRes"
     ])
   },
   methods: {
@@ -418,7 +413,8 @@ export default {
       "updateObjectimeAfteradd",
       "showProductName",
       "deleteProduct",
-      "updateProduct"
+      "updateProduct",
+      "deleteLoss4data"
     ]),
     ok() {
       this.$Message.info('Clicked ok');
@@ -427,7 +423,6 @@ export default {
       this.$Message.info('Clicked cancel');
     },
     getTier3: function(tier) {
-      console.log(tier);
       if (!tier) {
         this.tierValue = '';
         this.childTierValue = '';
@@ -441,7 +436,6 @@ export default {
       this.childTierValue = '';
       for (let val of this.lossTier3.data.losstier4) {
         if (tier === val.losstier3Lossid) {
-          console.log(val.name);
           tempTier.push({
             "tier4id": val.tier4id,
             "name": val.name
@@ -451,13 +445,11 @@ export default {
       this.childTierMenuData = tempTier;
     },
     getTier4(tier) {
-      console.log(tier);
       if (!tier) {
         this.childTierValue = '';
         return;
       }
       this.tier4 = this.$refs['tierFour' + tier][0].label;
-      console.log(this.tier4);
 
       this.lossFourLevStructId = tier;
     },
@@ -480,9 +472,20 @@ export default {
         "linebodyId": this.lineBodys[0]
       })
     },
-    deleteLoss(index) {
-      alert("deleteLoss");
-      // this.childTableData.splice(index, 1);
+    deleteLoss(params) {
+      for(let i = 0; i < this.datainputLoss.length; i++) {
+        for(let key in this.datainputLoss[i]) {
+          for(let j = 0; j < this.datainputLoss[i][key].length; j++) {
+            if(this.datainputLoss[i][key][j].losstier3name === params.row["losstier3name"]) {
+              this.deleteLoss4data({
+                "losstier4Dataid": this.datainputLoss[i][key][j].losstier4Dataid
+              })
+            }
+          }
+        }
+      }
+      this.lossIndex = params.index;
+      this.lossParams = params
     },
     deleteProductClick(index) {
       const productIdList = this.productInfoData[index].productid;
@@ -499,17 +502,16 @@ export default {
         let sec = parseInt(timeArr[2]);
         this.normalCycletimeValue = hour * 3600 + min * 60 + sec;
       }
-      // console.log(`editInfo: ${editInfo[0]['productname']} ${editInfo[0]['conformproduct']} ${editInfo[0].Cycle}`);
       this.productName = editInfo[0].productname;
       this.conformProductValue = parseInt(editInfo[0].conformproduct);
       this.editProductIndex = index;
     },
     editLoss(params) {
       this.editLossDirFlag = true;
-      this.editTier3Value = params.row["tier3"];
-      this.editTier4Value = params.row["tier4"];
-      this.startTimeValue = new Date(params.row["开始时间"]);
-      this.endTimeValue = new Date(params.row["结束时间"]);
+      this.editTier3Value = params.row["losstier3name"];
+      this.editTier4Value = params.row["losstier4name"];
+      this.startTimeValue = new Date(params.row["starttime"]);
+      this.endTimeValue = new Date(params.row["endtime"]);
       this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
       this.lossIndex = params.index;
       this.lossParams = params
@@ -614,19 +616,15 @@ export default {
     lossConfirmClick: function() {
       this.showLossFlag = false;
       if (this.editLossDirFlag) {
-        for (let i = 0; i < this.datainputLoss.length; i++) {
-          for (var key in this.datainputLoss[i]) {
-            if (this.datainputLoss[i][key]) {
-              for (var k in this.datainputLoss[i][key][this.lossIndex]) {
-                if (this.datainputLoss[i][key][this.lossIndex][k] === this.lossParams.row["tier3"]) {
-                  this.updateObjectimeAfteradd({
-                    "losstier4Dataid": this.datainputLossId[i][key][this.lossIndex],
-                    "starttime": this.startTimeValue,
-                    "endtime": this.endTimeValue
-                  });
-                  this.datainputLoss[i][key][this.lossIndex]["开始时间"] = this.startTimeValue.format('yyyy-MM-dd hh:mm:ss');
-                  this.datainputLoss[i][key][this.lossIndex]["结束时间"] = this.endTimeValue.format('yyyy-MM-dd hh:mm:ss');
-                }
+        for(let i = 0; i < this.datainputLoss.length; i++) {
+          for(var key in this.datainputLoss[i]) {
+            for(let j = 0; j < this.datainputLoss[i][key].length; j++) {
+              if(this.datainputLoss[i][key][j].losstier3name === this.lossParams.row["losstier3name"]) {
+                this.updateObjectimeAfteradd({
+                  "losstier4Dataid": this.datainputLoss[i][key][j].losstier4Dataid,
+                  "starttime": this.startTimeValue,
+                  "endtime": this.endTimeValue
+                });
               }
             }
           }
@@ -654,9 +652,6 @@ export default {
     productInfoConfirmClick() {
       this.showProductInfoFlag = false;
       if(this.editProductInfoFlag) {
-        // console.log(this.productInfoData[this.editProductIndex].productid);
-        // console.log(this.productInfoData[this.editProductIndex].conformProduct);
-        // console.log(this.productInfoData[this.editProductIndex].normalCycletime);
         this.updateProduct({
           "productIdList": this.productInfoData[this.editProductIndex].productid,
           "conformProduct": this.conformProductValue,
@@ -676,7 +671,7 @@ export default {
       this.productValue = '';
       this.conformProductValue = '';
       this.normalCycletimeValue = '';
-    }
+    },
   },
   watch: {
     validarea(newVal) {
@@ -696,42 +691,26 @@ export default {
       });
     },
     lossTier3(newVal) {
-      console.log(`lossTier3: ${newVal.data.losstier3}`);
       if (newVal.status === "0") {
         this.lossTier3Array = newVal.data.losstier3;
       }
     },
     kpiTwoLev(newVal) {
-      console.log(`kpiTwoLev: ${newVal}`);
     },
     addLosstier4time2Res(newVal) {
       if (newVal.status === "0") {
-        if (newVal.data.losstier4Dataid) {
-          for (let i = 0; i < this.datainputLossId.length; i++) {
-            for (var key in this.datainputLossId[i]) {
-              if (key === newVal.data.losstier2name) {
-                this.datainputLossId[i][key].push(newVal.data.losstier4Dataid);
-                const obj = {
-                  "tier3": this.tier3,
-                  "tier4": this.tier4,
-                  "开始时间": this.startTimeValue.format('yyyy-MM-dd hh:mm:ss'),
-                  "结束时间": this.endTimeValue.format('yyyy-MM-dd hh:mm:ss')
-                };
-                if (obj) {
-                  for (let i = 0; i < this.datainputLoss.length; i++) {
-                    for (var key in this.datainputLoss[i]) {
-                      if (key === this.lossTwoLevName) {
-                        this.datainputLoss[i][key].push(obj);
-                        this.$Message.success("添加成功");
-                      }
-                    }
-                  }
-                }
-              }
+        let addLossData = newVal.data;
+        addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
+        addLossData.endtime = new Date(addLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
+
+        for(let i = 0; i < this.datainputLoss.length; i++) {
+          for(let key in this.datainputLoss[i]) {
+            if(key === addLossData.losstier2name) {
+              this.datainputLoss[i][key].push(addLossData);
+              this.$Message.success("添加成功");
+              console.log(this.datainputLoss);
             }
           }
-        } else {
-          this.$message.error("添加失败");
         }
       } else {
         this.$message.error("添加失败");
@@ -743,7 +722,6 @@ export default {
       this.endTimeValue = '';
     },
     addClassinfRes(newVal) {
-      console.log(`addClassinfRes ${newVal}`);
       let classInfoIdArr = [];
       if (newVal.status === "0") {
         this.$Message.success("班次信息添加成功");
@@ -756,27 +734,12 @@ export default {
       }
     },
     addProductRes(newVal) {
-      console.log(`addProduct: ${newVal}`);
       if (newVal.status === "0") {
         this.productInfoData = newVal.data;
         this.$Message.success("添加成功");
       } else {
         this.$Message.error("添加失败");
       }
-      //   const obj = {
-      //     "产品": newVal.data.productname,
-      //     "良品数量": this.conformProductValue,
-      //     "Cycle": this.normalCycletimeValue + 's',
-      //   };
-      //   if (obj && newVal.data.productname && this.conformProductValue && this.normalCycletimeValue) {
-      //     this.productInfoData.push(obj);
-      //     this.$Message.success("添加成功");
-      //   } else {
-      //     this.$Message.error("添加失败");
-      //   }
-      // } else {
-      //   this.$Message.error("添加失败");
-      // }
       this.productValue = '';
       this.conformProductValue = '';
       this.normalCycletimeValue = '';
@@ -785,23 +748,19 @@ export default {
       console.log("showProductRes:" + newVal);
     },
     updateObjectimeAfteraddRes(newVal) {
-      console.log("updateObjectimeAfteraddRes:");
-      console.log(newVal);
+      console.log("updateObjectimeAfteraddRes:" + newVal);
+      let editLossData = newVal.data;
+      const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
+      const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
       if (newVal.status === "0") {
-        for (let i = 0; i < this.datainputLoss.length; i++) {
-          for (var key in this.datainputLoss[i]) {
-            if (this.datainputLoss[i][key]) {
-              for (var k in this.datainputLoss[i][key][this.lossIndex]) {
-                if (this.datainputLoss[i][key][this.lossIndex][k] === this.lossParams.row["tier3"]) {
-                  this.datainputLoss[i][key][this.lossIndex]["开始时间"] = this.startTimeValue.format('yyyy-MM-dd hh:mm:ss');
-                  this.datainputLoss[i][key][this.lossIndex]["结束时间"] = this.endTimeValue.format('yyyy-MM-dd hh:mm:ss');
-                  this.$Message.success("修改成功");
-                } else {
-                  this.$Message.error("修改失败");
-                }
+        for(let i = 0; i < this.datainputLoss.length; i++) {
+          for(let key in this.datainputLoss[i]) {
+            if(key === editLossData.losstier2name) {
+              if(this.datainputLoss[i][key][this.lossIndex].losstier4Dataid === editLossData.losstier4Dataid) {
+                this.datainputLoss[i][key][this.lossIndex].starttime = editLossStartTime;
+                this.datainputLoss[i][key][this.lossIndex].endtime = editLossEndTime;
+                this.$Message.success("修改成功");
               }
-            } else {
-              this.$Message.error("修改失败");
             }
           }
         }
@@ -837,6 +796,19 @@ export default {
         console.log(this.productInfoData);
       }
       this.editProductIndex = null;
+    },
+    deleteLoss4dataRes(newVal) {
+      if(newVal.status === "0") {
+        for(let i = 0; i < this.datainputLoss.length; i++) {
+          for(let key in this.datainputLoss[i]) {
+            for(let j = 0; j < this.datainputLoss[i][key].length; j++) {
+              if(this.datainputLoss[i][key][j].losstier3name === this.lossParams.row["losstier3name"]) {
+                this.datainputLoss[i][key].splice(j, 1);
+              }
+            }
+          }
+        }
+      }
     }
   },
   mounted() {

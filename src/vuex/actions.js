@@ -578,6 +578,16 @@ export default {
       }).then(json => {
         commit("updateProduct", json)
       })
+    },
+    deleteLoss4data({ commit }, obj) {
+      axios.post("/datainput/deleteLoss4data", qs.stringify({
+        "losstier4Dataid": obj.losstier4Dataid
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("deleteLoss4data", json)
+      })
     }
 
 }

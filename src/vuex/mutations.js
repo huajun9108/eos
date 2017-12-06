@@ -129,11 +129,11 @@ export default {
             obj[item] = []
             state.datainputLoss.push(obj)
         })
-        json.data.forEach(item1 => {
-          let obj1 = {};
-          obj1[item1] = []
-          state.datainputLossId.push(obj1);
-        })
+        // json.data.forEach(item1 => {
+        //   let obj1 = {};
+        //   obj1[item1] = []
+        //   state.datainputLossId.push(obj1);
+        // })
     },
     addClassinf(state, json) {
         state.addClassinfRes = json
@@ -158,5 +158,8 @@ export default {
     },
     updateProduct(state, json) {
       state.updateProductRes = json
+    },
+    deleteLoss4data(state, json) {
+      state.deleteLoss4dataRes = json
     }
 }

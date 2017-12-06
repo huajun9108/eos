@@ -130,7 +130,7 @@ export default {
       this.addHoverDom(treeId, treeNode, zTree);
     },
     addHoverDomCategory: function(treeId, treeNode) {
-      if (treeNode.level >= 2) return;
+      if (treeNode.level >= 3) return;
       var zTree = $.fn.zTree.getZTreeObj("treeCategory");
       this.addHoverDom(treeId, treeNode, zTree);
     },

@@ -1,56 +1,37 @@
 @import "../styles/mobile.scss";
 .summary {
     .summary_content {
-        display: flex;
-        flex-direction: column;
+        width: 100%;
+        height: 100%;
         position: relative;
-        .summary_top {
-            line-height: P(56);
-            border-bottom: 1px solid #bdbdbd;
-            a {
-                font-size: P(14);
-                display: inline-block;
-                line-height: P(30);
-                width: P(80);
-                text-align: center;
-                margin-left: P(28);
-                background: #e1e1e1;
-                border-radius: P(4);
-                cursor: pointer;
-            }
-            .router-link-active {
-                background: #164380;
-                color: #fff;
-            }
-        }
         .summary_box {
-            flex: 1;
             width: 100%;
+            height: 100%;
             .status_content {
                 width: 100%;
                 height: 50%;
                 box-sizing: border-box;
-                padding: P(30) P(180) 0 P(50);
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                .status_echarts {
-                    width: 50%;
+                font-size: 0;
+                .status_pro {
+                    float: left;
+                    width: 10%;
                     height: 100%;
-                    display: inline-block;
+                    font-size: P(14);
                     display: flex;
-                    flex-direction: column;
-                    .status_pro {
-                        display: inline-block;
-                        font-size: 14px;
-                        .status_pos {
-                            color: #3065ab
-                        }
-                    }
+                    align-items: center;
+                    justify-content: center;
+                    border-right: 1px solid #bdbdbd;
+                }
+                .status_echarts {
+                    width: 52%;
+                    float: left;
+                    height: 100%;
+                    box-sizing: border-box;
+                    padding: P(42) P(94) P(42) P(46);
                     .charts_status {
                         position: relative;
                         width: 100%;
-                        flex: 1;
+                        height: 100%;
                         .pro_tip {
                             width: 50%;
                             height: P(30);
@@ -67,7 +48,12 @@
                     }
                 }
                 .status_detail {
-                    width: 35%;
+                    float: left;
+                    width: 38%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
                     .status_li {
                         padding-left: P(10);
                         line-height: P(48);
@@ -83,6 +69,9 @@
                             padding-left: P(30);
                             border: none;
                             text-align: center;
+                        }
+                        .stage {
+                            padding-left: P(110);
                         }
                     }
                     .status_li:last-child {

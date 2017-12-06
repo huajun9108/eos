@@ -11,30 +11,38 @@
   </div>
   <div class="area_content">
     <div class="area_box">
-       <div class="area_top">
-          <ul class="area_title clearfix">
-            <li class="area_tit">线体重要程度选择</li>
-          </ul>
-          <ul class="area_setting clearfix">
-            <li class="area_set" v-for="(item,idx) in radiopick" :key = "idx">
-              <input type="radio" :id="item.name" :value="item.value" v-model="picked" :ref="item.name" class="arearadio">
-              <label :for="item.name"  :ref="item.value">{{item.title}}</label>
-            </li>
-            <li class="area_button">
-              <span class="button_confirm" @click = "confirm">确认</span>
-            </li>
-          </ul>
+      <div class="area_top">
+        <ul class="area_title clearfix">
+          <li class="area_tit">线体重要程度选择</li>
+        <li class="area_set" v-for="(item,idx) in radiopick" :key = "idx">
+          <input type="radio" :id="item.name" :value="item.value" v-model="picked" :ref="item.name" class="arearadio">
+          <label :for="item.name"  :ref="item.value">{{item.title}}</label>
+        </li>
+        <li class="area_button text-right">
+          <span class="button_confirm button" @click="confirm">确认</span>
+          <span class="button_cancel button" @click="cancel">取消</span>
+        </li>
+        </ul>
+      </div>
+      <div class="area_top">
+        <v-target></v-target>
+      </div>
+      <div class="area_top">
+        <v-product></v-product>
       </div>
     </div>
   </div>
 </div>
 </template>
 <script type="text/javascript">
-import {
-  mapState,
-  mapActions
-} from "vuex"
+import {mapState,mapActions} from "vuex"
+import target from "./target"
+import product from "./product"
 export default {
+  components: {
+    "v-target":target,
+    "v-product":product
+  },
   data() {
     return {
       nodeId:'',
@@ -209,6 +217,9 @@ export default {
       }
      
       
+    },
+    cancel(){
+
     }
   },
   watch: {

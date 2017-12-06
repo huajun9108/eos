@@ -116,24 +116,9 @@
                 }
             }
         }
-        .accountinfo_button {
+        .area_button {
             margin-top: P(20);
             margin-bottom: P(35);
-            color: #fff;
-            line-height: P(28);
-            .button {
-                text-align: center;
-                display: inline-block;
-                border-radius: P(14);
-                width: P(104);
-            }
-            .button_confirm {
-                background: #1b3867;
-            }
-            .button_cancel {
-                background: #c2c2c2;
-                margin-left: P(18)
-            }
         }
     }
 }

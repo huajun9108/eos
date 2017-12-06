@@ -17,7 +17,7 @@
 <script>
     import {mapActions,mapState} from "vuex";
     import echarts from 'echarts';
-    var startChart,endChart;
+    var chart;
     export default {
     data() {
         return {
@@ -28,7 +28,7 @@
         _titleText:String,
         _xText:String,
         _yText:String,
-        _chartData:Object,
+        _chartData:Array,
         _type:String
     },
     methods: {
@@ -167,38 +167,12 @@
         if(!chartData){
             return
         }
-        if(chartData.status!="0"){
-            if(chartData.type=="start"){
-                if (startChart != null && startChart != "" && startChart != undefined) {
-                    startChart.dispose();
-                }
-            }
-            if(chartData.type=="end"){
-                if (endChart != null && endChart != "" && endChart != undefined) {
-                    endChart.dispose();
-                }
-            }
-            return
-        }
-        if(chartData.status=="0"){
-            if(chartData.data.type=="start"){
-                if (startChart != null && startChart != "" && startChart != undefined) {
-                    startChart.dispose();
-                }
-                var chart = echarts.init(document.getElementById(id))
-                startChart = chart
-            }
-            if(chartData.data.type=="end"){
-                if (endChart != null && endChart != "" && endChart != undefined) {
-                    endChart.dispose();
-                }
-                var chart = echarts.init(document.getElementById(id))
-                endChart = chart
-            }
+        if (chart != null && chart != "" && chart != undefined) {
+            chart.dispose();
         }
         var chart = echarts.init(document.getElementById(id))
-        var xAxisData = chartData.data.stage.map(function (item) {return item.key})
-        var yAxisData = chartData.data.stage.map(function (item) {return item.value})
+        var xAxisData = chartData.map(function (item) {return item.key})
+        var yAxisData = chartData.map(function (item) {return item.value})
         chart.setOption({
         tooltip: {
             trigger: 'axis',
@@ -237,6 +211,7 @@
             {
             name: yText,
             type: 'bar',
+            barWidth : 30,//柱图宽度
             itemStyle: {
                 normal: {
                 color: '#3670be',
@@ -251,48 +226,19 @@
         if(!chartData){
             return
         }
-        if(chartData.status!="0"){
-            if(chartData.type=="start"){
-                if (startChart != null && startChart != "" && startChart != undefined) {
-                    startChart.dispose();
-                    return
-                }
-                
-            }
-            if(chartData.type=="end"){
-                if (endChart != null && endChart != "" && endChart != undefined) {
-                    endChart.dispose();
-                    return
-                }
-            }
+        if (chart != null && chart != "" && chart != undefined) {
+            chart.dispose();
             return
-        }
-        
-        
-        if(chartData.status=="0"){
-            if(chartData.data.type=="start"){
-                if (startChart != null && startChart != "" && startChart != undefined) {
-                    startChart.dispose();
-                }
-                var chart = echarts.init(document.getElementById(id))
-                startChart = chart
-            }
-            if(chartData.data.type=="end"){
-                if (endChart != null && endChart != "" && endChart != undefined) {
-                    endChart.dispose();
-                }
-                var chart = echarts.init(document.getElementById(id))
-                endChart = chart
-            }
         }
         if(chartData=== ""){
           return;
         }
         var keys = [];
-        var xAxisData = chartData.data.status.map(function (item) {
+        var chart = echarts.init(document.getElementById(id))
+        var xAxisData = chartData.map(function (item) {
                 return item.key
             })
-        var yAxisData = chartData.data.status.map(function (item) {
+        var yAxisData = chartData.map(function (item) {
                 return item.value;
             })
         let machineColor ='#3670be';

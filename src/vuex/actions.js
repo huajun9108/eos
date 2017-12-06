@@ -491,7 +491,6 @@ export default {
         axios.post("/summary/selectProjectStateByTimeAndLinebodyIds", qs.stringify({
             linebodyIds: obj.linebodyIds,
             time: obj.time,
-            type: obj.type
         })).then(res => {
             console.log(res.data)
             return res.data

@@ -51,5 +51,5 @@ export default {
     projectStatus: [],
     datainputLossId: [],
     addClassinfRes: '',
-    addProductRes: ''
+    addProductRes: '',
 }

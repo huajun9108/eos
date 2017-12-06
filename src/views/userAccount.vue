@@ -274,11 +274,8 @@ export default {
   mounted() {
     if (sessionStorage.getItem("userid")) {
       this.selectUserById({userid:sessionStorage.getItem("userid")})
-      //  $.fn.zTree.init($("#treeDemo"), this.setting, this.validarea);
     } else {
       console.log(this.$route);
-      // this.selectAreaAll();
-      // $.fn.zTree.init($("#treeDemo"), this.setting, this.areaAll);
     }
   }
   

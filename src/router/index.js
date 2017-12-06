@@ -11,15 +11,12 @@ import User from "../views/user.vue";
 import AccountInfo from "../views/accountInfo.vue";
 import Overview from "../views/overview.vue";
 import Summary from "../views/summary.vue";
-import Target from "../views/target.vue"
 import Lossmaping from "../views/lossmaping.vue";
 import Savingbook from "../views/savingbook.vue"
 import Datainput from "../views/datainput.vue"
 import Useraccount from "../views/userAccount.vue"
 import target from "../views/target.vue"
 import Improvement from "../views/improvement.vue"
-import Status from "../views/status.vue"
-import Phase from "../views/phase.vue"
 import Project from "../views/project.vue"
 import Rca from "../views/rca.vue"
 
@@ -53,11 +50,7 @@ var routes = [{
                 component: AccountInfo,
                 name: "accountInfo",
             },
-            {
-                path: "target",
-                component: target,
-                name: "target",
-            },
+
             { path: "*", redirect: "/index/area" }
         ]
     },
@@ -75,19 +68,7 @@ var routes = [{
                 path: "summary",
                 component: Summary,
                 name: "Project Summary",
-                children: [{
-                        path: "status",
-                        component: Status,
-                        name: "status",
-                    },
-                    {
-                        path: "phase",
-                        component: Phase,
-                        name: "phase",
-                    },
 
-                ],
-                redirect: "/user/summary/status",
             },
             {
                 path: "lossmaping",

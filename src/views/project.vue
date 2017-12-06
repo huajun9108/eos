@@ -6,19 +6,23 @@
             <table class="table text-center table-hover">
             <thead class="fixedThead">
                 <tr>
-                    <td class="text-center pro_name" width="80%">名称</td>
+                    <td class="text-center pro_name" width="35%">名称</td>
+                    <td class="text-center pro_date" width="25%">下次review日期</td>
+                    <td class="text-center pro_status" width="20%">当前状态</td>
                     <td class="edit" width="20%"  colspan="2">编辑</td>
                 </tr>
             </thead>
             <tbody class="scrollTbody">
             <tr v-for="(item,idx) in this.proNowList" :key="idx" class="text-center"  >
-                <td width="80%">{{item.name}}</td>
-                <td class="icon-edit" @click = "editpro(item.id)"></td>
-                <td class="icon-delete_2" @click = "delpro(item.id)"></td>
+                <td width="35%">{{item.name}}</td>
+                <td width="25%">{{item.name}}</td>
+                <td width="20%">{{item.name}}</td>
+                <td width="10%" class="icon-edit" @click = "editpro(item.id)"></td>
+                <td width="10%" class="icon-delete_2" @click = "delpro(item.id)"></td>
             </tr>
 
             <tr v-if="proNowList.length==0">
-                <td colspan="3" class="text-center text-muted">
+                <td colspan="4" class="text-center text-muted">
                     <p>暂无数据...</p>
                 </td>
             </tr>
@@ -44,7 +48,15 @@
                 </li>
                 <li class="item_li">
                     <span class="item_title">项目状态</span>
-                    <input v-model= "status" class="item_detail" />
+                    <Select v-model="status" clearable size="small" style="width:90px">
+                        <Option  v-for="(item,idx) in statusList" :key = "idx" :value="item.value">{{ item.label }}</Option>
+                    </Select>
+                </li>
+                <li class="item_li">
+                    <span class="item_title">项目阶段</span>
+                    <Select v-model="stage" clearable size="small" style="width:90px">
+                        <Option v-for="(item,idx) in stageList" :key = "idx" :value="item.value">{{ item.label }}</Option>
+                    </Select>
                 </li>
                 <li class="item_li">
                     <span class="item_title">起点绩效值</span>
@@ -66,12 +78,9 @@
                     <span class="item_title">项目预期结束日期</span>
                     <input v-model="planendtime" class="item_detail" />
                 </li>
-                <li class="item_li">
-                    <span class="item_title">项目阶段</span>
-                    <input v-model="stage" class="item_detail" />
-                </li>
+                
             </ul>
-            <div class="accountinfo_button text-right">
+            <div class="area_button text-right">
                 <span class="button_confirm button" @click="confirm">确认</span>
                 <span class="button_cancel button" @click="cancel">取消</span>
             </div>
@@ -176,7 +185,60 @@ import {mapActions,mapState} from "vuex"
                 stage:'',
                 addObjId:[],
                 validareaList:[],
-                linebodyId:''
+                linebodyId:'',
+                statusList:[
+                    {
+                        value: 'ready',
+                        label: '准备启动'
+                    },
+                    {
+                        value: 'running',
+                        label: '项目运行'
+                    },
+                    {
+                        value: 'result',
+                        label: '成果跟踪'
+                    },
+                    {
+                        value: 'close',
+                        label: '项目关闭'
+                    },
+                   
+                ],
+                stageList:[
+                     {
+                        value: 'problem',
+                        label: '明确问题'
+                    },
+                    {
+                        value: 'now',
+                        label: '把握现状'
+                    },
+                    {
+                        value: 'setgoal',
+                        label: '设定目标'
+                    },
+                    {
+                        value: 'analysis',
+                        label: '分析根因'
+                    },
+                    {
+                        value: 'plan',
+                        label: '对策计划'
+                    },
+                    {
+                        value: 'countermeasures',
+                        label: '对策落实'
+                    },
+                    {
+                        value: 'confirm',
+                        label: '效果确认'
+                    },
+                    {
+                        value: 'consolidationResults',
+                        label: '成果巩固'
+                    },
+                ]
             }
                 
         },
@@ -229,7 +291,8 @@ import {mapActions,mapState} from "vuex"
                     "planendtime": this.planendtime,
                     "stage": this.stage,
                 })
-
+                console.log(this.status)
+                console.log(this.stage)
             },
             arrIsContains(arr, obj) {  
                 if(JSON.stringify(arr).indexOf(JSON.stringify(obj))!=-1){

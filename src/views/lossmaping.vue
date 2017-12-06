@@ -51,8 +51,9 @@
       initCharts: function() {
         console.log(this.lossmappingLinebodyAll);
         for(let i = 0; i < this.chartList.length; i++) {
-          if (this.chartList[i] != null && this.chartList[i] != "" && this.chartList[i] != undefined)
-          this.chartList[i].dispose();
+          if (this.chartList[i] != null && this.chartList[i] != "" && this.chartList[i] != undefined){
+            this.chartList[i].dispose();
+          }
         }
         if(this.lossmappingLinebodyAll.status === "1"){
           console.log("参数错误");

@@ -52,7 +52,7 @@
 
       </div>
       </div>
-      <div class="accountinfo_button text-right">
+      <div class="area_button text-right">
           <input  v-model="continueAdd" id='continueCheck' :checked="this.check" type="checkbox" class="mycheck">
           <label v-show = "flag" for='continueCheck' >连续添加</label>
           <span class="button_confirm button" @click="confirm">确认</span>

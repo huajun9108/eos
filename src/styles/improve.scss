@@ -3,6 +3,7 @@
     .improve_content {
         display: flex;
         flex-direction: column;
+        overflow: hidden;
         .summary_top {
             line-height: P(56);
             border-bottom: 1px solid #bdbdbd;
@@ -27,8 +28,8 @@
             flex: 1;
             .project_item {
                 float: left;
-                height: 100%;
                 display: flex;
+                height: 100%;
                 border-right: 1px solid #bdbdbd;
                 flex-direction: column;
                 .pro_title {
@@ -46,7 +47,7 @@
                 }
             }
             .project_now {
-                width: 40%;
+                width: 42%;
                 .pro_item {
                     width: 100%;
                     flex: 1;
@@ -54,33 +55,39 @@
                         margin-bottom: 0;
                         .fixedThead {
                             tr>td {
-                                border-bottom: 1px solid #bdbdbd;
-                            }
-                            .pro_name {
                                 border-right: 1px solid #bdbdbd
+                            }
+                            .edit {
+                                border-right: 0;
                             }
                         }
                         .scrollTbody {
                             tr>td {
                                 border-left: 0;
-                                border-right: 0;
+                                // border-right: 0;
                             }
                             .icon-edit {
                                 border-right: 1px solid #bdbdbd;
                                 border-left: 1px solid #bdbdbd;
+                            }
+                            .icon-delete_2 {
+                                border-right: 0;
+                            }
+                            .text-muted {
+                                border-right: 0;
                             }
                         }
                     }
                 }
             }
             .project_detail {
-                width: 30%;
+                width: 28%;
                 .pro_itemdetail {
                     width: 100%;
                     flex: 1;
                     position: relative;
                     box-sizing: border-box;
-                    padding: P(34) P(40) 0 P(40);
+                    padding: P(16) P(46) 0 P(46);
                     .item_det {
                         width: 100%;
                         font-size: P(14);
@@ -89,11 +96,19 @@
                             width: 100%;
                             line-height: P(50);
                             border-bottom: 1px solid #bdbdbd;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
                             .item_title {
+                                // float: left;
                                 display: inline-block;
-                                width: P(130);
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                overflow: hidden;
                             }
                             .item_detail {
+                                float: right;
+                                text-align: right;
                                 border: none;
                             }
                         }
@@ -101,83 +116,16 @@
                             border-bottom: none;
                         }
                     }
-                    .accountinfo_button {
+                    .area_button {
                         position: absolute;
                         bottom: P(30);
                         right: P(40);
-                        color: #fff;
-                        .button {
-                            line-height: P(28);
-                            text-align: center;
-                            display: inline-block;
-                            border-radius: P(14);
-                            width: P(104);
-                            cursor: pointer;
-                        }
-                        .button_confirm {
-                            background: #1b3867;
-                        }
-                        .button_cancel {
-                            background: #c2c2c2;
-                            margin-left: P(22);
-                        }
-                    }
-                }
-            }
-            .project_pool {
-                float: left;
-                width: 35%;
-                height: 100%;
-                border-right: 1px solid #bdbdbd;
-                display: flex;
-                flex-direction: column;
-                .pro_title {
-                    display: block;
-                    line-height: P(52);
-                    padding-left: P(42);
-                    font-size: P(18);
-                    border-bottom: 1px solid #bdbdbd;
-                }
-                .pro_table {
-                    width: 100%;
-                    height: 100%;
-                    overflow-y: auto;
-                    .table>tbody>tr>td {
-                        border-top: 0;
-                        border-left: 0;
-                        cursor: pointer;
-                    }
-                    .table>tbody>tr>td:last-child {
-                        border-right: 0;
-                    }
-                    .pro_active {
-                        // background: #5b7ba6;
-                        color: #bdbdbd;
-                    }
-                    .pro_active:hover {
-                        cursor: not-allowed;
-                    }
-                    .pro_table_item {
-                        display: block;
-                        width: 100%;
-                        border-bottom: 1px solid #bdbdbd;
-                    }
-                    .table {
-                        margin-bottom: 0
-                    }
-                    .table>tbody+tbody {
-                        border: 0;
                     }
                 }
             }
             .project_change {
                 width: 30%;
                 border-right: 0;
-            }
-            .pro_shadow {
-                width: 100%;
-                height: 100%;
-                position: fixed
             }
         }
     }

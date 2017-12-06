@@ -136,11 +136,10 @@ label {
 }
 
 .arearadio+label {
-    width: 40%;
     font-size: P(14);
     box-sizing: border-box;
     background: url("./assets/images/unselected_line.png") no-repeat left center;
-    padding: 8px 18px;
+    padding: 0 18px;
     display: inline-block;
     position: relative;
 }
@@ -148,7 +147,7 @@ label {
 .arearadio:checked+label {
     box-sizing: border-box;
     background: url("./assets/images/selected_line.png") no-repeat left center;
-    padding: 8px 18px;
+    padding: 0 18px;
     display: inline-block;
     position: relative;
 }
@@ -160,7 +159,7 @@ label {
 .table-bordered>thead>tr>td,
 .table-bordered>tbody>tr>td,
 .table-bordered {
-    border: 1px solid #9ba3a9;
+    border: 1px solid #bdbdbd;
 }
 
 .table-bordered>thead>tr>td {
@@ -186,6 +185,15 @@ label {
     cursor: pointer;
 }
 
+.ivu-select-item:hover {
+    background: #ecf0f1;
+}
+
+.ivu-select-item-selected,
+.ivu-select-item-selected:hover {
+    background: rgba(45, 140, 240, .9)
+}
+
 .vertical-center-modal {
     display: flex;
     align-items: center;
@@ -195,7 +203,7 @@ label {
         .ivu-modal-content {
             .ivu-modal-header {
                 border-bottom: 0;
-                padding: P(30) P(45) P(14) P(45);
+                padding: P(30) P(45) 0 P(45);
                 .ivu-modal-header-inner {
                     font-size: P(20);
                     font-weight: 100;
@@ -203,7 +211,7 @@ label {
                 }
             }
             .ivu-modal-body {
-                padding: 0 P(45);
+                padding: P(14) P(45) 0;
                 .table>tbody>tr>td {
                     cursor: pointer;
                 }
@@ -240,5 +248,26 @@ label {
                 }
             }
         }
+    }
+}
+
+.area_button {
+    color: #fff;
+    .button {
+        line-height: P(28);
+        text-align: center;
+        display: inline-block;
+        border-radius: P(14);
+        width: P(104);
+        cursor: pointer;
+    }
+    .button_confirm {
+        border-radius: P(14);
+        width: P(104);
+        background: #1b3867;
+    }
+    .button_cancel {
+        background: #c2c2c2;
+        margin-left: P(18)
     }
 }

@@ -1,73 +1,63 @@
 <template>
     <div class="target">
-        <div class="target_nav">
-		    <div class="nav_header">
-			    <span class="header_title">区域范围</span>
-		    </div>
-		    <div class="nav_body">
-			    <ul id="target_tree" class="area_tree_class ztree">
-			    </ul>
-		    </div>
-	    </div>
-	    <div class="target_content">
-            <div class="target_box">
-                <div class="target_top">
-                    <ul class="target_title clearfix">
-                        <li class="target_tit">Target</li>
-                        <li class="target_tit">开始时间</li>
-                        <li class="target_tit">结束时间</li>
-                    </ul>
-                    <ul class="target_setting clearfix">
-                        <li class="target_set"> 
-                            <AutoComplete
-                                v-model="targetNo"
-                                placeholder="input here"
-                                >
-                                <Option v-for="item in targetList" :value="item" :key="item">{{ item }}</Option>
-                            </AutoComplete>
-                        </li>
-                        <li class="target_set">
-                            <DatePicker type="date" v-model="dateStart" placeholder="Select date" :options="optionsStart"></DatePicker>
-                        </li>
-                        <li class="target_set">
-                            <DatePicker type="date" v-model="dateEnd" placeholder="Select date" :options="optionsEnd"></DatePicker>
-                        </li>
-                    </ul>
-                    <ul class="target_title clearfix">
-                        <li class="target_tit">Vision</li>
-                        <li class="target_tit">开始时间</li>
-                        <li class="target_tit">结束时间</li>
-                    </ul>
-                     <ul class="target_setting clearfix">
-                        <li class="target_set"><input class="target_no" type="text" v-model="vision"/></li>
-                        <li class="target_set">
-                            <DatePicker type="date" v-model="visionStart" placeholder="Select date" :options="visionOptipnStart"></DatePicker>
-                        </li>
-                        <li class="target_set">
-                            <DatePicker type="date" v-model="visionEnd" placeholder="Select date" :options="visionOptipnEnd"></DatePicker>
-                        </li>
-                    </ul>
-                     <ul class="target_title clearfix">
-                        <li class="target_tit">Ideal</li>
-                        <li class="target_tit">开始时间</li>
-                        <li class="target_tit">结束时间</li>
-                    </ul>
-                     <ul class="target_setting clearfix">
-                        <li class="target_set"><input class="target_no" type="text"  v-model="ideal"/></li>
-                        <li class="target_set">
-                            <DatePicker type="date" v-model="idealStart" placeholder="Select date" :options="idealOptipnStart"></DatePicker>
-                        </li>
-                        <li class="target_set">
-                            <DatePicker type="date" v-model="idealEnd" placeholder="Select date" :options="idealOptipnEnd"></DatePicker>
-                        </li>
-                    </ul>
-                </div>
-                <div class="accountinfo_button text-right">
-                    <span class="button_confirm button" @click="confirm">确认</span>
-                    <span class="button_cancel button" @click="cancel">取消</span>
-                </div>
+        <div class="target_box clearfix">
+            <div class="target_top">
+                <span class="target_title">目标</span>
+                <ul class="target_setting clearfix">
+                    <li class="target_set"> 
+                        <span class="target_tit">Target</span>
+                        <AutoComplete
+                            v-model="targetNo"
+                            placeholder="input here"
+                            class="target_con"
+                            >
+                            <Option v-for="item in targetList" :value="item" :key="item">{{ item }}</Option>
+                        </AutoComplete>
+                    </li>
+                    <li class="target_set">
+                        <span class="target_tit">开始时间</span>
+                        <DatePicker class="target_con" type="date" placement="bottom-end" v-model="dateStart" placeholder="Select date" :options="optionsStart"></DatePicker>
+                    </li>
+                    <li class="target_set">
+                        <span class="target_tit">结束时间</span>
+                        <DatePicker class="target_con" type="date" placement="bottom-end" v-model="dateEnd" placeholder="Select date" :options="optionsEnd"></DatePicker>
+                    </li>
+                </ul>
+                <ul class="target_setting clearfix">
+                    <li class="target_set">
+                        <span class="target_tit">Vision</span>
+                        <Input v-model="vision" size="small" class="target_con"></Input>
+                    </li>
+                    <li class="target_set">
+                        <span class="target_tit">开始时间</span>
+                        <DatePicker class="target_con" type="date" placement="bottom-end" v-model="visionStart" placeholder="Select date" :options="visionOptipnStart"></DatePicker>
+                    </li>
+                    <li class="target_set">
+                        <span class="target_tit">结束时间</span>
+                        <DatePicker class="target_con" type="date" placement="bottom-end" v-model="visionEnd" placeholder="Select date" :options="visionOptipnEnd"></DatePicker>
+                    </li>
+                </ul>
+        
+                <ul class="target_setting clearfix">
+                    <li class="target_set">
+                        <span class="target_tit">Ideal</span>
+                        <Input v-model="ideal" size="small" class="target_con"></Input>
+                    </li>
+                    <li class="target_set">
+                        <span class="target_tit">开始时间</span>
+                        <DatePicker class="target_con"  type="date" placement="bottom-end" v-model="idealStart" placeholder="Select date" :options="idealOptipnStart"></DatePicker>
+                    </li>
+                    <li class="target_set">
+                        <span class="target_tit">结束时间</span>
+                        <DatePicker class="target_con"  type="date" placement="bottom-end" v-model="idealEnd" placeholder="Select date" :options="idealOptipnEnd"></DatePicker>
+                    </li>
+                </ul>
             </div>
-	    </div>
+            <div class="area_button text-right">
+                <span class="button_confirm button" @click="confirm">确认</span>
+                <span class="button_cancel button" @click="cancel">取消</span>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -133,20 +123,7 @@ export default{
                     }
                 }
             },
-            setting: {
-                view: {
-                    selectedMulti: false,
-                    showIcon: false,
-                },
-                data: {
-                    simpleData: {
-                    enable: true
-                    }
-                },
-                callback:{
-                    onClick:this.clickNode
-                }
-            },
+           
             nodeId:'',
             targetList: ['82%', '83%', '87%'],
         }
@@ -154,15 +131,13 @@ export default{
 
     computed:{
         ...mapState([
-            'areaAll',
             'lineBody',
             'updatelineBodyRes'
-
         ])
     },
     methods:{
         ...mapActions([
-            'selectAreaAll',
+        
             'selectLinebodyById',
             'updateLinebodyInfById'
         ]),
@@ -267,7 +242,7 @@ export default{
         }
     },
     mounted() {
-        this.selectAreaAll()
+        // this.selectAreaAll()
 	}
 
 }

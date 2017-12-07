@@ -11,7 +11,7 @@
                     <i class="iconfont icon-User-name"></i><input type="text" placeholder="请输入用户名" ref="user" v-model="user" @input="btnBac"/>
                 </div>
                 <div>
-                    <i class="iconfont icon-password"></i><input v-bind:type="seen?'password':'text'" placeholder="请输入密码" v-model='pwd' ref="pwd" @input="btnBac"/>
+                    <i class="iconfont icon-password"></i><input :type="seen?'password':'text'" placeholder="请输入密码" v-model="pwd" @input="btnBac"/>
                     <i :class="seen?'iconfont icon-eye_x':'iconfont icon-eye'" @click="changeSeen"></i>
                 </div>
                     <input type="radio"  id="admin-radio" value="0" v-model="picked" class="myradio"><label for="admin-radio">管理员</label>

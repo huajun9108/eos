@@ -20,11 +20,11 @@
                         字典设置
                     </router-link>
                 </li>
-                <!-- <li>
-                    <router-link :to="{name:'target'}">
-                        Target
+                <li>
+                    <router-link :to="{name:'productset'}">
+                        产品设置
                     </router-link>
-                </li> -->
+                </li>
             </ul>
             <div class="exit">
                 <select v-model="selectLan">

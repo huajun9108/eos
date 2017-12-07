@@ -22,21 +22,21 @@
     .kpiContainer {
         width: 25%;
         .kpiContent {
-            border-left: P(1) solid #747474;
-            border-bottom: P(1) solid #747474
+            border-left: 1px solid #bdbdbd;
+            border-bottom: 1px solid #bdbdbd;
         }
     }
     .categoryContainer {
         width: 40%;
         .categoryContent {
-            border-bottom: P(1) solid #747474;
+            border-bottom: 1px solid #bdbdbd;
         }
     }
     .savingDictionaryContainer {
         width: 35%;
         .savingDictionaryContent {
-            border-right: P(1) solid #747474;
-            border-bottom: P(1) solid #747474;
+            border-right: 1px solid #bdbdbd;
+            border-bottom: 1px solid #bdbdbd;
         }
     }
 }

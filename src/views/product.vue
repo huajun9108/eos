@@ -5,7 +5,7 @@
                 <span class="target_title">可生产产品</span><i class="icon-add_add project_add" @click = "addProduct()"></i>
             </div>
             <div class="target_top">
-                <ul class="target_setting clearfix" v-for = "(item,idx) in productData" :key = "idx">
+                <ul class="target_setting clearfix" v-for = "(item,idx) in productData[idx]" :key = "idx" >
                     <li class="target_set product_set"> 
                         <Select class="productModel product_con" v-model="productModel" clearable placeholder="productModel" @on-change="getProductModel($event)">
                             <Option v-for="(product,idx) in item" :key="idx" :label="product.label" :value="product.value" :ref="product.value">
@@ -80,8 +80,9 @@ export default{
                 {lossid: 39, name: "Tool Changes",losstier2Lossid: 30},
             ],
             productionListList:[],
-            product:''
-
+            product:''  ,
+            count:0 
+    
 
         }
                 
@@ -142,6 +143,9 @@ export default{
             this.productionListList = tempTier;
         },
         addProduct(){
+            this.count++;
+            const idx = this.count;
+            
             this.productData.push(this.productModelList)
             console.log(this.productData)
         },

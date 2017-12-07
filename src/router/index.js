@@ -19,6 +19,7 @@ import target from "../views/target.vue"
 import Improvement from "../views/improvement.vue"
 import Project from "../views/project.vue"
 import Rca from "../views/rca.vue"
+import ProductSet from "../views/productSet.vue"
 
 
 var routes = [{
@@ -49,6 +50,11 @@ var routes = [{
                 path: "accountinfo",
                 component: AccountInfo,
                 name: "accountInfo",
+            },
+            {
+                path: "productset",
+                component: ProductSet,
+                name: "productset",
             },
 
             { path: "*", redirect: "/index/area" }

@@ -63,6 +63,9 @@
 <script>
 import {mapActions,mapState} from "vuex"
 export default{
+    props: [
+        'nodeId',
+    ],
     data () {
         return {
             targetList:[],
@@ -123,8 +126,6 @@ export default{
                     }
                 }
             },
-           
-            nodeId:'',
             targetList: ['82%', '83%', '87%'],
         }
     },
@@ -137,7 +138,6 @@ export default{
     },
     methods:{
         ...mapActions([
-        
             'selectLinebodyById',
             'updateLinebodyInfById'
         ]),
@@ -173,8 +173,6 @@ export default{
                     "idealEndtime":this.idealEnd
                 })
             }
-            
-            // console.log(this.nodeId+"--"+this.targetNo+"---"+typeof(this.dateStart)+"--"+this.dateEnd+"--"+this.visionStart+"--"+this.visionEnd)
         },
         cancel(){
 
@@ -197,26 +195,6 @@ export default{
         }
             return true;
         },
-        clickNode(event, treeId, treeNode){
-            let reg=/^l/g;
-            if(reg.test(treeNode.id)){
-                this.selectLinebodyById({id:treeNode.id})
-                this.nodeId = treeNode.id
-            }else{
-                this.$Message.info("暂无信息")
-                this.targetNo="";
-                this.dateStart='';
-                this.dateEnd='';
-                this.vision='';
-                this.ideal='';
-                this.visionStart = '',
-                this.visionEnd = '',
-                this.idealStart = '',
-                this.idealEnd = ''
-            }
-
-
-        }
     },
     watch: {
         areaAll(){
@@ -239,6 +217,25 @@ export default{
             }else{
                 this.$Message.error("更新失败,请选择相应的线体进行操作")
             }
+        },
+        nodeId(newVal){
+            console.log(newVal)
+            let reg=/^l/g;
+            if(reg.test(newVal)){
+                this.selectLinebodyById({id:newVal})
+            }else{
+                this.$Message.info("暂无信息")
+                this.targetNo="";
+                this.dateStart='';
+                this.dateEnd='';
+                this.vision='';
+                this.ideal='';
+                this.visionStart = '',
+                this.visionEnd = '',
+                this.idealStart = '',
+                this.idealEnd = ''
+            }
+
         }
     },
     mounted() {

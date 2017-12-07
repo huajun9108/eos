@@ -25,7 +25,7 @@
         </ul>
       </div>
       <div class="area_top">
-        <v-target></v-target>
+        <v-target :nodeId="nodeId"></v-target>
       </div>
       <div class="area_top">
         <v-product></v-product>
@@ -52,7 +52,6 @@ export default {
 				{name:"unimportance",value:"1",title:"不重要"}
       ],
       picked:"",
-      sFlag: true,
       setting: {
         callback: {
           beforeRemove: this.zTreeBeforeRemove,
@@ -101,9 +100,6 @@ export default {
       "selectLinebodyById",
       "updateLinebodyWeightById"
     ]),
-    fun(){
-      alert()
-    },
     addHoverDom: function(treeId, treeNode) {
       if (treeNode.level >= 3) return;
       var sObj = $("#" + treeNode.tId + "_span");
@@ -180,9 +176,9 @@ export default {
     clickNode(event, treeId, treeNode){
       let reg=/^l/g;
       let _this = this
-      if(reg.test(treeNode.id)){
+      this.nodeId = treeNode.id
+      if(reg.test(this.nodeId)){
         // this.picked="1"
-        this.nodeId = treeNode.id
         this.selectLinebodyById({id:this.nodeId})
         // console.log(this.picked)
         this.removeEvent(false,_this.tip)
@@ -215,8 +211,6 @@ export default {
         let selectNodeId = selectNode[0].id.substring(1);
         this.updateLinebodyWeightById({"linebodyId": selectNodeId,"weight":this.picked});
       }
-     
-      
     },
     cancel(){
 

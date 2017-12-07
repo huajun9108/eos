@@ -6,22 +6,22 @@
             </div>
             <div class="target_top">
                 <ul class="target_setting clearfix" v-for = "(item,idx) in productData" :key = "idx">
-                    <li class="target_set product_set"> 
-                        <Select class="productModel product_con" v-model="productModel" clearable placeholder="productModel" @on-change="getProductModel($event)">
+                    <li class="target_set product_set">
+                        <Select class="productModel product_con" clearable placeholder="productModel" @on-change="getProductModel($event)">
                             <Option v-for="(product,idx) in item" :key="idx" :label="product.label" :value="product.value" :ref="product.value">
                                 {{product.label}}
                             </Option>
                         </Select>
-                        <Select class="productMenu product_con"  v-model="productMenu" clearable placeholder="productList" @on-change="getProductMenu($event)" >
+                        <Select class="productMenu product_con" clearable placeholder="productList" @on-change="getProductMenu($event)" >
                             <Option v-for="item in productMenuListList" :key="item.tier4id" :label="item.name" :value="item.tier4id">
                             </Option>
                         </Select>
-                        <Select class="production product_con"  v-model="product" clearable placeholder="product" >
+                        <Select class="production product_con" clearable placeholder="product" >
                             <Option v-for="item in productionListList" :key="item.tier4id" :label="item.name" :value="item.tier4id">
                             </Option>
                         </Select>
                     </li>
-                    <li class="target_set"> 
+                    <li class="target_set">
                         <span>CT</span>
                         <Input v-model="vision" size="small" class="target_con"></Input>
                         <span class="seconds">秒</span>
@@ -42,11 +42,11 @@ export default{
     data () {
         return {
             productData:[
-               
+
             ],
             productModelList:[
-                {value: 1, label: "Machine"}, 
-                {value:2, label: "EHS"}, 
+                {value: 1, label: "Machine"},
+                {value:2, label: "EHS"},
                 {value: 3, label: "Material"},
             ],
             productModel:'',
@@ -84,18 +84,18 @@ export default{
 
 
         }
-                
+
     },
 
     computed:{
         ...mapState([
-           
+
         ])
     },
     methods:{
         ...mapActions([
-        
-          
+
+
         ]),
         empty(val) {
             var reg = /^\s+$/gi;
@@ -161,7 +161,7 @@ export default{
                     "idealEndtime":this.idealEnd
                 })
             }
-            
+
         },
         cancel(){
 
@@ -176,7 +176,7 @@ export default{
             this.empty(this.visionEnd) ||
             this.empty(this.ideal) ||
             this.empty(this.idealStart) ||
-            this.empty(this.idealEnd) 
+            this.empty(this.idealEnd)
         ) {
             this.$Message.error('线体信息不能为空');
             return false;
@@ -205,7 +205,7 @@ export default{
         }
     },
     watch: {
-       
+
     },
     mounted() {
         // this.selectAreaAll()

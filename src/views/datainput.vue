@@ -40,7 +40,7 @@
           <span class="flex-item">{{ d }}</span>
         </div>
         <div class="lossTable">
-          <Table border height="200" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
+          <Table border height="200" :columns="lossChildTableCols" :data="datainputLossTableData[idx][d]"></Table>
         </div>
         <div class="lossBtnContainer">
           <span class="addLossBtn flex-item" @click="addLoss(d)">添加loss</span>
@@ -52,17 +52,17 @@
     <div class="lossChoose" :class="showLossFlag?'showLossChoose':'hideLossChoose'">
       <div v-if="editLossDirFlag" class="editLossDir">
         <span>Tier3：</span>
-        <span>{{ this.editTier3Value }}</span>
+        <span>{{ this.lossTier3BeingEditedVal }}</span>
         <span>Tier4：</span>
-        <span>{{ this.editTier4Value }}</span>
+        <span>{{ this.lossTier4BeingEditedVal }}</span>
       </div>
       <div v-else class="dirChoose">
-        <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier3($event)">
-          <Option v-for="item in this.lossTier3Array" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
+        <Select class="dropdownTier" v-model="choosedLossTier3ValByAdd" clearable placeholder="Tier3" @on-change="getTier3($event)">
+          <Option v-for="item in this.optionalLossTier3ListByAdd" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
           </Option>
         </Select>
-        <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4" @on-change="getTier4($event)">
-          <Option v-for="item in childTierMenuData" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
+        <Select class="dropdownTier" :disabled="choosedLossTier3ValByAdd ===''" v-model="choosedLossTier4ValByAdd" clearable placeholder="Tier4" @on-change="getTier4($event)">
+          <Option v-for="item in optionalLossTier4ListByAdd" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
           </Option>
         </Select>
       </div>
@@ -90,10 +90,10 @@
       <div class="productChoose">
         <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
           <span>产品：</span>
-          <span>{{ this.productName }}</span>
+          <span>{{ this.productNameBeingEditedVal }}</span>
         </div>
-        <Select v-else v-model="productValue" class="dropdownProduct" clearable placeholder="产品">
-            <Option v-for="item in productList" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
+        <Select v-else v-model="choosedProductValByAdd" class="dropdownProduct" clearable placeholder="产品">
+            <Option v-for="item in optionalProductListByAdd" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
               {{ item.name }}
             </Option>
           </Select>
@@ -113,17 +113,17 @@
   <Modal class="lossChoose" v-model="modal1" @on-ok="ok" @on-cancel="cancel" :closable="false">
     <div v-if="editLossDirFlag" class="editLossDir">
       <span>Tier3：</span>
-      <span>{{ this.editTier3Value }}</span>
+      <span>{{ this.lossTier3BeingEditedVal }}</span>
       <span>Tier4：</span>
-      <span>{{ this.editTier4Value }}</span>
+      <span>{{ this.lossTier4BeingEditedVal }}</span>
     </div>
     <div v-else class="dirChoose">
-      <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier3($event)">
-            <Option v-for="item in this.lossTier3Array" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
+      <Select class="dropdownTier" v-model="choosedLossTier3ValByAdd" clearable placeholder="Tier3" @on-change="getTier3($event)">
+            <Option v-for="item in this.optionalLossTier3ListByAdd" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
             </Option>
           </Select>
-      <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4" @on-change="getTier4($event)">
-            <Option v-for="item in childTierMenuData" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
+      <Select class="dropdownTier" :disabled="choosedLossTier3ValByAdd ===''" v-model="choosedLossTier4ValByAdd" clearable placeholder="Tier4" @on-change="getTier4($event)">
+            <Option v-for="item in optionalLossTier4ListByAdd" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
             </Option>
           </Select>
     </div>
@@ -147,10 +147,10 @@
     <div class="productChoose">
       <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
         <span>产品：</span>
-        <span>{{ this.productName }}</span>
+        <span>{{ this.productNameBeingEditedVal }}</span>
       </div>
-      <Select v-else v-model="productValue" class="dropdownProduct" clearable placeholder="产品">
-              <Option v-for="item in productList" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
+      <Select v-else v-model="choosedProductValByAdd" class="dropdownProduct" clearable placeholder="产品">
+              <Option v-for="item in optionalProductListByAdd" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
                 {{ item.name }}
               </Option>
             </Select>
@@ -232,9 +232,20 @@ export default {
           }
         }
       },
-      tierValue: '',
-      childTierMenuData: [],
-      childTierValue: '',
+      openCeremonyFlag: false,
+      validareaList: [],
+      lineBodys: [],
+      /*班次信息变量*/
+      lengthShiftTimeValue: [],
+      shouldNumAttendanceValue: null,
+      actualNumAttendanceValue: null,
+      openCeremonyStatus: false,
+      classInfoIdList: '',
+      /*产品变量*/
+      showProductInfoFlag: false,
+      editProductInfoFlag: false,
+      productNameBeingEditedVal: '',
+      choosedProductValByAdd: '',
       productInfoCols: [{
           title: '产品',
           key: 'productname',
@@ -286,8 +297,18 @@ export default {
         }
       ],
       productInfoData: [],
-      productList: [],
-      childTabCols: [{
+      optionalProductListByAdd: [],
+      conformProductValue: null,
+      normalCycletimeValue: null,
+      editProductIndex: null,
+      /*loss变量*/
+      showLossFlag: false,
+      editLossDirFlag: false,
+      choosedLossTier3ValByAdd: '',
+      choosedLossTier4ValByAdd: '',
+      optionalLossTier3ListByAdd: [],
+      optionalLossTier4ListByAdd: [],
+      lossChildTableCols: [{
           title: 'Tier3',
           key: 'losstier3name',
           className: 'childTableFirstCol',
@@ -347,39 +368,25 @@ export default {
           }
         },
       ],
-      lengthShiftTimeValue: [],
       startTimeValue: '',
       durationTimeValue: '',
       endTimeValue: '',
-      openCeremonyFlag: false,
-      showLossFlag: false,
-      showProductInfoFlag: false,
-      validareaList: [],
-      lineBodys: [],
-      lossTwoLevDataId: [],
-      lossThreeLevStructId: '',
-      lossThreeLevDataId: '',
-      lossFourLevStructId: '',
-      lossFourLevDataId: '',
-      tier3: '',
-      tier4: '',
       lossTwoLevName: '',
-      lossTier3Array: [],
-      productValue: '',
-      shouldNumAttendanceValue: null,
-      actualNumAttendanceValue: null,
-      editProductInfoFlag: false,
-      editLossDirFlag: false,
-      editTier3Value: '',
-      editTier4Value: '',
-      classInfoIdList: '',
-      conformProductValue: null,
-      normalCycletimeValue: null,
-      lossIndex: null,
+      // lossTwoLevDataId: [],
+      lossThreeLevStructId: '',
+      // lossThreeLevDataId: '',
+      lossFourLevStructId: '',
+      // lossFourLevDataId: '',
+      // tier3: '',
+      // tier4: '',
+      lossTier3BeingEditedVal: '',
+      lossTier4BeingEditedVal: '',
+      // lossIndex: null,
       lossParams: null,
+
+
       modal1: false,
       modal2: false,
-      editProductIndex: null
     }
   },
   computed: {
@@ -388,7 +395,7 @@ export default {
       "lossTier3",
       "kpiTwoLev",
       "addLosstier4time2Res",
-      "datainputLoss",
+      "datainputLossTableData",
       "addClassinfRes",
       "addProductRes",
       "showProductRes",
@@ -422,16 +429,16 @@ export default {
     },
     getTier3: function(tier) {
       if (!tier) {
-        this.tierValue = '';
-        this.childTierValue = '';
+        this.choosedLossTier3ValByAdd = '';
+        this.choosedLossTier4ValByAdd = '';
         return;
       }
-      this.tier3 = this.$refs['tierThree' + tier][0].label;
+      // this.tier3 = this.$refs['tierThree' + tier][0].label;
 
       this.lossThreeLevStructId = tier;
       let tempTier = [];
-      this.childTierMenuData = [];
-      this.childTierValue = '';
+      this.optionalLossTier4ListByAdd = [];
+      this.choosedLossTier4ValByAdd = '';
       for (let val of this.lossTier3.data.losstier4) {
         if (tier === val.losstier3Lossid) {
           tempTier.push({
@@ -440,14 +447,14 @@ export default {
           });
         }
       }
-      this.childTierMenuData = tempTier;
+      this.optionalLossTier4ListByAdd = tempTier;
     },
     getTier4(tier) {
       if (!tier) {
-        this.childTierValue = '';
+        this.choosedLossTier4ValByAdd = '';
         return;
       }
-      this.tier4 = this.$refs['tierFour' + tier][0].label;
+      // this.tier4 = this.$refs['tierFour' + tier][0].label;
 
       this.lossFourLevStructId = tier;
     },
@@ -471,19 +478,19 @@ export default {
       })
     },
     deleteLoss(params) {
-      this.lossIndex = params.index;
+      // this.lossIndex = params.index;
       this.lossParams = params;
-      console.log(this.lossIndex);
-      console.log(this.datainputLoss);
-      for(let i = 0; i < this.datainputLoss.length; i++) {
-        console.log(this.datainputLoss[i]);
-        for(let key in this.datainputLoss[i]) {
+      console.log(this.lossParams.index);
+      console.log(this.datainputLossTableData);
+      for(let i = 0; i < this.datainputLossTableData.length; i++) {
+        console.log(this.datainputLossTableData[i]);
+        for(let key in this.datainputLossTableData[i]) {
             /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-            console.log(this.datainputLoss[i][key][this.lossIndex]);
-            if(this.datainputLoss[i][key].length > 0) {
-              if(this.datainputLoss[i][key][this.lossIndex].losstier3name === params.row["losstier3name"]) {
+            console.log(this.datainputLossTableData[i][key][this.lossParams.index]);
+            if(this.datainputLossTableData[i][key].length > 0) {
+              if(this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === params.row["losstier3name"]) {
                 this.deleteLoss4data({
-                  "losstier4Dataid": this.datainputLoss[i][key][this.lossIndex].losstier4Dataid
+                  "losstier4Dataid": this.datainputLossTableData[i][key][this.lossParams.index].losstier4Dataid
                 })
               }
             }
@@ -507,18 +514,18 @@ export default {
         let sec = parseInt(timeArr[2]);
         this.normalCycletimeValue = hour * 3600 + min * 60 + sec;
       }
-      this.productName = editInfo[0].productname;
+      this.productNameBeingEditedVal = editInfo[0].productname;
       this.conformProductValue = parseInt(editInfo[0].conformproduct);
       this.editProductIndex = index;
     },
     editLoss(params) {
       this.editLossDirFlag = true;
-      this.editTier3Value = params.row["losstier3name"];
-      this.editTier4Value = params.row["losstier4name"];
+      this.lossTier3BeingEditedVal = params.row["losstier3name"];
+      this.lossTier4BeingEditedVal = params.row["losstier4name"];
       this.startTimeValue = new Date(params.row["starttime"]);
       this.endTimeValue = new Date(params.row["endtime"]);
       this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
-      this.lossIndex = params.index;
+      // this.lossIndex = params.index;
       this.lossParams = params;
     },
     lengthShiftTimeClear() {
@@ -602,12 +609,16 @@ export default {
       this.openCeremonyFlag = true;
     },
     addClassInfoClick() {
-      this.addClassinf({
-        "classStarttime": this.lengthShiftTimeValue[0],
-        "classEndtime": this.lengthShiftTimeValue[1],
-        "shouldAttendance": this.shouldNumAttendanceValue,
-        "actualAttendance": this.actualNumAttendanceValue
-      });
+      if(!openCeremonyStatus) {
+        this.addClassinf({
+          "classStarttime": this.lengthShiftTimeValue[0],
+          "classEndtime": this.lengthShiftTimeValue[1],
+          "shouldAttendance": this.shouldNumAttendanceValue,
+          "actualAttendance": this.actualNumAttendanceValue
+        });
+      } else {
+        this.$Message.error("请勿重复添加班次信息");
+      }
     },
     clearClassInfoClick() {
       this.lengthShiftTimeValue = '';
@@ -616,17 +627,19 @@ export default {
       this.showKpitwolev({
         userId: sessionStorage.getItem("userid")
       });
+      this.classInfoIdList = '';
+      this.openCeremonyStatus = false;
     },
     lossConfirmClick: function() {
       this.showLossFlag = false;
       if (this.editLossDirFlag) {
-        for(let i = 0; i < this.datainputLoss.length; i++) {
-          for(var key in this.datainputLoss[i]) {
+        for(let i = 0; i < this.datainputLossTableData.length; i++) {
+          for(var key in this.datainputLossTableData[i]) {
               /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-              if(this.datainputLoss[i][key].length > 0) {
-                if(this.datainputLoss[i][key][this.lossIndex].losstier3name === this.lossParams.row["losstier3name"]) {
+              if(this.datainputLossTableData[i][key].length > 0) {
+                if(this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
                   this.updateObjectimeAfteradd({
-                    "losstier4Dataid": this.datainputLoss[i][key][this.lossIndex].losstier4Dataid,
+                    "losstier4Dataid": this.datainputLossTableData[i][key][this.lossParams.index].losstier4Dataid,
                     "starttime": this.startTimeValue,
                     "endtime": this.endTimeValue
                   });
@@ -648,11 +661,15 @@ export default {
     },
     lossCancelClick: function() {
       this.showLossFlag = false;
-      this.tierValue = '';
-      this.childTierValue = '';
+      this.lossTwoLevName = '';
+      this.lossThreeLevStructId = '';
+      this.lossFourLevStructId = '';
+      this.choosedLossTier3ValByAdd = '';
+      this.choosedLossTier4ValByAdd = '';
       this.durationTimeValue = '';
       this.startTimeValue = '';
       this.endTimeValue = '';
+      this.lossParams = null;
     },
     productInfoConfirmClick() {
       this.showProductInfoFlag = false;
@@ -666,7 +683,7 @@ export default {
       } else {
         this.addProduct({
           "classinfIdList": this.classInfoIdList,
-          "productNameId": this.productValue,
+          "productNameId": this.choosedProductValByAdd,
           "conformProduct": this.conformProductValue,
           "normalCycletime": this.normalCycletimeValue
         });
@@ -674,9 +691,10 @@ export default {
     },
     productInfoCancelClick() {
       this.showProductInfoFlag = false;
-      this.productValue = '';
+      this.choosedProductValByAdd = '';
       this.conformProductValue = '';
       this.normalCycletimeValue = '';
+      this.editProductIndex = null;
     },
   },
   watch: {
@@ -698,7 +716,7 @@ export default {
     },
     lossTier3(newVal) {
       if (newVal.status === "0") {
-        this.lossTier3Array = newVal.data.losstier3;
+        this.optionalLossTier3ListByAdd = newVal.data.losstier3;
       }
     },
     kpiTwoLev(newVal) {
@@ -709,10 +727,10 @@ export default {
         addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
         addLossData.endtime = new Date(addLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
 
-        for(let i = 0; i < this.datainputLoss.length; i++) {
-          for(let key in this.datainputLoss[i]) {
+        for(let i = 0; i < this.datainputLossTableData.length; i++) {
+          for(let key in this.datainputLossTableData[i]) {
             if(key === addLossData.losstier2name) {
-              this.datainputLoss[i][key].push(addLossData);
+              this.datainputLossTableData[i][key].push(addLossData);
               this.$Message.success("添加成功");
             }
           }
@@ -720,8 +738,11 @@ export default {
       } else {
         this.$message.error("添加失败");
       }
-      this.tierValue = '';
-      this.childTierValue = '';
+      this.lossTwoLevName = '';
+      this.lossThreeLevStructId = '';
+      this.lossFourLevStructId = '';
+      this.choosedLossTier3ValByAdd = '';
+      this.choosedLossTier4ValByAdd = '';
       this.startTimeValue = '';
       this.durationTimeValue = '';
       this.endTimeValue = '';
@@ -730,12 +751,16 @@ export default {
       let classInfoIdArr = [];
       if (newVal.status === "0") {
         this.$Message.success("班次信息添加成功");
+        this.openCeremonyStatus = true;
         for (let i = 0; i < this.addClassinfRes.date.length; i++) {
           classInfoIdArr.push(this.addClassinfRes.date[i].classinfid);
         }
         this.classInfoIdList = classInfoIdArr.join(",");
+        this.openCeremonyStatus = true;
       } else {
         this.$Message.error("班次信息添加失败");
+        this.classInfoIdList = '';
+        this.openCeremonyStatus = false;
       }
     },
     addProductRes(newVal) {
@@ -745,7 +770,7 @@ export default {
       } else {
         this.$Message.error("添加失败");
       }
-      this.productValue = '';
+      this.choosedProductValByAdd = '';
       this.conformProductValue = '';
       this.normalCycletimeValue = '';
     },
@@ -757,13 +782,13 @@ export default {
       const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
       const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
       if (newVal.status === "0") {
-        for(let i = 0; i < this.datainputLoss.length; i++) {
-          for(let key in this.datainputLoss[i]) {
+        for(let i = 0; i < this.datainputLossTableData.length; i++) {
+          for(let key in this.datainputLossTableData[i]) {
             if(key === editLossData.losstier2name) {
               /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-              if(this.datainputLoss[i][key][this.lossIndex].losstier3name === editLossData.losstier3name) {
-                this.datainputLoss[i][key][this.lossIndex].starttime = editLossStartTime;
-                this.datainputLoss[i][key][this.lossIndex].endtime = editLossEndTime;
+              if(this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
+                this.datainputLossTableData[i][key][this.lossParams.index].starttime = editLossStartTime;
+                this.datainputLossTableData[i][key][this.lossParams.index].endtime = editLossEndTime;
                 this.$Message.success("修改成功");
               }
             }
@@ -772,18 +797,18 @@ export default {
       } else {
         this.$Message.error("修改失败");
       }
-      this.tierValue = '';
-      this.childTierValue = '';
+      // this.choosedLossTier3ValByAdd = '';
+      // this.choosedLossTier4ValByAdd = '';
       this.startTimeValue = '';
       this.durationTimeValue = '';
       this.endTimeValue = '';
-      this.lossIndex = null;
+      // this.lossIndex = null;
       this.lossParams = null;
     },
     showProductNameRes(newVal) {
       console.log("showProductNameRes:" + newVal);
       if (newVal.status === "0") {
-        this.productList = newVal.data;
+        this.optionalProductListByAdd = newVal.data;
       }
     },
     deleteProductRes(newVal) {
@@ -802,18 +827,18 @@ export default {
         this.$Message.error("修改失败");
       }
       this.editProductIndex = null;
-      this.productValue = '';
+      // this.choosedProductValByAdd = '';
       this.conformProductValue = '';
       this.normalCycletimeValue = '';
     },
     deleteLoss4dataRes(newVal) {
       if(newVal.status === "0") {
-        for(let i = 0; i < this.datainputLoss.length; i++) {
-          for(let key in this.datainputLoss[i]) {
+        for(let i = 0; i < this.datainputLossTableData.length; i++) {
+          for(let key in this.datainputLossTableData[i]) {
               /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-              if(this.datainputLoss[i][key].length > 0) {
-                if(this.datainputLoss[i][key][this.lossIndex].losstier3name === this.lossParams.row["losstier3name"]) {
-                  this.datainputLoss[i][key].splice(this.lossIndex, 1);
+              if(this.datainputLossTableData[i][key].length > 0) {
+                if(this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                  this.datainputLossTableData[i][key].splice(this.lossParams.index, 1);
                   this.$Message.success("删除成功");
                 }
               }
@@ -822,7 +847,7 @@ export default {
       } else {
         this.$Message.error("删除失败");
       }
-      this.lossIndex = null;
+      // this.lossIndex = null;
       this.lossParams = null;
     }
   },

@@ -3,12 +3,12 @@
     <!-- <ul>
         <router-link :to="{name:'Overview'}">
           <li>
-            <span>Overview</span> 
+            <span>Overview</span>
           </li>
         </router-link>
         <router-link :to="{name:'Loss Mapping'}">
           <li>
-            <span>Loss Mapping</span> 
+            <span>Loss Mapping</span>
           </li>
         </router-link>
         <router-link :to="{name:'Improvement'}">
@@ -17,7 +17,7 @@
           </li>
         </router-link>
         <router-link :to="{name:'Project Summary'}">
-          <li>  
+          <li>
             <span>Project Summary</span>
           </li>
         </router-link>
@@ -41,7 +41,7 @@
     <ul v-for="(item,idx) in validLeft" :key ="idx">
       <router-link :to="{name:item.validmenuname}">
           <li>
-            <span>{{item.validmenuname}}</span> 
+            <span>{{item.validmenuname}}</span>
           </li>
         </router-link>
     </ul>
@@ -67,16 +67,9 @@ import { mapState, mapActions } from "vuex";
       ]),
     },
     mounted(){
-      if(sessionStorage.getItem("userid")) {
-        this.selectUserById({userid:sessionStorage.getItem("userid")})
-      }else{
-        console.log(this.$route);
-      }
     },
     watch: {
-      
+
     }
   }
 </script>
-
-

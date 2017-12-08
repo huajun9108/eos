@@ -18,12 +18,12 @@
         </div>
         <div class="classInfoNumAttendance">
           <span>应出勤人数：</span>
-          <InputNumber v-model="shouldNumAttendanceValue" :min="1"></InputNumber>
+          <InputNumber v-model="shouldNumAttendanceValue" :min="1" placeholder="人"></InputNumber>
           <span class="classInfoActualAttendance">实出勤人数：</span>
           <InputNumber v-model="actualNumAttendanceValue" :min="0"></InputNumber>
         </div>
         <div class="classInfoSubmit">
-          <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
+          <!-- <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span> -->
           <span class="classInfoConfirmBtn classInfoBtn" @click="addClassInfoClick">确定</span>
         </div>
       </div>
@@ -372,16 +372,10 @@ export default {
       durationTimeValue: '',
       endTimeValue: '',
       lossTwoLevName: '',
-      // lossTwoLevDataId: [],
       lossThreeLevStructId: '',
-      // lossThreeLevDataId: '',
       lossFourLevStructId: '',
-      // lossFourLevDataId: '',
-      // tier3: '',
-      // tier4: '',
       lossTier3BeingEditedVal: '',
       lossTier4BeingEditedVal: '',
-      // lossIndex: null,
       lossParams: null,
 
 
@@ -478,30 +472,42 @@ export default {
       })
     },
     deleteLoss(params) {
-      // this.lossIndex = params.index;
       this.lossParams = params;
-      console.log(this.lossParams.index);
-      console.log(this.datainputLossTableData);
-      for(let i = 0; i < this.datainputLossTableData.length; i++) {
-        console.log(this.datainputLossTableData[i]);
-        for(let key in this.datainputLossTableData[i]) {
-            /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-            console.log(this.datainputLossTableData[i][key][this.lossParams.index]);
-            if(this.datainputLossTableData[i][key].length > 0) {
-              if(this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === params.row["losstier3name"]) {
-                this.deleteLoss4data({
-                  "losstier4Dataid": this.datainputLossTableData[i][key][this.lossParams.index].losstier4Dataid
-                })
-              }
+      let _this = this;
+      Ewin.confirm({ message: "确认删除？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+          for(let i = 0; i < _this.datainputLossTableData.length; i++) {
+            console.log(_this.datainputLossTableData[i]);
+            for(let key in _this.datainputLossTableData[i]) {
+                /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+                console.log(_this.datainputLossTableData[i][key][_this.lossParams.index]);
+                if(_this.datainputLossTableData[i][key].length > 0) {
+                  if(_this.datainputLossTableData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
+                    _this.deleteLoss4data({
+                      "losstier4Dataid": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
+                    })
+                  }
+                }
             }
-        }
-      }
+          }
+      });
+      // console.log(this.lossParams.index);
+      // console.log(this.datainputLossTableData);
+
     },
     deleteProductClick(index) {
       const productIdList = this.productInfoData[index].productid;
-      this.deleteProduct({
-        "productIdList": productIdList,
-        "classinfIdList": this.classInfoIdList
+      let _this = this;
+      Ewin.confirm({ message: "确认删除？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+          _this.deleteProduct({
+            "productIdList": productIdList,
+            "classinfIdList": _this.classInfoIdList
+          });
       });
     },
     editProduct(index) {
@@ -525,7 +531,6 @@ export default {
       this.startTimeValue = new Date(params.row["starttime"]);
       this.endTimeValue = new Date(params.row["endtime"]);
       this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
-      // this.lossIndex = params.index;
       this.lossParams = params;
     },
     lengthShiftTimeClear() {
@@ -609,7 +614,12 @@ export default {
       this.openCeremonyFlag = true;
     },
     addClassInfoClick() {
-      if(!openCeremonyStatus) {
+      if(!(this.lengthShiftTimeValue.length === 2 && this.shouldNumAttendanceValue && this.actualNumAttendanceValue)) {
+        this.$Message.error("请将班次信息填写完整");
+        return;
+      }
+
+      if(!this.openCeremonyStatus) {
         this.addClassinf({
           "classStarttime": this.lengthShiftTimeValue[0],
           "classEndtime": this.lengthShiftTimeValue[1],
@@ -621,18 +631,34 @@ export default {
       }
     },
     clearClassInfoClick() {
-      this.lengthShiftTimeValue = '';
-      this.shouldNumAttendanceValue = null;
-      this.actualNumAttendanceValue = null;
-      this.showKpitwolev({
-        userId: sessionStorage.getItem("userid")
+      if(!this.classInfoIdList) {
+        this.$Message.error("当前并无班次");
+        return;
+      }
+      let _this = this;
+      Ewin.confirm({ message: "确认清空当前班次信息？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+          _this.lengthShiftTimeValue = [];
+          _this.shouldNumAttendanceValue = null;
+          _this.actualNumAttendanceValue = null;
+          _this.showKpitwolev({
+            userId: sessionStorage.getItem("userid")
+          });
+          _this.classInfoIdList = '';
+          _this.openCeremonyStatus = false;
+          _this.$Message.error("清空成功");
       });
-      this.classInfoIdList = '';
-      this.openCeremonyStatus = false;
+
     },
     lossConfirmClick: function() {
-      this.showLossFlag = false;
       if (this.editLossDirFlag) {
+        if(!(this.startTimeValue && this.endTimeValue && this.durationTimeValue)) {
+          this.$Message.error("请将需要修改的loss信息填写完整");
+          return;
+        }
+        this.showLossFlag = false;
         for(let i = 0; i < this.datainputLossTableData.length; i++) {
           for(var key in this.datainputLossTableData[i]) {
               /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
@@ -648,6 +674,12 @@ export default {
           }
         }
       } else {
+        if(!(this.startTimeValue && this.endTimeValue && this.durationTimeValue && this.choosedLossTier3ValByAdd &&
+          this.choosedLossTier4ValByAdd)) {
+          this.$Message.error("请将需要添加的loss相关信息填写完整");
+          return;
+        }
+        this.showLossFlag = false;
         this.addLosstier4time2({
           "classinfIdList": this.classInfoIdList,
           "twolevName": this.lossTwoLevName,
@@ -672,8 +704,12 @@ export default {
       this.lossParams = null;
     },
     productInfoConfirmClick() {
-      this.showProductInfoFlag = false;
       if(this.editProductInfoFlag) {
+        if(!(this.choosedProductValByAdd && this.conformProductValue && this.normalCycletimeValue)) {
+          this.$Message.error("请将需要修改的产品信息填写完整");
+          return;
+        }
+        this.showProductInfoFlag = false;
         this.updateProduct({
           "productIdList": this.productInfoData[this.editProductIndex].productid,
           "conformProduct": this.conformProductValue,
@@ -681,6 +717,11 @@ export default {
           "classinfIdList": this.classInfoIdList
         })
       } else {
+        if(!(this.conformProductValue && this.normalCycletimeValue)) {
+          this.$Message.error("请将需要添加的产品信息填写完整");
+          return;
+        }
+        this.showProductInfoFlag = false;
         this.addProduct({
           "classinfIdList": this.classInfoIdList,
           "productNameId": this.choosedProductValByAdd,

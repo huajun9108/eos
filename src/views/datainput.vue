@@ -14,16 +14,16 @@
         </span>
         <div class="classInfoTime">
           <span>本班次时间：</span>
-          <DatePicker v-model="lengthShiftTimeValue" type="datetimerange" placeholder="Select date and time" style="width: 300px" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
+          <DatePicker v-model="lengthShiftTimeValue" :readonly="openCeremonyStatus" type="datetimerange" placeholder="Select date and time" style="width: 300px" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
         </div>
         <div class="classInfoNumAttendance">
           <span>应出勤人数：</span>
-          <InputNumber v-model="shouldNumAttendanceValue" :min="1"></InputNumber>
+          <InputNumber v-model="shouldNumAttendanceValue" :min="1" placeholder="人" :readonly="openCeremonyStatus"></InputNumber>
           <span class="classInfoActualAttendance">实出勤人数：</span>
-          <InputNumber v-model="actualNumAttendanceValue" :min="0"></InputNumber>
+          <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="openCeremonyStatus"></InputNumber>
         </div>
         <div class="classInfoSubmit">
-          <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
+          <!-- <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span> -->
           <span class="classInfoConfirmBtn classInfoBtn" @click="addClassInfoClick">确定</span>
         </div>
       </div>
@@ -40,92 +40,30 @@
           <span class="flex-item">{{ d }}</span>
         </div>
         <div class="lossTable">
-          <Table border height="200" :columns="childTabCols" :data="datainputLoss[idx][d]"></Table>
+          <Table border height="200" :columns="lossChildTableCols" :data="datainputLossTableData[idx][d]"></Table>
         </div>
         <div class="lossBtnContainer">
           <span class="addLossBtn flex-item" @click="addLoss(d)">添加loss</span>
         </div>
       </div>
     </div>
-    <div class="lossShade" :class="showLossFlag?'showLossChoose':'hideLossChoose'"></div>
-    <div class="productInfoShade" :class="showProductInfoFlag?'showProductInfoChoose':'hideProductInfoChoose'"></div>
-    <div class="lossChoose" :class="showLossFlag?'showLossChoose':'hideLossChoose'">
-      <div v-if="editLossDirFlag" class="editLossDir">
-        <span>Tier3：</span>
-        <span>{{ this.editTier3Value }}</span>
-        <span>Tier4：</span>
-        <span>{{ this.editTier4Value }}</span>
-      </div>
-      <div v-else class="dirChoose">
-        <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier3($event)">
-          <Option v-for="item in this.lossTier3Array" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
-          </Option>
-        </Select>
-        <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4" @on-change="getTier4($event)">
-          <Option v-for="item in childTierMenuData" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
-          </Option>
-        </Select>
-      </div>
-      <div class="startTimeContainer">
-        <span class="timeTitle">开始时间：</span>
-        <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsStart" @on-ok="startTimeChooseOk">
-        </DatePicker>
-      </div>
-      <div class="durationTimeContainer">
-        <span class="timeTitle">持续时间：</span>
-        <TimePicker v-model="durationTimeValue" placeholder="任意时间点" format="HH:mm:ss" @on-change="durationTimeValueChange">
-        </TimePicker>
-      </div>
-      <div class="endTimeContainer">
-        <span class="timeTitle">结束时间：</span>
-        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
-        </DatePicker>
-      </div>
-      <div class="btnContainer text-right">
-        <span class="confirmBtn data_btn" @click="lossConfirmClick">确定</span>
-        <span class="cancelBtn data_btn" @click="lossCancelClick">取消</span>
-      </div>
-    </div>
-    <div class="productInfoAddContainer" :class="showProductInfoFlag?'showProductInfoChoose':'hideProductInfoChoose'">
-      <div class="productChoose">
-        <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
-          <span>产品：</span>
-          <span>{{ this.productName }}</span>
-        </div>
-        <Select v-else v-model="productValue" class="dropdownProduct" clearable placeholder="产品">
-            <Option v-for="item in productList" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
-              {{ item.name }}
-            </Option>
-          </Select>
-      </div>
-      <div class="productInfoSetting">
-        <span>良品数量：</span>
-        <InputNumber v-model="conformProductValue" placeholder="请填写数量" :min="0"></InputNumber>
-        <span class="cycleTitle">Cycle：</span>
-        <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间" :min="0"></InputNumber>
-      </div>
-      <div class="btnContainer text-right">
-        <span class="confirmBtn data_btn" @click="productInfoConfirmClick">确定</span>
-        <span class="cancelBtn data_btn" @click="productInfoCancelClick">取消</span>
-      </div>
-    </div>
   </div>
-  <Modal class="lossChoose" v-model="modal1" @on-ok="ok" @on-cancel="cancel" :closable="false">
+  <Modal class="lossChoose" v-model="showLossFlag" @on-ok="lossConfirmClick" @on-cancel="lossCancelClick" :closable="false" class-name="loss-vertical-center-modal" width="400">
     <div v-if="editLossDirFlag" class="editLossDir">
       <span>Tier3：</span>
-      <span>{{ this.editTier3Value }}</span>
+      <span>{{ this.lossTier3BeingEditedVal }}</span>
       <span>Tier4：</span>
-      <span>{{ this.editTier4Value }}</span>
+      <span>{{ this.lossTier4BeingEditedVal }}</span>
     </div>
     <div v-else class="dirChoose">
-      <Select class="dropdownTier" v-model="tierValue" clearable placeholder="Tier3" @on-change="getTier3($event)">
-            <Option v-for="item in this.lossTier3Array" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
-            </Option>
-          </Select>
-      <Select class="dropdownTier" :disabled="tierValue ===''" v-model="childTierValue" clearable placeholder="Tier4" @on-change="getTier4($event)">
-            <Option v-for="item in childTierMenuData" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
-            </Option>
-          </Select>
+      <Select class="dropdownTier" v-model="choosedLossTier3ValByAdd" clearable placeholder="Tier3" @on-change="getTier3($event)">
+        <Option v-for="item in this.optionalLossTier3ListByAdd" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
+        </Option>
+      </Select>
+      <Select class="dropdownTier" :disabled="choosedLossTier3ValByAdd ===''" v-model="choosedLossTier4ValByAdd" clearable placeholder="Tier4" @on-change="getTier4($event)">
+        <Option v-for="item in optionalLossTier4ListByAdd" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
+        </Option>
+      </Select>
     </div>
     <div class="startTimeContainer">
       <span class="timeTitle">开始时间：</span>
@@ -143,23 +81,27 @@
       </DatePicker>
     </div>
   </Modal>
-  <Modal v-model="modal2" @on-ok="ok" @on-cancel="cancel" class-name="product-vertical-center-modal" :closable="false" width="498">
+  <Modal v-model="showProductInfoFlag" @on-ok="productInfoConfirmClick" @on-cancel="productInfoCancelClick" class-name="product-vertical-center-modal" :closable="false" width="400">
     <div class="productChoose">
       <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
         <span>产品：</span>
-        <span>{{ this.productName }}</span>
+        <span>{{ this.productNameBeingEditedVal }}</span>
       </div>
-      <Select v-else v-model="productValue" class="dropdownProduct" clearable placeholder="产品">
-              <Option v-for="item in productList" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
-                {{ item.name }}
-              </Option>
-            </Select>
+      <Select v-else v-model="choosedProductValByAdd" class="dropdownProduct" clearable placeholder="产品">
+          <Option v-for="item in optionalProductListByAdd" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
+            {{ item.name }}
+          </Option>
+        </Select>
     </div>
     <div class="productInfoSetting">
       <span>良品数量：</span>
-      <InputNumber v-model="conformProductValue" placeholder="请填写数量" :min="0"></InputNumber>
+      <InputNumber v-model="conformProductValue" :min="0"></InputNumber>
       <span class="cycleTitle">Cycle：</span>
-      <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间" :min="0"></InputNumber>
+      <InputNumber v-model="normalCycletimeValue" :min="0" @on-focus="cycleTimeFocus"
+      @on-blur="cycleTimeBlur"></InputNumber>
+    </div>
+    <div v-if="this.productInfoCycletimeTipsFlag" class="productInfoCycletimeTips">
+      <span>tips:样例循环时间，单位为秒。</span>
     </div>
   </Modal>
 </div>
@@ -232,9 +174,21 @@ export default {
           }
         }
       },
-      tierValue: '',
-      childTierMenuData: [],
-      childTierValue: '',
+      openCeremonyFlag: false,
+      validareaList: [],
+      lineBodys: [],
+      /*班次信息变量*/
+      lengthShiftTimeValue: [],
+      shouldNumAttendanceValue: null,
+      actualNumAttendanceValue: null,
+      openCeremonyStatus: false,
+      classInfoIdList: '',
+      /*产品变量*/
+      showProductInfoFlag: false,
+      editProductInfoFlag: false,
+      productInfoCycletimeTipsFlag: false,
+      productNameBeingEditedVal: '',
+      choosedProductValByAdd: '',
       productInfoCols: [{
           title: '产品',
           key: 'productname',
@@ -286,8 +240,18 @@ export default {
         }
       ],
       productInfoData: [],
-      productList: [],
-      childTabCols: [{
+      optionalProductListByAdd: [],
+      conformProductValue: null,
+      normalCycletimeValue: null,
+      editProductIndex: null,
+      /*loss变量*/
+      showLossFlag: false,
+      editLossDirFlag: false,
+      choosedLossTier3ValByAdd: '',
+      choosedLossTier4ValByAdd: '',
+      optionalLossTier3ListByAdd: [],
+      optionalLossTier4ListByAdd: [],
+      lossChildTableCols: [{
           title: 'Tier3',
           key: 'losstier3name',
           className: 'childTableFirstCol',
@@ -347,39 +311,15 @@ export default {
           }
         },
       ],
-      lengthShiftTimeValue: [],
       startTimeValue: '',
       durationTimeValue: '',
       endTimeValue: '',
-      openCeremonyFlag: false,
-      showLossFlag: false,
-      showProductInfoFlag: false,
-      validareaList: [],
-      lineBodys: [],
-      lossTwoLevDataId: [],
-      lossThreeLevStructId: '',
-      lossThreeLevDataId: '',
-      lossFourLevStructId: '',
-      lossFourLevDataId: '',
-      tier3: '',
-      tier4: '',
       lossTwoLevName: '',
-      lossTier3Array: [],
-      productValue: '',
-      shouldNumAttendanceValue: null,
-      actualNumAttendanceValue: null,
-      editProductInfoFlag: false,
-      editLossDirFlag: false,
-      editTier3Value: '',
-      editTier4Value: '',
-      classInfoIdList: '',
-      conformProductValue: null,
-      normalCycletimeValue: null,
-      lossIndex: null,
+      lossThreeLevStructId: '',
+      lossFourLevStructId: '',
+      lossTier3BeingEditedVal: '',
+      lossTier4BeingEditedVal: '',
       lossParams: null,
-      modal1: false,
-      modal2: false,
-      editProductIndex: null
     }
   },
   computed: {
@@ -388,7 +328,7 @@ export default {
       "lossTier3",
       "kpiTwoLev",
       "addLosstier4time2Res",
-      "datainputLoss",
+      "datainputLossTableData",
       "addClassinfRes",
       "addProductRes",
       "showProductRes",
@@ -414,24 +354,22 @@ export default {
       "updateProduct",
       "deleteLoss4data"
     ]),
-    ok() {
-      this.$Message.info('Clicked ok');
+    cycleTimeFocus() {
+      this.productInfoCycletimeTipsFlag = true;
     },
-    cancel() {
-      this.$Message.info('Clicked cancel');
+    cycleTimeBlur() {
+      this.productInfoCycletimeTipsFlag = false;
     },
     getTier3: function(tier) {
       if (!tier) {
-        this.tierValue = '';
-        this.childTierValue = '';
+        this.choosedLossTier3ValByAdd = '';
+        this.choosedLossTier4ValByAdd = '';
         return;
       }
-      this.tier3 = this.$refs['tierThree' + tier][0].label;
-
       this.lossThreeLevStructId = tier;
       let tempTier = [];
-      this.childTierMenuData = [];
-      this.childTierValue = '';
+      this.optionalLossTier4ListByAdd = [];
+      this.choosedLossTier4ValByAdd = '';
       for (let val of this.lossTier3.data.losstier4) {
         if (tier === val.losstier3Lossid) {
           tempTier.push({
@@ -440,30 +378,33 @@ export default {
           });
         }
       }
-      this.childTierMenuData = tempTier;
+      this.optionalLossTier4ListByAdd = tempTier;
     },
     getTier4(tier) {
       if (!tier) {
-        this.childTierValue = '';
+        this.choosedLossTier4ValByAdd = '';
         return;
       }
-      this.tier4 = this.$refs['tierFour' + tier][0].label;
 
       this.lossFourLevStructId = tier;
     },
     addLoss: function(name) {
+      if (!this.openCeremonyStatus) {
+        this.$Message.error("请先选择开班时间");
+        return;
+      }
       this.lossTwoLevName = name;
       this.showLosstier3({
         "twolevName": name,
       });
-      if (this.lengthShiftTimeValue.length <= 0) {
-        this.$Message.error("请先选择开班时间");
-        return;
-      }
       this.editLossDirFlag = false;
       this.showLossFlag = true;
     },
     addProductInfo: function(name) {
+      if (!this.openCeremonyStatus) {
+        this.$Message.error("请先选择开班时间");
+        return;
+      }
       this.editProductInfoFlag = false;
       this.showProductInfoFlag = true;
       this.showProductName({
@@ -471,30 +412,40 @@ export default {
       })
     },
     deleteLoss(params) {
-      this.lossIndex = params.index;
       this.lossParams = params;
-      console.log(this.lossIndex);
-      console.log(this.datainputLoss);
-      for(let i = 0; i < this.datainputLoss.length; i++) {
-        console.log(this.datainputLoss[i]);
-        for(let key in this.datainputLoss[i]) {
-            /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-            console.log(this.datainputLoss[i][key][this.lossIndex]);
-            if(this.datainputLoss[i][key].length > 0) {
-              if(this.datainputLoss[i][key][this.lossIndex].losstier3name === params.row["losstier3name"]) {
-                this.deleteLoss4data({
-                  "losstier4Dataid": this.datainputLoss[i][key][this.lossIndex].losstier4Dataid
-                })
-              }
+      let _this = this;
+      Ewin.confirm({ message: "确认删除？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+          for(let i = 0; i < _this.datainputLossTableData.length; i++) {
+            console.log(_this.datainputLossTableData[i]);
+            for(let key in _this.datainputLossTableData[i]) {
+                /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+                console.log(_this.datainputLossTableData[i][key][_this.lossParams.index]);
+                if(_this.datainputLossTableData[i][key].length > 0) {
+                  if(_this.datainputLossTableData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
+                    _this.deleteLoss4data({
+                      "losstier4Dataid": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
+                    })
+                  }
+                }
             }
-        }
-      }
+          }
+      });
     },
     deleteProductClick(index) {
       const productIdList = this.productInfoData[index].productid;
-      this.deleteProduct({
-        "productIdList": productIdList,
-        "classinfIdList": this.classInfoIdList
+      let _this = this;
+      Ewin.confirm({ message: "确认删除？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+          _this.deleteProduct({
+            "productIdList": productIdList,
+            "classinfIdList": _this.classInfoIdList,
+            "linebodyId": _this.lineBodys[0]
+          });
       });
     },
     editProduct(index) {
@@ -507,18 +458,17 @@ export default {
         let sec = parseInt(timeArr[2]);
         this.normalCycletimeValue = hour * 3600 + min * 60 + sec;
       }
-      this.productName = editInfo[0].productname;
+      this.productNameBeingEditedVal = editInfo[0].productname;
       this.conformProductValue = parseInt(editInfo[0].conformproduct);
       this.editProductIndex = index;
     },
     editLoss(params) {
       this.editLossDirFlag = true;
-      this.editTier3Value = params.row["losstier3name"];
-      this.editTier4Value = params.row["losstier4name"];
+      this.lossTier3BeingEditedVal = params.row["losstier3name"];
+      this.lossTier4BeingEditedVal = params.row["losstier4name"];
       this.startTimeValue = new Date(params.row["starttime"]);
       this.endTimeValue = new Date(params.row["endtime"]);
       this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
-      this.lossIndex = params.index;
       this.lossParams = params;
     },
     lengthShiftTimeClear() {
@@ -599,34 +549,65 @@ export default {
       }
     },
     openCeremonyClick: function() {
+      if(this.openCeremonyFlag) {
+        this.$Message.error("请勿重复点击开班");
+      }
       this.openCeremonyFlag = true;
+
     },
     addClassInfoClick() {
-      this.addClassinf({
-        "classStarttime": this.lengthShiftTimeValue[0],
-        "classEndtime": this.lengthShiftTimeValue[1],
-        "shouldAttendance": this.shouldNumAttendanceValue,
-        "actualAttendance": this.actualNumAttendanceValue
-      });
+      if(!(this.lengthShiftTimeValue.length === 2 && this.shouldNumAttendanceValue && this.actualNumAttendanceValue)) {
+        this.$Message.error("请将班次信息填写完整");
+        return;
+      }
+
+      if(!this.openCeremonyStatus) {
+        this.addClassinf({
+          "classStarttime": this.lengthShiftTimeValue[0],
+          "classEndtime": this.lengthShiftTimeValue[1],
+          "shouldAttendance": this.shouldNumAttendanceValue,
+          "actualAttendance": this.actualNumAttendanceValue
+        });
+      } else {
+        this.$Message.error("请勿重复添加班次信息");
+      }
     },
     clearClassInfoClick() {
-      this.lengthShiftTimeValue = '';
-      this.shouldNumAttendanceValue = null;
-      this.actualNumAttendanceValue = null;
-      this.showKpitwolev({
-        userId: sessionStorage.getItem("userid")
+      if(!this.classInfoIdList) {
+        this.$Message.error("当前并无班次");
+        return;
+      }
+      let _this = this;
+      Ewin.confirm({ message: "确认清空当前班次信息？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+          _this.lengthShiftTimeValue = [];
+          _this.shouldNumAttendanceValue = null;
+          _this.actualNumAttendanceValue = null;
+          _this.showKpitwolev({
+            userId: sessionStorage.getItem("userid")
+          });
+          _this.classInfoIdList = '';
+          _this.openCeremonyStatus = false;
+          _this.$Message.success("清空成功");
       });
+
     },
     lossConfirmClick: function() {
-      this.showLossFlag = false;
       if (this.editLossDirFlag) {
-        for(let i = 0; i < this.datainputLoss.length; i++) {
-          for(var key in this.datainputLoss[i]) {
+        if(!(this.startTimeValue && this.endTimeValue && this.durationTimeValue)) {
+          this.$Message.error("请将需要修改的loss信息填写完整");
+          return;
+        }
+        this.showLossFlag = false;
+        for(let i = 0; i < this.datainputLossTableData.length; i++) {
+          for(var key in this.datainputLossTableData[i]) {
               /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-              if(this.datainputLoss[i][key].length > 0) {
-                if(this.datainputLoss[i][key][this.lossIndex].losstier3name === this.lossParams.row["losstier3name"]) {
+              if(this.datainputLossTableData[i][key].length > 0) {
+                if(this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
                   this.updateObjectimeAfteradd({
-                    "losstier4Dataid": this.datainputLoss[i][key][this.lossIndex].losstier4Dataid,
+                    "losstier4Dataid": this.datainputLossTableData[i][key][this.lossParams.index].losstier4Dataid,
                     "starttime": this.startTimeValue,
                     "endtime": this.endTimeValue
                   });
@@ -635,6 +616,12 @@ export default {
           }
         }
       } else {
+        if(!(this.startTimeValue && this.endTimeValue && this.durationTimeValue && this.choosedLossTier3ValByAdd &&
+          this.choosedLossTier4ValByAdd)) {
+          this.$Message.error("请将需要添加的loss相关信息填写完整");
+          return;
+        }
+        this.showLossFlag = false;
         this.addLosstier4time2({
           "classinfIdList": this.classInfoIdList,
           "twolevName": this.lossTwoLevName,
@@ -648,35 +635,51 @@ export default {
     },
     lossCancelClick: function() {
       this.showLossFlag = false;
-      this.tierValue = '';
-      this.childTierValue = '';
+      this.lossTwoLevName = '';
+      this.lossThreeLevStructId = '';
+      this.lossFourLevStructId = '';
+      this.choosedLossTier3ValByAdd = '';
+      this.choosedLossTier4ValByAdd = '';
       this.durationTimeValue = '';
       this.startTimeValue = '';
       this.endTimeValue = '';
+      this.lossParams = null;
     },
     productInfoConfirmClick() {
-      this.showProductInfoFlag = false;
       if(this.editProductInfoFlag) {
+        if(!(this.conformProductValue && this.normalCycletimeValue)) {
+          this.$Message.error("请将需要修改的产品信息填写完整");
+          return;
+        }
+        this.showProductInfoFlag = false;
         this.updateProduct({
           "productIdList": this.productInfoData[this.editProductIndex].productid,
           "conformProduct": this.conformProductValue,
           "normalCycletime": this.normalCycletimeValue,
-          "classinfIdList": this.classInfoIdList
+          "classinfIdList": this.classInfoIdList,
+          "linebodyId": this.lineBodys[0]
         })
       } else {
+        if(!(this.choosedProductValByAdd && this.conformProductValue && this.normalCycletimeValue)) {
+          this.$Message.error("请将需要添加的产品信息填写完整");
+          return;
+        }
+        this.showProductInfoFlag = false;
         this.addProduct({
           "classinfIdList": this.classInfoIdList,
-          "productNameId": this.productValue,
+          "productNameId": this.choosedProductValByAdd,
           "conformProduct": this.conformProductValue,
-          "normalCycletime": this.normalCycletimeValue
+          "normalCycletime": this.normalCycletimeValue,
+          "linebodyId": this.lineBodys[0]
         });
       }
     },
     productInfoCancelClick() {
       this.showProductInfoFlag = false;
-      this.productValue = '';
+      this.choosedProductValByAdd = '';
       this.conformProductValue = '';
       this.normalCycletimeValue = '';
+      this.editProductIndex = null;
     },
   },
   watch: {
@@ -698,7 +701,7 @@ export default {
     },
     lossTier3(newVal) {
       if (newVal.status === "0") {
-        this.lossTier3Array = newVal.data.losstier3;
+        this.optionalLossTier3ListByAdd = newVal.data.losstier3;
       }
     },
     kpiTwoLev(newVal) {
@@ -709,10 +712,10 @@ export default {
         addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
         addLossData.endtime = new Date(addLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
 
-        for(let i = 0; i < this.datainputLoss.length; i++) {
-          for(let key in this.datainputLoss[i]) {
+        for(let i = 0; i < this.datainputLossTableData.length; i++) {
+          for(let key in this.datainputLossTableData[i]) {
             if(key === addLossData.losstier2name) {
-              this.datainputLoss[i][key].push(addLossData);
+              this.datainputLossTableData[i][key].push(addLossData);
               this.$Message.success("添加成功");
             }
           }
@@ -720,8 +723,11 @@ export default {
       } else {
         this.$message.error("添加失败");
       }
-      this.tierValue = '';
-      this.childTierValue = '';
+      this.lossTwoLevName = '';
+      this.lossThreeLevStructId = '';
+      this.lossFourLevStructId = '';
+      this.choosedLossTier3ValByAdd = '';
+      this.choosedLossTier4ValByAdd = '';
       this.startTimeValue = '';
       this.durationTimeValue = '';
       this.endTimeValue = '';
@@ -730,12 +736,16 @@ export default {
       let classInfoIdArr = [];
       if (newVal.status === "0") {
         this.$Message.success("班次信息添加成功");
-        for (let i = 0; i < this.addClassinfRes.date.length; i++) {
-          classInfoIdArr.push(this.addClassinfRes.date[i].classinfid);
+        this.openCeremonyStatus = true;
+        for (let i = 0; i < newVal.data.length; i++) {
+          classInfoIdArr.push(newVal.data[i].classinfid);
         }
         this.classInfoIdList = classInfoIdArr.join(",");
+        this.openCeremonyStatus = true;
       } else {
         this.$Message.error("班次信息添加失败");
+        this.classInfoIdList = '';
+        this.openCeremonyStatus = false;
       }
     },
     addProductRes(newVal) {
@@ -745,7 +755,7 @@ export default {
       } else {
         this.$Message.error("添加失败");
       }
-      this.productValue = '';
+      this.choosedProductValByAdd = '';
       this.conformProductValue = '';
       this.normalCycletimeValue = '';
     },
@@ -757,13 +767,13 @@ export default {
       const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
       const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
       if (newVal.status === "0") {
-        for(let i = 0; i < this.datainputLoss.length; i++) {
-          for(let key in this.datainputLoss[i]) {
+        for(let i = 0; i < this.datainputLossTableData.length; i++) {
+          for(let key in this.datainputLossTableData[i]) {
             if(key === editLossData.losstier2name) {
               /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-              if(this.datainputLoss[i][key][this.lossIndex].losstier3name === editLossData.losstier3name) {
-                this.datainputLoss[i][key][this.lossIndex].starttime = editLossStartTime;
-                this.datainputLoss[i][key][this.lossIndex].endtime = editLossEndTime;
+              if(this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
+                this.datainputLossTableData[i][key][this.lossParams.index].starttime = editLossStartTime;
+                this.datainputLossTableData[i][key][this.lossParams.index].endtime = editLossEndTime;
                 this.$Message.success("修改成功");
               }
             }
@@ -772,18 +782,15 @@ export default {
       } else {
         this.$Message.error("修改失败");
       }
-      this.tierValue = '';
-      this.childTierValue = '';
       this.startTimeValue = '';
       this.durationTimeValue = '';
       this.endTimeValue = '';
-      this.lossIndex = null;
       this.lossParams = null;
     },
     showProductNameRes(newVal) {
       console.log("showProductNameRes:" + newVal);
       if (newVal.status === "0") {
-        this.productList = newVal.data;
+        this.optionalProductListByAdd = newVal.data;
       }
     },
     deleteProductRes(newVal) {
@@ -802,18 +809,17 @@ export default {
         this.$Message.error("修改失败");
       }
       this.editProductIndex = null;
-      this.productValue = '';
       this.conformProductValue = '';
       this.normalCycletimeValue = '';
     },
     deleteLoss4dataRes(newVal) {
       if(newVal.status === "0") {
-        for(let i = 0; i < this.datainputLoss.length; i++) {
-          for(let key in this.datainputLoss[i]) {
+        for(let i = 0; i < this.datainputLossTableData.length; i++) {
+          for(let key in this.datainputLossTableData[i]) {
               /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-              if(this.datainputLoss[i][key].length > 0) {
-                if(this.datainputLoss[i][key][this.lossIndex].losstier3name === this.lossParams.row["losstier3name"]) {
-                  this.datainputLoss[i][key].splice(this.lossIndex, 1);
+              if(this.datainputLossTableData[i][key].length > 0) {
+                if(this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                  this.datainputLossTableData[i][key].splice(this.lossParams.index, 1);
                   this.$Message.success("删除成功");
                 }
               }
@@ -822,12 +828,12 @@ export default {
       } else {
         this.$Message.error("删除失败");
       }
-      this.lossIndex = null;
       this.lossParams = null;
     }
   },
   mounted() {
     if (sessionStorage.getItem("userid")) {
+      this.classInfoIdList = '';
       this.selectUserById({
         userid: sessionStorage.getItem("userid")
       });

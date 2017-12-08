@@ -6,7 +6,7 @@
                 <h1 class="choose">时间选择</h1>
                 <div class="time">
                     <span>开始时间</span>
-                    <DatePicker size="small" v-model="startTime" :options="optionsStart" placement="bottom-end" type="date" 
+                    <DatePicker size="small" v-model="startTime" :options="optionsStart" placement="bottom-end" type="date"
                     format="yyyy-MM-dd" placeholder="Select date" @on-change="startChange" @on-clear="clearCharts">
                     </DatePicker>
                 </div>
@@ -87,7 +87,7 @@ export default {
     },
     methods: {
         ...mapActions([
-            "selectUserById", 
+            "selectUserById",
             "selectAllByUserIdAndLinebodyIds",
             "selectProjectStateByTimeAndLinebodyIds"
         ]),
@@ -188,9 +188,14 @@ export default {
             });
             _this.lineBodystr = _this.lineBodys.join(",");
             $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
-            // _this.selectAllByUserIdAndLinebodyIds({
-            //     userId: sessionStorage.getItem("userid")
-            // });
+            if (_this.lineBodys.length <= 0) {
+                this.clearCharts();
+                return;
+            }
+            if(!this.startTime||!this.endTime)return
+            this.start = new Date(this.startTime.format("yyyy-MM-dd") +" 00:00:00");
+            this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
+            this.lossmaping()
         }
     },
     mounted() {
@@ -198,9 +203,12 @@ export default {
             this.selectUserById({
                 userid: sessionStorage.getItem("userid")
             });
-        } else {
+            if(this.routeIsroute("lossmaping") || this.routeIsroute("overview")){
+            this.endTime = new Date();
+            this.startTime = new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000);
+          }
         }
-    
+
         if(this.routeIsroute("summary")){
             this.timeFlag = false;
         }else{

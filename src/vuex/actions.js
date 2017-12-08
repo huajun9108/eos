@@ -516,7 +516,8 @@ export default {
             "classinfIdList": obj.classinfIdList,
             "productNameId": obj.productNameId,
             "conformProduct": obj.conformProduct,
-            "normalCycletime": obj.normalCycletime
+            "normalCycletime": obj.normalCycletime,
+            "linebodyId": obj.linebodyId
         })).then(res => {
             console.log(res.data);
             return res.data
@@ -559,7 +560,8 @@ export default {
     deleteProduct({ commit }, obj) {
         axios.post("/datainput/deleteProduct", qs.stringify({
             "productIdList": obj.productIdList,
-            "classinfIdList": obj.classinfIdList
+            "classinfIdList": obj.classinfIdList,
+            "linebodyId": obj.linebodyId
         })).then(res => {
             console.log(res.data);
             return res.data
@@ -572,7 +574,8 @@ export default {
             "productIdList": obj.productIdList,
             "conformProduct": obj.conformProduct,
             "normalCycletime": obj.normalCycletime,
-            "classinfIdList": obj.classinfIdList
+            "classinfIdList": obj.classinfIdList,
+            "linebodyId": obj.linebodyId
         })).then(res => {
             console.log(res.data);
             return res.data

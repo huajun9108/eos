@@ -328,26 +328,18 @@ label {
         }
 
         .productInfoSetting {
-          height: P(40);
           font-size: 0;
-          vertical-align: top;
-
+          padding-bottom: P(46);
           span {
-            line-height: P(40);
             display: inline-block;
             font-size: P(12);
             color: #040404;
             text-align: center;
+            vertical-align: middle;
           }
 
           .ivu-input-number {
             width: 104px;
-            margin-top: -10px;
-
-            .ivu-input-number-handler-down-inner.ivu-icon.ivu-icon-ios-arrow-down,
-            .ivu-input-number-handler-up-inner.ivu-icon.ivu-icon-ios-arrow-up {
-              margin-top: -8px;
-            }
           }
 
           .cycleTitle {

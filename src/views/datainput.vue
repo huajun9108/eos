@@ -47,76 +47,9 @@
         </div>
       </div>
     </div>
-    <div class="lossShade" :class="showLossFlag?'showLossChoose':'hideLossChoose'"></div>
-    <div class="productInfoShade" :class="showProductInfoFlag?'showProductInfoChoose':'hideProductInfoChoose'"></div>
-    <div class="lossChoose" :class="showLossFlag?'showLossChoose':'hideLossChoose'">
-      <div v-if="editLossDirFlag" class="editLossDir">
-        <span>Tier3：</span>
-        <span>{{ this.lossTier3BeingEditedVal }}</span>
-        <span>Tier4：</span>
-        <span>{{ this.lossTier4BeingEditedVal }}</span>
-      </div>
-      <div v-else class="dirChoose">
-        <Select class="dropdownTier" v-model="choosedLossTier3ValByAdd" clearable placeholder="Tier3" @on-change="getTier3($event)">
-          <Option v-for="item in this.optionalLossTier3ListByAdd" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
-          </Option>
-        </Select>
-        <Select class="dropdownTier" :disabled="choosedLossTier3ValByAdd ===''" v-model="choosedLossTier4ValByAdd" clearable placeholder="Tier4" @on-change="getTier4($event)">
-          <Option v-for="item in optionalLossTier4ListByAdd" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
-          </Option>
-        </Select>
-      </div>
-      <div class="startTimeContainer">
-        <span class="timeTitle">开始时间：</span>
-        <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsStart" @on-ok="startTimeChooseOk">
-        </DatePicker>
-      </div>
-      <div class="durationTimeContainer">
-        <span class="timeTitle">持续时间：</span>
-        <TimePicker v-model="durationTimeValue" placeholder="任意时间点" format="HH:mm:ss" @on-change="durationTimeValueChange">
-        </TimePicker>
-      </div>
-      <div class="endTimeContainer">
-        <span class="timeTitle">结束时间：</span>
-        <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
-        </DatePicker>
-      </div>
-      <div class="btnContainer text-right">
-        <span class="confirmBtn data_btn" @click="lossConfirmClick">确定</span>
-        <span class="cancelBtn data_btn" @click="lossCancelClick">取消</span>
-      </div>
-    </div>
-    <div class="productInfoAddContainer" :class="showProductInfoFlag?'showProductInfoChoose':'hideProductInfoChoose'">
-      <div class="productChoose">
-        <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
-          <span>产品：</span>
-          <span>{{ this.productNameBeingEditedVal }}</span>
-        </div>
-        <Select v-else v-model="choosedProductValByAdd" class="dropdownProduct" clearable placeholder="产品">
-            <Option v-for="item in optionalProductListByAdd" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
-              {{ item.name }}
-            </Option>
-          </Select>
-      </div>
-      <div class="productInfoSetting">
-        <span>良品数量：</span>
-        <InputNumber v-model="conformProductValue" :min="0"></InputNumber>
-        <span class="cycleTitle">Cycle：</span>
-        <InputNumber v-model="normalCycletimeValue" :min="0" @on-focus="cycleTimeFocus"
-        @on-blur="cycleTimeBlur"></InputNumber>
-      </div>
-      <div v-if="this.productInfoCycletimeTipsFlag" class="productInfoCycletimeTips">
-        <span>tips:样例循环时间，单位为秒。</span>
-      </div>
-      <div class="btnContainer text-right">
-        <span class="confirmBtn data_btn" @click="productInfoConfirmClick">确定</span>
-        <span class="cancelBtn data_btn" @click="productInfoCancelClick">取消</span>
-      </div>
-    </div>
   </div>
-  <!-- <Modal class="lossChoose" v-model="modal1" @on-ok="ok" @on-cancel="cancel" :closable="false" class-name="loss-vertical-center-modal" width="400">
+  <Modal class="lossChoose" v-model="showLossFlag" @on-ok="lossConfirmClick" @on-cancel="lossCancelClick" :closable="false" class-name="loss-vertical-center-modal" width="400">
     <div v-if="editLossDirFlag" class="editLossDir">
-    <div class="editLossDir">
       <span>Tier3：</span>
       <span>{{ this.lossTier3BeingEditedVal }}</span>
       <span>Tier4：</span>
@@ -124,13 +57,13 @@
     </div>
     <div v-else class="dirChoose">
       <Select class="dropdownTier" v-model="choosedLossTier3ValByAdd" clearable placeholder="Tier3" @on-change="getTier3($event)">
-            <Option v-for="item in this.optionalLossTier3ListByAdd" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
-            </Option>
-          </Select>
+        <Option v-for="item in this.optionalLossTier3ListByAdd" :key="item.lossid" :label="item.name" :value="item.lossid" :ref="'tierThree' + item.lossid">
+        </Option>
+      </Select>
       <Select class="dropdownTier" :disabled="choosedLossTier3ValByAdd ===''" v-model="choosedLossTier4ValByAdd" clearable placeholder="Tier4" @on-change="getTier4($event)">
-            <Option v-for="item in optionalLossTier4ListByAdd" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
-            </Option>
-          </Select>
+        <Option v-for="item in optionalLossTier4ListByAdd" :key="item.tier4id" :label="item.name" :value="item.tier4id" :ref="'tierFour' + item.tier4id">
+        </Option>
+      </Select>
     </div>
     <div class="startTimeContainer">
       <span class="timeTitle">开始时间：</span>
@@ -148,26 +81,29 @@
       </DatePicker>
     </div>
   </Modal>
-  <Modal v-model="modal2" @on-ok="ok" @on-cancel="cancel" class-name="product-vertical-center-modal" :closable="false" width="400">
+  <Modal v-model="showProductInfoFlag" @on-ok="productInfoConfirmClick" @on-cancel="productInfoCancelClick" class-name="product-vertical-center-modal" :closable="false" width="400">
     <div class="productChoose">
       <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
-      <div class="editProductInfoNameContainer">
         <span>产品：</span>
         <span>{{ this.productNameBeingEditedVal }}</span>
       </div>
       <Select v-else v-model="choosedProductValByAdd" class="dropdownProduct" clearable placeholder="产品">
-              <Option v-for="item in optionalProductListByAdd" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
-                {{ item.name }}
-              </Option>
-            </Select>
+          <Option v-for="item in optionalProductListByAdd" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
+            {{ item.name }}
+          </Option>
+        </Select>
     </div>
     <div class="productInfoSetting">
       <span>良品数量：</span>
-      <InputNumber v-model="conformProductValue" placeholder="请填写数量" :min="0"></InputNumber>
+      <InputNumber v-model="conformProductValue" :min="0"></InputNumber>
       <span class="cycleTitle">Cycle：</span>
-      <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间" :min="0"></InputNumber>
+      <InputNumber v-model="normalCycletimeValue" :min="0" @on-focus="cycleTimeFocus"
+      @on-blur="cycleTimeBlur"></InputNumber>
     </div>
-  </Modal> -->
+    <div v-if="this.productInfoCycletimeTipsFlag" class="productInfoCycletimeTips">
+      <span>tips:样例循环时间，单位为秒。</span>
+    </div>
+  </Modal>
 </div>
 </template>
 <script>
@@ -384,10 +320,6 @@ export default {
       lossTier3BeingEditedVal: '',
       lossTier4BeingEditedVal: '',
       lossParams: null,
-
-
-      modal1: false,
-      modal2: false,
     }
   },
   computed: {
@@ -422,12 +354,6 @@ export default {
       "updateProduct",
       "deleteLoss4data"
     ]),
-    ok() {
-      this.$Message.info('Clicked ok');
-    },
-    cancel() {
-      this.$Message.info('Clicked cancel');
-    },
     cycleTimeFocus() {
       this.productInfoCycletimeTipsFlag = true;
     },
@@ -440,8 +366,6 @@ export default {
         this.choosedLossTier4ValByAdd = '';
         return;
       }
-      // this.tier3 = this.$refs['tierThree' + tier][0].label;
-
       this.lossThreeLevStructId = tier;
       let tempTier = [];
       this.optionalLossTier4ListByAdd = [];
@@ -461,7 +385,6 @@ export default {
         this.choosedLossTier4ValByAdd = '';
         return;
       }
-      // this.tier4 = this.$refs['tierFour' + tier][0].label;
 
       this.lossFourLevStructId = tier;
     },
@@ -510,9 +433,6 @@ export default {
             }
           }
       });
-      // console.log(this.lossParams.index);
-      // console.log(this.datainputLossTableData);
-
     },
     deleteProductClick(index) {
       const productIdList = this.productInfoData[index].productid;
@@ -862,12 +782,9 @@ export default {
       } else {
         this.$Message.error("修改失败");
       }
-      // this.choosedLossTier3ValByAdd = '';
-      // this.choosedLossTier4ValByAdd = '';
       this.startTimeValue = '';
       this.durationTimeValue = '';
       this.endTimeValue = '';
-      // this.lossIndex = null;
       this.lossParams = null;
     },
     showProductNameRes(newVal) {
@@ -892,7 +809,6 @@ export default {
         this.$Message.error("修改失败");
       }
       this.editProductIndex = null;
-      // this.choosedProductValByAdd = '';
       this.conformProductValue = '';
       this.normalCycletimeValue = '';
     },
@@ -912,7 +828,6 @@ export default {
       } else {
         this.$Message.error("删除失败");
       }
-      // this.lossIndex = null;
       this.lossParams = null;
     }
   },

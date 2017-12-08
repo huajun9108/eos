@@ -466,18 +466,22 @@ export default {
       this.lossFourLevStructId = tier;
     },
     addLoss: function(name) {
+      if (!this.openCeremonyStatus) {
+        this.$Message.error("请先选择开班时间");
+        return;
+      }
       this.lossTwoLevName = name;
       this.showLosstier3({
         "twolevName": name,
       });
-      if (this.lengthShiftTimeValue.length <= 0) {
-        this.$Message.error("请先选择开班时间");
-        return;
-      }
       this.editLossDirFlag = false;
       this.showLossFlag = true;
     },
     addProductInfo: function(name) {
+      if (!this.openCeremonyStatus) {
+        this.$Message.error("请先选择开班时间");
+        return;
+      }
       this.editProductInfoFlag = false;
       this.showProductInfoFlag = true;
       this.showProductName({

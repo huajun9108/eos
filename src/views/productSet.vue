@@ -2,242 +2,244 @@
 <div class="area_container">
     <div class="area_nav">
         <div class="nav_header">
-            <span class="header_title">产品</span>
+        <span class="header_title">产品</span>
         </div>
         <div class="nav_body">
-            <Tree :data="baseData" multiple></Tree>
+        <ul id="product_tree" class="area_tree_class ztree">
+        </ul>
         </div>
     </div>
-    <div class="area_content">
+    <div class="area_content product_content">
         <div class="area_box">
+        <div class="area_top">
+            <ul class="area_title product_title clearfix">
+            <li class="area_tit">产品单价</li>
+            </ul>
+            <ul class="target_setting product_setting clearfix">
+                <li class="target_set">
+                    <Input v-model="vision" size="small" class="target_con"></Input>
+                    <span class="target_tit">元</span>
+                </li>
+            </ul>
+        </div>
         </div>
     </div>
-    <Modal
-        v-model="delete_modal"
-        :closable="false"
-        :mask-closable="false"
-        @on-ok="asyncOK"
-        class-name="vertical-center-modal">
-        确认删除？
-    </Modal>
 </div>
 </template>
 <script type="text/javascript">
 import {mapState,mapActions} from "vuex"
-import {addHoverDom,removeHoverDom,zTreeBeforeRemove,zTreeBeforeRename} from "../assets/js/tip"
+
 export default {
-    data() {
-        return {
-            baseData: []
+ 
+  data() {
+    return {
+      setting: {
+        callback: {
+            beforeRemove: this.zTreeBeforeRemove,
+            beforeRename: this.zTreeBeforeRename,
+            onClick:this.clickNode
+        },
+        view: {
+            addHoverDom: this.addHoverDom,
+            removeHoverDom: this.removeHoverDom,
+            selectedMulti: false,
+            showIcon: false,
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        edit: {
+            enable: true,
+            removeTitle: '删除',
+            renameTitle: '编辑',
+            drag: {
+                isCopy: false,
+                isMove: false,
+            }
         }
+      },
+    }
   },
   computed: {
     ...mapState([
-        "areaAll",
-        "newArea",
-        "updateAreaRes",
-        "deleteAreaRes",
-        "lineBody",
-        "updateLinebodyWeight"
+      "productAll",
+      
     ])
   },
   methods: {
-   getTree(){
-                var start = new Date().getTime();//起始时间
-                //准备数据
-                let testData = {
-                    "department": [
-                        {
-                            "departmentName": "测试1",
-                            "departmentDesc": "盛达康网络",
-                            "parentId": "",
-                            "id": "594a28fb1c8652a01f0301"
-                        },
-                        {
-                            "departmentName": "测试-一级子级",
-                            "parentId": "594a28fb1c8652a01f0301",
-                            "id": "594a3910202469941"
-                        },
-                        {
-                            "departmentName": "测试-二级子级",
-                            "parentId": "594a3910202469941",
-                            "id": "594a391020246994asasd1"
-                        },
-                        {
-                            "departmentName": "盛达康",
-                            "departmentDesc": "盛达康网络",
-                            "parentId": "",
-                            "id": "594a28fb1c8652a01f030126"
-                        },
-                        {
-                            "departmentName": "开发",
-                            "parentId": "594a28fb1c8652a01f030126",
-                            "id": "594a3910202469941c349d7c"
-                        },
-                        {
-                            "departmentName": "运营",
-                            "parentId": "594a28fb1c8652a01f030126",
-                            "id": "594a4509202469941c349d7f"
-                        },
-                        {
-                            "departmentName": "人事",
-                            "parentId": "594a28fb1c8652a01f030126",
-                            "id": "59522e3ef30415281805d39f"
-                        },
-                        {
-                            "departmentName": "瞧瞧",
-                            "parentId": "594a3910202469941c349d7c",
-                            "id": "597842fc51ec7f80118aa94c"
-                        },
-                        {
-                            "departmentName": "测试层",
-                            "parentId": "594a4509202469941c349d7f",
-                            "id": "5978436751ec7f80118aa94d"
-                        },
-                        {
-                            "departmentName": "测试1",
-                            "parentId": "5978436751ec7f80118aa94d",
-                            "id": "5979ad338c9082580984cf0a"
-                        },
-                        {
-                            "departmentName": "测试2",
-                            "parentId": "5979ad338c9082580984cf0a",
-                            "id": "5979ad418c9082580984cf0b"
-                        },
-                        {
-                            "departmentName": "测试3",
-                            "parentId": "5979ad418c9082580984cf0b",
-                            "id": "5979ad568c9082580984cf0c"
-                        },
-                        {
-                            "departmentName": "测试4",
-                            "parentId": "5979ad568c9082580984cf0c",
-                            "id": "5979ad648c9082580984cf0d"
-                        }
-                    ]
-                }
-                var data = testData.department
-                let treedata = []
-                //查找最顶层
-                let len = data.length
-                for(let j=0;j<len;j++){
-                    data[j].expand = false
-                    data[j].title = data[j].departmentName
-                    if(data[j].parentId == ""){
-                        treedata.push({
-                            "expand":true,
-                            "title":data[j].departmentName,
-                            "id":data[j].id
-                        })
-                    }
-                }
-                //找到跟最高层id相关的子子孙孙，并给子孙添加lev
-                var treedataLevs =[]
-                for(let h=0,ls=treedata.length;h<ls;h++){
-                    treedataLevs.push({
-                        treedataLev:sonsTree(data,treedata[h].id)
-                    })
-                }
-                console.log(treedataLevs)
-                for(let p=0,lq=treedataLevs.length;p<lq;p++){
-                    var treedataLev = treedataLevs[p].treedataLev
-                    //找到最高层的lev
-                    var maxLev = 0
-                    for(let i=0,lt=treedataLev.length;i<lt;i++){
-                        if(parseInt(treedataLev[i].lev) > maxLev){
-                            maxLev = parseInt(treedataLev[i].lev)
-                        }else{
-                            maxLev = maxLev
-                        }
-                    }
-                    //比较当前层和上一层的数据，然后做处理
-                    var needLev = maxLev
-                    var maxLevTree = []
-                    var maxLevTreePrev = []
-                    for(let m=0;m<maxLev;m++){
-                        maxLevTree = getLevArr(treedataLev,needLev)
-                        maxLevTreePrev = getLevArr(treedataLev,needLev-1)
-                        for(var j=0,lp=maxLevTreePrev.length;j<lp;j++){
-                            maxLevTreePrev[j].children = new Array()
-                            for(var i=0,lm=maxLevTree;i<lm.length;i++){
-                                if(maxLevTree[i].parentId == maxLevTreePrev[j].id){
-                                    maxLevTreePrev[j].children.push(maxLevTree[i])
-                                }
-                            }
-                        }
-                        needLev--
-                    }
-                    treedata[p].children = maxLevTreePrev
-                }
-                
-                this.baseData = treedata
-                //找出同一级的数据
-                function getLevArr(arr,lev){
-                    var newarr = []
-                    for(let i=0,la=arr.length;i<la;i++){
-                        //这里对arr 的children 做处理
-                        arr.children = new Array()
-                        if(parseInt(arr[i].lev) == lev){
-                            newarr.push(arr[i])
-                        }
-                    }
-                    return newarr
-                }
-                //给每个数据添加一个lev
-                function sonsTree(arr,id){
-                    var temp = [],lev=0;
-                    var forFn = function(arr, id,lev){
-                        for (var i = 0; i < arr.length; i++) {
-                            var item = arr[i];
-                            if (item.parentId==id) {
-                                item.lev=lev;
-                                temp.push(item);
-                                forFn(arr,item.id,lev+1);
-                            }
-                        }
-                    };
-                    forFn(arr, id,lev);
-                    return temp;
-                }
-                var end = new Date().getTime();//结束时间
-                console.log("Tree初始化的时间是"+(end - start)+"ms")//返回函数执行需要时间
-            }
-        },
-        created:function(){
-            this.getTree()
+    ...mapActions([
+      "selectProductAll",
+    ]),
+    addHoverDom: function(treeId, treeNode) {
+      if (treeNode.level >= 3) return;
+      var sObj = $("#" + treeNode.tId + "_span");
+      if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+      var addStr = "<span class='button add' id='addBtn_" + treeNode.tId +
+        "' title='增加' onfocus='this.blur();'></span>";
+      sObj.after(addStr);
+      var btn = $("#addBtn_" + treeNode.tId);
+      if (btn) btn.bind("click", function() {
+        var zTree = $.fn.zTree.getZTreeObj("area_tree");
+        var newNodes = zTree.addNodes(treeNode, {
+          pId: treeNode.id,
+          name: "",
+          isNew: true,
+        });
+        if (newNodes.length > 0) {
+          zTree.editName(newNodes[0]);
         }
+        return false;
+      });
+    },
+    removeHoverDom: function(treeId, treeNode) {
+      $("#addBtn_" + treeNode.tId).unbind().remove();
+    },
+    zTreeBeforeRemove: function(treeId, treeNode) {
+      if (confirm("确认删除？")) {
+        this.deleteArea({"id": treeNode.id});
+        return true;
+      } else {
+        return false;
+      }
+    },
+    zTreeBeforeRename: function(treeId, treeNode, newName, isCancel) {
+      var _this = this;
+      var zTree = $.fn.zTree.getZTreeObj(treeId);
+      const oldName = treeNode.name;
+      /*新增节点直接取消或编辑后取消*/
+      if (isCancel && treeNode.isNew) {
+        setTimeout(function() {
+          zTree.removeNode(treeNode);
+        }, 10);
+        return true;
+      }
+      /*已存在节点直接取消*或编辑后取消*/
+      if (isCancel && !treeNode.isNew) {
+        return true;
+      }
+      /*节点名为空*/
+      if (!isCancel && newName.length == 0) {
+        _this.$Message.error("区域名称不能为空！");
+        return false;
+      }
+      /*新增节点回车弹框*/
+      if (!isCancel && treeNode.isNew) {
+        if (!confirm("确认添加？")) {
+          setTimeout(function() {
+            zTree.removeNode(treeNode);
+          }, 10);
+          return true;
+        } else {
+          this.addAreaOne({"name": newName, "pId": treeNode.pId});
+          return true;
+        }
+      }
+      /*已存在节点回车弹框*/
+      if (!isCancel && !treeNode.isNew) {
+        if (oldName === newName) {
+          return true;
+        }
+        this.updateArea({"name": newName, "pId": treeNode.pId, "id": treeNode.id});
+        return true;
+      }
+    },
+    clickNode(event, treeId, treeNode){
+      let reg=/^l/g;
+      let _this = this
+      this.nodeId = treeNode.id
+      if(reg.test(this.nodeId)){
+        // this.picked="1"
+        this.selectLinebodyById({id:this.nodeId})
+        // console.log(this.picked)
+        this.removeEvent(false,_this.tip)
+      }else{
+        let _this = this
+        this.picked=""
+        this.addEvent(true,_this.tip)
+      }
+    },
+    tip(){
+      this.$Message.error("请在线体进行重要性选择")
+    },
+    removeEvent(flag,fun){
+      this.radiopick.forEach(item=>{
+        this.$refs[item.name][0].disabled = flag
+        this.$refs[item.value][0].removeEventListener("click",
+          fun)
+      })
+    },
+    addEvent(flag,fun){
+      this.radiopick.forEach(item=>{
+        this.$refs[item.name][0].disabled = flag
+        this.$refs[item.value][0].addEventListener("click",fun)
+      })
+    },
+   
+  },
+  watch: {
+    productAll(){
+        $.fn.zTree.init($("#product_tree"), this.setting,this.productAll);
+    },
+    newArea(newVal){
+      const _this = this;
+      if(newVal.id) {
+        const zTree = $.fn.zTree.getZTreeObj("product_tree");
+        const nodes = zTree.getSelectedNodes();
+        if(nodes.length === 1){
+          let newNode = nodes[0];
+          newNode.id = newVal.id;
+          delete newNode.isNew;
+          zTree.updateNode(newNode);
+          this.$Message.success("添加成功");
+          let reg=/^l/g;
+          if(reg.test(newVal.id)){
+            this.picked=1
+            this.removeEvent(false,_this.tip)
+          }else{
+            this.picked=null
+          }
+        } else {
+          this.selectAreaAll();
+          _this.$Message.error("添加失败");
+        }
+      } else {
+        this.selectAreaAll();
+        _this.$Message.error("添加失败");
+      }
+    },
+    updateAreaRes(newVal){
+      const _this = this;
+      if(newVal.status === "0") {
+        _this.$Message.success("修改成功");
+      } else if(newVal.status === "101") {
+        this.selectAreaAll();
+        _this.$Message.error("区域已存在");
+      } else {
+        this.selectAreaAll();
+        _this.$Message.error("修改失败");
+      }
+    },
+    deleteAreaRes(newVal){
+      const _this = this;
+      if(newVal.status === "0") {
+        _this.$Message.success("删除成功");
+      } else {
+        this.selectAreaAll();
+        _this.$Message.error("删除失败");
+      }
+    }
+  },
+  mounted() {
+    let _this = this
+    this.selectProductAll();
+    console.log(this.productAll)
+   
+  }  
 }
 </script>
 <style lang="scss" scoped>
-@import "../styles/mobile.scss";
-.scan {
-    display: flex;
-    flex-direction: column;
-    header {
-        width: 100%;
-        height: P(90);
-        background: rgba(0,0,0,.3);
-        text-align: center;
-        position: fixed;
-        left: 0;
-        top: 0;
-        z-index: 10;
-        font-size: P(32);
-        box-sizing: border-box;
-        padding: 0 P(30);
-        .goback {
-            width: P(90);
-            text-align: center;
-            line-height: P(90);
-            font-size: P(40);
-            color: #fff;
-            float: left;
-        }
-        span {
-            color: #fff;
-            line-height: P(90);
-            font-weight: bold;
-        }
-    }
-}
+
+
 </style>

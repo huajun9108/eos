@@ -525,70 +525,76 @@ export default {
         })
     },
     showProduct({ commit }, obj) {
-      axios.post("/datainput/showProduct", qs.stringify({
-        "classinfIdList": obj.classinfIdList
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("showProduct", json)
-      })
+        axios.post("/datainput/showProduct", qs.stringify({
+            "classinfIdList": obj.classinfIdList
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("showProduct", json)
+        })
     },
     updateObjectimeAfteradd({ commit }, obj) {
-      axios.post("/datainput/updateObjectimeAfteradd", qs.stringify({
-        "losstier4Dataid": obj.losstier4Dataid,
-        "starttime": obj.starttime,
-        "endtime": obj.endtime
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("updateObjectimeAfteradd", json)
-      })
+        axios.post("/datainput/updateObjectimeAfteradd", qs.stringify({
+            "losstier4Dataid": obj.losstier4Dataid,
+            "starttime": obj.starttime,
+            "endtime": obj.endtime
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("updateObjectimeAfteradd", json)
+        })
     },
     showProductName({ commit }, obj) {
-      axios.post("/datainput/showProductName", qs.stringify({
-        "linebodyId": obj.linebodyId
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("showProductName", json)
-      })
+        axios.post("/datainput/showProductName", qs.stringify({
+            "linebodyId": obj.linebodyId
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("showProductName", json)
+        })
     },
     deleteProduct({ commit }, obj) {
-      axios.post("/datainput/deleteProduct", qs.stringify({
-        "productIdList": obj.productIdList,
-        "classinfIdList": obj.classinfIdList
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("deleteProduct", json)
-      })
+        axios.post("/datainput/deleteProduct", qs.stringify({
+            "productIdList": obj.productIdList,
+            "classinfIdList": obj.classinfIdList
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("deleteProduct", json)
+        })
     },
     updateProduct({ commit }, obj) {
-      axios.post("/datainput/updateProduct", qs.stringify({
-        "productIdList": obj.productIdList,
-        "conformProduct": obj.conformProduct,
-        "normalCycletime": obj.normalCycletime,
-        "classinfIdList": obj.classinfIdList
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("updateProduct", json)
-      })
+        axios.post("/datainput/updateProduct", qs.stringify({
+            "productIdList": obj.productIdList,
+            "conformProduct": obj.conformProduct,
+            "normalCycletime": obj.normalCycletime,
+            "classinfIdList": obj.classinfIdList
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("updateProduct", json)
+        })
     },
     deleteLoss4data({ commit }, obj) {
-      axios.post("/datainput/deleteLoss4data", qs.stringify({
-        "losstier4Dataid": obj.losstier4Dataid
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("deleteLoss4data", json)
-      })
-    }
-
+        axios.post("/datainput/deleteLoss4data", qs.stringify({
+            "losstier4Dataid": obj.losstier4Dataid
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("deleteLoss4data", json)
+        })
+    },
+    selectProductAll({ commit }, obj) {
+        axios.get("/product/selectProductAll", {}).then(res => {
+            return res.data.data
+        }).then(json => {
+            commit("selectProductAll", json)
+        })
+    },
 }

@@ -28,7 +28,7 @@
         <v-target :nodeId="nodeId"></v-target>
       </div>
       <div class="area_top">
-        <v-product></v-product>
+        <!-- <v-product></v-product> -->
       </div>
     </div>
   </div>
@@ -290,35 +290,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "../styles/mobile.scss";
-.scan {
-    display: flex;
-    flex-direction: column;
-    header {
-        width: 100%;
-        height: P(90);
-        background: rgba(0,0,0,.3);
-        text-align: center;
-        position: fixed;
-        left: 0;
-        top: 0;
-        z-index: 10;
-        font-size: P(32);
-        box-sizing: border-box;
-        padding: 0 P(30);
-        .goback {
-            width: P(90);
-            text-align: center;
-            line-height: P(90);
-            font-size: P(40);
-            color: #fff;
-            float: left;
-        }
-        span {
-            color: #fff;
-            line-height: P(90);
-            font-weight: bold;
-        }
-    }
-}
+
 </style>

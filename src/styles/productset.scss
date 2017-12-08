@@ -1,0 +1,40 @@
+@import "./mobile.scss";
+.area_container {
+    .product_content {
+        .product_title {
+            display: block;
+            line-height: P(66);
+            padding-left: P(48);
+            font-size: P(16);
+        }
+        .target_setting {
+            background: #f2f2f2;
+            margin-bottom: P(8);
+            .target_set {
+                width: 27%;
+                line-height: P(70);
+                float: left;
+                padding-left: P(48);
+                padding-right: 2%;
+                border-right: 1px solid #dde4e8;
+                box-sizing: border-box;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .target_tit {
+                    float: left;
+                    font-size: P(16);
+                }
+                .target_con {
+                    width: 70%;
+                    .ivu-input-small {
+                        height: P(42);
+                    }
+                }
+            }
+            .target_set:last-child {
+                border-right: 0;
+            }
+        }
+    }
+}

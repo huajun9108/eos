@@ -8,11 +8,11 @@
     <div class="accountinfo_setting">
       <div class="setting_left">
         <div class="accountinfo_username accountinfo">
-          <i class="icon-User-name"></i>
+          <i class="icon-user-name"></i>
           <input class="input_accountinfo" type="text" v-model="name" placeholder="用户名" >
         </div>
 				<div class="accountinfo_name accountinfo">
-          <i class="icon-User-name"></i>
+          <i class="icon-user"></i>
           <input class="input_accountinfo" type="text" v-model="abbname"  placeholder="姓名" >
         </div>
         <div class="accountinfo_password accountinfo">

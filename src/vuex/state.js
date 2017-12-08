@@ -56,5 +56,6 @@ export default {
     showProductNameRes: '',
     deleteProductRes: '',
     updateProductRes: '',
-    deleteLoss4dataRes: ''
+    deleteLoss4dataRes: '',
+    productAll: null
 }

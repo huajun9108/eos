@@ -112,11 +112,16 @@ export default {
         return {
             statusData: null,
             stageData: null,
-            time:GetDateStr(-1)+ " 23:59:59"
+            time:GetDateStr(-1)+ " 23:59:59",
+            validareaList:[],
+            lineBodystr:null,
+            lineBodys:[]
         };
     },
     computed: {
-        ...mapState(["projectStatus"])
+        ...mapState([
+            "projectStatus",
+            "validarea"])
     },
     methods: {
        ...mapActions(["selectProjectStateByTimeAndLinebodyIds"]),
@@ -164,6 +169,28 @@ export default {
                 this.closeNumber_b = "无"
             }
             
+        },
+        validarea(newVal) {
+            const _this = this;
+            this.validareaList = [];
+            this.validarea.forEach(item => {
+                if (item.checked) {
+                    this.validareaList.push(item);
+                }
+            });
+            _this.lineBodys = [];
+            _this.lineBodystr = '';
+            this.validareaList.forEach(function(node) {
+                let reg = /^l/g;
+                if (reg.test(node.id)) {
+                    _this.lineBodys.push(node.id.substring(1));
+                }
+            });
+            _this.lineBodystr = _this.lineBodys.join(",");
+            this.selectProjectStateByTimeAndLinebodyIds({
+                linebodyIds: this.lineBodystr,
+                time: this.time,
+            })
         }
 
     },
@@ -171,37 +198,7 @@ export default {
        
     },
     mounted() {
-        // let _this = this
-        
-        console.log(this.time)
-        // if(sessionStorage.getItem("projectStatus")){
-        //     let projectStatus = JSON.parse(sessionStorage.getItem("projectStatus"))
-        //     console.log(status)
-        //     this.statusData = projectStatus.data.status
-        //     this.projectNumber = projectStatus.data.statusOther.projectNumber
-        //     this.beganNumber = projectStatus.data.statusOther.beganNumber
-        //     this.runNumber =  projectStatus.data.statusOther.runNumber
-        //     this.delayNumber = projectStatus.data.statusOther.delayNumber
-        //     this.followNumber = projectStatus.data.statusOther.followNumber
-        //     this.closeNumber = projectStatus.data.statusOther.closeNumber
-        //     this.stageData = projectStatus.data.stage
-        //     this.IdentifyProblem = projectStatus.data.stageOther.IdentifyProblem
-        //     this.GraspStatus = projectStatus.data.stageOther.GraspStatus
-        //     this.SetGoals =  projectStatus.data.stageOther.SetGoals
-        //     this.AnalysisCause = projectStatus.data.stageOther.AnalysisCause
-        //     this.CountermeasuresPlan = projectStatus.data.stageOther.CountermeasuresPlan
-        //     this.Countermeasures = projectStatus.data.stageOther.Countermeasures
-        //     this.EffectConfirmation = projectStatus.data.stageOther.EffectConfirmation
-        //     this.ConsolidationResults = projectStatus.data.stageOther.ConsolidationResults
-        // }else if(sessionStorage.getItem("projectStatusEmpty")){
-            
-        // }else{
-            this.selectProjectStateByTimeAndLinebodyIds({
-                linebodyIds: "58,59,60,61,62,65,66",
-                time: "2017-11-29T10:56:27.000Z",
-            })
-        // }
-        
+
        
     }
 };

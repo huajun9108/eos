@@ -8,7 +8,7 @@
             </div>
             <div class="userinfo">
                 <div>
-                    <i class="iconfont icon-User-name"></i><input type="text" placeholder="请输入用户名" ref="user" v-model="user" @input="btnBac"/>
+                    <i class="iconfont icon-user"></i><input type="text" placeholder="请输入用户名" ref="user" v-model="user" @input="btnBac"/>
                 </div>
                 <div>
                     <i class="iconfont icon-password"></i><input :type="seen?'password':'text'" placeholder="请输入密码" v-model="pwd" @input="btnBac"/>

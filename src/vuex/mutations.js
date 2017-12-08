@@ -125,15 +125,15 @@ export default {
         state.datainputLoss = []
         state.datainputLossId = []
         json.data.forEach(item => {
-            let obj = {};
-            obj[item] = []
-            state.datainputLoss.push(obj)
-        })
-        // json.data.forEach(item1 => {
-        //   let obj1 = {};
-        //   obj1[item1] = []
-        //   state.datainputLossId.push(obj1);
-        // })
+                let obj = {};
+                obj[item] = []
+                state.datainputLoss.push(obj)
+            })
+            // json.data.forEach(item1 => {
+            //   let obj1 = {};
+            //   obj1[item1] = []
+            //   state.datainputLossId.push(obj1);
+            // })
     },
     addClassinf(state, json) {
         state.addClassinfRes = json
@@ -145,21 +145,24 @@ export default {
         state.projectStatus = json
     },
     showProduct(state, json) {
-      state.showProductRes = json
+        state.showProductRes = json
     },
     updateObjectimeAfteradd(state, json) {
-      state.updateObjectimeAfteraddRes = json
+        state.updateObjectimeAfteraddRes = json
     },
     showProductName(state, json) {
-      state.showProductNameRes = json
+        state.showProductNameRes = json
     },
     deleteProduct(state, json) {
-      state.deleteProductRes = json
+        state.deleteProductRes = json
     },
     updateProduct(state, json) {
-      state.updateProductRes = json
+        state.updateProductRes = json
     },
     deleteLoss4data(state, json) {
-      state.deleteLoss4dataRes = json
-    }
+        state.deleteLoss4dataRes = json
+    },
+    selectProductAll(state, json) {
+        state.productAll = json
+    },
 }

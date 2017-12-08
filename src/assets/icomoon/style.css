@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?h0mu8u');
-  src:  url('fonts/icomoon.eot?h0mu8u#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?h0mu8u') format('truetype'),
-    url('fonts/icomoon.woff?h0mu8u') format('woff'),
-    url('fonts/icomoon.svg?h0mu8u#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?bgsqez');
+  src:  url('fonts/icomoon.eot?bgsqez#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?bgsqez') format('truetype'),
+    url('fonts/icomoon.woff?bgsqez') format('woff'),
+    url('fonts/icomoon.svg?bgsqez#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-position:before {
+  content: "\e917";
+  color: #1b3867;
+}
 .icon-add_add:before {
   content: "\e916";
 }
@@ -81,13 +85,13 @@
 .icon-password:before {
   content: "\e90c";
 }
-.icon-position:before {
+.icon-user-name:before {
   content: "\e90d";
 }
 .icon-superior:before {
   content: "\e90e";
 }
-.icon-User-name:before {
+.icon-user:before {
   content: "\e90f";
 }
 .icon-Viewing-area:before {

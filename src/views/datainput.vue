@@ -14,13 +14,13 @@
         </span>
         <div class="classInfoTime">
           <span>本班次时间：</span>
-          <DatePicker v-model="lengthShiftTimeValue" type="datetimerange" placeholder="Select date and time" style="width: 300px" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
+          <DatePicker v-model="lengthShiftTimeValue" :readonly="openCeremonyStatus" type="datetimerange" placeholder="Select date and time" style="width: 300px" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
         </div>
         <div class="classInfoNumAttendance">
           <span>应出勤人数：</span>
-          <InputNumber v-model="shouldNumAttendanceValue" :min="1" placeholder="人"></InputNumber>
+          <InputNumber v-model="shouldNumAttendanceValue" :min="1" placeholder="人" :readonly="openCeremonyStatus"></InputNumber>
           <span class="classInfoActualAttendance">实出勤人数：</span>
-          <InputNumber v-model="actualNumAttendanceValue" :min="0"></InputNumber>
+          <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="openCeremonyStatus"></InputNumber>
         </div>
         <div class="classInfoSubmit">
           <!-- <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span> -->
@@ -100,9 +100,13 @@
       </div>
       <div class="productInfoSetting">
         <span>良品数量：</span>
-        <InputNumber v-model="conformProductValue" placeholder="请填写数量" :min="0"></InputNumber>
+        <InputNumber v-model="conformProductValue" :min="0"></InputNumber>
         <span class="cycleTitle">Cycle：</span>
-        <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间" :min="0"></InputNumber>
+        <InputNumber v-model="normalCycletimeValue" :min="0" @on-focus="cycleTimeFocus"
+        @on-blur="cycleTimeBlur"></InputNumber>
+      </div>
+      <div v-if="this.productInfoCycletimeTipsFlag" class="productInfoCycletimeTips">
+        <span>tips:样例循环时间，单位为秒。</span>
       </div>
       <div class="btnContainer text-right">
         <span class="confirmBtn data_btn" @click="productInfoConfirmClick">确定</span>
@@ -110,8 +114,9 @@
       </div>
     </div>
   </div>
-  <Modal class="lossChoose" v-model="modal1" @on-ok="ok" @on-cancel="cancel" :closable="false">
+  <!-- <Modal class="lossChoose" v-model="modal1" @on-ok="ok" @on-cancel="cancel" :closable="false" class-name="loss-vertical-center-modal" width="400">
     <div v-if="editLossDirFlag" class="editLossDir">
+    <div class="editLossDir">
       <span>Tier3：</span>
       <span>{{ this.lossTier3BeingEditedVal }}</span>
       <span>Tier4：</span>
@@ -143,9 +148,10 @@
       </DatePicker>
     </div>
   </Modal>
-  <Modal v-model="modal2" @on-ok="ok" @on-cancel="cancel" class-name="product-vertical-center-modal" :closable="false" width="498">
+  <Modal v-model="modal2" @on-ok="ok" @on-cancel="cancel" class-name="product-vertical-center-modal" :closable="false" width="400">
     <div class="productChoose">
       <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
+      <div class="editProductInfoNameContainer">
         <span>产品：</span>
         <span>{{ this.productNameBeingEditedVal }}</span>
       </div>
@@ -161,7 +167,7 @@
       <span class="cycleTitle">Cycle：</span>
       <InputNumber v-model="normalCycletimeValue" placeholder="请填写时间" :min="0"></InputNumber>
     </div>
-  </Modal>
+  </Modal> -->
 </div>
 </template>
 <script>
@@ -244,6 +250,7 @@ export default {
       /*产品变量*/
       showProductInfoFlag: false,
       editProductInfoFlag: false,
+      productInfoCycletimeTipsFlag: false,
       productNameBeingEditedVal: '',
       choosedProductValByAdd: '',
       productInfoCols: [{
@@ -421,6 +428,12 @@ export default {
     cancel() {
       this.$Message.info('Clicked cancel');
     },
+    cycleTimeFocus() {
+      this.productInfoCycletimeTipsFlag = true;
+    },
+    cycleTimeBlur() {
+      this.productInfoCycletimeTipsFlag = false;
+    },
     getTier3: function(tier) {
       if (!tier) {
         this.choosedLossTier3ValByAdd = '';
@@ -506,7 +519,8 @@ export default {
           }
           _this.deleteProduct({
             "productIdList": productIdList,
-            "classinfIdList": _this.classInfoIdList
+            "classinfIdList": _this.classInfoIdList,
+            "linebodyId": _this.lineBodys[0]
           });
       });
     },
@@ -611,7 +625,11 @@ export default {
       }
     },
     openCeremonyClick: function() {
+      if(this.openCeremonyFlag) {
+        this.$Message.error("请勿重复点击开班");
+      }
       this.openCeremonyFlag = true;
+
     },
     addClassInfoClick() {
       if(!(this.lengthShiftTimeValue.length === 2 && this.shouldNumAttendanceValue && this.actualNumAttendanceValue)) {
@@ -648,7 +666,7 @@ export default {
           });
           _this.classInfoIdList = '';
           _this.openCeremonyStatus = false;
-          _this.$Message.error("清空成功");
+          _this.$Message.success("清空成功");
       });
 
     },
@@ -705,7 +723,7 @@ export default {
     },
     productInfoConfirmClick() {
       if(this.editProductInfoFlag) {
-        if(!(this.choosedProductValByAdd && this.conformProductValue && this.normalCycletimeValue)) {
+        if(!(this.conformProductValue && this.normalCycletimeValue)) {
           this.$Message.error("请将需要修改的产品信息填写完整");
           return;
         }
@@ -714,10 +732,11 @@ export default {
           "productIdList": this.productInfoData[this.editProductIndex].productid,
           "conformProduct": this.conformProductValue,
           "normalCycletime": this.normalCycletimeValue,
-          "classinfIdList": this.classInfoIdList
+          "classinfIdList": this.classInfoIdList,
+          "linebodyId": this.lineBodys[0]
         })
       } else {
-        if(!(this.conformProductValue && this.normalCycletimeValue)) {
+        if(!(this.choosedProductValByAdd && this.conformProductValue && this.normalCycletimeValue)) {
           this.$Message.error("请将需要添加的产品信息填写完整");
           return;
         }
@@ -726,7 +745,8 @@ export default {
           "classinfIdList": this.classInfoIdList,
           "productNameId": this.choosedProductValByAdd,
           "conformProduct": this.conformProductValue,
-          "normalCycletime": this.normalCycletimeValue
+          "normalCycletime": this.normalCycletimeValue,
+          "linebodyId": this.lineBodys[0]
         });
       }
     },

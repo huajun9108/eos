@@ -54,8 +54,12 @@
 
         .classInfoTime {
           padding-bottom: P(26);
+
+          span {
+            vertical-align: middle;
+          }
           .ivu-input {
-            width: P(418);
+            width: P(422);
           }
           i.ivu-input-icon {
             text-align: right;
@@ -65,12 +69,16 @@
         .classInfoNumAttendance {
           padding-bottom: P(26);
 
-          .ivu-input-wrapper {
-            width: P(139);
+          span {
+            vertical-align: middle;
+          }
+
+          .ivu-input-number {
+            width: P(140);
           }
 
           .classInfoActualAttendance {
-            margin-left: P(34);
+            margin-left: P(35);
           }
         }
 
@@ -272,19 +280,18 @@
         }
       }
       .productInfoSetting {
-        height: P(40);
         font-size: 0;
-        vertical-align: top;
+        padding-bottom: P(46);
         span {
-          line-height: P(40);
           display: inline-block;
           font-size: P(12);
           color: #040404;
           text-align: center;
+          vertical-align: middle;
         }
-        .ivu-input-wrapper {
+        .ivu-input-number {
           width: P(106);
-          margin-top: -10px;
+          // margin-top: -10px;
         }
         .cycleTitle {
           margin-left: P(30);

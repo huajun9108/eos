@@ -737,8 +737,8 @@ export default {
       if (newVal.status === "0") {
         this.$Message.success("班次信息添加成功");
         this.openCeremonyStatus = true;
-        for (let i = 0; i < this.addClassinfRes.date.length; i++) {
-          classInfoIdArr.push(this.addClassinfRes.date[i].classinfid);
+        for (let i = 0; i < newVal.data.length; i++) {
+          classInfoIdArr.push(newVal.data[i].classinfid);
         }
         this.classInfoIdList = classInfoIdArr.join(",");
         this.openCeremonyStatus = true;
@@ -833,6 +833,7 @@ export default {
   },
   mounted() {
     if (sessionStorage.getItem("userid")) {
+      this.classInfoIdList = '';
       this.selectUserById({
         userid: sessionStorage.getItem("userid")
       });

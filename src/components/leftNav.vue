@@ -62,9 +62,6 @@ import { mapState, mapActions } from "vuex";
       ])
     },
     methods: {
-      ...mapActions([
-        'selectUserById'
-      ]),
     },
     mounted(){
     },

@@ -29,6 +29,9 @@
                     justify-content: space-between;
                     align-items: center;
                     .target_tit {
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
                         float: left;
                         font-size: P(16);
                     }

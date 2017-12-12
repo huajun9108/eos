@@ -20,7 +20,6 @@
         </li>
         <li class="area_button text-right">
           <span class="button_confirm button" @click="confirm">确认</span>
-          <span class="button_cancel button" @click="cancel">取消</span>
         </li>
         </ul>
       </div>
@@ -28,7 +27,7 @@
         <v-target :nodeId="nodeId"></v-target>
       </div>
       <div class="area_top">
-        <!-- <v-product></v-product> -->
+        <v-product></v-product>
       </div>
     </div>
   </div>
@@ -212,9 +211,6 @@ export default {
         this.updateLinebodyWeightById({"linebodyId": selectNodeId,"weight":this.picked});
       }
     },
-    cancel(){
-
-    }
   },
   watch: {
     areaAll(){

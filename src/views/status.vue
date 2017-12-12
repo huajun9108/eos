@@ -125,10 +125,27 @@ export default {
     },
     methods: {
        ...mapActions(["selectProjectStateByTimeAndLinebodyIds"]),
+       clearData(){
+            this.statusData=null
+            this.projectNumber = "无"
+            this.beganNumber = "无"
+            this.runNumber =  "无"
+            this.delayNumber = "无"
+            this.followNumber = "无"
+            this.closeNumber = "无"
+            this.stageData=null
+            this.IdentifyProblem ="无"
+            this.GraspStatus = "无"
+            this.SetGoals =  "无"
+            this.AnalysisCause = "无"
+            this.CountermeasuresPlan = "无"
+            this.Countermeasures = "无"
+            this.EffectConfirmation = "无"
+            this.ConsolidationResults = "无"
+       }
     },
     watch: {
         projectStatus(newVal){
-           
             if(newVal.status==="0"){
                 if(newVal.data){
                     sessionStorage.setItem("projectStatus",JSON.stringify(newVal))
@@ -150,23 +167,10 @@ export default {
                     this.EffectConfirmation = newVal.data.stageOther.EffectConfirmation
                     this.ConsolidationResults = newVal.data.stageOther.ConsolidationResults
                 }else{
-                    sessionStorage.setItem("projectStatusEmpty",JSON.stringify(newVal))
+                    this.clearData()
                 }
             }else{
-                this.statusData=null
-                this.projectNumber = "无"
-                this.beganNumber = "无"
-                this.runNumber =  "无"
-                this.delayNumber = "无"
-                this.followNumber = "无"
-                this.closeNumber = "无"
-                this.stageData=null
-                this.projectNumber_b = "无"
-                this.beganNumber_b = "无"
-                this.runNumber_b =  "无"
-                this.delayNumber_b = "无"
-                this.followNumber_b = "无"
-                this.closeNumber_b = "无"
+               this.clearData()
             }
             
         },

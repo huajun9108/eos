@@ -5,25 +5,14 @@
                 <span class="target_title">可生产产品</span><i class="icon-add_add project_add" @click = "addProduct()"></i>
             </div>
             <div class="target_top">
-                <ul class="target_setting clearfix" v-for = "(item,idx) in productData" :key = "idx" >
+                <ul class="target_setting clearfix" v-for = "(item,idx) in this.modelList" :key = "idx">
                     <li class="target_set product_set"> 
-                        <Select class="productModel product_con" v-model="productModel" clearable placeholder="productModel" @on-change="getProductModel($event)">
-                            <Option v-for="(product,idx) in item" :key="idx" :label="product.label" :value="product.value" :ref="product.value">
-                                {{product.label}}
-                            </Option>
-                        </Select>
-                        <Select class="productMenu product_con" clearable placeholder="productList" @on-change="getProductMenu($event)" >
-                            <Option v-for="item in productMenuListList" :key="item.tier4id" :label="item.name" :value="item.tier4id">
-                            </Option>
-                        </Select>
-                        <Select class="production product_con" clearable placeholder="product" >
-                            <Option v-for="item in productionListList" :key="item.tier4id" :label="item.name" :value="item.tier4id">
-                            </Option>
-                        </Select>
+                        <span class="target_tit">产品选择</span>
+                        <Cascader :data="data" trigger="hover" v-model = "modelList[idx].label1" class="product_con" @on-change = "handleChange" :ref ="'model'+idx"></Cascader>
                     </li>
                     <li class="target_set">
                         <span>CT</span>
-                        <Input v-model="vision" size="small" class="target_con"></Input>
+                        <Input  size="small" class="target_con" type = "number" :ref ="'input'+idx"></Input>
                         <span class="seconds">秒</span>
                         <span class="icon-delete_2"></span>
                     </li>
@@ -31,7 +20,6 @@
             </div>
             <div class="area_button text-right">
                 <span class="button_confirm button" @click="confirm">确认</span>
-                <span class="button_cancel button" @click="cancel">取消</span>
             </div>
         </div>
     </div>
@@ -41,49 +29,64 @@ import {mapActions,mapState} from "vuex"
 export default{
     data () {
         return {
-            productData:[
-
+            value2: ['jiangsu', 'suzhou', 'zhuozhengyuan'],
+            modelList:[
+                {
+                    "label1":['jiangsu', 'suzhou', 'zhuozhengyuan'],
+                    "label2":112
+                }
             ],
-            productModelList:[
-                {value: 1, label: "Machine"},
-                {value:2, label: "EHS"},
-                {value: 3, label: "Material"},
-            ],
-            productModel:'',
-            productMenuList:[
-                {tier2id: 29, name: "Safety", losstier1Lossid: 2},
-                {tier2id: 30, name: "OEE", losstier1Lossid: 1},
-                {tier2id: 31, name: "Defect", losstier1Lossid: 3},
-
-            ],
-            productMenu:'',
-            productMenuListList:[],
-            productionList:[
-                {lossid: 4, name: "Breakdowns",losstier2Lossid: 30},
-                {lossid: 5, name: "Short Stops",losstier2Lossid: 30},
-                {lossid: 10, name: "Speed Loss",losstier2Lossid: 30},
-                {lossid: 12, name: "First Aids",losstier2Lossid: 29},
-                {lossid: 13, name: "Near Miss",losstier2Lossid: 29}
-                ,
-                {lossid: 14, name: "Unsafe Behavior",losstier2Lossid: 29}
-
-                ,
-                {lossid: 15, name: "Dimension out of Spec",losstier2Lossid: 31}
-
-                ,
-                {lossid: 16, name: "Function issue",losstier2Lossid: 31}
-
-                ,
-                {lossid: 17, name: "Visual check issue",losstier2Lossid: 31}
-
-                ,
-                {lossid: 39, name: "Tool Changes",losstier2Lossid: 30},
-            ],
-            productionListList:[],
-            product:''  ,
-            count:0 
-    
-
+            data: [{
+                    value: 'beijing',
+                    label: '北京',
+                    children: [
+                        {
+                            value: 'gugong',
+                            label: '故宫'
+                        },
+                        {
+                            value: 'tiantan',
+                            label: '天坛'
+                        },
+                        {
+                            value: 'wangfujing',
+                            label: '王府井'
+                        }
+                    ]
+                }, {
+                    value: 'jiangsu',
+                    label: '江苏',
+                    children: [
+                        {
+                            value: 'nanjing',
+                            label: '南京',
+                            children: [
+                                {
+                                    value: 'fuzimiao',
+                                    label: '夫子庙',
+                                }
+                            ]
+                        },
+                        {
+                            value: 'suzhou',
+                            label: '苏州',
+                            children: [
+                                {
+                                    value: 'zhuozhengyuan',
+                                    label: '拙政园',
+                                },
+                                {
+                                    value: 'shizilin',
+                                    label: '狮子林',
+                                }
+                            ]
+                        }
+                    ],
+                }],
+           
+            result:[],
+            // model1:'',
+            // model2:''
         }
 
     },
@@ -104,108 +107,36 @@ export default{
                 return true;
             }
         },
-        getProductModel(tier) {
-            if (!tier) {
-                this.productModel = '';
-                this.productMenu = '';
-                return;
-            }
-            let tempTier = [];
-            this.productMenuListList = [];
-            this.productMenu = '';
-            for (let val of this.productMenuList) {
-                if (tier === val.losstier1Lossid) {
-                tempTier.push({
-                    "tier4id": val.tier2id,
-                    "name": val.name
-                });
-                }
-            }
-            this.productMenuListList = tempTier;
-        },
-        getProductMenu(tier) {
-            // if (!tier) {
-            //     this.productModel = '';
-            //     this.productMenu = '';
-            //     return;
-            // }
-            let tempTier = [];
-            this.productionListList = [];
-            this.productMenu = '';
-            for (let val of this.productionList) {
-                if (tier === val.losstier2Lossid) {
-                tempTier.push({
-                    "tier4id": val.lossid,
-                    "name": val.name
-                });
-                }
-            }
-            this.productionListList = tempTier;
-        },
         addProduct(){
-          
-            
-            this.productData.push(this.productModelList)
-            console.log(this.productData)
+            this.modelList.push(this.data)
+            console.log(this.modelList)
         },
         confirm(){
-            let _this=this
-            if(this.validateData()){
-                this.updateLinebodyInfById({
-                    "id": this.nodeId,
-                    "targetValue": this.toPoint(this.targetNo),
-                    "targetStrattime":this.dateStart,
-                    "targetEndtime": this.dateEnd,
-                    "visionValue": this.toPoint(this.vision),
-                    "visionStrattime": this.visionStart,
-                    "visionEndtime":this.visionEnd,
-                    "idealValue": this.toPoint(this.ideal),
-                    "idealStrattime": this.idealStart,
-                    "idealEndtime":this.idealEnd
-                })
-            }
-
+            this.result=[]
+            this.modelList.forEach((item,idx)=>{
+                let obj={}
+                console.log(this.$refs["model"+idx][0].value)
+                console.log(this.$refs["input"+idx][0].value)
+                obj={
+                    val1:this.$refs["model"+idx][0].value,
+                    val2:this.$refs["input"+idx][0].value
+                }
+                this.result.push(obj)
+            })
+            console.log(this.result)
         },
         cancel(){
 
         },
-        validateData() {
-        if (
-            this.empty(this.targetNo) ||
-            this.empty(this.dateStart) ||
-            this.empty(this.dateEnd) ||
-            this.empty(this.vision) ||
-            this.empty(this.visionStart) ||
-            this.empty(this.visionEnd) ||
-            this.empty(this.ideal) ||
-            this.empty(this.idealStart) ||
-            this.empty(this.idealEnd)
-        ) {
-            this.$Message.error('线体信息不能为空');
-            return false;
-        }
-            return true;
+        handleChange (value, selectedData) {
+            let obj = {}
+            console.log(selectedData.map(o => o.label).join(', '));
+            obj={
+                label1:this.$refs["model"+idx][0].value,
+                label2:this.$refs["input"+idx][0].value
+            },
+            this.modelList.push(obj)
         },
-        clickNode(event, treeId, treeNode){
-            let reg=/^l/g;
-            if(reg.test(treeNode.id)){
-                this.selectLinebodyById({id:treeNode.id})
-                this.nodeId = treeNode.id
-            }else{
-                this.$Message.info("暂无信息")
-                this.targetNo="";
-                this.dateStart='';
-                this.dateEnd='';
-                this.vision='';
-                this.ideal='';
-                this.visionStart = '',
-                this.visionEnd = '',
-                this.idealStart = '',
-                this.idealEnd = ''
-            }
-
-
-        }
     },
     watch: {
 

@@ -11,13 +11,13 @@
                     <i class="iconfont icon-user"></i><input type="text" placeholder="请输入用户名" ref="user" v-model="user" @input="btnBac"/>
                 </div>
                 <div>
-                    <i class="iconfont icon-password"></i><input :type="seen?'password':'text'" placeholder="请输入密码" v-model="pwd" @input="btnBac"/>
+                    <i class="iconfont icon-password"></i><input :type="seen?'password':'text'" placeholder="请输入密码" v-model="pwd" @input="btnBac" @keyup.enter="tologin"/>
                     <i :class="seen?'iconfont icon-eye_x':'iconfont icon-eye'" @click="changeSeen"></i>
                 </div>
                     <input type="radio"  id="admin-radio" value="0" v-model="picked" class="myradio"><label for="admin-radio">管理员</label>
                     <input type="radio"  id="user-radio" value="1" v-model="picked" class="myradio"><label for="user-radio">用户</label>
                 
-                <button type="button" @keyup.13="tologin()" @click="tologin" class="btn" ref="btn" >登&nbsp&nbsp录</button>
+                <button type="button" @click="tologin" class="btn" ref="btn" >登&nbsp&nbsp录</button>
                 <div class="hint hide" ref="hint">
                     <i class="iconfont icon-hint"></i><span class="tips" ref="tip"/></span>
                 </div>
@@ -88,15 +88,6 @@ export default{
             };
         }
        
-    },
-    created () {
-        let that = this;
-        document.onkeydown = function(){
-            var key = window.event.keyCode
-            if(key==13){
-                that.tologin();
-            }
-        }    
     },
     watch:{
         loginResult(newVal){

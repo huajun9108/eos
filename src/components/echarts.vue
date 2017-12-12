@@ -17,7 +17,7 @@
 <script>
     import {mapActions,mapState} from "vuex";
     import echarts from 'echarts';
-    var chart;
+    var barChart,lineOrBarChart;
     export default {
     data() {
         return {
@@ -164,16 +164,16 @@
         })
     }
     function drawLineOrBar(chartData,id,titleText,xText,yText) {
+        if (lineOrBarChart != null && lineOrBarChart != "" && lineOrBarChart != undefined) {
+            lineOrBarChart.dispose();
+        }
         if(!chartData){
-            return
+            return   
         }
-        if (chart != null && chart != "" && chart != undefined) {
-            chart.dispose();
-        }
-        var chart = echarts.init(document.getElementById(id))
-        var xAxisData = chartData.map(function (item) {return item.key})
-        var yAxisData = chartData.map(function (item) {return item.value})
-        chart.setOption({
+        lineOrBarChart = echarts.init(document.getElementById(id))
+        let xAxisData = chartData.map(function (item) {return item.key})
+        let yAxisData = chartData.map(function (item) {return item.value})
+        lineOrBarChart.setOption({
         tooltip: {
             trigger: 'axis',
             axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -181,7 +181,6 @@
             }
         },
         legend: {
-            
             data: [{name:yText}]
         },
         grid: {
@@ -223,28 +222,24 @@
         })
     }
     function drawBar(chartData,id,titleText,xText,yText) {
+        if (barChart != null && barChart != "" && barChart != undefined) {
+            barChart.dispose();
+        }
         if(!chartData){
             return
         }
-        if (chart != null && chart != "" && chart != undefined) {
-            chart.dispose();
-            return
-        }
-        if(chartData=== ""){
-          return;
-        }
-        var keys = [];
-        var chart = echarts.init(document.getElementById(id))
-        var xAxisData = chartData.map(function (item) {
+        let keys = [];
+        barChart = echarts.init(document.getElementById(id))
+        let xAxisData = chartData.map(function (item) {
                 return item.key
             })
-        var yAxisData = chartData.map(function (item) {
+        let yAxisData = chartData.map(function (item) {
                 return item.value;
             })
         let machineColor ='#3670be';
         let materialColor ='#ffd189';
         let humanColor = '#b7b7b7';
-        chart.setOption({
+        barChart.setOption({
             noDataLoadingOption: {
                 text: '暂无数据',
                 effect: 'bubble',
@@ -264,7 +259,8 @@
                 data:xAxisData
             },
             grid: {
-                left: 0,
+                left: '3%',
+                right: '3%',
                 containLabel: true
             },
             xAxis:  {
@@ -285,6 +281,7 @@
                     name: xAxisData[0],
                     type: 'bar',
                     stack: '总量',
+                    barWidth : 30,
                     itemStyle:{
                         normal:{
                             color:machineColor
@@ -296,6 +293,7 @@
                     name: xAxisData[1],
                     type: 'bar',
                     stack: '总量',
+                    barWidth : 30,
                     itemStyle:{
                         normal:{
                             color:materialColor
@@ -307,6 +305,7 @@
                     name: xAxisData[2],
                     type: 'bar',
                     stack: '总量',
+                    barWidth : 30,
                     itemStyle:{
                         normal:{
                             color:humanColor

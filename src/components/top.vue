@@ -27,9 +27,9 @@
                 </li>
             </ul>
             <div class="exit">
-                <select v-model="selectLan">
-				    <option v-for="(lan,idx) in lans" :value="lan.value" :key="idx">{{lan.name}}</option>
-			    </select>
+                <Select v-model="selectLan" size="small" style="width:80px">
+				    <Option v-for="(lan,idx) in lans" :value="lan.value" :key="idx">{{lan.name}}</Option>
+			    </Select>
                 <router-link :to="{name:'login'}">
                     退出
                 </router-link>

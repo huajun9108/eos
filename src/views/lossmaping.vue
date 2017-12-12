@@ -5,7 +5,7 @@
             <span :class="isShow?'iconfont icon-drop-down2 rotate':'iconfont icon-drop-down2'"></span>
             <span class="areaAndShift">时间/区域</span>
         </div>
-        <v-timearea v-show="isShow"></v-timearea>
+        <v-timearea v-show="isShow" @clear="clearChartsData"></v-timearea>
       <div class="titleContainer">
         <span class="titleContent">Loss</span>
       </div>
@@ -45,6 +45,11 @@
     methods: {
       ...mapActions([
       ]),
+      dd(s) {
+      },
+      clearChartsData() {
+        console.log(2);
+      },
       showlDialog(data){
         this.isShow = !this.isShow
       },

@@ -81,15 +81,16 @@ export default {
             lineBodys: [],
             lineBodystr: "",
             time: GetDateStr(-1) + " 23:59:59",
-            start:null,
-            end:null
-        };
+            start: null,
+            end: null,
+            hello: "timeArea"
+        }
     },
     methods: {
         ...mapActions([
             "selectUserById",
             "selectAllByUserIdAndLinebodyIds",
-            "selectProjectStateByTimeAndLinebodyIds"
+            "selectProjectStateByTimeAndLinebodyIds",
         ]),
         zTreeOnCheck(event, treeId, treeNode) {
             const _this = this;
@@ -151,6 +152,8 @@ export default {
             }
         },
         clearCharts() {
+          console.log(1);
+          this.$emit('clear');
             this.selectAllByUserIdAndLinebodyIds({
                 userId: sessionStorage.getItem("userid")
             });
@@ -162,11 +165,12 @@ export default {
             } else {
                 return false;
             }
-        }
+        },
     },
     computed: {
         ...mapState([
-            "validarea"
+            "validarea",
+            "lossmappingLinebodyAll"
         ])
     },
     watch: {

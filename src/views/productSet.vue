@@ -17,7 +17,8 @@
             </ul>
             <ul class="target_setting product_setting clearfix">
                 <li class="target_set">
-                    <InputNumber v-model="productPriceVal" size="small" class="target_con" @on-blur="updateProductPrice" :disabled="productPriceIsDisabled"></InputNumber>
+                    <InputNumber v-model="productPriceVal" size="small" class="target_con" @on-blur="updateProductPrice"
+                    @on-focus="productPriceSettingFocus" :disabled="productPriceIsDisabled"></InputNumber>
                     <span class="target_tit">元</span>
                 </li>
             </ul>
@@ -62,6 +63,7 @@ export default {
             }
         }
       },
+      oldProductPriceVal: null,
       productPriceVal: null,
       productPriceIsDisabled: true
     }
@@ -169,54 +171,30 @@ export default {
     },
     clickNode(event, treeId, treeNode){
       let reg=/^n/g;
-      // let _this = this
-      // this.nodeId = treeNode.id
       if(reg.test(treeNode.id)){
         this.productPriceIsDisabled = false;
         this.selectProductnameById({
           "id": treeNode.id
         });
-        // this.picked="1"
-        // this.selectLinebodyById({id:this.nodeId})
-        // console.log(this.picked)
-        // this.removeEvent(false,_this.tip)
       }else{
         this.productPriceIsDisabled = true;
         this.productPriceVal = null;
-        // let _this = this
-        // this.picked=""
-        // this.addEvent(true,_this.tip)
       }
     },
-    tip(){
-      this.$Message.error("请在线体进行重要性选择")
-    },
-    removeEvent(flag,fun){
-      // this.radiopick.forEach(item=>{
-      //   this.$refs[item.name][0].disabled = flag
-      //   this.$refs[item.value][0].removeEventListener("click",
-      //     fun)
-      // })
-    },
-    addEvent(flag,fun){
-      // this.radiopick.forEach(item=>{
-      //   this.$refs[item.name][0].disabled = flag
-      //   this.$refs[item.value][0].addEventListener("click",fun)
-      // })
-    },
     updateProductPrice() {
+      if(this.oldProductPriceVal === this.productPriceVal) return;
       let zTree = $.fn.zTree.getZTreeObj("product_tree");
       let nodes = zTree.getSelectedNodes();
       if(nodes.length > 0) {
-        console.log(1);
-        console.log(nodes[0].id);
         if(nodes[0].id.substring(0, 1) !== 'n') return;
-        console.log(2);
         this.updateProductnameById({
           "id": nodes[0].id,
           "price": this.productPriceVal
         })
       }
+    },
+    productPriceSettingFocus() {
+      this.oldProductPriceVal = this.productPriceVal;
     }
 
   },

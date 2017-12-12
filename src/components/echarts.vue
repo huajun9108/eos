@@ -32,7 +32,7 @@
         _type:String
     },
     methods: {
-         
+
     },
     watch:{
       _chartData(val){
@@ -62,7 +62,7 @@
         ...mapState(["projectStatus"])
     },
     mounted() {
-        
+
       switch (this._type){
             // case "LineAndBar":
             // drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
@@ -181,7 +181,7 @@
             }
         },
         legend: {
-            
+
             data: [{name:yText}]
         },
         grid: {
@@ -197,7 +197,7 @@
                     show:false
                 },
             },
-            
+
         ],
         yAxis: [
             {
@@ -315,8 +315,8 @@
                     data:  yAxisData[2]
                 },
             ]
-                    
-                
+
+
         },true)
     }
     function drawPie(chartData,id,titleText,xText,yText) {
@@ -415,8 +415,8 @@
                 axisLabel:{
                     color:"#040404"
                 }
-        
-                
+
+
             },
             yAxis: {
                 type: 'value',
@@ -432,7 +432,7 @@
                 },
                 axisLabel:{
                     color:"#040404",
-                    formatter: '{value} %'  
+                    formatter: '{value} %'
                 }
 
             },
@@ -509,7 +509,7 @@
                     },
                 },
             ]
-            
+
         })
     }
 </script>

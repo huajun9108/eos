@@ -600,4 +600,57 @@ export default {
             commit("selectProductAll", json)
         })
     },
+    addProductOne({ commit }, obj) {
+      axios.post("/product/addProductOne", qs.stringify({
+        "name": obj.name,
+        "pId": obj.pId
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("addProductOne", json)
+      })
+    },
+    updateProductById({ commit }, obj) {
+      axios.post("/product/updateProductById", qs.stringify({
+        "name": obj.name,
+        "id": obj.id
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("updateProductById", json)
+      })
+    },
+    deleteProductById({ commit }, obj) {
+      axios.post("/product/deleteProductById", qs.stringify({
+        "id": obj.id
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("deleteProductById", json)
+      })
+    },
+    selectProductnameById({ commit }, obj) {
+      axios.post("/product/selectProductnameById", qs.stringify({
+        "id": obj.id
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("selectProductnameById", json)
+      })
+    },
+    updateProductnameById({ commit }, obj) {
+      axios.post("/product/updateProductnameById", qs.stringify({
+        "id": obj.id,
+        "price": obj.price
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("updateProductnameById", json)
+      })
+    }
 }

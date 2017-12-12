@@ -57,5 +57,10 @@ export default {
     deleteProductRes: '',
     updateProductRes: '',
     deleteLoss4dataRes: '',
-    productAll: null
+    productAll: null,
+    addProductOneRes: '',
+    updateProductByIdRes: '',
+    deleteProductByIdRes: '',
+    selectProductnameByIdRes: '',
+    updateProductnameByIdRes: ''
 }

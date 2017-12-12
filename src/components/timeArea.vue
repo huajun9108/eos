@@ -152,11 +152,7 @@ export default {
             }
         },
         clearCharts() {
-          console.log(1);
           this.$emit('clear');
-            this.selectAllByUserIdAndLinebodyIds({
-                userId: sessionStorage.getItem("userid")
-            });
         },
         routeIsroute(route){
             let reg = this.$route.path.split("/")[2];

@@ -12,11 +12,11 @@
       <div class="tableContainer">
         <table class="tableBody">
           <tbody>
-            <tr v-for="(title,idx) in this.lossmappingLinebodyAll.data" :key="idx">
+            <tr v-for="(title,idx) in this.lossmappingDataList.data" :key="idx">
               <td class="firstCol">{{ title.title }}</td>
               <td :id='title.title' class="secordCol" style="width: 600px;height:220px;"></td>
             </tr>
-            <tr v-if = "this.lossmappingLinebodyAll.data==null||this.lossmappingLinebodyAll.data==''">
+            <tr v-if = "this.lossmappingDataList.data==null||this.lossmappingDataList.data==''">
               <td>暂无数据</td>
             </tr>
           </tbody>
@@ -39,7 +39,8 @@
     data: function() {
       return {
         isShow:false,
-        chartList: []
+        chartList: [],
+        lossmappingDataList: []
       }
     },
     methods: {
@@ -48,29 +49,29 @@
       dd(s) {
       },
       clearChartsData() {
-        console.log(2);
+        this.lossmappingDataList = [];
       },
       showlDialog(data){
         this.isShow = !this.isShow
       },
       initCharts: function() {
-        console.log(this.lossmappingLinebodyAll);
+        console.log(this.lossmappingDataList);
         for(let i = 0; i < this.chartList.length; i++) {
           if (this.chartList[i] != null && this.chartList[i] != "" && this.chartList[i] != undefined){
             this.chartList[i].dispose();
           }
         }
-        if(this.lossmappingLinebodyAll.status === "1"){
+        if(this.lossmappingDataList.status === "1"){
           console.log("参数错误");
           return;
         }
-        if(!Array.isArray(this.lossmappingLinebodyAll.data)){
+        if(!Array.isArray(this.lossmappingDataList.data)){
           console.log("数据有误");
           return;
         }
         this.chartList = [];
-        for(let i = 0; i < this.lossmappingLinebodyAll.data.length; i++) {
-            var myChart = echarts.init(document.getElementById(this.lossmappingLinebodyAll.data[i].title));
+        for(let i = 0; i < this.lossmappingDataList.data.length; i++) {
+            var myChart = echarts.init(document.getElementById(this.lossmappingDataList.data[i].title));
             this.chartList.push(myChart);
             var option = {
               tooltip: {
@@ -81,8 +82,8 @@
                 width:600,
                 type: 'sankey',
                 layout: 'none',
-                data: this.lossmappingLinebodyAll.data[i].data,
-                links: this.lossmappingLinebodyAll.data[i].link,
+                data: this.lossmappingDataList.data[i].data,
+                links: this.lossmappingDataList.data[i].link,
                 itemStyle: {
                   normal: {
                     borderWidth: 1,
@@ -108,6 +109,7 @@
     },
     watch: {
       lossmappingLinebodyAll(newVal){
+        this.lossmappingDataList = newVal;
         let _this = this
         setTimeout(function() {
           _this.initCharts();

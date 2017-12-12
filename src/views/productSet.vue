@@ -18,7 +18,7 @@
             <ul class="target_setting product_setting clearfix">
                 <li class="target_set">
                     <InputNumber v-model="productPriceVal" size="small" class="target_con" @on-blur="updateProductPrice"
-                    @on-focus="productPriceSettingFocus" :disabled="productPriceIsDisabled"></InputNumber>
+                     @on-focus="productPriceSettingFocus" :disabled="productPriceIsDisabled"></InputNumber>
                     <span class="target_tit">元</span>
                 </li>
             </ul>
@@ -183,6 +183,11 @@ export default {
     },
     updateProductPrice() {
       if(this.oldProductPriceVal === this.productPriceVal) return;
+      if(this.productPriceVal <= 0) {
+        this.productPriceVal = this.oldProductPriceVal;
+        this.$Message.error("产品价格不能小于等于0");
+        return;
+      }
       let zTree = $.fn.zTree.getZTreeObj("product_tree");
       let nodes = zTree.getSelectedNodes();
       if(nodes.length > 0) {

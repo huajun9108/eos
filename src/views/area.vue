@@ -27,7 +27,7 @@
         <v-target :nodeId="nodeId"></v-target>
       </div>
       <div class="area_top">
-        <v-product></v-product>
+        <v-product :nodeId="nodeId"></v-product>
       </div>
     </div>
   </div>

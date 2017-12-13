@@ -57,5 +57,60 @@ export default {
     deleteProductRes: '',
     updateProductRes: '',
     deleteLoss4dataRes: '',
-    productAll: null
+    productAll: null,
+    modelList: [{
+        result: [
+            // {
+            //     "label1": ['1', '2', '4'],
+            //     "label2": 112
+            // },
+            // {
+            //     "label1": ['beijing', 'gugong'],
+            //     "label2": 110
+            // }
+        ],
+        data: []
+    }],
+    data: [{
+        value: 'beijing',
+        label: '北京',
+        children: [{
+                value: 'gugong',
+                label: '故宫'
+            },
+            {
+                value: 'tiantan',
+                label: '天坛'
+            },
+            {
+                value: 'wangfujing',
+                label: '王府井'
+            }
+        ]
+    }, {
+        value: '1',
+        label: '江苏',
+        children: [{
+                value: 'nanjing',
+                label: '南京',
+                children: [{
+                    value: 'fuzimiao',
+                    label: '夫子庙',
+                }]
+            },
+            {
+                value: '2',
+                label: '苏州',
+                children: [{
+                        value: '3',
+                        label: '拙政园',
+                    },
+                    {
+                        value: '4',
+                        label: '狮子林',
+                    }
+                ]
+            }
+        ],
+    }],
 }

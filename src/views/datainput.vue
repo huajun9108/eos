@@ -97,11 +97,7 @@
       <span>良品数量：</span>
       <InputNumber v-model="conformProductValue" :min="0"></InputNumber>
       <span class="cycleTitle">Cycle：</span>
-      <InputNumber v-model="normalCycletimeValue" :min="0" @on-focus="cycleTimeFocus"
-      @on-blur="cycleTimeBlur"></InputNumber>
-    </div>
-    <div v-if="this.productInfoCycletimeTipsFlag" class="productInfoCycletimeTips">
-      <span>tips:样例循环时间，单位为秒。</span>
+      <InputNumber v-model="normalCycletimeValue" :min="0"></InputNumber>
     </div>
   </Modal>
 </div>
@@ -186,7 +182,6 @@ export default {
       /*产品变量*/
       showProductInfoFlag: false,
       editProductInfoFlag: false,
-      productInfoCycletimeTipsFlag: false,
       productNameBeingEditedVal: '',
       choosedProductValByAdd: '',
       productInfoCols: [{
@@ -354,12 +349,6 @@ export default {
       "updateProduct",
       "deleteLoss4data"
     ]),
-    cycleTimeFocus() {
-      this.productInfoCycletimeTipsFlag = true;
-    },
-    cycleTimeBlur() {
-      this.productInfoCycletimeTipsFlag = false;
-    },
     getTier3: function(tier) {
       if (!tier) {
         this.choosedLossTier3ValByAdd = '';

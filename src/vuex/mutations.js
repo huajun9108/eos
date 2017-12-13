@@ -159,4 +159,19 @@ export default {
     selectProductAll(state, json) {
         state.productAll = json
     },
+    addProductOne(state, json) {
+        state.addProductOneRes = json
+    },
+    updateProductById(state, json) {
+        state.updateProductByIdRes = json
+    },
+    deleteProductById(state, json) {
+      state.deleteProductByIdRes = json
+    },
+    selectProductnameById(state, json) {
+      state.selectProductnameByIdRes = json
+    },
+    updateProductnameById(state, json) {
+      state.updateProductnameByIdRes = json
+    }
 }

@@ -63,13 +63,13 @@
                 width: 100%;
                 height: 100%;
                 position: relative;
+                box-sizing: border-box;
+                padding: P(85) 0 P(85) 4%;
                 .user_common {
                     width: 100%;
-                    height: 98%;
-                    box-sizing: border-box;
-                    padding: P(85) 0 P(85) P(76);
+                    height: 100%;
                     .user_maincontent {
-                        width: 95%;
+                        width: 96%;
                         height: 100%;
                         border: 1px solid #bdbdbd;
                         border-radius: P(4);

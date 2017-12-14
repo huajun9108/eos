@@ -31,10 +31,6 @@
                         <input v-model="runNumber" class="item_detail" readonly placeholder="无"/>
                     </li>
                     <li class="status_li">
-                        <span class="status_title">实施延迟的项目数量</span>
-                        <input v-model="delayNumber" class="item_detail" readonly placeholder="无"/>
-                    </li>
-                    <li class="status_li">
                         <span class="status_title">成果跟踪的项目数量</span>
                         <input v-model="followNumber" class="item_detail" readonly placeholder="无"/>
                     </li>

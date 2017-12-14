@@ -40,7 +40,6 @@ export default {
                 userId: obj.userId
             }
         }).then(res => {
-            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("delUser", json)
@@ -50,7 +49,6 @@ export default {
         axios.post("user/massDeleteUserByUserIds ", qs.stringify({
             userIds: obj.userIds
         })).then(res => {
-            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("massDeleteUserByUserIds", json)
@@ -82,7 +80,6 @@ export default {
             "validMenu": obj.validMenu,
             "validArea": obj.validArea,
         })).then(res => {
-            // console.log(res.data)
             return res.data
 
         }).then(json => {
@@ -103,7 +100,6 @@ export default {
             "validMenu": obj.validMenu,
             "validArea": obj.validArea
         })).then(res => {
-            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("updateUserById", json)
@@ -117,7 +113,6 @@ export default {
             "userPsd": obj.userPsd,
             "userNewPsd": obj.userNewPsd,
         })).then(res => {
-            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("updateUserPsdById", json)
@@ -128,7 +123,6 @@ export default {
     },
     selectAreaAll({ commit }, obj) {
         axios.get("/areaAllSet/showAreaAll", {}).then(res => {
-            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("selectAreaAll", json)
@@ -139,7 +133,6 @@ export default {
             "name": obj.name,
             "pId": obj.pId,
         })).then(res => {
-            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("addAreaOne", json)
@@ -153,7 +146,6 @@ export default {
             "pId": obj.pId,
             "id": obj.id,
         })).then(res => {
-            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("updateArea", json)
@@ -167,8 +159,6 @@ export default {
                 id: obj.id
             }
         }).then(res => {
-            console.log(res);
-            console.log(res.data)
             return res.data
         }).then(json => {
             commit("deleteArea", json)
@@ -178,7 +168,6 @@ export default {
         axios.post("/user/selectUserById", qs.stringify({
             "userId": obj.userid
         })).then(res => {
-            // console.log(res.data.data)
             return res.data.data
         }).then(json => {
             commit("selectUserById", json)
@@ -196,7 +185,6 @@ export default {
             "name": obj.name,
             "pId": obj.pId,
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("addKPItwoLev", json)
@@ -210,7 +198,6 @@ export default {
             "pId": obj.pId,
             "id": obj.id,
         })).then(res => {
-            // console.log(res.data)
             return res.data
         }).then(json => {
             commit("updateKPItwoLev", json)
@@ -241,7 +228,6 @@ export default {
             "name": obj.name,
             "pId": obj.pId
         })).then(res => {
-            console.log(res.data)
             return res.data
         }).then(json => {
             commit("addLossOne", json)
@@ -279,7 +265,6 @@ export default {
                 page: obj.page
             }
         }).then(res => {
-            console.log(res.data.data)
             return res.data.data
         }).then(json => {
             commit("findAndCount", json)
@@ -291,7 +276,6 @@ export default {
         axios.post("/linebodySet/selectLinebodyById ", qs.stringify({
             "id": obj.id
         })).then(res => {
-            console.log(res.data)
             return res.data
         }).then(json => {
             commit("selectLinebodyById", json)
@@ -312,7 +296,6 @@ export default {
             "idealStrattime": obj.idealStrattime,
             "idealEndtime": obj.idealEndtime
         })).then(res => {
-            console.log(res.data)
             return res.data
         }).then(json => {
             commit("updateLinebodyInfById", json)
@@ -328,7 +311,6 @@ export default {
             "changeOrder": obj.changeOrder,
             "changedOrder": obj.changedOrder
         })).then(res => {
-            console.log(res.data)
             return res.data
         }).then(json => {
             commit("updateUserKpiTwolveById", json)
@@ -340,7 +322,6 @@ export default {
         axios.post("/impobject/showImpItempool", qs.stringify({
             "userId": obj.userid
         })).then(res => {
-            console.log(res.data)
             return res.data
         }).then(json => {
             commit("showImpItempool", json)
@@ -353,7 +334,6 @@ export default {
         axios.post("/impobject/showObjectnowBylinedyid", qs.stringify({
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log(res.data)
             return res.data.data
         }).then(json => {
             commit("showObjectnowBylinedyid", json)
@@ -366,7 +346,6 @@ export default {
             "lossId": obj.lossId,
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log(res.data.data)
             return res.data.data
         }).then(json => {
             commit("showImpItemstatus", json)
@@ -376,7 +355,7 @@ export default {
     },
     updateImpItemstatus({ commit }, obj) {
         axios.post("/impobject/updateImpItemstatus ", qs.stringify({
-            "lossId": obj.lossId,
+            "id": obj.id,
             "linebodyId": obj.linebodyId,
             "projectnumber": obj.projectnumber,
             "projectname": obj.projectname,
@@ -389,7 +368,6 @@ export default {
             "planendtime": obj.planendtime,
             "stage": obj.stage,
         })).then(res => {
-            console.log(res)
             return res.data.data
         }).then(json => {
             commit("updateImpItemstatus", json)
@@ -402,8 +380,7 @@ export default {
             "lossIdList": obj.lossId,
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log(res)
-            return res.data.data
+            return res.data
         }).then(json => {
             commit("addObjectnowBylossid", json)
         }).catch(err => {
@@ -415,8 +392,7 @@ export default {
             "lossId": obj.lossId,
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log(res)
-            return res.data.data
+            return res.data
         }).then(json => {
             commit("deleteObjectnowBylossid", json)
         }).catch(err => {
@@ -430,7 +406,6 @@ export default {
             "startTime": obj.startTime,
             "endTime": obj.endTime
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("selectAllByUserIdAndLinebodyIds", json)
@@ -441,7 +416,6 @@ export default {
             "linebodyId": obj.linebodyId,
             "weight": obj.weight
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("updateLinebodyWeightById", json)
@@ -452,7 +426,6 @@ export default {
         axios.post("/datainput/showLosstier3", qs.stringify({
             "twolevName": obj.twolevName
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("showLosstier3", json)
@@ -461,8 +434,6 @@ export default {
 
     addLosstier4time2({ commit }, obj) {
         axios.post("/datainput/addLosstier4time2", qs.stringify({
-            // "classStarttime": obj.classStarttime,
-            // "classEndtime": obj.classEndtime,
             "classinfIdList": obj.classinfIdList,
             "twolevName": obj.twolevName,
             "losstier3Id": obj.losstier3Id,
@@ -471,7 +442,6 @@ export default {
             "starttime": obj.starttime,
             "endtime": obj.endtime
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("addLosstier4time2", json)
@@ -481,7 +451,6 @@ export default {
         axios.post("/datainput/showKpitwolev", qs.stringify({
             "userId": obj.userId
         })).then(res => {
-            // console.log(res.data);
             return res.data
         }).then(json => {
             commit("showKpitwolev", json)
@@ -492,7 +461,6 @@ export default {
             linebodyIds: obj.linebodyIds,
             time: obj.time,
         })).then(res => {
-            console.log(res.data)
             return res.data
         }).then(json => {
             commit("selectProjectStateByTimeAndLinebodyIds", json)
@@ -505,7 +473,6 @@ export default {
             "shouldAttendance": obj.shouldAttendance,
             "actualAttendance": obj.actualAttendance
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("addClassinf", json)
@@ -519,7 +486,6 @@ export default {
             "normalCycletime": obj.normalCycletime,
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("addProduct", json)
@@ -529,7 +495,6 @@ export default {
         axios.post("/datainput/showProduct", qs.stringify({
             "classinfIdList": obj.classinfIdList
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("showProduct", json)
@@ -541,7 +506,6 @@ export default {
             "starttime": obj.starttime,
             "endtime": obj.endtime
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("updateObjectimeAfteradd", json)
@@ -551,7 +515,6 @@ export default {
         axios.post("/datainput/showProductName", qs.stringify({
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("showProductName", json)
@@ -563,7 +526,6 @@ export default {
             "classinfIdList": obj.classinfIdList,
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("deleteProduct", json)
@@ -577,7 +539,6 @@ export default {
             "classinfIdList": obj.classinfIdList,
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("updateProduct", json)
@@ -587,7 +548,6 @@ export default {
         axios.post("/datainput/deleteLoss4data", qs.stringify({
             "losstier4Dataid": obj.losstier4Dataid
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("deleteLoss4data", json)
@@ -601,56 +561,61 @@ export default {
         })
     },
     addProductOne({ commit }, obj) {
-      axios.post("/product/addProductOne", qs.stringify({
-        "name": obj.name,
-        "pId": obj.pId
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("addProductOne", json)
-      })
+        axios.post("/product/addProductOne", qs.stringify({
+            "name": obj.name,
+            "pId": obj.pId
+        })).then(res => {
+            return res.data
+        }).then(json => {
+            commit("addProductOne", json)
+        })
     },
     updateProductById({ commit }, obj) {
-      axios.post("/product/updateProductById", qs.stringify({
-        "name": obj.name,
-        "id": obj.id
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("updateProductById", json)
-      })
+        axios.post("/product/updateProductById", qs.stringify({
+            "name": obj.name,
+            "id": obj.id
+        })).then(res => {
+            return res.data
+        }).then(json => {
+            commit("updateProductById", json)
+        })
     },
     deleteProductById({ commit }, obj) {
-      axios.post("/product/deleteProductById", qs.stringify({
-        "id": obj.id
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("deleteProductById", json)
-      })
+        axios.post("/product/deleteProductById", qs.stringify({
+            "id": obj.id
+        })).then(res => {
+            return res.data
+        }).then(json => {
+            commit("deleteProductById", json)
+        })
     },
     selectProductnameById({ commit }, obj) {
-      axios.post("/product/selectProductnameById", qs.stringify({
-        "id": obj.id
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("selectProductnameById", json)
-      })
+        axios.post("/product/selectProductnameById", qs.stringify({
+            "id": obj.id
+        })).then(res => {
+            return res.data
+        }).then(json => {
+            commit("selectProductnameById", json)
+        })
     },
     updateProductnameById({ commit }, obj) {
-      axios.post("/product/updateProductnameById", qs.stringify({
-        "id": obj.id,
-        "price": obj.price
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("updateProductnameById", json)
-      })
+        axios.post("/product/updateProductnameById", qs.stringify({
+            "id": obj.id,
+            "price": obj.price
+        })).then(res => {
+            return res.data
+        }).then(json => {
+            commit("updateProductnameById", json)
+        })
+    },
+    showImpItemhistory({ commit }, obj) {
+        axios.post("/impobject/showImpItemhistory", qs.stringify({
+            "linebodyId": obj.linebodyId
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("showImpItemhistory", json)
+        })
     }
 }

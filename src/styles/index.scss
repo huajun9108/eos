@@ -61,9 +61,11 @@ input[type='radio'] {
 
 label {
     margin: 0;
+    cursor: pointer;
 }
 
-.checkone+label {
+.checkone+label,
+.mycheck+label {
     color: #131313;
     box-sizing: border-box;
     background: url("./assets/images/unselected.png") no-repeat left center;
@@ -72,7 +74,8 @@ label {
     position: relative;
 }
 
-.checkone:checked+label {
+.checkone:checked+label,
+.mycheck:checked+label {
     box-sizing: border-box;
     background: url("./assets/images/selected.png") no-repeat left center;
     padding: 8px 7px;
@@ -81,27 +84,19 @@ label {
 }
 
 .mycheck+label {
-    color: #131313;
-    box-sizing: border-box;
-    background: url("./assets/images/unselected.png") no-repeat left center;
     padding: 8px 18px;
-    display: inline-block;
-    position: relative;
 }
 
 .mycheck:checked+label {
-    box-sizing: border-box;
-    background: url("./assets/images/selected.png") no-repeat left center;
     padding: 8px 18px;
-    display: inline-block;
-    position: relative;
 }
 
-.myradio+label {
+.myradio+label,
+.arearadio+label {
     width: 40%;
     font-size: 12px;
     box-sizing: border-box;
-    background: url("./assets/images/unchecked.png") no-repeat left center;
+    background: url("./assets/images/unselected_line.png") no-repeat left center;
     padding: 8px 18px;
     display: inline-block;
     margin: P(10) 0;
@@ -112,29 +107,24 @@ label {
     margin-left: P(10);
 }
 
-.myradio:checked+label {
+.myradio:checked+label,
+.arearadio:checked+label {
     box-sizing: border-box;
-    background: url("./assets/images/checked.png") no-repeat left center;
+    background: url("./assets/images/selected_line.png") no-repeat left center;
     padding: 8px 18px;
     display: inline-block;
     position: relative;
 }
 
 .arearadio+label {
-    font-size: P(14);
-    box-sizing: border-box;
-    background: url("./assets/images/unselected_line.png") no-repeat left center;
+    width: auto;
+    font-size: P(16);
     padding: 0 18px;
-    display: inline-block;
-    position: relative;
+    margin: 0;
 }
 
 .arearadio:checked+label {
-    box-sizing: border-box;
-    background: url("./assets/images/selected_line.png") no-repeat left center;
     padding: 0 18px;
-    display: inline-block;
-    position: relative;
 }
 
 .table {

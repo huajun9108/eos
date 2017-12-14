@@ -25,16 +25,13 @@
             width: 100%;
             display: flex;
             justify-content: space-around;
-            i {
+            .iconfont {
                 color: #1b3867;
-                font-size: P(18);
+                font-size: P(16);
             }
             .setting_left {
                 width: 27%;
                 height: 100%;
-                // display: flex;
-                // flex-direction: column;
-                // justify-content: space-around;
                 .accountinfo {
                     border-bottom: 1px solid #e1e1e1;
                     .input_accountinfo {

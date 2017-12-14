@@ -6,19 +6,19 @@
             <table class="table text-center table-hover">
             <thead class="fixedThead">
                 <tr>
-                    <td class="text-center pro_name" width="35%">名称</td>
-                    <td class="text-center pro_date" width="25%">下次review日期</td>
+                    <td class="text-center pro_name" width="40%">名称</td>
+                    <td class="text-center pro_date" width="20%">下次review日期</td>
                     <td class="text-center pro_status" width="20%">当前状态</td>
                     <td class="edit" width="20%"  colspan="2">编辑</td>
                 </tr>
             </thead>
             <tbody class="scrollTbody">
             <tr v-for="(item,idx) in this.proNowList" :key="idx" class="text-center"  >
-                <td width="35%">{{item.name}}</td>
-                <td width="25%">{{item.name}}</td>
-                <td width="20%">{{item.name}}</td>
+                <td width="40%">{{item.name}}</td>
+                <td width="20%">{{item.status}}</td>
+                <td width="20%">{{item.status}}</td>
                 <td width="10%" class="icon-edit" @click = "editpro(item.id)"></td>
-                <td width="10%" class="icon-delete_2" @click = "delpro(item.id)"></td>
+                <td width="10%" class="icon-delete_2" @click = "delpro({id:item.id,name:item.name})"></td>
             </tr>
 
             <tr v-if="proNowList.length==0">
@@ -54,7 +54,7 @@
                 </li>
                 <li class="item_li">
                     <span class="item_title">项目阶段</span>
-                    <Select v-model="stage" clearable size="small" style="width:90px">
+                    <Select :disabled="this.status!='2'" v-model="stage" clearable size="small" style="width:90px">
                         <Option v-for="(item,idx) in stageList" :key = "idx" :value="item.value">{{ item.label }}</Option>
                     </Select>
                 </li>
@@ -72,11 +72,15 @@
                 </li>
                 <li class="item_li">
                     <span class="item_title">项目开始日期</span>
-                    <input v-model="objectstarttime" class="item_detail" />
+                    <DatePicker size="small" v-model="objectstarttime" :options="optionsStart" placement="bottom-end"
+                    class="item_detail" placeholder="Select date" @on-change="startChange" @on-clear="clearCharts">
+                    </DatePicker>
                 </li>
                 <li class="item_li">
                     <span class="item_title">项目预期结束日期</span>
-                    <input v-model="planendtime" class="item_detail" />
+                    <DatePicker size="small" width="90%" v-model="planendtime" :options="optionsStart" placement="bottom-end"
+                    class="item_detail" placeholder="Select date" @on-change="startChange" @on-clear="clearCharts">
+                    </DatePicker>
                 </li>
                 
             </ul>
@@ -89,48 +93,12 @@
     <div class="project_change project_item">
         <span class="pro_title">变更信息</span>
         <div class="pro_itemdetail" >
-            <!-- <ul class="item_det" >
-                <li class="item_li">
-                    <span class="item_title">改进项目编号</span>
-                    <input v-model= "projectnumber" class="item_detail" />
+            <ul class="item_det" v-for="(item,index) in showLog" :key = "index">
+                <li class="item_li clearfix">
+                    <span class="item_status">{{item.message}}从{{item.before}}变为{{item.now}}</span>
+                    <span class="item_time">{{item.time}}&nbsp;&nbsp;{{item.date}}</span>
                 </li>
-                <li class="item_li">
-                    <span class="item_title">改进项目名称</span>
-                    <input v-model= "projectname" class="item_detail" />
-                </li>
-                <li class="item_li">
-                    <span class="item_title">针对的损失类别</span>
-                    <input v-model= "losscategory" class="item_detail" />
-                </li>
-                <li class="item_li">
-                    <span class="item_title">项目状态</span>
-                    <input v-model= "status" class="item_detail" />
-                </li>
-                <li class="item_li">
-                    <span class="item_title">起点绩效值</span>
-                    <input v-model="startperformance" class="item_detail" />
-                </li>
-                <li class="item_li">
-                    <span class="item_title">目标</span>
-                    <input  v-model="target" class="item_detail" />
-                </li>
-                <li class="item_li">
-                    <span class="item_title">当前绩效</span>
-                    <input v-model="performance" class="item_detail" />
-                </li>
-                <li class="item_li">
-                    <span class="item_title">项目开始日期</span>
-                    <input v-model="objectstarttime" class="item_detail" />
-                </li>
-                <li class="item_li">
-                    <span class="item_title">项目预期结束日期</span>
-                    <input v-model="planendtime" class="item_detail" />
-                </li>
-                <li class="item_li">
-                    <span class="item_title">项目阶段</span>
-                    <input v-model="stage" class="item_detail" />
-                </li>
-            </ul> -->
+            </ul>
         </div>
     </div>
     <Modal
@@ -159,24 +127,24 @@
 </div>
 </template>
 <script>
-import {mapActions,mapState} from "vuex"
+import {mapActions,mapState} from "vuex";
+import { stageRes, statusRes } from "../assets/js/tip"
 	export default{
         data(){
             return{
                 pro_modal:false,
-                option:"",
                 detailFlag:false,
                 proList:[],
                 isChoose:false,
                 proListItem:"",
                 proListId:"",
-                arrlength:false,
                 leftId:[],
                 proNowList:[],
                 projectnumber:'',
                 projectname:'',
                 losscategory:'',
                 status:'',
+                statusResult:'',
                 startperformance:'',
                 target:'',
                 performance:'',
@@ -188,57 +156,59 @@ import {mapActions,mapState} from "vuex"
                 linebodyId:'',
                 statusList:[
                     {
-                        value: 'ready',
+                        value: 1,
                         label: '准备启动'
                     },
                     {
-                        value: 'running',
-                        label: '项目运行'
+                        value: 2,
+                        label: '实施运行'
                     },
                     {
-                        value: 'result',
+                        value: 3,
                         label: '成果跟踪'
                     },
                     {
-                        value: 'close',
+                        value: 4,
                         label: '项目关闭'
                     },
                    
                 ],
                 stageList:[
                      {
-                        value: 'problem',
+                        value: 'a',
                         label: '明确问题'
                     },
                     {
-                        value: 'now',
+                        value: 'b',
                         label: '把握现状'
                     },
                     {
-                        value: 'setgoal',
+                        value: 'c',
                         label: '设定目标'
                     },
                     {
-                        value: 'analysis',
+                        value: 'd',
                         label: '分析根因'
                     },
                     {
-                        value: 'plan',
+                        value: 'e',
                         label: '对策计划'
                     },
                     {
-                        value: 'countermeasures',
+                        value: 'f',
                         label: '对策落实'
                     },
                     {
-                        value: 'confirm',
+                        value: 'g',
                         label: '效果确认'
                     },
                     {
-                        value: 'consolidationResults',
+                        value: 'h',
                         label: '成果巩固'
                     },
-                ]
+                ],
+                statusId:'',
+                showLog:null
             }
 
         },
@@ -250,7 +220,8 @@ import {mapActions,mapState} from "vuex"
                 'updateItemResult',
                 'addObject',
                 'deleteObject',
-                'validarea'
+                'validarea',
+                'showImpItemhistoryRes'
 
 			])
 		},
@@ -262,23 +233,16 @@ import {mapActions,mapState} from "vuex"
                 'updateImpItemstatus',
                 'addObjectnowBylossid',
                 'deleteObjectnowBylossid',
-                'selectUserById'
+                'selectUserById',
+                'showImpItemhistory'
             ]),
-            ArrayBlank(arr){
-                for(var i = 0 ;i<arr.length;i++){
-                if(arr[i] == "" || typeof(arr[i]) == "undefined"){
-                        arr.splice(i,1);
-                        i= i-1;
-                }
-                }
-                return arr;
-            },
             cancel(){
 
             },
             confirm(){
+                let _this = this;
                 this.updateImpItemstatus({
-                    "lossId": sessionStorage.getItem("lossId"),
+                    "id": this.statusId,
                     "linebodyId": this.linebodyId,
                     "projectnumber": this.projectnumber,
                     "projectname":this.projectname,
@@ -291,8 +255,14 @@ import {mapActions,mapState} from "vuex"
                     "planendtime": this.planendtime,
                     "stage": this.stage,
                 })
-                console.log(this.status)
-                console.log(this.stage)
+                setTimeout(function(){
+                    
+                    _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
+                },10)
+                setTimeout(function(){
+                    _this.showImpItemhistory({linebodyId:_this.linebodyId})
+                   
+                },20)
             },
             arrIsContains(arr, obj) {
                 if(JSON.stringify(arr).indexOf(JSON.stringify(obj))!=-1){
@@ -305,33 +275,26 @@ import {mapActions,mapState} from "vuex"
                 let _this = this;
                 this.proListItem = this.$refs[obj.id][0].innerHTML
                 this.proListId = obj.id
-                console.log(this.proListItem)
-                console.log(this.proListId)
                    if(this.arrIsContains(_this.proList,obj)){
                     this.proList.push(obj)
                     this.$refs[obj.id][0].className = "pro_active"
-                    this.arrlength = true
                     }else{
                         console.log(1)
                     }
-                console.log(this.proList)
             },
             add_item(){
+                this.addObjId=[]
                 this.proList.forEach(item=> {
                     if(this.arrIsContains(this.proNowList,item)){
-                        this.proNowList.push(item)
                         this.addObjId.push(item.id)
                     }
                 }, this);
-                this.arrlength = false
-                console.log(this.proListId)
-                console.log(this.addObjId)
-                this.ArrayBlank(this.addObjId)
                 this.addObjectnowBylossid({
                     lossId:this.addObjId.join(","),
                     linebodyId:this.linebodyId
                 })
                 this.addObjId=[]
+                this.proList=[]
             },
             editpro(lossId){
                 this.detailFlag = true
@@ -339,42 +302,31 @@ import {mapActions,mapState} from "vuex"
                     lossId:lossId,
                     linebodyId:this.linebodyId
                 })
-                console.log(lossId);
-                sessionStorage.setItem("lossId",lossId)
             },
-            delpro(idx){
-                console.log(idx)
+            delpro(obj){
                 var _this= this
-                Ewin.confirm({ message: "确认要删除该项目吗？" }).on(function (e) {
+                Ewin.confirm({ message: "确认要删除该项目"+obj.name+"吗？" }).on(function (e) {
                     _this.proNowList.forEach((item,index)=> {
-                        if(item.id==idx){
+                        if(item.id==obj.id){
                             _this.proNowList.splice(index,1)
                             _this.proList.splice(index,1)
                             _this.deleteObjectnowBylossid({lossId:item.id,linebodyId: _this.linebodyId})
-                            _this.$refs[idx][0].className = ""
-
+                            _this.$refs[obj.id][0].className = ""
                         };
-                        console.log(_this.proNowList)
-                        console.log(_this.proList)
                     })
-
                 })
-
-            }
-
+            },
         },
         watch:{
            improList(newVal){
                let _this = this;
-                this.improList.forEach((item,index)=>{
+                newVal.forEach((item,index)=>{
                     item.data.forEach(option=>{
                         this.leftId.push(option.lossid)
                     })
                 })
-               console.log(this.leftId)
             },
             validarea(newVal) {
-                console.log(this.validarea);
                 let _this = this;
                 this.validareaList = []
                 this.validarea.forEach(item => {
@@ -388,38 +340,37 @@ import {mapActions,mapState} from "vuex"
                     _this.linebodyId=node.id.substring(1)
                     }
                 })
-                console.log(this.linebodyId);
                 setTimeout(function(){
                     _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
                 },10)
+                this.showImpItemhistory({linebodyId:this.linebodyId})
             },
-            nowline(){
+            nowline(newVal){
                 let _this = this;
                 this.proNowList=[]
-                if(this.nowline.length>0){
-                    this.nowline.forEach((item)=> {
+                if(newVal.length>0){
+                    newVal.forEach((item)=> {
                     if(!this.arrIsContains(this.leftId,item.losstier3Lossid)){
                         _this.$refs[item.losstier3Lossid][0].className = "pro_active"
                     }
-                    this.proNowList.push({id:item.losstier3Lossid,name:item.projectname})
-                    this.proList.push({id:item.losstier3Lossid,name:item.projectname})
+                    this.proNowList.push({id:item.losstier3Lossid,name:item.projectname,status:statusRes(item.status,this.statusResult)})
                     });
-                    console.log(this.proNowList)
                 }
-
+                
             },
-            itemstatus(){
-                if(this.itemstatus){
-                    this.projectnumber = this.itemstatus.projectnumber
-                    this.projectname = this.itemstatus.projectname
-                    this.losscategory = this.itemstatus.losscategory
-                    this.status = this.itemstatus.status
-                    this.startperformance = this.itemstatus.startperformance;
-                    this.target = this.itemstatus.target
-                    this.performance = this.itemstatus.performance
-                    this.objectstarttime = this.itemstatus.objectstarttime
-                    this.planendtime = this.itemstatus.planendtime
-                    this.stage = this.itemstatus.stage
+            itemstatus(newVal){
+                if(newVal){
+                    this.statusId = newVal.id
+                    this.projectnumber = newVal.projectnumber
+                    this.projectname = newVal.projectname
+                    this.losscategory = newVal.losscategory
+                    this.status = newVal.status
+                    this.startperformance = newVal.startperformance;
+                    this.target = newVal.target
+                    this.performance = newVal.performance
+                    this.objectstarttime = newVal.objectstarttime
+                    this.planendtime = newVal.planendtime
+                    this.stage = newVal.stage
                 }else{
                     this.projectnumber = ''
                     this.projectname = ''
@@ -432,27 +383,97 @@ import {mapActions,mapState} from "vuex"
                     this.planendtime = ''
                     this.stage = ''
                 }
+            },
+            deleteObject(newVal){
+                if(newVal.status==="0"){
+                    this.$Message.success("删除成功")
+                }else{
+                    this.$Message.error("删除失败，请稍后再试") 
+                }
+            },
+            status(newVal){
+                if(newVal!=2){
+                    this.stage=""
+                }
+            },
+            showImpItemhistoryRes(newVal){
+                if(newVal.status==="0"){
+                    let arr = []
+                    newVal.data.forEach(item => {
+                        let stageObj = {};
+                        let statusObj = {};
+                        let statusResult = null
+                        if (item.beforstatus == 2 || item.status == 2) {
+                            if (item.beforstatus == item.status) {
+                                stageObj["message"] = "项目阶段"
+                                stageObj["before"] = stageRes(item.beforstage, statusResult)
+                                stageObj["now"] = stageRes(item.stage, statusResult)
+                                stageObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
+                                stageObj["time"] = new Date(item.createdAt).format("hh:mm")
+                                arr.push(stageObj)
+                            } else {
+                                statusObj["message"] = "项目状态"
+                                statusObj["before"] = statusRes(item.beforstatus, statusResult)
+                                statusObj["now"] = statusRes(item.status, statusResult)
+                                statusObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
+                                statusObj["time"] = new Date(item.createdAt).format("hh:mm")
+                                arr.push(statusObj)
+                                stageObj["message"] = "项目阶段"
+                                stageObj["before"] = stageRes(item.beforstage, statusResult)
+                                stageObj["now"] = stageRes(item.stage, statusResult)
+                                stageObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
+                                stageObj["time"] = new Date(item.createdAt).format("hh:mm")
+                                arr.push(stageObj)
+                            }
+                        }
+                        if (item.beforstatus != 2 && item.status != 2) {
+                            statusObj["message"] = "项目状态"
+                            statusObj["before"] = statusRes(item.beforstatus, statusResult)
+                            statusObj["now"] = statusRes(item.status, statusResult)
+                            statusObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
+                            statusObj["time"] = new Date(item.createdAt).format("hh:mm")
+                            arr.push(statusObj)
+                        }
 
+                    })
+                    console.log(arr)
+                    this.showLog= arr
+                }
 
+            },
+            addObject(newVal){
+                let _this = this;
+                if(newVal.status==="0"){
+                    newVal.data.forEach(item => {
+                        let obj = {}
+                        obj["id"] = item.losstier3Lossid
+                        obj["name"] = item.projectname
+                        obj["status"] = statusRes(item.status,this.statusResult)
+                        this.proNowList.push(obj)
+                    })
+                }else if(newVal.status==="101"){
+                    this.$Message.error("项目已存在请勿重复添加")
+                }else{
+                    this.$Message.error("添加失败请稍后再试")
+                }
             }
 
 
 
         },
         created(){
+           
         },
         mounted(){
             if (sessionStorage.getItem("userid")) {
                 this.selectUserById({
                     userid: sessionStorage.getItem("userid")
                 })
-
+                this.showImpItempool({userid: sessionStorage.getItem("userid")})
+                
             } else {
                 console.log(this.$route);
             }
-            let _this = this
-            this.showImpItempool({userid: sessionStorage.getItem("userid")})
-
         }
 	}
 </script>

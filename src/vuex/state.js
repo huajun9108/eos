@@ -62,5 +62,6 @@ export default {
     updateProductByIdRes: '',
     deleteProductByIdRes: '',
     selectProductnameByIdRes: '',
-    updateProductnameByIdRes: ''
+    updateProductnameByIdRes: '',
+    showImpItemhistoryRes: null
 }

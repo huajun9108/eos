@@ -1,5 +1,5 @@
 //接收store 发送来的action  commit
-
+import { stageRes, statusRes } from "../assets/js/tip"
 export default {
     adminLogin(state, json) {
         state.loginResult = json
@@ -96,8 +96,7 @@ export default {
         state.nowline = json
     },
     showImpItemstatus(state, json) {
-        state.itemstatus = json[0]
-        console.log(state.itemstatus)
+        state.itemstatus = json
     },
     updateImpItemstatus(state, json) {
         state.updateItemResult = json
@@ -166,12 +165,54 @@ export default {
         state.updateProductByIdRes = json
     },
     deleteProductById(state, json) {
-      state.deleteProductByIdRes = json
+        state.deleteProductByIdRes = json
     },
     selectProductnameById(state, json) {
-      state.selectProductnameByIdRes = json
+        state.selectProductnameByIdRes = json
     },
     updateProductnameById(state, json) {
-      state.updateProductnameByIdRes = json
+        state.updateProductnameByIdRes = json
+    },
+    showImpItemhistory(state, json) {
+
+        // json.data.forEach(item => {
+        //     let stageObj = {};
+        //     let statusObj = {};
+        //     let statusResult = null
+        //     if (item.beforstatus == 2 || item.status == 2) {
+        //         if (item.beforstatus == item.status) {
+        //             stageObj["message"] = "项目阶段"
+        //             stageObj["before"] = stageRes(item.beforstage, statusResult)
+        //             stageObj["now"] = stageRes(item.stage, statusResult)
+        //             stageObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
+        //             stageObj["time"] = new Date(item.createdAt).format("hh:mm")
+        //             arr.push(stageObj)
+        //         } else {
+        //             statusObj["message"] = "项目状态"
+        //             statusObj["before"] = statusRes(item.beforstatus, statusResult)
+        //             statusObj["now"] = statusRes(item.status, statusResult)
+        //             statusObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
+        //             statusObj["time"] = new Date(item.createdAt).format("hh:mm")
+        //             arr.push(statusObj)
+        //             stageObj["message"] = "项目阶段"
+        //             stageObj["before"] = stageRes(item.beforstage, statusResult)
+        //             stageObj["now"] = stageRes(item.stage, statusResult)
+        //             stageObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
+        //             stageObj["time"] = new Date(item.createdAt).format("hh:mm")
+        //             arr.push(stageObj)
+        //         }
+        //     }
+        //     if (item.beforstatus != 2 && item.status != 2) {
+        //         statusObj["message"] = "项目状态"
+        //         statusObj["before"] = statusRes(item.beforstatus, statusResult)
+        //         statusObj["now"] = statusRes(item.status, statusResult)
+        //         statusObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
+        //         statusObj["time"] = new Date(item.createdAt).format("hh:mm")
+        //         arr.push(statusObj)
+        //     }
+
+        // })
+        // console.log(arr)
+        state.showImpItemhistoryRes = json
     }
 }

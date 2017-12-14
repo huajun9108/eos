@@ -1,6 +1,6 @@
 <template>
     <div class="improvement user_common ">
-        <div class="improve_content  user_maincontent">
+        <div class="improve_content  user_maincontent clearfix">
             <div class="summary_top">
                 <router-link :to="{name:'project'}">
                     <span>Project</span>

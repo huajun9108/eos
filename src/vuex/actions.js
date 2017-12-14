@@ -603,10 +603,19 @@ export default {
             "id": obj.id,
             "price": obj.price
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("updateProductnameById", json)
+        })
+    },
+    showImpItemhistory({ commit }, obj) {
+        axios.post("/impobject/showImpItemhistory", qs.stringify({
+            "linebodyId": obj.linebodyId
+        })).then(res => {
+            console.log(res.data)
+            return res.data
+        }).then(json => {
+            commit("showImpItemhistory", json)
         })
     },
     selectLinebodyProductsByLinebodyId({ commit }, obj) {

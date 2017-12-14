@@ -63,5 +63,9 @@ export default {
     deleteProductByIdRes: '',
     selectProductnameByIdRes: '',
     updateProductnameByIdRes: '',
-    showImpItemhistoryRes: null
+    showImpItemhistoryRes: null,
+    selectLinebodyProductsByLinebodyIdRes: '',
+    addLinebodyProductByLinebodyIdRes: '',
+    deleteLinebodyProductByIdRes: '',
+    updateLinebodyProductByIdRes: ''
 }

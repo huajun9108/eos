@@ -174,45 +174,18 @@ export default {
         state.updateProductnameByIdRes = json
     },
     showImpItemhistory(state, json) {
-
-        // json.data.forEach(item => {
-        //     let stageObj = {};
-        //     let statusObj = {};
-        //     let statusResult = null
-        //     if (item.beforstatus == 2 || item.status == 2) {
-        //         if (item.beforstatus == item.status) {
-        //             stageObj["message"] = "项目阶段"
-        //             stageObj["before"] = stageRes(item.beforstage, statusResult)
-        //             stageObj["now"] = stageRes(item.stage, statusResult)
-        //             stageObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
-        //             stageObj["time"] = new Date(item.createdAt).format("hh:mm")
-        //             arr.push(stageObj)
-        //         } else {
-        //             statusObj["message"] = "项目状态"
-        //             statusObj["before"] = statusRes(item.beforstatus, statusResult)
-        //             statusObj["now"] = statusRes(item.status, statusResult)
-        //             statusObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
-        //             statusObj["time"] = new Date(item.createdAt).format("hh:mm")
-        //             arr.push(statusObj)
-        //             stageObj["message"] = "项目阶段"
-        //             stageObj["before"] = stageRes(item.beforstage, statusResult)
-        //             stageObj["now"] = stageRes(item.stage, statusResult)
-        //             stageObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
-        //             stageObj["time"] = new Date(item.createdAt).format("hh:mm")
-        //             arr.push(stageObj)
-        //         }
-        //     }
-        //     if (item.beforstatus != 2 && item.status != 2) {
-        //         statusObj["message"] = "项目状态"
-        //         statusObj["before"] = statusRes(item.beforstatus, statusResult)
-        //         statusObj["now"] = statusRes(item.status, statusResult)
-        //         statusObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
-        //         statusObj["time"] = new Date(item.createdAt).format("hh:mm")
-        //         arr.push(statusObj)
-        //     }
-
-        // })
-        // console.log(arr)
         state.showImpItemhistoryRes = json
+    },
+    selectLinebodyProductsByLinebodyId(state, json) {
+        state.selectLinebodyProductsByLinebodyIdRes = json
+    },
+    addLinebodyProductByLinebodyId(state, json) {
+        state.addLinebodyProductByLinebodyIdRes = json
+    },
+    deleteLinebodyProductById(state, json) {
+        state.deleteLinebodyProductByIdRes = json
+    },
+    updateLinebodyProductById(state, json) {
+        state.updateLinebodyProductByIdRes = json
     }
 }

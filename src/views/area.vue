@@ -87,7 +87,7 @@ export default {
       "updateAreaRes",
       "deleteAreaRes",
       "lineBody",
-      "updateLinebodyWeight"
+      "updateLinebodyWeight",
     ])
   },
   methods: {
@@ -97,7 +97,8 @@ export default {
       "updateArea",
       "deleteArea",
       "selectLinebodyById",
-      "updateLinebodyWeightById"
+      "updateLinebodyWeightById",
+      "selectLinebodyProductsByLinebodyId"
     ]),
     addHoverDom: function(treeId, treeNode) {
       if (treeNode.level >= 3) return;
@@ -179,6 +180,7 @@ export default {
       if(reg.test(this.nodeId)){
         // this.picked="1"
         this.selectLinebodyById({id:this.nodeId})
+        this.selectLinebodyProductsByLinebodyId({linebodyId: this.nodeId.substring(1)})
         // console.log(this.picked)
         this.removeEvent(false,_this.tip)
       }else{
@@ -282,7 +284,7 @@ export default {
       this.$refs[item.name][0].disabled = true
       this.$refs[item.value][0].addEventListener("click",_this.tip)
     })
-  }  
+  }
 }
 </script>
 <style lang="scss" scoped>

@@ -652,5 +652,49 @@ export default {
       }).then(json => {
         commit("updateProductnameById", json)
       })
-    }
+    },
+    selectLinebodyProductsByLinebodyId({ commit }, obj) {
+      axios.post("/areaAllSet/selectLinebodyProductsByLinebodyId", qs.stringify({
+        "linebodyId": obj.linebodyId
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("selectLinebodyProductsByLinebodyId", json)
+      })
+    },
+    addLinebodyProductByLinebodyId({ commit }, obj) {
+      axios.post("/areaAllSet/addLinebodyProductByLinebodyId", qs.stringify({
+        "linebodyId": obj.linebodyId,
+        "productId": obj.productId,
+        "cTime": obj.cTime
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("addLinebodyProductByLinebodyId", json)
+      })
+    },
+    deleteLinebodyProductById({ commit }, obj) {
+      axios.post("/areaAllSet/deleteLinebodyProductById", qs.stringify({
+        "id": obj.id
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("deleteLinebodyProductById", json)
+      })
+    },
+    updateLinebodyProductById({ commit }, obj) {
+      axios.post("/areaAllSet/updateLinebodyProductById", qs.stringify({
+        "id": obj.id,
+        "productId": obj.productId,
+        "cTime": obj.cTime
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("updateLinebodyProductById", json)
+      })
+    },
 }

@@ -173,5 +173,17 @@ export default {
     },
     updateProductnameById(state, json) {
       state.updateProductnameByIdRes = json
+    },
+    selectLinebodyProductsByLinebodyId(state, json) {
+      state.selectLinebodyProductsByLinebodyIdRes = json
+    },
+    addLinebodyProductByLinebodyId(state, json) {
+      state.addLinebodyProductByLinebodyIdRes = json
+    },
+    deleteLinebodyProductById(state, json) {
+      state.deleteLinebodyProductByIdRes = json
+    },
+    updateLinebodyProductById(state, json) {
+      state.updateLinebodyProductByIdRes = json
     }
 }

@@ -112,11 +112,19 @@
 																		width: P(60);
 																		line-height: P(24);
 																		text-align: center;
+																		display: inline-block;
 																	}
 	                                .icon-delete_2 {
 	                                    color: #b0b0b0;
+																			line-height: P(70);
+																			display: inline-block;
+
 	                                }
 	                            }
+															.target_set:last-child{
+																display: inline-block;
+																float: right;
+															}
 	                        }
 	                    }
 	                }

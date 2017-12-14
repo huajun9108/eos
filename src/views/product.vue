@@ -14,8 +14,11 @@
           <span>CT</span>
           <Input :disabled="productFlag" size="small" v-model="item.value" class="target_con" type="number" :ref="'input'+idx"></Input>
           <span class="seconds">秒</span>
-          <span class="completeBtn" @click="updateExistingProductsInLineBody(idx)">完成</span>
-          <span class="icon-delete_2" @click="deleteExistingProductsInLineBody(idx)"></span>
+
+        </li>
+        <li class="target_set">
+          <span class="completeBtn text-right" @click="updateExistingProductsInLineBody(idx)">完成</span>
+          <span class="icon-delete_2 text-right" @click="deleteExistingProductsInLineBody(idx)"></span>
         </li>
       </ul>
       <ul class="target_setting clearfix" v-for="(item,idx) in this.modelList[0].data" :key="idx">
@@ -27,13 +30,12 @@
           <span>CT</span>
           <Input size="small" class="target_con" :value="'datainput'+idx" type="number" :ref="'datainput'+idx"></Input>
           <span class="seconds">秒</span>
+        </li>
+        <li class="target_set">
           <span class="completeBtn" @click="addOrUpdateNewProductsInLineBody(idx)">完成</span>
           <span class="icon-delete_2" @click="deleteNewProductsInLineBody(idx)"></span>
         </li>
       </ul>
-    </div>
-    <div class="area_button text-right">
-      <span class="button_confirm button" @click="confirm">确认</span>
     </div>
   </div>
 </div>
@@ -61,16 +63,12 @@ export default {
       addProductCtime: null,
       existProductIndex: null,
       newProductIndex: null
-      // model1:'',
-      // model2:''
     }
 
   },
 
   computed: {
     ...mapState([
-      // "modelList",
-      // "data",
       "selectLinebodyProductsByLinebodyIdRes",
       "addLinebodyProductByLinebodyIdRes",
       "deleteLinebodyProductByIdRes",
@@ -79,6 +77,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      "selectLinebodyProductsByLinebodyId",
       "addLinebodyProductByLinebodyId",
       "deleteLinebodyProductById",
       "updateLinebodyProductById"
@@ -126,23 +125,34 @@ export default {
       }
     },
     deleteExistingProductsInLineBody(idx) {
-      const id = this.modelList[0].result[idx].id;
-      console.log(id);
-      if(id) {
-        this.deleteLinebodyProductById({
-          "id": id
-        })
-        this.modelList[0].result.splice(idx, idx + 1);
-      }
+      var _this = this;
+      Ewin.confirm({ message: "确认删除吗？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+          const id = _this.modelList[0].result[idx].id;
+          if(id) {
+            _this.deleteLinebodyProductById({
+              "id": id
+            });
+            _this.modelList[0].result.splice(idx, idx + 1);
+          }
+      });
     },
     deleteNewProductsInLineBody(idx) {
-      const id = this.modelList[0].data[idx].id;
-      if(id) {
-        this.deleteLinebodyProductById({
-          "id": id
-        });
-      }
-      this.modelList[0].data.splice(idx, idx + 1);
+      var _this = this;
+      Ewin.confirm({ message: "确认删除吗？" }).on(function (e) {
+          if (!e) {
+              return;
+          }
+          const id = _this.modelList[0].data[idx].id;
+          if(id) {
+            _this.deleteLinebodyProductById({
+              "id": id
+            });
+          }
+          _this.modelList[0].data.splice(idx, idx + 1);
+      });
     },
     empty(val) {
       var reg = /^\s+$/gi;
@@ -153,37 +163,6 @@ export default {
     addProduct() {
       this.modelList[0].data.push({})
       console.log(this.modelList)
-    },
-    confirm() {
-      this.modelList[0].result.forEach((item, idx) => {
-        console.log(item)
-        console.log(idx)
-      })
-      this.modelList[0].data.forEach((item, idx) => {
-        console.log(this.$refs["data" + idx][0].selected)
-        console.log(this.$refs["datainput" + idx][0].currentValue)
-      })
-    },
-    cancel() {
-
-    },
-    handleChange(value, selectedData) {
-      console.log(1);
-      console.log(value)
-      console.log(idx)
-      // console.log(selectedData)
-      let obj = {}
-      console.log(selectedData.map(o => o.label).join(', '));
-      this.modelList[0].result.forEach((item, idx) => {
-        console.log(item)
-        console.log(idx)
-      })
-      // obj={
-      //     label1:this.$refs["result"+idx][0].value,
-      //     label2:this.$refs["input"+idx][0].value
-      // };
-      // this.modelList[0].result.push(obj)
-      console.log(obj)
     },
   },
   watch: {
@@ -208,36 +187,41 @@ export default {
 
     },
     selectLinebodyProductsByLinebodyIdRes(newVal) {
-      console.log("selectLinebodyProductsByLinebodyId:");
-      // console.log(newVal);
       if (newVal.status === "0") {
         this.modelList = newVal.data.modelList;
         this.data = newVal.data.data;
-        // console.log(this.modelList);
-        // console.log(this.data);
+      } else {
+        this.$Message.error("请求失败");
       }
     },
     addLinebodyProductByLinebodyIdRes(newVal) {
-      console.log("addLinebodyProductByLinebodyIdRes:")
       if(newVal.status === "0") {
+        this.$Message.success("添加成功");
         this.modelList[0].data[this.newProductIndex].id = newVal.data;
         this.modelList[0].data[this.newProductIndex].name = this.addProductIdList;
         this.modelList[0].data[this.newProductIndex].value = this.addProductCtime;
-        console.log(this.modelList);
+      } else {
+        this.$Message.error("添加失败");
+        this.selectLinebodyProductsByLinebodyId({linebodyId: this.nodeId.substring(1)});
       }
       this.addProductIdList = [];
       this.addProductCtime = null;
       this.newProductIndex = null;
     },
     deleteLinebodyProductByIdRes(newVal) {
-      console.log(newVal);
       if(newVal.status === "0") {
         this.$Message.success("删除成功");
+      } else {
+        this.$Message.error("删除失败");
+        this.selectLinebodyProductsByLinebodyId({linebodyId: this.nodeId.substring(1)});
       }
     },
     updateLinebodyProductByIdRes(newVal) {
       if(newVal.status === "0") {
         this.$Message.success("修改成功");
+      } else {
+        this.$Message.error("修改失败");
+        this.selectLinebodyProductsByLinebodyId({linebodyId: this.nodeId.substring(1)});
       }
     }
   },

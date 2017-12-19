@@ -5,8 +5,8 @@
                 <span :class="isShow?'iconfont icon-drop-down2 rotate':'iconfont icon-drop-down2'"></span>
                 <span class="areaAndShift">区域</span>
             </div>
-            <v-timearea v-show="isShow"></v-timearea>
-            <v-status></v-status>
+            <v-timearea v-show="isShow" @clear="clearChartsData"></v-timearea>
+            <v-status :project-status="projectStatusList"></v-status>
         </div>
     </div>
 </template>
@@ -21,6 +21,7 @@
         },
         data(){
             return{
+                projectStatusList:null,
                 flag:true,
                 isShow:false,
             }
@@ -33,8 +34,11 @@
             ...mapActions([
                 
             ]),
-            showlDialog(data){
+            showlDialog(){
                 this.isShow = !this.isShow 
+            },
+            clearChartsData() {
+                this.projectStatusList = [];
             },
         },
         watch:{

@@ -32,7 +32,7 @@
     </div>
     <div class="project_detail project_item">
         <span class="pro_title">详细信息</span>
-        <div class="pro_itemdetail" >
+        <div class="pro_itemdetail" v-show="detailFlag">
             <ul class="item_det" >
                 <li class="item_li">
                     <span class="item_title">改进项目编号</span>
@@ -43,7 +43,7 @@
                     <input v-model= "projectname" class="item_detail" />
                 </li>
                 <li class="item_li">
-                    <span class="item_title">针对的损失类别</span>
+                    <span class="item_title">损失类别</span>
                     <input v-model= "losscategory" class="item_detail" />
                 </li>
                 <li class="item_li">
@@ -77,7 +77,7 @@
                     </DatePicker>
                 </li>
                 <li class="item_li">
-                    <span class="item_title">项目预期结束日期</span>
+                    <span class="item_title">预期结束日期</span>
                     <DatePicker size="small" width="90%" v-model="planendtime" :options="optionsStart" placement="bottom-end"
                     class="item_detail" placeholder="Select date" @on-change="startChange" @on-clear="clearCharts">
                     </DatePicker>
@@ -135,7 +135,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
                 pro_modal:false,
                 detailFlag:false,
                 proList:[],
-                isChoose:false,
                 proListItem:"",
                 proListId:"",
                 leftId:[],
@@ -241,28 +240,34 @@ import { stageRes, statusRes } from "../assets/js/tip"
             },
             confirm(){
                 let _this = this;
-                this.updateImpItemstatus({
-                    "id": this.statusId,
-                    "linebodyId": this.linebodyId,
-                    "projectnumber": this.projectnumber,
-                    "projectname":this.projectname,
-                    "losscategory": this.losscategory,
-                    "status": this.status,
-                    "startperformance": this.startperformance,
-                    "target": this.target,
-                    "performance": this.performance,
-                    "objectstarttime": this.objectstarttime,
-                    "planendtime": this.planendtime,
-                    "stage": this.stage,
-                })
-                setTimeout(function(){
+                if(this.validateData()) {
+                    console.log(1)
+                    _this.updateImpItemstatus({
+                        "id": _this.statusId,
+                        "linebodyId": _this.linebodyId,
+                        "projectnumber": _this.projectnumber,
+                        "projectname":_this.projectname,
+                        "losscategory": _this.losscategory,
+                        "status": _this.status,
+                        "startperformance": _this.startperformance,
+                        "target": _this.target,
+                        "performance": _this.performance,
+                        "objectstarttime": _this.objectstarttime,
+                        "planendtime": _this.planendtime,
+                        "stage": _this.stage,
+                    })
+                    setTimeout(function(){
+                        
+                        _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
+                    },10)
+                    setTimeout(function(){
+                        _this.showImpItemhistory({linebodyId:_this.linebodyId})
                     
-                    _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
-                },10)
-                setTimeout(function(){
-                    _this.showImpItemhistory({linebodyId:_this.linebodyId})
-                   
-                },20)
+                    },20)
+                }else{
+                    console.log(2)
+                }
+                
             },
             arrIsContains(arr, obj) {
                 if(JSON.stringify(arr).indexOf(JSON.stringify(obj))!=-1){
@@ -306,7 +311,11 @@ import { stageRes, statusRes } from "../assets/js/tip"
             delpro(obj){
                 var _this= this
                 Ewin.confirm({ message: "确认要删除该项目"+obj.name+"吗？" }).on(function (e) {
+                    if (!e) {
+                        return;
+                    }
                     _this.proNowList.forEach((item,index)=> {
+
                         if(item.id==obj.id){
                             _this.proNowList.splice(index,1)
                             _this.proList.splice(index,1)
@@ -316,6 +325,50 @@ import { stageRes, statusRes } from "../assets/js/tip"
                     })
                 })
             },
+            empty(val) {
+                let reg = /^\s+$/gi;
+                if (reg.test(val)||val===null||val===''||val===undefined||val.length==0) {
+                    return true;
+                }
+            },
+            validateData() {
+                if(this.status==2){
+                    if (
+                    this.empty(this.projectnumber) ||
+                    this.empty(this.projectname) ||
+                    this.empty(this.losscategory) ||
+                    this.empty(this.status) ||
+                    this.empty(this.stage) ||
+                    this.empty(this.startperformance) ||
+                    this.empty(this.target) ||
+                    this.empty(this.performance) ||
+                    this.empty(this.objectstarttime) ||
+                    this.empty(this.planendtime) 
+                    ) {
+                        console.log("kong")
+                        this.$Message.error('线体相关信息不能为空');
+                        return false;
+                    }
+                     
+                }else if(this.status!=2){
+                    if (
+                    this.empty(this.projectnumber) ||
+                    this.empty(this.projectname) ||
+                    this.empty(this.losscategory) ||
+                    this.empty(this.status) ||
+                    this.empty(this.startperformance) ||
+                    this.empty(this.target) ||
+                    this.empty(this.performance) ||
+                    this.empty(this.objectstarttime) ||
+                    this.empty(this.planendtime) 
+                    ) {
+                        console.log("kong")
+                        this.$Message.error('线体相关信息不能为空');
+                        return false;
+                    }
+                }
+                return true;   
+            }
         },
         watch:{
            improList(newVal){

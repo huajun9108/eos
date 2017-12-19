@@ -46,27 +46,22 @@
     methods: {
       ...mapActions([
       ]),
-      dd(s) {
-      },
       clearChartsData() {
         this.lossmappingDataList = [];
       },
-      showlDialog(data){
+      showlDialog(){
         this.isShow = !this.isShow
       },
       initCharts: function() {
-        console.log(this.lossmappingDataList);
         for(let i = 0; i < this.chartList.length; i++) {
           if (this.chartList[i] != null && this.chartList[i] != "" && this.chartList[i] != undefined){
             this.chartList[i].dispose();
           }
         }
         if(this.lossmappingDataList.status === "1"){
-          console.log("参数错误");
           return;
         }
         if(!Array.isArray(this.lossmappingDataList.data)){
-          console.log("数据有误");
           return;
         }
         this.chartList = [];

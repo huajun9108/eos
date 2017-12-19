@@ -25,7 +25,7 @@ export default {
        }
    },
    methods:{
-        showlDialog(data){
+        showlDialog(){
             this.isShow = !this.isShow 
         },
        initCharts(){
@@ -36,7 +36,6 @@ export default {
                 },
                 legend: {
                     data:[
-                        {name:'完美'}, 
                         {name:'实际'}, 
                         {name:'预测'}
                     ],
@@ -48,11 +47,6 @@ export default {
                     bottom: '5%',
                     containLabel: true
                 },
-                // toolbox: {
-                //     feature: {
-                //         saveAsImage: {}
-                //     }
-                // },
                 xAxis: {
                     type: 'category',
                     boundaryGap : false,
@@ -63,26 +57,13 @@ export default {
                     axisLabel: {  
                         show: true,  
                         interval: 'auto',  
-                        formatter: '{value} %'  
+                       
                     }, 
                 },
                 series: [
-                    
-                    {
-                        name:'完美',
-                        type:'line',
-                        step: 'start',
-                        data:[100, 100, 100, 100, 100, 100, 100],
-                        itemStyle:{
-                            normal:{
-                                color:"#bb6e6e"
-                            }
-                        }
-                    },
                     {
                         name:'实际',
                         type:'line',
-                        step: 'middle',
                         data:[10, 20, 25, 15, 40, 60, 30],
                         itemStyle:{
                             normal:{
@@ -93,7 +74,6 @@ export default {
                     {
                         name:'预测',
                         type:'line',
-                        step: 'end',
                         data:[15,30, 35, 20, 45, 65,55],
                         itemStyle:{
                             normal:{

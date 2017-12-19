@@ -50,8 +50,6 @@ export default {
   data() {
     return {
       productFlag: true,
-
-      result: [],
       modelList: [{
         "result": [],
         "data": []
@@ -82,12 +80,12 @@ export default {
       "updateLinebodyProductById"
     ]),
     confirmProducableProducts() {
+      const len = this.selectedProductValue.length;
+      const addOrUpdateProductId = this.selectedProductValue[len - 1];
       if(!(addOrUpdateProductId && this.ctValue)) {
         this.$Message.error("产品信息不完善");
         return;
       }
-      const len = this.selectedProductValue.length;
-      const addOrUpdateProductId = this.selectedProductValue[len - 1];
       if(this.addProducableProductFlag) {
         const linebodyId = this.nodeId.substring(1);
         this.addLinebodyProductByLinebodyId({

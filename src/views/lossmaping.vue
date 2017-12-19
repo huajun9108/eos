@@ -55,6 +55,7 @@
         this.isShow = !this.isShow
       },
       initCharts: function() {
+        console.log("initCharts");
         console.log(this.lossmappingDataList);
         for(let i = 0; i < this.chartList.length; i++) {
           if (this.chartList[i] != null && this.chartList[i] != "" && this.chartList[i] != undefined){
@@ -121,10 +122,6 @@
     },
     mounted() {
       let _this = this
-      setTimeout(function() {
-        _this.initCharts();
-      }, 800);
-
     }
   }
   </script>

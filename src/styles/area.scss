@@ -72,7 +72,7 @@
 	            .area_top:last-child {
 	                flex: 1;
 	                border-bottom: 0;
-	                .product {
+	                div.target.product {
 	                    width: 100%;
 	                    height: 100%;
 	                    .target_box {
@@ -99,10 +99,24 @@
 	                                height: P(70);
 	                                .product_con {
 	                                    width: 70%;
+																			.ivu-input {
+																				transition: border .2s ease-in-out,background .2s ease-in-out,box-shadow .2s ease-in-out;
+																			},
+																			.ivu-input[disabled], fieldset[disabled] .ivu-input {
+																				background-color: #fff;
+																				color: #495060;
+																				cursor: text;
+																			}
+																			.ivu-icon-arrow-down-b:before {
+																				display: none;
+																			}
 	                                }
 	                            }
-	                            .target_set {
+	                            li.target_set.product_set {
+																  padding: 0;
+																	// margin-right: P(39);
 	                                font-size: P(16);
+																	// width: P(270);
 	                                .seconds {
 	                                    color: #b0b0b0;
 	                                }
@@ -114,15 +128,18 @@
 																		text-align: center;
 																		display: inline-block;
 																	}
-	                                .icon-delete_2 {
+	                                .icon-edit, .icon-delete_2 {
 	                                    color: #b0b0b0;
 																			line-height: P(70);
 																			display: inline-block;
-
 	                                }
+																	// .icon-delete_2 {
+																	// 	margin-left: P(50);
+																	// }
 	                            }
 															.target_set:last-child{
 																display: inline-block;
+																// text-align: right;
 																float: right;
 															}
 	                        }

@@ -93,7 +93,6 @@
                 </ul>
             </div>
         </div>
-        </div>
     </div> 
 </template>
 <script>
@@ -109,18 +108,15 @@ export default {
             statusData: null,
             stageData: null,
             time:GetDateStr(-1)+ " 23:59:59",
-            validareaList:[],
-            lineBodystr:null,
-            lineBodys:[]
         };
     },
     computed: {
         ...mapState([
             "projectStatus",
-            "validarea"])
+        ])
     },
     methods: {
-       ...mapActions(["selectProjectStateByTimeAndLinebodyIds"]),
+       ...mapActions([]),
        clearData(){
             this.statusData=null
             this.projectNumber = "无"
@@ -142,10 +138,9 @@ export default {
     },
     watch: {
         projectStatus(newVal){
+            console.log(newVal)
             if(newVal.status==="0"){
                 if(newVal.data){
-                    sessionStorage.setItem("projectStatus",JSON.stringify(newVal))
-                    console.log(sessionStorage.getItem("projectStatus"));
                     this.statusData = newVal.data.status
                     this.projectNumber = newVal.data.statusOther.projectNumber
                     this.beganNumber = newVal.data.statusOther.beganNumber
@@ -170,28 +165,6 @@ export default {
             }
             
         },
-        validarea(newVal) {
-            const _this = this;
-            this.validareaList = [];
-            this.validarea.forEach(item => {
-                if (item.checked) {
-                    this.validareaList.push(item);
-                }
-            });
-            _this.lineBodys = [];
-            _this.lineBodystr = '';
-            this.validareaList.forEach(function(node) {
-                let reg = /^l/g;
-                if (reg.test(node.id)) {
-                    _this.lineBodys.push(node.id.substring(1));
-                }
-            });
-            _this.lineBodystr = _this.lineBodys.join(",");
-            this.selectProjectStateByTimeAndLinebodyIds({
-                linebodyIds: this.lineBodystr,
-                time: this.time,
-            })
-        }
 
     },
     created() {

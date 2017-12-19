@@ -24,10 +24,10 @@
         </ul>
       </div>
       <div class="area_top">
-        <v-target :nodeId="nodeId"></v-target>
+        <v-target :node-id="nodeId"></v-target>
       </div>
       <div class="area_top">
-        <v-product :nodeId="nodeId"></v-product>
+        <v-product :node-id="nodeId"></v-product>
       </div>
     </div>
   </div>

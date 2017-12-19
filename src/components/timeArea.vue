@@ -83,7 +83,6 @@ export default {
             time: GetDateStr(-1) + " 23:59:59",
             start: null,
             end: null,
-            hello: "timeArea"
         }
     },
     methods: {
@@ -105,14 +104,16 @@ export default {
                 }
             });
             _this.lineBodystr = _this.lineBodys.join(",");
+             
+            if (_this.lineBodys.length <= 0) {
+                this.clearCharts();
+                return;
+            }
             if(this.routeIsroute("summary")){
                 _this.selectProjectStateByTimeAndLinebodyIds({
                 linebodyIds: _this.lineBodystr,
                 time:this.time,
                 });
-            }
-            if (_this.lineBodys.length <= 0) {
-                this.clearCharts();
                 return;
             }
             if(!this.startTime||!this.endTime)return
@@ -152,11 +153,14 @@ export default {
             }
         },
         clearCharts() {
-          this.$emit('clear');
+            console.log(1)
+            this.projectStatusList = []
+            console.log(this.projectStatusList)
+            this.$emit('clear',this.projectStatusList);
         },
         routeIsroute(route){
             let reg = this.$route.path.split("/")[2];
-            if (reg == route) {
+            if (reg === route) {
                 return true;
             } else {
                 return false;
@@ -166,7 +170,7 @@ export default {
     computed: {
         ...mapState([
             "validarea",
-            "lossmappingLinebodyAll"
+            "projectStatusList"
         ])
     },
     watch: {
@@ -192,10 +196,18 @@ export default {
                 this.clearCharts();
                 return;
             }
+            if(this.routeIsroute("summary")){
+                _this.selectProjectStateByTimeAndLinebodyIds({
+                linebodyIds: _this.lineBodystr,
+                time:this.time,
+                });
+                return;
+            }
             if(!this.startTime||!this.endTime)return
             this.start = new Date(this.startTime.format("yyyy-MM-dd") +" 00:00:00");
             this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
             this.lossmaping()
+            
         }
     },
     mounted() {

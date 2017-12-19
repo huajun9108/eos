@@ -13,13 +13,13 @@
                         <tr>
                             <td class="firstCol" width="10%">OEE</td>
                             <td id="toee" class="secordCol" width="60%">
-                                <!-- <chart
+                                <chart
                                 :_id="'oee'"
                                 :_titleText="'访问量统计'"
                                 :_xText="'类别'"
                                 :_yText="'总访问量'"
-                                :_chartData="chartDataoee"
-                                :_type="'Candlestick'"></chart> -->
+                                :_chartData="chartData"
+                                :_type="'Line'"></chart>
                             </td>
                             <td width="30%" class="text-left item_td">
                                 <div class="item_table item_top">
@@ -122,7 +122,7 @@ export default {
         upBorderColor :'#3670be',
         downColor : '#f3d3a1',
         downBorderColor :'#f3d3a1',
-        chartData:[["类别1",10],["类别2",20]],
+        chartData:[["2013/1/24","10","30"],["2013/1/25","20","40"]],
         chartDataoee :[
             {
                 data0:[
@@ -152,7 +152,7 @@ export default {
        }
    },
    methods:{
-        showlDialog(data){
+        showlDialog(){
             this.isShow = !this.isShow 
         },
       

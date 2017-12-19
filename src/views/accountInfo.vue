@@ -132,15 +132,6 @@ export default {
 
 
     },
-    ArrayBlank(arr){
-        for(let i = 0 ;i<arr.length;i++){
-           if(arr[i] == "" || typeof(arr[i]) == "undefined"){
-                arr.splice(i,1);
-                i= i-1;
-           }
-        }
-        return arr;
-    },
     isArray: function(arr) {
       return Object.prototype.toString.apply(arr) === "[object Array]";
     },
@@ -170,7 +161,6 @@ export default {
       let zTree = $.fn.zTree.getZTreeObj("visual_area_tree");
       let checkedNodes = this.filterHalfCheck(zTree);
       this.checkLists = this.clone(checkedNodes, {id:1, pId:1, name:1});
-      this.ArrayBlank(this.postOptions)
       if (this.$route.query.userid) {
         this.updateOption({
           userId: this.$route.query.userid,

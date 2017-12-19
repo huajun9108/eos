@@ -37,9 +37,9 @@
     watch:{
       _chartData(val){
         switch (this._type){
-            // case "LineAndBar":
-            // drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
-            // break
+            case "Line":
+            drawLine(val,this._id,this._titleText,this._xText,this._yText);
+            break
             case "LineOrBar":
             drawLineOrBar(val,this._id,this._titleText,this._xText,this._yText);
             break
@@ -64,9 +64,9 @@
     mounted() {
 
       switch (this._type){
-            // case "LineAndBar":
-            // drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            // break
+            case "Line":
+            drawLine(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            break
             case "LineOrBar":
             drawLineOrBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
             break
@@ -86,12 +86,12 @@
     }
   }
   //绘制函数
-    function drawLineAndBar(chartData,id,titleText,xText,yText) {
+    function drawLine(chartData,id,titleText,xText,yText) {
         var chart = echarts.init(document.getElementById(id))
         var xAxisData = chartData.map(function (item) {return item[0]})
         var yAxisData = chartData.map(function (item) {return item[1]})
+        var AxisData = chartData.map(function (item) {return item[2]})
         chart.setOption({
-        backgroundColor: '#0f375f',
         title: {
             text: titleText,
             subtext: ''
@@ -102,19 +102,11 @@
             type: 'shadow',
             label: {
                 show: true,
-                backgroundColor: '#333'
             }
             }
-        },
-        toolbox: {
-            feature: {
-            saveAsImage: {show: true}
-            },
-            top: 10,
-            right: 40
         },
         legend: {
-            data: ['line', 'bar'],
+            data: ['实际',"预测"],
             textStyle: {
             color: '#ccc'
             }
@@ -123,7 +115,6 @@
             data: xAxisData,
             axisLine: {
             lineStyle: {
-                color: '#ccc'
             }
             }
         },
@@ -131,41 +122,28 @@
             splitLine: {show: false},
             axisLine: {
             lineStyle: {
-                color: '#ccc'
+            
             }
             }
         },
         series: [{
-            name: yText,
+            name: "实际",
+            type: 'line',
+            smooth: true,     
+            symbolSize: 10,
+            data: yAxisData
+        },{
+            name: "预测",
             type: 'line',
             smooth: true,
-            showAllSymbol: true,
-            symbol: 'emptyCircle',
-            symbolSize: 15,
-            data: yAxisData
-        }, {
-            name: yText,
-            type: 'bar',
-            barWidth: 10,
-            itemStyle: {
-            normal: {
-                barBorderRadius: 5,
-                color: new echarts.graphic.LinearGradient(
-                0, 0, 0, 1,
-                [
-                    {offset: 0, color: '#14c8d4'},
-                    {offset: 1, color: '#43eec6'}
-                ]
-                )
-            }
-            },
-            data: yAxisData
+            data: AxisData
         }]
         })
     }
     function drawLineOrBar(chartData,id,titleText,xText,yText) {
         if (lineOrBarChart != null && lineOrBarChart != "" && lineOrBarChart != undefined) {
             lineOrBarChart.dispose();
+            lineOrBarChart = null;
         }
         if(!chartData){
             return   
@@ -223,7 +201,9 @@
     }
     function drawBar(chartData,id,titleText,xText,yText) {
         if (barChart != null && barChart != "" && barChart != undefined) {
+            console.log(1)
             barChart.dispose();
+            barChart = null;
         }
         if(!chartData){
             return

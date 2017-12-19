@@ -116,10 +116,6 @@
     },
     mounted() {
       let _this = this
-      setTimeout(function() {
-        _this.initCharts();
-      }, 800);
-
     }
   }
   </script>

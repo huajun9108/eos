@@ -8,36 +8,34 @@
       <ul class="target_setting clearfix" v-for="(item,idx) in this.modelList[0].result" :key="idx">
         <li class="target_set product_set">
           <span class="target_tit">产品选择</span>
-          <Cascader :disabled="productFlag" :data="data" trigger="hover" v-model="item.name" class="product_con" @on-change="handleChange" :ref="'result'+idx"></Cascader>
+          <Cascader disabled :data="data" trigger="hover" v-model="item.name" class="product_con"></Cascader>
         </li>
         <li class="target_set">
           <span>CT</span>
-          <Input :disabled="productFlag" size="small" v-model="item.value" class="target_con" type="number" :ref="'input'+idx"></Input>
-          <span class="seconds">秒</span>
-
-        </li>
-        <li class="target_set">
-          <span class="completeBtn text-right" @click="updateExistingProductsInLineBody(idx)">完成</span>
-          <span class="icon-delete_2 text-right" @click="deleteExistingProductsInLineBody(idx)"></span>
-        </li>
-      </ul>
-      <ul class="target_setting clearfix" v-for="(item,idx) in this.modelList[0].data" :key="idx">
-        <li class="target_set product_set">
-          <span class="target_tit">产品选择</span>
-          <Cascader :data="data" trigger="hover" :value="'data'+idx" class="product_con" :ref="'data'+idx"></Cascader>
-        </li>
-        <li class="target_set">
-          <span>CT</span>
-          <Input size="small" class="target_con" :value="'datainput'+idx" type="number" :ref="'datainput'+idx"></Input>
+          <Input readonly size="small" v-model="item.value" class="target_con" type="number"></Input>
           <span class="seconds">秒</span>
         </li>
         <li class="target_set">
-          <span class="completeBtn" @click="addOrUpdateNewProductsInLineBody(idx)">完成</span>
-          <span class="icon-delete_2" @click="deleteNewProductsInLineBody(idx)"></span>
+          <span class="icon-edit texy-right" @click="updateProduct(idx)"></span>
+          <span class="icon-delete_2 text-right" @click="deleteProduct(idx)"></span>
         </li>
       </ul>
     </div>
   </div>
+  <Modal v-model="showProducableProductsFlag" @on-ok="confirmProducableProducts" @on-cancel="cancelProducableProducts" class-name="producableProducts-vertical-center-modal"
+  :closable="false" width="400">
+
+  <span v-if="addProducableProductFlag" class="producableProductTitle">可生产产品添加</span>
+  <span v-else class="producableProductTitle">可生产产品修改</span>
+  <div class="productSelectionContainer">
+    <span>产品选择：</span>
+    <Cascader :data="data" trigger="hover" v-model="selectedProductValue"></Cascader>
+  </div>
+  <div class="ctContainer">
+    <span>CT：</span>
+    <InputNumber v-model="ctValue" :min="0"></InputNumber>
+  </div>
+  </Modal>
 </div>
 </template>
 <script>
@@ -59,10 +57,11 @@ export default {
         "data": []
       }],
       data: [],
-      addProductIdList: [],
-      addProductCtime: null,
-      existProductIndex: null,
-      newProductIndex: null
+      productIndex: null,
+      showProducableProductsFlag: false,
+      ctValue: null,
+      selectedProductValue: [],
+      addProducableProductFlag: true,
     }
 
   },
@@ -82,49 +81,36 @@ export default {
       "deleteLinebodyProductById",
       "updateLinebodyProductById"
     ]),
-    updateExistingProductsInLineBody(idx) {
-      console.log(idx);
-      this.existProductIndex = idx;
-      if(this.$refs["result" + idx][0].selected && this.$refs["input" + idx][0].currentValue) {
-        const len = this.$refs["result" + idx][0].selected.length;
-        const Ctime = this.$refs["input" + idx][0].currentValue;
-        const id = this.modelList[0].result[idx].id;
-
+    confirmProducableProducts() {
+      if(!(addOrUpdateProductId && this.ctValue)) {
+        this.$Message.error("产品信息不完善");
+        return;
+      }
+      const len = this.selectedProductValue.length;
+      const addOrUpdateProductId = this.selectedProductValue[len - 1];
+      if(this.addProducableProductFlag) {
+        const linebodyId = this.nodeId.substring(1);
+        this.addLinebodyProductByLinebodyId({
+          "linebodyId": this.nodeId.substring(1),
+          "productId": addOrUpdateProductId,
+          "cTime": this.ctValue
+        });
+      } else {
+        const id = this.modelList[0].result[this.productIndex].id;
         this.updateLinebodyProductById({
           "id": id,
-          "productId": this.$refs["result" + idx][0].selected[len - 1].value,
-          "cTime": this.$refs["input" + idx][0].currentValue
+          "productId": addOrUpdateProductId,
+          "cTime": this.ctValue
         });
       }
     },
-    addOrUpdateNewProductsInLineBody(idx) {
-      this.newProductIndex = idx;
-      if(this.$refs["data" + idx][0].selected && this.$refs["datainput" + idx][0].currentValue) {
-        const len = this.$refs["data" + idx][0].selected.length;
-        const addOrUpdateProductId = this.$refs["data" + idx][0].selected[len - 1].value;
-
-        console.log(this.modelList);
-        if(this.modelList[0].data[idx].hasOwnProperty('id')) {
-          const id = this.modelList[0].data[idx].id;
-          this.updateLinebodyProductById({
-            "id": id,
-            "productId": addOrUpdateProductId,
-            "cTime": this.$refs["datainput" + idx][0].currentValue
-          });
-        } else {
-          for(let i = 0; i < this.$refs["data" + idx][0].selected.length; i++) {
-            this.addProductIdList.push(this.$refs["data" + idx][0].selected[i].value);
-          }
-          this.addProductCtime = this.$refs["datainput" + idx][0].currentValue;
-          this.addLinebodyProductByLinebodyId({
-            "linebodyId": this.nodeId.substring(1),
-            "productId": addOrUpdateProductId,
-            "cTime": this.$refs["datainput" + idx][0].currentValue
-          });
-        }
-      }
+    cancelProducableProducts() {
+      this.selectedProductValue = [];
+      this.ctValue = null;
+      this.productIndex = null;
     },
-    deleteExistingProductsInLineBody(idx) {
+    deleteProduct(idx) {
+      this.productIndex = idx;
       var _this = this;
       Ewin.confirm({ message: "确认删除吗？" }).on(function (e) {
           if (!e) {
@@ -135,23 +121,7 @@ export default {
             _this.deleteLinebodyProductById({
               "id": id
             });
-            _this.modelList[0].result.splice(idx, idx + 1);
           }
-      });
-    },
-    deleteNewProductsInLineBody(idx) {
-      var _this = this;
-      Ewin.confirm({ message: "确认删除吗？" }).on(function (e) {
-          if (!e) {
-              return;
-          }
-          const id = _this.modelList[0].data[idx].id;
-          if(id) {
-            _this.deleteLinebodyProductById({
-              "id": id
-            });
-          }
-          _this.modelList[0].data.splice(idx, idx + 1);
       });
     },
     empty(val) {
@@ -161,9 +131,22 @@ export default {
       }
     },
     addProduct() {
-      this.modelList[0].data.push({})
-      console.log(this.modelList)
+      let reg = /^l/g;
+      if (reg.test(this.nodeId)) {
+        this.showProducableProductsFlag = true;
+        this.addProducableProductFlag = true;
+      } else {
+        this.$Message.error("请选择相应线体");
+      }
+
     },
+    updateProduct(idx) {
+      this.productIndex = idx;
+      this.addProducableProductFlag = false;
+      this.showProducableProductsFlag = true;
+      this.selectedProductValue = this.modelList[0].result[idx].name;
+      this.ctValue = this.modelList[0].result[idx].value;
+    }
   },
   watch: {
     nodeId(newVal) {
@@ -197,32 +180,41 @@ export default {
     addLinebodyProductByLinebodyIdRes(newVal) {
       if(newVal.status === "0") {
         this.$Message.success("添加成功");
-        this.modelList[0].data[this.newProductIndex].id = newVal.data;
-        this.modelList[0].data[this.newProductIndex].name = this.addProductIdList;
-        this.modelList[0].data[this.newProductIndex].value = this.addProductCtime;
+        const obj = {
+          "id": newVal.data,
+          "name": this.selectedProductValue,
+          "value": this.ctValue
+        }
+        this.modelList[0].result.push(obj);
       } else {
         this.$Message.error("添加失败");
         this.selectLinebodyProductsByLinebodyId({linebodyId: this.nodeId.substring(1)});
       }
-      this.addProductIdList = [];
-      this.addProductCtime = null;
-      this.newProductIndex = null;
+      this.selectedProductValue = [];
+      this.ctValue = null;
     },
     deleteLinebodyProductByIdRes(newVal) {
       if(newVal.status === "0") {
+        this.modelList[0].result.splice(this.productIndex, 1);
         this.$Message.success("删除成功");
       } else {
         this.$Message.error("删除失败");
         this.selectLinebodyProductsByLinebodyId({linebodyId: this.nodeId.substring(1)});
       }
+      this.productIndex = null;
     },
     updateLinebodyProductByIdRes(newVal) {
       if(newVal.status === "0") {
+        this.modelList[0].result[this.productIndex].name = this.selectedProductValue;
+        this.modelList[0].result[this.productIndex].value = this.ctValue;
         this.$Message.success("修改成功");
       } else {
         this.$Message.error("修改失败");
         this.selectLinebodyProductsByLinebodyId({linebodyId: this.nodeId.substring(1)});
       }
+      this.selectedProductValue = [];
+      this.ctValue = null;
+      this.productIndex = null;
     }
   },
   mounted() {

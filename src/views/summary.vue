@@ -6,7 +6,7 @@
                 <span class="areaAndShift">区域</span>
             </div>
             <v-timearea v-show="isShow" @clear="clearChartsData"></v-timearea>
-            <v-status :project-status="projectStatusList"></v-status>
+            <v-status :project="projectStatusList"></v-status>
         </div>
     </div>
 </template>
@@ -21,7 +21,7 @@
         },
         data(){
             return{
-                projectStatusList:null,
+                projectStatusList:false,
                 flag:true,
                 isShow:false,
             }
@@ -32,13 +32,13 @@
 		},
         methods:{
             ...mapActions([
-                
+
             ]),
             showlDialog(){
-                this.isShow = !this.isShow 
+                this.isShow = !this.isShow
             },
             clearChartsData() {
-                this.projectStatusList = [];
+                this.projectStatusList = !this.projectStatusList;
             },
         },
         watch:{
@@ -46,10 +46,10 @@
         created(){
         },
         mounted(){
-           
+
         }
 	}
 </script>
 <style lang="scss" scoped>
-	
+
 </style>

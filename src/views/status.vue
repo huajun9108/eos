@@ -146,26 +146,8 @@ export default {
         projectStatus(newVal){
             console.log(newVal)
             if(newVal.status==="0"){
-              this.project =false
                 if(newVal.data){
                   this.projectData = newVal.data;
-                    // this.project =false
-                    // this.statusData = newVal.data.status
-                    // this.projectNumber = newVal.data.statusOther.projectNumber
-                    // this.beganNumber = newVal.data.statusOther.beganNumber
-                    // this.runNumber =  newVal.data.statusOther.runNumber
-                    // this.delayNumber = newVal.data.statusOther.delayNumber
-                    // this.followNumber = newVal.data.statusOther.followNumber
-                    // this.closeNumber = newVal.data.statusOther.closeNumber
-                    // this.stageData = newVal.data.stage
-                    // this.IdentifyProblem = newVal.data.stageOther.IdentifyProblem
-                    // this.GraspStatus = newVal.data.stageOther.GraspStatus
-                    // this.SetGoals =  newVal.data.stageOther.SetGoals
-                    // this.AnalysisCause = newVal.data.stageOther.AnalysisCause
-                    // this.CountermeasuresPlan = newVal.data.stageOther.CountermeasuresPlan
-                    // this.Countermeasures = newVal.data.stageOther.Countermeasures
-                    // this.EffectConfirmation = newVal.data.stageOther.EffectConfirmation
-                    // this.ConsolidationResults = newVal.data.stageOther.ConsolidationResults
                 }else{
                     this.clearData()
                 }
@@ -174,8 +156,7 @@ export default {
             }
         },
         projectData(newVal) {
-          console.log(this.projectData);
-          if(this.projectData !=[]) {
+          if(newVal!=null) {
             this.statusData = this.projectData.status
             this.projectNumber = this.projectData.statusOther.projectNumber
             this.beganNumber = this.projectData.statusOther.beganNumber
@@ -192,17 +173,12 @@ export default {
             this.Countermeasures = this.projectData.stageOther.Countermeasures
             this.EffectConfirmation = this.projectData.stageOther.EffectConfirmation
             this.ConsolidationResults = this.projectData.stageOther.ConsolidationResults
-
           } else {
-            console.log(1);
             this.clearData();
           }
         },
         project() {
-          console.log(this.project)
-          if(this.project === true){
-            this.projectData = [];
-          }
+          this.projectData = null;
         }
     },
     created() {

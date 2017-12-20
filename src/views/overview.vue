@@ -11,7 +11,7 @@
                 <table class="table table-hover text-center overview_tableBody">
                     <tbody>
                         <tr>
-                            <td class="firstCol" width="10%">OEE</td>
+                            <td class="firstCol" width="5%">OEE</td>
                             <td id="toee" class="secordCol" width="60%">
                                 <chart
                                 :_id="'oee'"
@@ -19,15 +19,20 @@
                                 :_xText="'类别'"
                                 :_yText="'总访问量'"
                                 :_chartData="chartData"
-                                :_type="'LineAndBar'"></chart>
+                                :_type="'LineAndBar'"
+                                :_dataList = "dataList"
+                                @recieveData="showData"></chart>
                             </td>
-                            <td width="30%" class="text-left item_td">
+                            <td width="35%" class="text-left item_td">
                                 <div class="item_table item_top">
-                                    <div class="item_table_title">
-                                        <span class="item_table_no">值</span>
-                                        <span class="item_table_value">72</span>
-                                    </div>
                                     <ul class="item_table_detail">
+                                        <li class="item_table_de">
+                                            <div class="item_img">
+                                                <i class="current_color"></i>
+                                            </div>
+                                            <span class="item_table_deno">Current</span>
+                                            <span class="item_table_devalue">Current</span>
+                                        </li>
                                         <li class="item_table_de">
                                             <div class="item_img">
                                                 <img src="../assets/images/yellow.png"  />
@@ -53,30 +58,32 @@
                                 </div>
                                 <div class="item_table item_bottom">
                                     <div class="top top_left">
-                                        <span class="top_title">Loss Top 3</span>
+                                        <span class="top_title">Top Focus</span>
+                                        <span class="top_title">Performance</span>
                                         <div class="top_detail">
                                             <div class="top_item">
-                                                <span class="item_no">1</span><span class="item_value">Lack of demand</span>
+                                                <span class="item_no">Breakdowns</span><span class="item_value">12%</span>
                                             </div> 
                                             <div class="top_item">
-                                                <span class="item_no">2</span><span class="item_value">Breakdowns</span>
+                                                <span class="item_no">Short Stops</span><span class="item_value">8%</span>
                                             </div> 
                                             <div class="top_item last_ltem">
-                                                <span class="item_no">3</span><span class="item_value">First Level Maintenance</span>
+                                                <span class="item_no">Speed Loss</span><span class="item_value">12%</span>
                                             </div>  
                                         </div>
                                     </div>
                                     <div class="top">
-                                        <span class="top_title">Loss Top 3</span>
+                                        <span class="top_title">RCA</span>
+                                        <span class="top_title">Improvement</span>
                                         <div class="top_detail">
                                             <div class="top_item">
-                                                <span class="item_no">1</span><span class="item_value">Lack of demand</span>
+                                                <span class="item_no">Breakdowns</span><span class="item_value">12%</span>
                                             </div> 
                                             <div class="top_item">
-                                                <span class="item_no">2</span><span class="item_value">Breakdowns</span>
+                                                <span class="item_no">Short Stops</span><span class="item_value">8%</span>
                                             </div> 
                                             <div class="top_item last_ltem">
-                                                <span class="item_no">3</span><span class="item_value">First Level Maintenance</span>
+                                                <span class="item_no">Speed Loss</span><span class="item_value">12%</span>
                                             </div>  
                                         </div>
                                     </div>
@@ -117,44 +124,26 @@ export default {
     },
    data(){
        return{
+        dataList:null,
         isShow:false,
-        upColor : '#3670be',
-        upBorderColor :'#3670be',
-        downColor : '#f3d3a1',
-        downBorderColor :'#f3d3a1',
-        chartData:[["2013/1/24","10","30","20","10"],["2013/1/25","20","40","22","33"],["2013/1/26","15","22","19","60"]],
-        chartDataoee :[
-            {
-                data0:[
-                    ['2013/1/24', 60,30,40,79.5],
-                    ['2013/1/25', 22.3,80,40,80],
-                    ['2013/1/28', 10,69.5,40,90.6],
-                    ['2013/1/29', 20,55.5,40,76.3],
-                    ['2013/1/30', 22.5,60,40,70.2],
-                    ['2013/1/31', 32.5,55.5,40,80],
-                    ['2013/2/1', 70.3,22.2,10.3,30.3],
-                    ['2013/2/4', 22.4,59,40,80],
-                    ['2013/2/5', 70.3,22.2,10.3,30.3],
-                    ['2013/2/6', 22.5,60,40,70.2],
-                    ['2013/2/7', 10,69.5,40,90.6],
-                    ['2013/2/8', 22.3,80,40,80],
-                    ['2013/2/18', 10,69.5,40,90.6],
-                    ['2013/2/19', 32.5,55.5,40,80],
-                    ['2013/2/20', 10,69.5,40,90.6]
-                ],
-                vision: [99,99,99,99,99,99,99,99,99,99,99,99,99,99,99],
-                target :[80,73.2,65.3,96,77.3,98.3,85.2,85.3,99.3,95.3,85.2,86.3,84.2,94.3,96.3],
-                ideal :[99.5,88.3,99.5,88.3,99.5,88.3,99.5,88.3,99.5,99.5,99.5,88.3,99.5,88.3,99.5]
-            }
-        ]
-        
-
+        chartData:[["2013/1/24","10","30","20","10"],["2013/1/25","20","40","22","33"],["2013/1/26","15","22","19","60"],
+        ["2013/1/27","22","40","19","20"],["2013/1/28","10","30","20","10"],["2013/1/29","20","40","22","33"],
+        ["2013/1/30","15","22","19","60"],["2013/1/31","22","40","19","20"],["2013/2/1","10","30","20","10"],["2013/2/2","20","40","22","33"],
+        ["2013/2/3","15","22","19","60"],["2013/2/4","22","40","19","20"],["2013/2/5","10","30","20","10"],["2013/2/6","20","40","22","33"],
+        ["2013/2/7","15","22","19","60"],["2013/2/8","22","40","19","20"],["2013/2/9","10","30","20","10"],["2013/2/10","20","40","22","33"],
+        ["2013/2/11","15","22","19","60"],["2013/2/12","22","40","19","20"],["2013/2/13","10","30","20","10"],["2013/2/14","20","40","22","33"],
+        ["2013/2/15","15","22","19","60"],["2013/2/16","22","40","19","20"],["2013/2/17","10","30","20","10"],["2013/2/18","20","40","22","33"],
+        ["2013/2/19","15","22","19","60"],["2013/2/20","22","40","19","20"],["2013/2/21","10","30","20","10"],["2013/2/22","20","40","22","33"],
+        ["2013/2/23","15","22","19","60"],["2013/2/24","22","40","19","20"]],
        }
    },
    methods:{
         showlDialog(){
             this.isShow = !this.isShow 
         },
+        showData(data){
+            console.log(data)
+        }
       
    },
    mounted () {

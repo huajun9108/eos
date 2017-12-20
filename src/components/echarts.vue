@@ -11,7 +11,7 @@
     }
 </style>
 <template>
-    <div :id="_id" class="chart"></div>
+    <div :id="_id" class="chart" @click="sendData"></div>
 </template>
 
 <script>
@@ -29,10 +29,15 @@
         _xText:String,
         _yText:String,
         _chartData:Array,
-        _type:String
+        _type:String,
+        _dataList:Array
     },
     methods: {
-
+        sendData(){
+            // if(this._type=="LineAndBar")
+            // console.log(drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText,this._dataList))
+            this.$emit("recieveData",this._dataList)
+        }
     },
     watch:{
       _chartData(val){
@@ -41,31 +46,21 @@
             drawLine(val,this._id,this._titleText,this._xText,this._yText);
             break
             case "LineAndBar":
-            drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
+            drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText,this._dataList);
             break
             case "LineOrBar":
             drawLineOrBar(val,this._id,this._titleText,this._xText,this._yText);
             break
-            // case "Pie":
-            // drawPie(val,this._id,this._titleText,this._xText,this._yText);
-            // break
-            // case "Candlestick":
-            // drawCandlestick(val,this._id,this._titleText,this._xText,this._yText);
-            // break
             case "Bar":
             drawBar(val,this._id,this._titleText,this._xText,this._yText);
             break
-            // default:
-            // drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
-            // break
         }
       }
     },
     computed: {
-        ...mapState(["projectStatus"])
+    
     },
     mounted() {
-
       switch (this._type){
             case "Line":
             drawLine(this._chartData,this._id,this._titleText,this._xText,this._yText);
@@ -74,20 +69,11 @@
             drawLineOrBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
             break
             case "LineAndBar":
-            drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText,this._dataList);
             break
-            // case "Pie":
-            // drawPie(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            // break
-            // case "Candlestick":
-            // drawCandlestick(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            // break
             case "Bar":
             drawBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
             break
-            // default:
-            // drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
-            // break
         }
     }
   }
@@ -95,13 +81,9 @@
     function drawLine(chartData,id,titleText,xText,yText) {
         var chart = echarts.init(document.getElementById(id))
         var xAxisData = chartData.map(function (item) {return item[0]})
-        var yAxisData = chartData.map(function (item) {return item[1]})
-        var AxisData = chartData.map(function (item) {return item[2]})
+        var factData = chartData.map(function (item) {return item[1]})
+        var expectData = chartData.map(function (item) {return item[2]})
         chart.setOption({
-        title: {
-            text: titleText,
-            subtext: ''
-        },
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -132,25 +114,44 @@
         series: [{
             name: "实际",
             type: 'line',
-            smooth: true,     
-            symbolSize: 10,
-            data: yAxisData
+            data: factData,
+            lineStyle: {
+                normal: {
+                    opacity: 0.5,
+                    color:"#3670be"
+                }
+            },
+            itemStyle:{
+                normal:{
+                    color:"#3670be"
+                }
+            },
         },{
             name: "预测",
             type: 'line',
-            smooth: true,
-            data: AxisData
+            data: expectData,
+            lineStyle: {
+                normal: {
+                    opacity: 0.5,
+                    color:"#cb8b2e"
+                }
+            },
+            itemStyle:{
+                normal:{
+                    color:"#cb8b2e"
+                }
+            },
         }]
         })
     }
-    function drawLineAndBar(chartData,id,titleText,xText,yText) {
+    function drawLineAndBar(chartData,id,titleText,xText,yText,dataList) {
         var chart = echarts.init(document.getElementById(id))
         var xAxisData = chartData.map(function (item) {return item[0]})
         var currentData = chartData.map(function (item) {return item[1]})
         var targetData = chartData.map(function (item) {return item[2]})
         var visionData = chartData.map(function (item) {return item[3]})
         var idealData = chartData.map(function (item) {return item[4]})
-        chart.setOption({
+        var option = {
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -249,6 +250,17 @@
                 },
             }
             ]
+        }
+        chart.setOption(option)
+        chart.on('click',function(params){ // 控制台打印数据的名称 
+            let arr=[]
+            option.series.forEach(item=>{
+                console.log(item.data[params.dataIndex])
+                arr.push(item.data[params.dataIndex])
+            })
+            console.log(dataList)
+            dataList = arr
+            console.log(dataList)
         })
     }
     function drawLineOrBar(chartData,id,titleText,xText,yText) {

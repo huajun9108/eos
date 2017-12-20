@@ -110,6 +110,7 @@ export default {
                 return;
             }
             if(this.routeIsroute("summary")){
+              console.log("selectProjectStateByTimeAndLinebodyIds");
                 _this.selectProjectStateByTimeAndLinebodyIds({
                 linebodyIds: _this.lineBodystr,
                 time:this.time,
@@ -153,7 +154,7 @@ export default {
             }
         },
         clearCharts() {
-            console.log(1)
+            console.log("clearCharts");
             // this.projectStatusList = []
             // console.log(this.projectStatusList)
             this.$emit('clear');

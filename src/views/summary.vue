@@ -6,7 +6,7 @@
                 <span class="areaAndShift">区域</span>
             </div>
             <v-timearea v-show="isShow" @clear="clearChartsData"></v-timearea>
-            <v-status :project="projectStatusList"></v-status>
+            <v-status :project="projectStatus"></v-status>
         </div>
     </div>
 </template>
@@ -21,7 +21,7 @@
         },
         data(){
             return{
-                projectStatusList:false,
+                projectStatus:false,
                 flag:true,
                 isShow:false,
             }
@@ -38,7 +38,7 @@
                 this.isShow = !this.isShow
             },
             clearChartsData() {
-                this.projectStatusList = !this.projectStatusList;
+                this.projectStatus = !this.projectStatus;
             },
         },
         watch:{

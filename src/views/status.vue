@@ -3,7 +3,7 @@
         <div class="status_content top">
             <span class="status_pro">项目状态</span>
             <div class="status_echarts">
-                
+
                 <div class="charts_status">
                     <chart
                         :_id="'statustop'"
@@ -93,7 +93,7 @@
                 </ul>
             </div>
         </div>
-    </div> 
+    </div>
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
@@ -106,21 +106,24 @@ export default {
     components: {
         chart: chart
     },
+    props: ['project'],
     data() {
         return {
             statusData: null,
             stageData: null,
             time:GetDateStr(-1)+ " 23:59:59",
+            projectData: null,
         };
     },
     computed: {
         ...mapState([
             "projectStatus",
-        ])
+        ]),
     },
     methods: {
        ...mapActions([]),
        clearData(){
+         console.log(2);
             this.statusData=null
             this.projectNumber = "无"
             this.beganNumber = "无"
@@ -137,49 +140,83 @@ export default {
             this.Countermeasures = "无"
             this.EffectConfirmation = "无"
             this.ConsolidationResults = "无"
+       },
+       initChart(){
+
        }
     },
     watch: {
         projectStatus(newVal){
             console.log(newVal)
             if(newVal.status==="0"){
+              this.project =false
                 if(newVal.data){
-                    this.statusData = newVal.data.status
-                    this.projectNumber = newVal.data.statusOther.projectNumber
-                    this.beganNumber = newVal.data.statusOther.beganNumber
-                    this.runNumber =  newVal.data.statusOther.runNumber
-                    this.delayNumber = newVal.data.statusOther.delayNumber
-                    this.followNumber = newVal.data.statusOther.followNumber
-                    this.closeNumber = newVal.data.statusOther.closeNumber
-                    this.stageData = newVal.data.stage
-                    this.IdentifyProblem = newVal.data.stageOther.IdentifyProblem
-                    this.GraspStatus = newVal.data.stageOther.GraspStatus
-                    this.SetGoals =  newVal.data.stageOther.SetGoals
-                    this.AnalysisCause = newVal.data.stageOther.AnalysisCause
-                    this.CountermeasuresPlan = newVal.data.stageOther.CountermeasuresPlan
-                    this.Countermeasures = newVal.data.stageOther.Countermeasures
-                    this.EffectConfirmation = newVal.data.stageOther.EffectConfirmation
-                    this.ConsolidationResults = newVal.data.stageOther.ConsolidationResults
+                  this.projectData = newVal.data;
+                    // this.project =false
+                    // this.statusData = newVal.data.status
+                    // this.projectNumber = newVal.data.statusOther.projectNumber
+                    // this.beganNumber = newVal.data.statusOther.beganNumber
+                    // this.runNumber =  newVal.data.statusOther.runNumber
+                    // this.delayNumber = newVal.data.statusOther.delayNumber
+                    // this.followNumber = newVal.data.statusOther.followNumber
+                    // this.closeNumber = newVal.data.statusOther.closeNumber
+                    // this.stageData = newVal.data.stage
+                    // this.IdentifyProblem = newVal.data.stageOther.IdentifyProblem
+                    // this.GraspStatus = newVal.data.stageOther.GraspStatus
+                    // this.SetGoals =  newVal.data.stageOther.SetGoals
+                    // this.AnalysisCause = newVal.data.stageOther.AnalysisCause
+                    // this.CountermeasuresPlan = newVal.data.stageOther.CountermeasuresPlan
+                    // this.Countermeasures = newVal.data.stageOther.Countermeasures
+                    // this.EffectConfirmation = newVal.data.stageOther.EffectConfirmation
+                    // this.ConsolidationResults = newVal.data.stageOther.ConsolidationResults
                 }else{
                     this.clearData()
                 }
             }else{
                this.clearData()
             }
-            
         },
+        projectData(newVal) {
+          console.log(this.projectData);
+          if(this.projectData !=[]) {
+            this.statusData = this.projectData.status
+            this.projectNumber = this.projectData.statusOther.projectNumber
+            this.beganNumber = this.projectData.statusOther.beganNumber
+            this.runNumber =  this.projectData.statusOther.runNumber
+            this.delayNumber = this.projectData.statusOther.delayNumber
+            this.followNumber = this.projectData.statusOther.followNumber
+            this.closeNumber = this.projectData.statusOther.closeNumber
+            this.stageData = this.projectData.stage
+            this.IdentifyProblem = this.projectData.stageOther.IdentifyProblem
+            this.GraspStatus = this.projectData.stageOther.GraspStatus
+            this.SetGoals =  this.projectData.stageOther.SetGoals
+            this.AnalysisCause = this.projectData.stageOther.AnalysisCause
+            this.CountermeasuresPlan = this.projectData.stageOther.CountermeasuresPlan
+            this.Countermeasures = this.projectData.stageOther.Countermeasures
+            this.EffectConfirmation = this.projectData.stageOther.EffectConfirmation
+            this.ConsolidationResults = this.projectData.stageOther.ConsolidationResults
 
+          } else {
+            console.log(1);
+            this.clearData();
+          }
+        },
+        project() {
+          console.log(this.project)
+          if(this.project === true){
+            this.projectData = [];
+          }
+        }
     },
     created() {
-       
+
     },
     mounted() {
 
-       
+
     }
 };
 </script>
 <style lang="scss" scoped>
 
 </style>
-

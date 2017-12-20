@@ -21,7 +21,7 @@
         },
         data(){
             return{
-                projectStatusList:null,
+                projectStatusList:false,
                 flag:true,
                 isShow:false,
             }
@@ -32,13 +32,13 @@
 		},
         methods:{
             ...mapActions([
-                
+
             ]),
             showlDialog(){
-                this.isShow = !this.isShow 
+                this.isShow = !this.isShow
             },
             clearChartsData() {
-                this.projectStatusList = [];
+                this.projectStatusList = !this.projectStatusList;
             },
         },
         watch:{
@@ -46,10 +46,10 @@
         created(){
         },
         mounted(){
-           
+
         }
 	}
 </script>
 <style lang="scss" scoped>
-	
+
 </style>

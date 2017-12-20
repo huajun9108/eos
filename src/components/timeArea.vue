@@ -104,7 +104,7 @@ export default {
                 }
             });
             _this.lineBodystr = _this.lineBodys.join(",");
-             
+
             if (_this.lineBodys.length <= 0) {
                 this.clearCharts();
                 return;
@@ -154,8 +154,9 @@ export default {
         },
         clearCharts() {
             console.log(1)
-            console.log(this.projectStatusList)
-            this.$emit('clear',this.projectStatusList);
+            // this.projectStatusList = []
+            // console.log(this.projectStatusList)
+            this.$emit('clear');
         },
         routeIsroute(route){
             let reg = this.$route.path.split("/")[2];
@@ -205,7 +206,7 @@ export default {
             this.start = new Date(this.startTime.format("yyyy-MM-dd") +" 00:00:00");
             this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
             this.lossmaping()
-            
+
         }
     },
     mounted() {

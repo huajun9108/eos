@@ -257,13 +257,11 @@ import { stageRes, statusRes } from "../assets/js/tip"
                         "stage": _this.stage,
                     })
                     setTimeout(function(){
-                        
                         _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
-                    },10)
+                    },100)
                     setTimeout(function(){
                         _this.showImpItemhistory({linebodyId:_this.linebodyId})
-                    
-                    },20)
+                    },100)
                 }else{
                     console.log(2)
                 }

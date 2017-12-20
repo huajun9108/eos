@@ -6,7 +6,7 @@
                 <span class="areaAndShift">区域</span>
             </div>
             <v-timearea v-show="isShow" @clear="clearChartsData"></v-timearea>
-            <v-status :project-status="projectStatusList"></v-status>
+            <v-status :project="projectStatusList"></v-status>
         </div>
     </div>
 </template>

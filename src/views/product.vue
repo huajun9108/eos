@@ -15,9 +15,9 @@
           <Input readonly size="small" v-model="item.value" class="target_con" type="number"></Input>
           <span class="seconds">秒</span>
         </li>
-        <li class="target_set">
-          <span class="icon-edit texy-right" @click="updateProduct(idx)"></span>
-          <span class="icon-delete_2 text-right" @click="deleteProduct(idx)"></span>
+        <li class="target_set product_iconfont text-right area_button">
+          <span class="icon-edit button" @click="updateProduct(idx)"></span>
+          <span class="icon-delete_2 button" @click="deleteProduct(idx)"></span>
         </li>
       </ul>
     </div>
@@ -39,10 +39,7 @@
 </div>
 </template>
 <script>
-import {
-  mapActions,
-  mapState
-} from "vuex"
+import {mapActions,mapState} from "vuex"
 export default {
   props: [
     'nodeId',
@@ -50,11 +47,8 @@ export default {
   data() {
     return {
       productFlag: true,
-
-      result: [],
       modelList: [{
         "result": [],
-        "data": []
       }],
       data: [],
       productIndex: null,
@@ -82,12 +76,12 @@ export default {
       "updateLinebodyProductById"
     ]),
     confirmProducableProducts() {
+      const len = this.selectedProductValue.length;
+      const addOrUpdateProductId = this.selectedProductValue[len - 1];
       if(!(addOrUpdateProductId && this.ctValue)) {
         this.$Message.error("产品信息不完善");
         return;
       }
-      const len = this.selectedProductValue.length;
-      const addOrUpdateProductId = this.selectedProductValue[len - 1];
       if(this.addProducableProductFlag) {
         const linebodyId = this.nodeId.substring(1);
         this.addLinebodyProductByLinebodyId({
@@ -154,18 +148,8 @@ export default {
       let reg = /^l/g;
       if (reg.test(newVal)) {
         this.productFlag = false
-        // this.selectLinebodyById({id:newVal})
       } else {
         this.productFlag = true
-        // this.targetNo="";
-        // this.dateStart='';
-        // this.dateEnd='';
-        // this.vision='';
-        // this.ideal='';
-        // this.visionStart = '',
-        // this.visionEnd = '',
-        // this.idealStart = '',
-        // this.idealEnd = ''
       }
 
     },

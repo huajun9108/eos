@@ -334,6 +334,7 @@ export default {
         axios.post("/impobject/showObjectnowBylinedyid", qs.stringify({
             "linebodyId": obj.linebodyId
         })).then(res => {
+            console.log("show")
             return res.data.data
         }).then(json => {
             commit("showObjectnowBylinedyid", json)
@@ -368,6 +369,7 @@ export default {
             "planendtime": obj.planendtime,
             "stage": obj.stage,
         })).then(res => {
+            console.log("update")
             return res.data.data
         }).then(json => {
             commit("updateImpItemstatus", json)
@@ -612,7 +614,7 @@ export default {
         axios.post("/impobject/showImpItemhistory", qs.stringify({
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log(res.data)
+            console.log("history")
             return res.data
         }).then(json => {
             commit("showImpItemhistory", json)

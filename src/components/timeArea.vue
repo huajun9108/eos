@@ -154,7 +154,6 @@ export default {
         },
         clearCharts() {
             console.log(1)
-            this.projectStatusList = []
             console.log(this.projectStatusList)
             this.$emit('clear',this.projectStatusList);
         },
@@ -170,7 +169,6 @@ export default {
     computed: {
         ...mapState([
             "validarea",
-            "projectStatusList"
         ])
     },
     watch: {

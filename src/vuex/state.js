@@ -68,5 +68,4 @@ export default {
     addLinebodyProductByLinebodyIdRes: '',
     deleteLinebodyProductByIdRes: '',
     updateLinebodyProductByIdRes: '',
-    projectStatusList: null
 }

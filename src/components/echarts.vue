@@ -40,6 +40,9 @@
             case "Line":
             drawLine(val,this._id,this._titleText,this._xText,this._yText);
             break
+            case "LineAndBar":
+            drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
+            break
             case "LineOrBar":
             drawLineOrBar(val,this._id,this._titleText,this._xText,this._yText);
             break
@@ -69,6 +72,9 @@
             break
             case "LineOrBar":
             drawLineOrBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
+            break
+            case "LineAndBar":
+            drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
             break
             // case "Pie":
             // drawPie(this._chartData,this._id,this._titleText,this._xText,this._yText);
@@ -113,18 +119,15 @@
         },
         xAxis: {
             data: xAxisData,
-            axisLine: {
-            lineStyle: {
-            }
-            }
+            axisTick:{
+                show:false
+            },
         },
         yAxis: {
             splitLine: {show: false},
-            axisLine: {
-            lineStyle: {
-            
-            }
-            }
+            axisTick:{
+                show:false
+            },
         },
         series: [{
             name: "实际",
@@ -138,6 +141,114 @@
             smooth: true,
             data: AxisData
         }]
+        })
+    }
+    function drawLineAndBar(chartData,id,titleText,xText,yText) {
+        var chart = echarts.init(document.getElementById(id))
+        var xAxisData = chartData.map(function (item) {return item[0]})
+        var currentData = chartData.map(function (item) {return item[1]})
+        var targetData = chartData.map(function (item) {return item[2]})
+        var visionData = chartData.map(function (item) {return item[3]})
+        var idealData = chartData.map(function (item) {return item[4]})
+        chart.setOption({
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+            type: 'shadow',
+            label: {
+                show: true,
+            }
+            }
+        },
+        xAxis: {
+            data: xAxisData,
+            axisTick:{
+                show:false
+            },
+        },
+        yAxis: {
+            splitLine: {show: false},
+            axisTick:{
+                show:false
+            },
+            axisLabel:{
+                color:"#040404",
+                formatter: '{value} %'
+            }
+        },
+        series: [
+            {
+                name: "KPI",
+                type: 'bar',
+                smooth: true,     
+                symbolSize: 10,
+                data: currentData,
+                lineStyle: {
+                    normal: {
+                        opacity: 0.5,
+                        color:"#3670be"
+                    }
+                },
+                itemStyle:{
+                    normal:{
+                        color:"#3670be"
+                    }
+                },
+            },
+             {
+                name: 'target',
+                type: 'line',
+                data: targetData,
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 0.5,
+                        color:"#cb8b2e"
+                    }
+                },
+                itemStyle:{
+                    normal:{
+                        color:"#cb8b2e"
+                    }
+                },
+            },
+            {
+                name: 'vision',
+                type: 'line',
+                data:  visionData,
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 0.5,
+                        color:"#a54141"
+                    }
+                },
+                itemStyle:{
+                    normal:{
+                        color:"#a54141"
+                    }
+                },
+
+            },
+           
+            {
+                name: 'ideal',
+                type: 'line',
+                data: idealData,
+                smooth: true,
+                lineStyle: {
+                    normal: {
+                        opacity: 0.5,
+                        color:"#476f7b"
+                    }
+                },
+                itemStyle:{
+                    normal:{
+                        color:"#476f7b"
+                    }
+                },
+            }
+            ]
         })
     }
     function drawLineOrBar(chartData,id,titleText,xText,yText) {

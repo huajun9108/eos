@@ -19,7 +19,7 @@
                                 :_xText="'类别'"
                                 :_yText="'总访问量'"
                                 :_chartData="chartData"
-                                :_type="'Line'"></chart>
+                                :_type="'LineAndBar'"></chart>
                             </td>
                             <td width="30%" class="text-left item_td">
                                 <div class="item_table item_top">
@@ -122,7 +122,7 @@ export default {
         upBorderColor :'#3670be',
         downColor : '#f3d3a1',
         downBorderColor :'#f3d3a1',
-        chartData:[["2013/1/24","10","30"],["2013/1/25","20","40"]],
+        chartData:[["2013/1/24","10","30","20","10"],["2013/1/25","20","40","22","33"],["2013/1/26","15","22","19","60"]],
         chartDataoee :[
             {
                 data0:[

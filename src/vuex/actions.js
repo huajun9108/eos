@@ -485,7 +485,6 @@ export default {
             "classinfIdList": obj.classinfIdList,
             "productNameId": obj.productNameId,
             "conformProduct": obj.conformProduct,
-            "normalCycletime": obj.normalCycletime,
             "linebodyId": obj.linebodyId
         })).then(res => {
             return res.data
@@ -537,7 +536,6 @@ export default {
         axios.post("/datainput/updateProduct", qs.stringify({
             "productIdList": obj.productIdList,
             "conformProduct": obj.conformProduct,
-            "normalCycletime": obj.normalCycletime,
             "classinfIdList": obj.classinfIdList,
             "linebodyId": obj.linebodyId
         })).then(res => {

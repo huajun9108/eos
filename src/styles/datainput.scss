@@ -46,39 +46,58 @@
         padding-right: P(28);
         padding-top: P(32);
         display: inline-block;
+        color: #040404;
 
         .classInfoTitle {
           display: inline-block;
           padding-bottom: P(39);
         }
 
-        .classInfoTime {
+        .classInfoTimeContainer {
           padding-bottom: P(26);
+          font-size: 0;
 
-          span {
+          .classInfoTimeTitle {
+            display: inline-block;
             vertical-align: middle;
+            font-size: P(16);
+            width: 80px;
           }
           .ivu-input {
-            width: P(422);
+            font-size: P(14);
           }
-          i.ivu-input-icon {
-            text-align: right;
+          span {
+            font-size: P(16);
           }
         }
 
         .classInfoNumAttendance {
           padding-bottom: P(26);
+          font-size: 0;
+          width: 100%;
 
           span {
+            display: inline-block;
             vertical-align: middle;
+            font-size: P(16);
+            width: 80px;
           }
 
           .ivu-input-number {
-            width: P(140);
+            width: calc(50% - 98px);
+            .ivu-input-number-handler {
+              text-align: right;
+              .ivu-icon-ios-arrow-up:before {
+                margin-right: P(4);
+              }
+              .ivu-icon-ios-arrow-down:before {
+                margin-right: P(4);
+              }
+            }
           }
 
           .classInfoActualAttendance {
-            margin-left: P(35);
+            margin-left: 36px;
           }
         }
 
@@ -248,7 +267,7 @@
         }
       }
     }
-    
+
     .showOpenCeremony {
       visibility: visible;
     }

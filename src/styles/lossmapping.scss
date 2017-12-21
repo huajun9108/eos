@@ -16,14 +16,14 @@
             height: 93%;
             .tableBody {
                 width: 100%;
-                height: 100%;
             }
             .tableBody tr {
                 border-bottom: 1px solid #BDBDBD;
+                line-height: 100px
             }
-            .tableBody tr:last-child {
-                border-bottom: none;
-            }
+            // .tableBody tr:last-child {
+            //     border-bottom: none;
+            // }
             .tableBody td {
                 font-size: P(16);
                 text-align: center;

@@ -382,6 +382,7 @@ export default {
             "lossIdList": obj.lossId,
             "linebodyId": obj.linebodyId
         })).then(res => {
+            console.log("add")
             return res.data
         }).then(json => {
             commit("addObjectnowBylossid", json)

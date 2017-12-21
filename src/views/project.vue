@@ -15,7 +15,7 @@
             <tbody class="scrollTbody">
             <tr v-for="(item,idx) in this.proNowList" :key="idx" class="text-center"  >
                 <td width="40%">{{item.name}}</td>
-                <td width="20%">{{item.status}}</td>
+                <td width="20%">{{item.reviewdata}}</td>
                 <td width="20%">{{item.status}}</td>
                 <td width="10%" class="icon-edit" @click = "editpro(item.id)"></td>
                 <td width="10%" class="icon-delete_2" @click = "delpro({id:item.id,name:item.name})"></td>
@@ -238,10 +238,38 @@ import { stageRes, statusRes } from "../assets/js/tip"
             cancel(){
 
             },
+            // updateImpItemstatus(){
+            //      let _this = this;
+            //     this.updateImpItemstatus({
+            //         "id": _this.statusId,
+            //         "linebodyId": _this.linebodyId,
+            //         "projectnumber": _this.projectnumber,
+            //         "projectname":_this.projectname,
+            //         "losscategory": _this.losscategory,
+            //         "status": _this.status,
+            //         "startperformance": _this.startperformance,
+            //         "target": _this.target,
+            //         "performance": _this.performance,
+            //         "objectstarttime": _this.objectstarttime,
+            //         "planendtime": _this.planendtime,
+            //         "stage": _this.stage,
+            //     })
+            //     this.showObjectnowBylinedyid()
+            //     this.showImpItemhistory()
+            // },
+            // showObjectnowBylinedyid(){
+            //      let _this = this;
+            //     this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
+            // },
+            // showImpItemhistory(){
+            //      let _this = this;
+            //     this.showImpItemhistory({linebodyId:_this.linebodyId})
+            // },
             confirm(){
                 let _this = this;
                 if(this.validateData()) {
                     console.log(1)
+                    // _this.updateImpItemstatus()
                     _this.updateImpItemstatus({
                         "id": _this.statusId,
                         "linebodyId": _this.linebodyId,
@@ -258,10 +286,10 @@ import { stageRes, statusRes } from "../assets/js/tip"
                     })
                     setTimeout(function(){
                         _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
-                    },100)
-                    setTimeout(function(){
+
                         _this.showImpItemhistory({linebodyId:_this.linebodyId})
                     },100)
+                    
                 }else{
                     console.log(2)
                 }
@@ -278,26 +306,32 @@ import { stageRes, statusRes } from "../assets/js/tip"
                 let _this = this;
                 this.proListItem = this.$refs[obj.id][0].innerHTML
                 this.proListId = obj.id
-                   if(this.arrIsContains(_this.proList,obj)){
-                    this.proList.push(obj)
-                    this.$refs[obj.id][0].className = "pro_active"
-                    }else{
-                        console.log(1)
-                    }
+                if(this.arrIsContains(_this.proList,obj)){
+                this.proList.push(obj)
+                this.$refs[obj.id][0].className = "pro_active"
+                }else{
+                    console.log(1)
+                }
             },
             add_item(){
+                let _this = this;
                 this.addObjId=[]
                 this.proList.forEach(item=> {
                     if(this.arrIsContains(this.proNowList,item)){
                         this.addObjId.push(item.id)
                     }
                 }, this);
+                console.log( this.addObjId)
                 this.addObjectnowBylossid({
                     lossId:this.addObjId.join(","),
                     linebodyId:this.linebodyId
                 })
                 this.addObjId=[]
                 this.proList=[]
+                setTimeout(function(){
+                    _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
+                    // _this.showImpItempool({userid: sessionStorage.getItem("userid")})
+                },100)
             },
             editpro(lossId){
                 this.detailFlag = true
@@ -366,16 +400,41 @@ import { stageRes, statusRes } from "../assets/js/tip"
                     }
                 }
                 return true;   
-            }
+            },
+            stageObj(beforstage,stage,createdAt,statusResult){
+                let stageObj = {};
+                stageObj["message"] = "项目阶段"
+                stageObj["before"] = stageRes(beforstage, statusResult)
+                stageObj["now"] = stageRes(stage, statusResult)
+                stageObj["date"] = new Date(createdAt).format("yyyy-MM-dd")
+                stageObj["time"] = new Date(createdAt).format("hh:mm")
+                return stageObj
+            },
+            statusObj(beforstage,stage,createdAt,statusResult){
+                let statusObj = {};
+                statusObj["message"] = "项目状态"
+                statusObj["before"] = statusRes(beforstage, statusResult)
+                statusObj["now"] = statusRes(stage, statusResult)
+                statusObj["date"] = new Date(createdAt).format("yyyy-MM-dd")
+                statusObj["time"] = new Date(createdAt).format("hh:mm")
+                return statusObj
+            },
         },
         watch:{
-           improList(newVal){
+            improList(newVal){
                let _this = this;
-                newVal.forEach((item,index)=>{
+               if(newVal.length>0){
+                   newVal.forEach((item,index)=>{
                     item.data.forEach(option=>{
-                        this.leftId.push(option.lossid)
+                        _this.leftId.push(option.lossid)
+                        setTimeout(function(){
+                            _this.$refs[option.lossid][0].className = ""
+                        },10)
+                      
                     })
                 })
+               }
+                
             },
             validarea(newVal) {
                 let _this = this;
@@ -404,7 +463,7 @@ import { stageRes, statusRes } from "../assets/js/tip"
                     if(!this.arrIsContains(this.leftId,item.losstier3Lossid)){
                         _this.$refs[item.losstier3Lossid][0].className = "pro_active"
                     }
-                    this.proNowList.push({id:item.losstier3Lossid,name:item.projectname,status:statusRes(item.status,this.statusResult)})
+                    this.proNowList.push({id:item.losstier3Lossid,name:item.projectname,reviewdata:item.reviewdata,status:statusRes(item.status,this.statusResult)})
                     });
                 }
                 
@@ -447,6 +506,7 @@ import { stageRes, statusRes } from "../assets/js/tip"
                     this.stage=""
                 }
             },
+           
             showImpItemhistoryRes(newVal){
                 if(newVal.status==="0"){
                     let arr = []
@@ -456,34 +516,14 @@ import { stageRes, statusRes } from "../assets/js/tip"
                         let statusResult = null
                         if (item.beforstatus == 2 || item.status == 2) {
                             if (item.beforstatus == item.status) {
-                                stageObj["message"] = "项目阶段"
-                                stageObj["before"] = stageRes(item.beforstage, statusResult)
-                                stageObj["now"] = stageRes(item.stage, statusResult)
-                                stageObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
-                                stageObj["time"] = new Date(item.createdAt).format("hh:mm")
-                                arr.push(stageObj)
+                                arr.push(this.stageObj(item.beforstage,item.stage,item.createdAt,statusResult))
                             } else {
-                                statusObj["message"] = "项目状态"
-                                statusObj["before"] = statusRes(item.beforstatus, statusResult)
-                                statusObj["now"] = statusRes(item.status, statusResult)
-                                statusObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
-                                statusObj["time"] = new Date(item.createdAt).format("hh:mm")
-                                arr.push(statusObj)
-                                stageObj["message"] = "项目阶段"
-                                stageObj["before"] = stageRes(item.beforstage, statusResult)
-                                stageObj["now"] = stageRes(item.stage, statusResult)
-                                stageObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
-                                stageObj["time"] = new Date(item.createdAt).format("hh:mm")
-                                arr.push(stageObj)
+                                arr.push(this.statusObj(item.beforstatus,item.status,item.createdAt,statusResult))
+                                arr.push(this.stageObj(item.beforstage,item.stage,item.createdAt,statusResult))
                             }
                         }
                         if (item.beforstatus != 2 && item.status != 2) {
-                            statusObj["message"] = "项目状态"
-                            statusObj["before"] = statusRes(item.beforstatus, statusResult)
-                            statusObj["now"] = statusRes(item.status, statusResult)
-                            statusObj["date"] = new Date(item.createdAt).format("yyyy-MM-dd")
-                            statusObj["time"] = new Date(item.createdAt).format("hh:mm")
-                            arr.push(statusObj)
+                            arr.push(this.statusObj(item.beforstatus,item.status,item.createdAt,statusResult))
                         }
 
                     })
@@ -517,10 +557,14 @@ import { stageRes, statusRes } from "../assets/js/tip"
         },
         mounted(){
             if (sessionStorage.getItem("userid")) {
+                // let _this = this
                 this.selectUserById({
                     userid: sessionStorage.getItem("userid")
                 })
-                this.showImpItempool({userid: sessionStorage.getItem("userid")})
+                //  setTimeout(function(){
+                    this.showImpItempool({userid: sessionStorage.getItem("userid")})
+                // },10)
+                // this.showImpItempool({userid: sessionStorage.getItem("userid")})
                 
             } else {
                 console.log(this.$route);

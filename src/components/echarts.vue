@@ -18,6 +18,7 @@
     import {mapActions,mapState} from "vuex";
     import echarts from 'echarts';
     var barChart,lineOrBarChart;
+    var listData = null;
     export default {
     data() {
         return {
@@ -36,7 +37,7 @@
         sendData(){
             // if(this._type=="LineAndBar")
             // console.log(drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText,this._dataList))
-            this.$emit("recieveData",this._dataList)
+            this.$emit("recieveData",listData)
         }
     },
     watch:{
@@ -55,10 +56,14 @@
             drawBar(val,this._id,this._titleText,this._xText,this._yText);
             break
         }
+      },
+      listData(newVal) {
+        console.log(newVal);
+        _this.dataList = newVal;
       }
     },
     computed: {
-    
+
     },
     mounted() {
       switch (this._type){
@@ -181,7 +186,7 @@
             {
                 name: "KPI",
                 type: 'bar',
-                smooth: true,     
+                smooth: true,
                 symbolSize: 10,
                 data: currentData,
                 lineStyle: {
@@ -231,7 +236,7 @@
                 },
 
             },
-           
+
             {
                 name: 'ideal',
                 type: 'line',
@@ -252,16 +257,16 @@
             ]
         }
         chart.setOption(option)
-        chart.on('click',function(params){ // 控制台打印数据的名称 
+        chart.on('click',function(params){ // 控制台打印数据的名称
             let arr=[]
             option.series.forEach(item=>{
-                console.log(item.data[params.dataIndex])
+                // console.log(item.data[params.dataIndex])
                 arr.push(item.data[params.dataIndex])
             })
-            console.log(dataList)
-            dataList = arr
-            console.log(dataList)
-        })
+            console.log(arr);
+            listData = arr;
+            console.log(listData);
+        });
     }
     function drawLineOrBar(chartData,id,titleText,xText,yText) {
         if (lineOrBarChart != null && lineOrBarChart != "" && lineOrBarChart != undefined) {
@@ -269,7 +274,7 @@
             lineOrBarChart = null;
         }
         if(!chartData){
-            return   
+            return
         }
         lineOrBarChart = echarts.init(document.getElementById(id))
         let xAxisData = chartData.map(function (item) {return item.key})

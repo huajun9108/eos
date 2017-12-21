@@ -233,6 +233,10 @@ export default {
       } 
     },
     moveDown:function(obj) { 
+      if(obj.index == this.tier2.length-1) { 
+        this.$Message.warning("已经是最后一项啦！"); 
+        return
+      }
       let changedid = this.tier2[obj.index+1].kpitwoid
       this.updateUserKpiTwolveById({
           "userId":obj.userId,
@@ -246,9 +250,7 @@ export default {
     this.tier2.splice(obj.index+2,0,(this.tier2[obj.index])); 
     // 删除前一项 
     this.tier2.splice(obj.index,1); 
-      if(obj.index == this.tier2.length-1) { 
-        this.$Message.warning("已经是最后一项啦！"); 
-      }
+      
     }
     
   },

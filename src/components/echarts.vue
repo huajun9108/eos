@@ -18,7 +18,7 @@
     import {mapActions,mapState} from "vuex";
     import echarts from 'echarts';
     var barChart,lineOrBarChart;
-    var listData = null;
+    var LineAndBarData
     export default {
     data() {
         return {
@@ -31,13 +31,10 @@
         _yText:String,
         _chartData:Array,
         _type:String,
-        _dataList:Array
     },
     methods: {
         sendData(){
-            // if(this._type=="LineAndBar")
-            // console.log(drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText,this._dataList))
-            this.$emit("recieveData",listData)
+            this.$emit("recieveData",LineAndBarData+","+this._id)
         }
     },
     watch:{
@@ -47,7 +44,7 @@
             drawLine(val,this._id,this._titleText,this._xText,this._yText);
             break
             case "LineAndBar":
-            drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText,this._dataList);
+            drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
             break
             case "LineOrBar":
             drawLineOrBar(val,this._id,this._titleText,this._xText,this._yText);
@@ -74,7 +71,7 @@
             drawLineOrBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
             break
             case "LineAndBar":
-            drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText,this._dataList);
+            drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
             break
             case "Bar":
             drawBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
@@ -149,7 +146,7 @@
         }]
         })
     }
-    function drawLineAndBar(chartData,id,titleText,xText,yText,dataList) {
+    function drawLineAndBar(chartData,id,titleText,xText,yText) {
         var chart = echarts.init(document.getElementById(id))
         var xAxisData = chartData.map(function (item) {return item[0]})
         var currentData = chartData.map(function (item) {return item[1]})
@@ -258,15 +255,16 @@
         }
         chart.setOption(option)
         chart.on('click',function(params){ // 控制台打印数据的名称
+            console.log(id)
             let arr=[]
             option.series.forEach(item=>{
                 // console.log(item.data[params.dataIndex])
                 arr.push(item.data[params.dataIndex])
             })
-            console.log(arr);
-            listData = arr;
-            console.log(listData);
-        });
+            console.log(LineAndBarData)
+            LineAndBarData = arr
+            console.log(LineAndBarData)
+        })
     }
     function drawLineOrBar(chartData,id,titleText,xText,yText) {
         if (lineOrBarChart != null && lineOrBarChart != "" && lineOrBarChart != undefined) {

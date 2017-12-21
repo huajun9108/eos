@@ -15,6 +15,7 @@
         line-height: P(30);
         text-align: center;
         border-radius: 4px;
+        cursor: pointer;
       }
 
       .openCeremonyButton {
@@ -122,6 +123,7 @@
             width: P(60);
             line-height: P(24);
             border-radius: P(10);
+            cursor:pointer;
           }
         }
       }
@@ -179,6 +181,7 @@
           color: #e1e1e1;
           font-size: P(32);
           margin: auto;
+          cursor: pointer;
         }
       }
     }
@@ -263,6 +266,7 @@
             line-height: 24px;
             background-color: #e1e1e1;
             border-radius: P(4);
+            cursor: pointer;
           }
         }
       }

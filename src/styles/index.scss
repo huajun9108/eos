@@ -275,28 +275,33 @@ label {
                     border-bottom: 1px solid #BDBDBD;
                 }
                 .dropdownProduct {
-                    font-size: P(14);
-                    width: P(218);
-                    height: P(30);
-                    margin-bottom: P(46);
-                    .ivu-select-selection {
-                        background: #E1E1E1;
-                        font-size: P(14);
-                        color: #040404;
-                    }
+                  font-size: P(14);
+                  // width: P(218);
+                  height: P(30);
+                  margin-bottom: P(46);
+                  font-size: P(14);
+                  color: #040404;
+                  .ivu-input{
+                    background: #E1E1E1;
+                  }
                 }
                 .productInfoSetting {
                     font-size: 0;
                     padding-bottom: P(46);
+                    width: 100%;
                     span {
                         display: inline-block;
                         font-size: P(12);
                         color: #040404;
                         text-align: center;
                         vertical-align: middle;
+                        width: 20%;
                     }
                     .ivu-input-number {
-                        width: 104px;
+                      width: 80%;
+                      .ivu-input-number-handler-wrap {
+                        display: none;
+                      }
                     }
                     .cycleTitle {
                         margin-left: P(31);

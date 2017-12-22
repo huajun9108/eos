@@ -85,12 +85,12 @@
         <span>产品：</span>
         <span>{{ this.productNameBeingEditedVal }}</span>
       </div>
-      <Select v-else v-model="choosedProductValByAdd" class="dropdownProduct" clearable placeholder="产品">
+      <!-- <Select v-else v-model="choosedProductValByAdd" class="dropdownProduct" clearable placeholder="产品">
           <Option v-for="item in optionalProductListByAdd" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
             {{ item.name }}
           </Option>
-        </Select>
-        <!-- <Cascader></Cascader> -->
+        </Select> -->
+        <Cascader class="dropdownProduct" v-else :data="productCascaderData" v-model="choosedProductValByAdd" trigger="hover" placeholder="产品"></Cascader>
     </div>
     <div class="productInfoSetting">
       <span>良品数量：</span>
@@ -237,6 +237,7 @@ export default {
       optionalProductListByAdd: [],
       conformProductValue: null,
       editProductIndex: null,
+      productCascaderData: [],
       /*loss变量*/
       showLossFlag: false,
       editLossDirFlag: false,
@@ -652,7 +653,7 @@ export default {
         this.showProductInfoFlag = false;
         this.addProduct({
           "classinfIdList": this.classInfoIdList,
-          "productNameId": this.choosedProductValByAdd,
+          "productNameId": this.choosedProductValByAdd[2],
           "conformProduct": this.conformProductValue,
           "linebodyId": this.lineBodys[0]
         });
@@ -771,7 +772,8 @@ export default {
     showProductNameRes(newVal) {
       console.log("showProductNameRes:" + newVal);
       if (newVal.status === "0") {
-        this.optionalProductListByAdd = newVal.data;
+        this.productCascaderData = newVal.data;
+        // this.optionalProductListByAdd = newVal.data;
       }
     },
     deleteProductRes(newVal) {

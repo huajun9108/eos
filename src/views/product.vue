@@ -80,6 +80,8 @@ export default {
       const addOrUpdateProductId = this.selectedProductValue[len - 1];
       if(!(addOrUpdateProductId && this.ctValue)) {
         this.$Message.error("产品信息不完善");
+        this.selectedProductValue = [];
+        this.ctValue = null;
         return;
       }
       if(this.addProducableProductFlag) {
@@ -191,6 +193,8 @@ export default {
         this.modelList[0].result[this.productIndex].name = this.selectedProductValue;
         this.modelList[0].result[this.productIndex].value = this.ctValue;
         this.$Message.success("修改成功");
+      } else if(newVal.status === "101") {
+        this.$Message.error("修改失败，产品已存在");
       } else {
         this.$Message.error("修改失败");
         this.selectLinebodyProductsByLinebodyId({linebodyId: this.nodeId.substring(1)});

@@ -53,10 +53,14 @@
             drawBar(val,this._id,this._titleText,this._xText,this._yText);
             break
         }
+      },
+      listData(newVal) {
+        console.log(newVal);
+        _this.dataList = newVal;
       }
     },
     computed: {
-    
+
     },
     mounted() {
       switch (this._type){
@@ -179,7 +183,7 @@
             {
                 name: "KPI",
                 type: 'bar',
-                smooth: true,     
+                smooth: true,
                 symbolSize: 10,
                 data: currentData,
                 lineStyle: {
@@ -229,7 +233,7 @@
                 },
 
             },
-           
+
             {
                 name: 'ideal',
                 type: 'line',
@@ -250,11 +254,11 @@
             ]
         }
         chart.setOption(option)
-        chart.on('click',function(params){ // 控制台打印数据的名称 
+        chart.on('click',function(params){ // 控制台打印数据的名称
             console.log(id)
             let arr=[]
             option.series.forEach(item=>{
-                console.log(item.data[params.dataIndex])
+                // console.log(item.data[params.dataIndex])
                 arr.push(item.data[params.dataIndex])
             })
             console.log(LineAndBarData)
@@ -268,7 +272,7 @@
             lineOrBarChart = null;
         }
         if(!chartData){
-            return   
+            return
         }
         lineOrBarChart = echarts.init(document.getElementById(id))
         let xAxisData = chartData.map(function (item) {return item.key})

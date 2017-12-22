@@ -240,7 +240,6 @@ export default{
             }
         },
         nodeId(newVal){
-            console.log(newVal)
             let reg=/^l/g;
             if(reg.test(newVal)){
                 this.targetFlag = false

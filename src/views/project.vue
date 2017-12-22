@@ -35,49 +35,49 @@
         <div class="pro_itemdetail" v-show="detailFlag">
             <ul class="item_det" >
                 <li class="item_li">
-                    <span class="item_title">改进项目编号</span>
+                    <span class="item_title">项目编号</span>
                     <input v-model= "projectnumber" class="item_detail" />
                 </li>
                 <li class="item_li">
-                    <span class="item_title">改进项目名称</span>
+                    <span class="item_title">项目名称</span>
                     <input v-model= "projectname" class="item_detail" />
                 </li>
                 <li class="item_li">
-                    <span class="item_title">损失类别</span>
+                    <span class="item_title">Tier3损失类别</span>
                     <input v-model= "losscategory" class="item_detail" />
                 </li>
                 <li class="item_li">
                     <span class="item_title">项目状态</span>
-                    <Select v-model="status" clearable size="small" style="width:90px">
+                    <Select v-model="status" clearable size="small" style="width:100px">
                         <Option  v-for="(item,idx) in statusList" :key = "idx" :value="item.value">{{ item.label }}</Option>
                     </Select>
                 </li>
                 <li class="item_li">
                     <span class="item_title">项目阶段</span>
-                    <Select :disabled="this.status!='2'" v-model="stage" clearable size="small" style="width:90px">
+                    <Select :disabled="this.status!='2'" v-model="stage" clearable size="small" style="width:100px">
                         <Option v-for="(item,idx) in stageList" :key = "idx" :value="item.value">{{ item.label }}</Option>
                     </Select>
                 </li>
                 <li class="item_li">
-                    <span class="item_title">起点绩效值</span>
+                    <span class="item_title">实施运行开始起点值</span>
                     <input v-model="startperformance" class="item_detail" />
                 </li>
                 <li class="item_li">
-                    <span class="item_title">目标</span>
+                    <span class="item_title">实施运行结束目标值</span>
                     <input  v-model="target" class="item_detail" />
                 </li>
                 <li class="item_li">
-                    <span class="item_title">当前绩效</span>
+                    <span class="item_title">实施运行当前值</span>
                     <input v-model="performance" class="item_detail" />
                 </li>
                 <li class="item_li">
-                    <span class="item_title">项目开始日期</span>
+                    <span class="item_title">实施运行开始日期</span>
                     <DatePicker size="small" v-model="objectstarttime" :options="optionsStart" placement="bottom-end"
                     class="item_detail" placeholder="Select date" @on-change="startChange" @on-clear="clearCharts">
                     </DatePicker>
                 </li>
                 <li class="item_li">
-                    <span class="item_title">预期结束日期</span>
+                    <span class="item_title">实施运行预期结束日期</span>
                     <DatePicker size="small" width="90%" v-model="planendtime" :options="optionsStart" placement="bottom-end"
                     class="item_detail" placeholder="Select date" @on-change="startChange" @on-clear="clearCharts">
                     </DatePicker>
@@ -458,11 +458,19 @@ import { stageRes, statusRes } from "../assets/js/tip"
             nowline(newVal){
                 let _this = this;
                 this.proNowList=[]
+                this.improList.forEach((item,index)=>{
+                    item.data.forEach(option=>{
+                        _this.leftId.push(option.lossid)
+                        // setTimeout(function(){
+                            _this.$refs[option.lossid][0].className = ""
+                        // },10)
+                    })
+                })
                 if(newVal.length>0){
                     newVal.forEach((item)=> {
-                    if(!this.arrIsContains(this.leftId,item.losstier3Lossid)){
+                    // if(!this.arrIsContains(this.leftId,item.losstier3Lossid)){
                         _this.$refs[item.losstier3Lossid][0].className = "pro_active"
-                    }
+                    // }
                     this.proNowList.push({id:item.losstier3Lossid,name:item.projectname,reviewdata:item.reviewdata,status:statusRes(item.status,this.statusResult)})
                     });
                 }

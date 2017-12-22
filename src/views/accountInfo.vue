@@ -246,6 +246,8 @@ export default {
       if(checkedNodes.length <= 0) return true;
       for(let i=0; i < checkedNodes.length; i++) {
         // console.log(checkedNodes[i].name);
+        console.log(this.maxLevel);
+        console.log(checkedNodes[i].level);
         this.maxLevel = checkedNodes[i].level < this.maxLevel ? checkedNodes[i].level : this.maxLevel;
       }
       let maxNode = zTree.getNodesByFilter(this.filter, true);

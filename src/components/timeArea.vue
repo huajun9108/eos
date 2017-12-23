@@ -20,7 +20,7 @@
             <div :class="timeFlag?'chooseArea box':'chooseArea box summaryChoose'">
                 <h1 class="choose">区域选择</h1>
                 <div class="area">
-                    <ul id="treeDemo" class="ztree">
+                    <ul id="treeArea" class="ztree">
                     </ul>
                 </div>
             </div>
@@ -191,7 +191,7 @@ export default {
                 }
             });
             _this.lineBodystr = _this.lineBodys.join(",");
-            $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
+            $.fn.zTree.init($("#treeArea"), this.setting, this.validareaList);
             if (_this.lineBodys.length <= 0) {
                 this.clearCharts();
                 return;

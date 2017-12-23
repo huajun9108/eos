@@ -114,21 +114,6 @@
             },
         },
         series: [{
-            name: "实际",
-            type: 'line',
-            data: factData,
-            lineStyle: {
-                normal: {
-                    opacity: 0.5,
-                    color:"#3670be"
-                }
-            },
-            itemStyle:{
-                normal:{
-                    color:"#3670be"
-                }
-            },
-        },{
             name: "预测",
             type: 'line',
             data: expectData,
@@ -143,7 +128,22 @@
                     color:"#cb8b2e"
                 }
             },
-        }]
+        },{
+            name: "实际",
+            type: 'line',
+            data: factData,
+            lineStyle: {
+                normal: {
+                    opacity: 0.5,
+                    color:"#3670be"
+                }
+            },
+            itemStyle:{
+                normal:{
+                    color:"#3670be"
+                }
+            },
+        },]
         })
     }
     function drawLineAndBar(chartData,id,titleText,xText,yText) {

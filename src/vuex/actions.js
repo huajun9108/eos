@@ -663,4 +663,16 @@ export default {
             commit("updateLinebodyProductById", json)
         })
     },
+    selectSavingBookByTimesAndLinebodys({ commit }, obj) {
+      axios.post("/savingbook/selectSavingBookByTimesAndLinebodys", qs.stringify({
+        "startTime": obj.startTime,
+        "endTime": obj.endTime,
+        "linebodyIds": obj.linebodyIds
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("selectSavingBookByTimesAndLinebodys", json)
+      })
+    }
 }

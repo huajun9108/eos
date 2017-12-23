@@ -187,5 +187,8 @@ export default {
     },
     updateLinebodyProductById(state, json) {
         state.updateLinebodyProductByIdRes = json
+    },
+    selectSavingBookByTimesAndLinebodys(state, json) {
+      state.selectSavingBookByTimesAndLinebodysRes = json
     }
 }

@@ -1,232 +1,316 @@
 
 <template>
-    <transition name="slide-fade">
-        <div class="TimeAndAreaContainer showchoose">
-            <div class="chooseTime box" v-show="timeFlag">
-                <h1 class="choose">时间选择</h1>
-                <div class="time">
-                    <span>开始时间</span>
-                    <DatePicker size="small" v-model="startTime" :options="optionsStart" placement="bottom-end" type="date"
-                    format="yyyy-MM-dd" placeholder="Select date" @on-change="startChange" @on-clear="clearCharts">
-                    </DatePicker>
-                </div>
-                <div class="time">
-                    <span>结束时间</span>
-                    <DatePicker size="small" v-model="endTime" :options="optionsEnd" placement="bottom-end" type="date"
-                    format="yyyy-MM-dd" placeholder="Select date" @on-change="endChange" @on-clear="clearCharts">
-                    </DatePicker>
-                </div>
-            </div>
-            <div :class="timeFlag?'chooseArea box':'chooseArea box summaryChoose'">
-                <h1 class="choose">区域选择</h1>
-                <div class="area">
-                    <ul id="treeDemo" class="ztree">
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </transition>
+<transition name="slide-fade">
+  <div class="TimeAndAreaContainer showchoose">
+    <div class="chooseTime box" v-show="timeFlag">
+      <h1 class="choose">时间选择</h1>
+      <div class="time">
+        <span>开始时间</span>
+        <DatePicker size="small" v-model="startTime" :options="optionsStart" placement="bottom-end" :type="datePickerTypeVal" placeholder="Select date" @on-change="startChange" @on-clear="clearCharts">
+        </DatePicker>
+      </div>
+      <div class="time">
+        <span>结束时间</span>
+        <DatePicker size="small" v-model="endTime" :options="optionsEnd" placement="bottom-end" :type="datePickerTypeVal" placeholder="Select date" @on-change="endChange" @on-clear="clearCharts">
+        </DatePicker>
+      </div>
+    </div>
+    <div :class="timeFlag?'chooseArea box':'chooseArea box summaryChoose'">
+      <h1 class="choose">区域选择</h1>
+      <div class="area">
+        <ul id="treeArea" class="ztree">
+        </ul>
+      </div>
+    </div>
+  </div>
+</transition>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-import {GetDateStr} from "../assets/js/tip"
+import {
+  mapState,
+  mapActions
+} from "vuex";
+import {
+  GetDateStr
+} from "../assets/js/tip"
 export default {
-    data() {
-        return {
-            timeFlag: null,
-            startTime: null,
-            endTime: null,
-            optionsStart: {
-                disabledDate: date => {
-                    let beginDateVal = this.endTime;
-                    if (beginDateVal) {
-                        return date && date.valueOf() > beginDateVal;
-                    } else {
-                        return date && date.valueOf() > Date.now();
-                    }
-                }
-            },
-            optionsEnd: {
-                disabledDate: date => {
-                    let beginDateVal = this.startTime;
-                    if (beginDateVal) {
-                        return (
-                        (date && date.valueOf() < beginDateVal) ||
-                        (date && date.valueOf() > Date.now())
-                        );
-                    } else {
-                        return date && date.valueOf() > Date.now();
-                    }
-                }
-            },
-            setting: {
-                view: {
-                    selectedMulti: false,
-                    showIcon: false
-                },
-                data: {
-                    simpleData: {
-                        enable: true
-                    }
-                },
-                check: {
-                    enable: true,
-                    chkStyle: "checkbox"
-                },
-                callback: {
-                    onCheck: this.zTreeOnCheck
-                }
-            },
-            validareaList: [],
-            lineBodys: [],
-            lineBodystr: "",
-            time: GetDateStr(-1) + " 23:59:59",
-            start: null,
-            end: null,
-        }
-    },
-    methods: {
-        ...mapActions([
-            "selectUserById",
-            "selectAllByUserIdAndLinebodyIds",
-            "selectProjectStateByTimeAndLinebodyIds",
-        ]),
-        zTreeOnCheck(event, treeId, treeNode) {
-            const _this = this;
-            _this.lineBodys = [];
-            _this.lineBodystr = '';
-            var treeObj = $.fn.zTree.getZTreeObj(treeId);
-            var nodes = treeObj.getCheckedNodes(true);
-            nodes.forEach(function(node) {
-                let reg = /^l/g;
-                if (reg.test(node.id)) {
-                    _this.lineBodys.push(node.id.substring(1));
-                }
-            });
-            _this.lineBodystr = _this.lineBodys.join(",");
-
-            if (_this.lineBodys.length <= 0) {
-                this.clearCharts();
-                return;
-            }
-            if(this.routeIsroute("summary")){
-              console.log("selectProjectStateByTimeAndLinebodyIds");
-                _this.selectProjectStateByTimeAndLinebodyIds({
-                linebodyIds: _this.lineBodystr,
-                time:this.time,
-                });
-                return;
-            }
-            if(!this.startTime||!this.endTime)return
-            this.start = new Date(this.startTime.format("yyyy-MM-dd") +" 00:00:00");
-            this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
-            this.lossmaping()
-        },
-        startChange(data) {
-            if (!data) return;
-            this.start = new Date(data + " 00:00:00");
-            if (!this.endTime) return;
-            this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
-            this.lossmaping()
-        },
-        endChange(data) {
-            if (!data) return;
-            this.end = new Date(data + " 23:59:59");
-            if (!this.startTime) return;
-            this.start = new Date(this.startTime.format("yyyy-MM-dd") + " 00:00:00");
-            this.lossmaping()
-        },
-        lossmaping(){
-            if(this.routeIsroute("lossmaping")){
-                if (
-                    sessionStorage.getItem("userid") &&
-                    this.lineBodystr &&
-                    this.start &&
-                    this.end
-                ) {
-                    this.selectAllByUserIdAndLinebodyIds({
-                        userId: sessionStorage.getItem("userid"),
-                        linebodyIds: this.lineBodystr,
-                        startTime: this.start,
-                        endTime: this.end
-                    });
-                }
-            }
-        },
-        clearCharts() {
-            console.log("clearCharts");
-            // this.projectStatusList = []
-            // console.log(this.projectStatusList)
-            this.$emit('clear');
-        },
-        routeIsroute(route){
-            let reg = this.$route.path.split("/")[2];
-            if (reg === route) {
-                return true;
-            } else {
-                return false;
-            }
-        },
-    },
-    computed: {
-        ...mapState([
-            "validarea",
-        ])
-    },
-    watch: {
-        validarea(newVal) {
-            const _this = this;
-            this.validareaList = [];
-            this.validarea.forEach(item => {
-                if (item.checked) {
-                    this.validareaList.push(item);
-                }
-            });
-            _this.lineBodys = [];
-            _this.lineBodystr = '';
-            this.validareaList.forEach(function(node) {
-                let reg = /^l/g;
-                if (reg.test(node.id)) {
-                    _this.lineBodys.push(node.id.substring(1));
-                }
-            });
-            _this.lineBodystr = _this.lineBodys.join(",");
-            $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
-            if (_this.lineBodys.length <= 0) {
-                this.clearCharts();
-                return;
-            }
-            if(this.routeIsroute("summary")){
-                _this.selectProjectStateByTimeAndLinebodyIds({
-                linebodyIds: _this.lineBodystr,
-                time:this.time,
-                });
-                return;
-            }
-            if(!this.startTime||!this.endTime)return
-            this.start = new Date(this.startTime.format("yyyy-MM-dd") +" 00:00:00");
-            this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
-            this.lossmaping()
-
-        }
-    },
-    mounted() {
-        if (sessionStorage.getItem("userid")) {
-            this.selectUserById({
-                userid: sessionStorage.getItem("userid")
-            });
-            if(this.routeIsroute("lossmaping") || this.routeIsroute("overview")){
-            this.endTime = new Date();
-            this.startTime = new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000);
+  data() {
+    return {
+      timeFlag: null,
+      startTime: null,
+      endTime: null,
+      optionsStart: {
+        disabledDate: date => {
+          let beginDateVal = this.endTime;
+          if (beginDateVal) {
+            return date && date.valueOf() > beginDateVal;
+          } else {
+            return date && date.valueOf() > Date.now();
           }
         }
-
-        if(this.routeIsroute("summary")){
-            this.timeFlag = false;
-        }else{
-            this.timeFlag = true;
+      },
+      optionsEnd: {
+        disabledDate: date => {
+          let beginDateVal = this.startTime;
+          if(beginDateVal) {
+            return (
+              (date && date.valueOf() < beginDateVal) ||
+              (date && date.valueOf() > Date.now())
+            );
+          } else {
+            return date && date.valueOf() > Date.now();
+          }
         }
+      },
+      setting: {
+        view: {
+          selectedMulti: false,
+          showIcon: false
+        },
+        data: {
+          simpleData: {
+            enable: true
+          }
+        },
+        check: {
+          enable: true,
+          chkStyle: "checkbox"
+        },
+        callback: {
+          onCheck: this.zTreeOnCheck
+        }
+      },
+      validareaList: [],
+      lineBodys: [],
+      lineBodystr: "",
+      time: GetDateStr(-1) + " 23:59:59",
+      start: null,
+      end: null,
+      datePickerTypeVal: "date",
     }
+  },
+  methods: {
+    ...mapActions([
+      "selectUserById",
+      "selectAllByUserIdAndLinebodyIds",
+      "selectProjectStateByTimeAndLinebodyIds",
+      "selectSavingBookByTimesAndLinebodys"
+    ]),
+    zTreeOnCheck(event, treeId, treeNode) {
+      const _this = this;
+      _this.lineBodys = [];
+      _this.lineBodystr = '';
+      var treeObj = $.fn.zTree.getZTreeObj(treeId);
+      var nodes = treeObj.getCheckedNodes(true);
+      nodes.forEach(function(node) {
+        let reg = /^l/g;
+        if (reg.test(node.id)) {
+          _this.lineBodys.push(node.id.substring(1));
+        }
+      });
+      _this.lineBodystr = _this.lineBodys.join(",");
+
+      if (_this.lineBodys.length <= 0) {
+        this.clearCharts();
+        return;
+      }
+      if (this.routeIsroute("summary")) {
+        console.log("selectProjectStateByTimeAndLinebodyIds");
+        _this.selectProjectStateByTimeAndLinebodyIds({
+          linebodyIds: _this.lineBodystr,
+          time: this.time,
+        });
+        return;
+      }
+
+      if(this.routeIsroute("savingbook")) {
+        console.log("selectSavingBookByTimesAndLinebodys");
+        if(!this.start || !this.end) return;
+        _this.selectSavingBookByTimesAndLinebodys({
+          "startTime": this.start,
+          "endTime": this.end,
+          "linebodyIds": _this.lineBodystr,
+        });
+        return;
+      }
+
+      if (!this.startTime || !this.endTime) return
+      this.start = new Date(this.startTime.format("yyyy-MM-dd") + " 00:00:00");
+      this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
+      this.lossmaping();
+    },
+    startChange(data) {
+      if (!data) return;
+      if (this.routeIsroute("savingbook")) {
+        if(!this.endTime) return;
+        this.start = new Date(data + '-01 00:00:00');
+
+        const endFormat = this.endTime.format("yyyy-MM");
+        const endArr = endFormat.split("-");
+        const year = endArr[0];
+        const month = endArr[1];
+        const days = this.getDaysInMonth(year, month);
+        this.end = new Date(endFormat + '-' + days.toString() + " 23:59:59.999");
+        this.selectSavingBookByTimesAndLinebodys({
+          "startTime": this.start,
+          "endTime": this.end,
+          "linebodyIds": this.lineBodystr
+        });
+      } else {
+        this.start = new Date(data + " 00:00:00");
+        if (!this.endTime) return;
+        this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
+        this.lossmaping()
+      }
+    },
+    endChange(data) {
+      if (!data) return;
+      if (this.routeIsroute("savingbook")) {
+        if(!this.startTime) return;
+        const startFormat = this.startTime.format('yyyy-MM');
+        this.start = new Date(startFormat + '-01 00:00:00');
+
+        const endArr = data.split("-");
+        const year = endArr[0];
+        const month = endArr[1];
+        const days = this.getDaysInMonth(year, month);
+        console.log(days);
+        this.end = new Date(data + '-' + days.toString() + " 23:59:59.999");
+        this.selectSavingBookByTimesAndLinebodys({
+          "startTime": this.start,
+          "endTime": this.end,
+          "linebodyIds": this.lineBodystr
+        });
+        console.log("endChange");
+      } else {
+        this.end = new Date(data + " 23:59:59");
+        if (!this.startTime) return;
+        this.start = new Date(this.startTime.format("yyyy-MM-dd") + " 00:00:00");
+        this.lossmaping()
+      }
+    },
+    lossmaping() {
+      if (this.routeIsroute("lossmaping")) {
+        if (
+          sessionStorage.getItem("userid") &&
+          this.lineBodystr &&
+          this.start &&
+          this.end
+        ) {
+          this.selectAllByUserIdAndLinebodyIds({
+            userId: sessionStorage.getItem("userid"),
+            linebodyIds: this.lineBodystr,
+            startTime: this.start,
+            endTime: this.end
+          });
+        }
+      }
+    },
+    clearCharts() {
+      console.log("clearCharts");
+      this.$emit('clear');
+    },
+    routeIsroute(route) {
+      let reg = this.$route.path.split("/")[2];
+      if (reg === route) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    getDaysInMonth(year, month) {
+      const nextMonth = parseInt(month, 10);
+      console.log(nextMonth);
+      const temp = new Date(year, nextMonth, 0);
+      return temp.getDate();
+    }
+  },
+  computed: {
+    ...mapState([
+      "validarea",
+    ])
+  },
+  watch: {
+    validarea(newVal) {
+      const _this = this;
+      this.validareaList = [];
+      this.validarea.forEach(item => {
+        if (item.checked) {
+          this.validareaList.push(item);
+        }
+      });
+      _this.lineBodys = [];
+      _this.lineBodystr = '';
+      this.validareaList.forEach(function(node) {
+        let reg = /^l/g;
+        if (reg.test(node.id)) {
+          _this.lineBodys.push(node.id.substring(1));
+        }
+      });
+      _this.lineBodystr = _this.lineBodys.join(",");
+      $.fn.zTree.init($("#treeArea"), this.setting, this.validareaList);
+      if (_this.lineBodys.length <= 0) {
+        this.clearCharts();
+        return;
+      }
+      if (this.routeIsroute("summary")) {
+        _this.selectProjectStateByTimeAndLinebodyIds({
+          linebodyIds: _this.lineBodystr,
+          time: this.time,
+        });
+        return;
+      }
+      if(this.routeIsroute("savingbook")) {
+        _this.selectSavingBookByTimesAndLinebodys({
+          startTime: this.start,
+          endTime: this.end,
+          linebodyIds: _this.lineBodystr,
+        });
+        return;
+      }
+
+      if (!this.startTime || !this.endTime) return
+      this.start = new Date(this.startTime.format("yyyy-MM-dd") + " 00:00:00");
+      this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
+      this.lossmaping()
+    }
+  },
+  mounted() {
+    if (sessionStorage.getItem("userid")) {
+      this.selectUserById({
+        userid: sessionStorage.getItem("userid")
+      });
+      if (this.routeIsroute("lossmaping") || this.routeIsroute("overview")) {
+        this.endTime = new Date();
+        this.startTime = new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000);
+      }
+    }
+    if (this.routeIsroute("summary")) {
+      this.timeFlag = false;
+    } else {
+      this.timeFlag = true;
+    }
+
+    if (this.routeIsroute("savingbook")) {
+      this.datePickerTypeVal = "month";
+      const currentDate = new Date().format("yyyy-MM");
+      const arr = currentDate.split('-');
+      const year = parseInt(arr[0]);
+      const month = parseInt(arr[1]);
+      this.endTime = new Date(currentDate + "-01 00:00:00");
+      const days = this.getDaysInMonth(year, month);
+      console.log(days);
+      this.end = new Date(currentDate + "-" + days.toString() + " 23:59:59.999");
+      if(month === 12) {
+        this.startTime = new Date(year.toString() + '-01-01 00:00:00');
+      } else {
+        let beginYear = year - 1;
+        let beginMonth = month + 1;
+        this.startTime = new Date(beginYear.toString() + '-' + beginMonth.toString() + '-01 00:00:00');
+      }
+      this.start = this.startTime;
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -287,7 +371,7 @@ export default {
             overflow-y: auto;
         }
     }
-    .summaryChoose{
+    .summaryChoose {
         margin-top: P(72);
     }
 }

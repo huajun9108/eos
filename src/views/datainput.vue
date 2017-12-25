@@ -85,12 +85,7 @@
         <span>产品：</span>
         <span>{{ this.productNameBeingEditedVal }}</span>
       </div>
-      <!-- <Select v-else v-model="choosedProductValByAdd" class="dropdownProduct" clearable placeholder="产品">
-          <Option v-for="item in optionalProductListByAdd" :value="item.id" :key="item.id" :label="item.name" :ref="productName">
-            {{ item.name }}
-          </Option>
-        </Select> -->
-        <Cascader class="dropdownProduct" v-else :data="productCascaderData" v-model="choosedProductValByAdd" trigger="hover" placeholder="产品"></Cascader>
+      <Cascader class="dropdownProduct" v-else :data="optionalProductListByAdd" v-model="choosedProductValByAdd" trigger="hover" placeholder="产品"></Cascader>
     </div>
     <div class="productInfoSetting">
       <span>良品数量：</span>
@@ -182,7 +177,7 @@ export default {
       showProductInfoFlag: false,
       editProductInfoFlag: false,
       productNameBeingEditedVal: '',
-      choosedProductValByAdd: '',
+      choosedProductValByAdd: [],
       productInfoCols: [{
           title: '产品',
           key: 'productname',
@@ -237,7 +232,6 @@ export default {
       optionalProductListByAdd: [],
       conformProductValue: null,
       editProductIndex: null,
-      productCascaderData: [],
       /*loss变量*/
       showLossFlag: false,
       editLossDirFlag: false,
@@ -584,6 +578,14 @@ export default {
     lossConfirmClick: function() {
       if (this.editLossDirFlag) {
         if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue)) {
+          this.lossTwoLevName = '';
+          this.lossThreeLevStructId = '';
+          this.lossFourLevStructId = '';
+          this.choosedLossTier3ValByAdd = '';
+          this.choosedLossTier4ValByAdd = '';
+          this.startTimeValue = '';
+          this.durationTimeValue = '';
+          this.endTimeValue = '';
           this.$Message.error("请将需要修改的loss信息填写完整");
           return;
         }
@@ -605,6 +607,14 @@ export default {
       } else {
         if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue && this.choosedLossTier3ValByAdd &&
             this.choosedLossTier4ValByAdd)) {
+          this.lossTwoLevName = '';
+          this.lossThreeLevStructId = '';
+          this.lossFourLevStructId = '';
+          this.choosedLossTier3ValByAdd = '';
+          this.choosedLossTier4ValByAdd = '';
+          this.startTimeValue = '';
+          this.durationTimeValue = '';
+          this.endTimeValue = '';
           this.$Message.error("请将需要添加的loss相关信息填写完整");
           return;
         }
@@ -635,6 +645,8 @@ export default {
     productInfoConfirmClick() {
       if (this.editProductInfoFlag) {
         if (!this.conformProductValue) {
+          this.choosedProductValByAdd = [];
+          this.conformProductValue = null;
           this.$Message.error("请将需要修改的产品信息填写完整");
           return;
         }
@@ -646,7 +658,9 @@ export default {
           "linebodyId": this.lineBodys[0]
         })
       } else {
-        if (!(this.choosedProductValByAdd && this.conformProductValue)) {
+        if (!(this.choosedProductValByAdd && this.conformProductValue && this.choosedProductValByAdd.length === 3)) {
+          this.choosedProductValByAdd = [];
+          this.conformProductValue = null;
           this.$Message.error("请将需要添加的产品信息填写完整");
           return;
         }
@@ -661,8 +675,8 @@ export default {
     },
     productInfoCancelClick() {
       this.showProductInfoFlag = false;
-      this.choosedProductValByAdd = '';
-      this.conformProductValue = '';
+      this.choosedProductValByAdd = [];
+      this.conformProductValue = null;
       this.editProductIndex = null;
     },
   },
@@ -738,8 +752,8 @@ export default {
       } else {
         this.$Message.error("添加失败");
       }
-      this.choosedProductValByAdd = '';
-      this.conformProductValue = '';
+      this.choosedProductValByAdd = [];
+      this.conformProductValue = null;
     },
     showProductRes(newVal) {
       console.log("showProductRes:" + newVal);
@@ -772,8 +786,7 @@ export default {
     showProductNameRes(newVal) {
       console.log("showProductNameRes:" + newVal);
       if (newVal.status === "0") {
-        this.productCascaderData = newVal.data;
-        // this.optionalProductListByAdd = newVal.data;
+        this.optionalProductListByAdd = newVal.data;
       }
     },
     deleteProductRes(newVal) {
@@ -792,7 +805,7 @@ export default {
         this.$Message.error("修改失败");
       }
       this.editProductIndex = null;
-      this.conformProductValue = '';
+      this.conformProductValue = null;
     },
     deleteLoss4dataRes(newVal) {
       if (newVal.status === "0") {

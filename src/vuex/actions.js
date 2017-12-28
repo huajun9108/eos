@@ -1,7 +1,7 @@
 import axios from "axios"
 import qs from 'qs'
 
-axios.defaults.baseURL = "http://116.62.10.199:3001";
+axios.defaults.baseURL = "http://116.62.10.199:3002";
 
 export default {
     adminLogin({ commit }, obj) {
@@ -547,7 +547,7 @@ export default {
     },
     deleteLoss4data({ commit }, obj) {
         axios.post("/datainput/deleteLoss4data", qs.stringify({
-            "losstier4Dataid": obj.losstier4Dataid
+            "losstier4DataidList": obj.losstier4DataidList
         })).then(res => {
             return res.data
         }).then(json => {

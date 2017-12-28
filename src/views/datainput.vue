@@ -410,7 +410,7 @@ export default {
             if (_this.datainputLossTableData[i][key].length > 0) {
               if (_this.datainputLossTableData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
                 _this.deleteLoss4data({
-                  "losstier4Dataid": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
+                  "losstier4DataidList": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
                 })
               }
             }
@@ -718,7 +718,7 @@ export default {
           }
         }
       } else {
-        this.$message.error("添加失败");
+        this.$Message.error("添加失败");
       }
       this.lossTwoLevName = '';
       this.lossThreeLevStructId = '';

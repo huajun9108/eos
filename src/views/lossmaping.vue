@@ -26,34 +26,29 @@
   </div>
   </template>
   <script>
-  import {
-    mapState,
-    mapActions
-  } from "vuex";
-  import echarts from "echarts"
-  import timearea from "../components/timeArea"
+  import {mapState,mapActions} from "vuex";
+  import echarts from "echarts";
+  import timearea from "../components/timeArea";
   export default {
     components: {
       "v-timearea": timearea
     },
-    data: function() {
-      return {
+    data(){
+      return{
         isShow:false,
-        chartList: [],
-        lossmappingDataList: []
+        chartList:[],
+        lossmappingDataList:[]
       }
     },
-    methods: {
-      ...mapActions([
-      ]),
-      clearChartsData() {
-        this.lossmappingDataList = [];
+    methods:{
+      clearChartsData(){
+        this.lossmappingDataList=[];
       },
       showlDialog(){
         this.isShow = !this.isShow
       },
-      initCharts: function() {
-        for(let i = 0; i < this.chartList.length; i++) {
+      initCharts(){
+        for(let i=0; i<this.chartList.length; i++) {
           if (this.chartList[i] != null && this.chartList[i] != "" && this.chartList[i] != undefined){
             this.chartList[i].dispose();
           }
@@ -115,7 +110,7 @@
 
     },
     mounted() {
-      let _this = this
+      
     }
   }
   </script>

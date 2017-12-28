@@ -4,7 +4,6 @@
     <div class="accountinfo_title">
       <span>帐户设置</span>
     </div>
-
     <div class="accountinfo_setting">
       <div class="setting_left">
         <div class="accountinfo_username accountinfo">
@@ -59,15 +58,11 @@
       <span class="button_cancel button" @click="cancel">取消</span>
     </div>
   </div>
-
 </div>
 </template>
 
 <script type="text/javascript">
-import {
-  mapState,
-  mapActions
-} from "vuex";
+import {mapState,mapActions} from "vuex";
 export default {
   created: function() {
     this.getOptions()

@@ -110,6 +110,7 @@
 <script>
 import timearea from "../components/timeArea"
 import chart from '../components/echarts'
+import {mapState,mapActions} from "vuex";
 export default {
     components: {
         "v-timearea": timearea,
@@ -180,11 +181,12 @@ export default {
             this.isShow = !this.isShow 
         },
         showData(data){
-            // let b = data.split(",")
-            // console.log(b)
             this.data = data.split(",")
             console.log(this.data)
         },  
+   },
+   computed: {
+        ...mapState(["selectOverviewByTimesAndLinebodys"])
    },
    watch:{
         data:{
@@ -195,6 +197,9 @@ export default {
             console.log(this.dataList[0].datasList)
             },
             deep:true
+        },
+        selectOverviewByTimesAndLinebodys(newVal){
+            console.log(newVal)
         }
    },
    mounted () {

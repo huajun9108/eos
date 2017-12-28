@@ -1,7 +1,7 @@
 import axios from "axios"
 import qs from 'qs'
 
-axios.defaults.baseURL = "http://116.62.10.199:3001";
+axios.defaults.baseURL = "http://116.62.10.199:3002";
 
 export default {
     adminLogin({ commit }, obj) {
@@ -673,6 +673,18 @@ export default {
             return res.data
         }).then(json => {
             commit("selectSavingBookByTimesAndLinebodys", json)
+        })
+    },
+    selectOverviewByTimesAndLinebodys({ commit }, obj) {
+        axios.post("/overview/selectOverviewByTimesAndLinebodys", qs.stringify({
+            "startTime": obj.startTime,
+            "endTime": obj.endTime,
+            "linebodyIds": obj.linebodyIds
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("selectOverviewByTimesAndLinebodys", json)
         })
     }
 }

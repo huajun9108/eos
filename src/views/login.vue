@@ -17,9 +17,9 @@
                     <input type="radio"  id="admin-radio" value="0" v-model="picked" class="myradio"><label for="admin-radio">管理员</label>
                     <input type="radio"  id="user-radio" value="1" v-model="picked" class="myradio"><label for="user-radio">用户</label>
                 
-                <button type="button" @click="tologin" class="btn" ref="btn" >登&nbsp&nbsp录</button>
+                <button type="button" @click="tologin" class="btn" ref="btn" >登&nbsp;&nbsp;录</button>
                 <div class="hint hide" ref="hint">
-                    <i class="iconfont icon-hint"></i><span class="tips" ref="tip"/></span>
+                    <i class="iconfont icon-hint"></i><span class="tips" ref="tip"/>
                 </div>
             </div>		          
 		</div> 

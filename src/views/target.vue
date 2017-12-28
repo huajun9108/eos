@@ -57,7 +57,6 @@
             </div>
             <div class="area_button text-right">
                 <span class="button_confirm button" @click="confirm">确认</span>
-                
             </div>
         </div>
     </div>
@@ -261,7 +260,6 @@ export default{
         }
     },
     mounted() {
-        // this.selectAreaAll()
 	}
 
 }

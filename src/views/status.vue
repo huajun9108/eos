@@ -100,9 +100,6 @@ import { mapActions, mapState } from "vuex";
 import chart from "../components/echarts";
 import {GetDateStr} from "../assets/js/tip"
 export default {
-    props:[
-        "project"
-    ],
     components: {
         chart: chart
     },

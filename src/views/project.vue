@@ -461,16 +461,12 @@ import { stageRes, statusRes } from "../assets/js/tip"
                 this.improList.forEach((item,index)=>{
                     item.data.forEach(option=>{
                         _this.leftId.push(option.lossid)
-                        // setTimeout(function(){
-                            _this.$refs[option.lossid][0].className = ""
-                        // },10)
+                        _this.$refs[option.lossid][0].className = ""
                     })
                 })
                 if(newVal.length>0){
                     newVal.forEach((item)=> {
-                    // if(!this.arrIsContains(this.leftId,item.losstier3Lossid)){
-                        _this.$refs[item.losstier3Lossid][0].className = "pro_active"
-                    // }
+                    _this.$refs[item.losstier3Lossid][0].className = "pro_active"
                     this.proNowList.push({id:item.losstier3Lossid,name:item.projectname,reviewdata:item.reviewdata,status:statusRes(item.status,this.statusResult)})
                     });
                 }

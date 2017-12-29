@@ -592,6 +592,7 @@ export default {
                 "starttime": this.startTimeValue,
                 "endtime": this.endTimeValue
                 });
+                console.log(this.lineBodys)
             }
         },
         lossCancelClick: function() {

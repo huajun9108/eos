@@ -1,20 +1,19 @@
 <template>
 <div class="classHistory openCeremony">
     <div class="history_left">
-        <span class="history_data">2017/12/29</span>
-        <ul class="history_time">
-            <li class="history_detail">08:30:00-11:30:00</li>
-            <li class="history_detail">08:30:00-11:30:00</li>
-            <li class="history_detail">08:30:00-11:30:00</li>
-            <li class="history_detail">08:30:00-11:30:00</li>
-        </ul>
-        <span class="history_data">2017/12/29</span>
-        <ul class="history_time">
-            <li class="history_detail">08:30:00-11:30:00</li>
-            <li class="history_detail">08:30:00-11:30:00</li>
-            <li class="history_detail">08:30:00-11:30:00</li>
-            <li class="history_detail">08:30:00-11:30:00</li>
-        </ul>
+        <div class="history_data" v-for="(item,index) in historyData" :key = "index">
+            <span class="history_date">{{item.year}}</span>
+            <ul class="history_time">
+                <li class="history_detail" v-for="(time,index) in item.time" :key= "index">{{time}}</li>
+            </ul>
+            <!-- <span class="history_date">2017/12/29</span>
+            <ul class="history_time">
+                <li class="history_detail">08:30:00-11:30:00</li>
+                <li class="history_detail">08:30:00-11:30:00</li>
+                <li class="history_detail">08:30:00-11:30:00</li>
+                <li class="history_detail">08:30:00-11:30:00</li>
+            </ul> -->
+        </div>
     </div>
     <div class="history_infor">
         <div class="basicInfo">
@@ -116,6 +115,25 @@ import {mapState,mapActions} from "vuex";
 export default {
     data(){
         return {
+            historyData:[{
+                year:"2017/12/29",time:["08:30:00-11:30:00","09:30:00-11:30:00","10:30:00-11:30:00","06:30:00-11:30:00","07:30:00-11:30:00"]
+            },{
+                year:"2017/12/30",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
+            },{
+                year:"2017/12/31",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
+            },{
+                year:"2017/12/28",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
+            },{
+                year:"2017/12/27",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
+            },{
+                year:"2017/12/26",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
+            },{
+                year:"2017/12/25",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
+            },{
+                year:"2017/12/24",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
+            },{
+                year:"2017/12/23",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
+            },],
             optionsOpenCeremony: {
                 disabledDate(date) {}
             },
@@ -304,480 +322,480 @@ export default {
     },
     computed: {
         ...mapState([
-            "lossTier3",
-            "kpiTwoLev",
-            "addLosstier4time2Res",
-            "datainputLossTableData",
-            "addClassinfRes",
-            "addProductRes",
-            "showProductRes",
-            "updateObjectimeAfteraddRes",
-            "showProductNameRes",
-            "deleteProductRes",
-            "updateProductRes",
-            "deleteLoss4dataRes"
+            // "lossTier3",
+            // "kpiTwoLev",
+            // "addLosstier4time2Res",
+            // "datainputLossTableData",
+            // "addClassinfRes",
+            // "addProductRes",
+            // "showProductRes",
+            // "updateObjectimeAfteraddRes",
+            // "showProductNameRes",
+            // "deleteProductRes",
+            // "updateProductRes",
+            // "deleteLoss4dataRes"
         ])
     },
-    methods: {
-        ...mapActions([
-            "selectUserById",
-            "showLosstier3",
-            "showKpitwolev",
-            "addLosstier4time2",
-            "addClassinf",
-            "addProduct",
-            "showProduct",
-            "updateObjectimeAfteradd",
-            "showProductName",
-            "deleteProduct",
-            "updateProduct",
-            "deleteLoss4data"
-        ]),
-        getTier3: function(tier) {
-            if (!tier) {
-                this.choosedLossTier3ValByAdd = '';
-                this.choosedLossTier4ValByAdd = '';
-                return;
-            }
-            this.lossThreeLevStructId = tier;
-            let tempTier = [];
-            this.optionalLossTier4ListByAdd = [];
-            this.choosedLossTier4ValByAdd = '';
-            for (let val of this.lossTier3.data.losstier4) {
-                if (tier === val.losstier3Lossid) {
-                tempTier.push({
-                    "tier4id": val.tier4id,
-                    "name": val.name
-                });
-                }
-            }
-            this.optionalLossTier4ListByAdd = tempTier;
-        },
-        getTier4(tier) {
-            if (!tier) {
-                this.choosedLossTier4ValByAdd = '';
-                return;
-            }
+    // methods: {
+    //     ...mapActions([
+    //         // "selectUserById",
+    //         // "showLosstier3",
+    //         // "showKpitwolev",
+    //         // "addLosstier4time2",
+    //         // "addClassinf",
+    //         // "addProduct",
+    //         // "showProduct",
+    //         // "updateObjectimeAfteradd",
+    //         // "showProductName",
+    //         // "deleteProduct",
+    //         // "updateProduct",
+    //         // "deleteLoss4data"
+    //     ]),
+    //     getTier3: function(tier) {
+    //         if (!tier) {
+    //             this.choosedLossTier3ValByAdd = '';
+    //             this.choosedLossTier4ValByAdd = '';
+    //             return;
+    //         }
+    //         this.lossThreeLevStructId = tier;
+    //         let tempTier = [];
+    //         this.optionalLossTier4ListByAdd = [];
+    //         this.choosedLossTier4ValByAdd = '';
+    //         for (let val of this.lossTier3.data.losstier4) {
+    //             if (tier === val.losstier3Lossid) {
+    //             tempTier.push({
+    //                 "tier4id": val.tier4id,
+    //                 "name": val.name
+    //             });
+    //             }
+    //         }
+    //         this.optionalLossTier4ListByAdd = tempTier;
+    //     },
+    //     getTier4(tier) {
+    //         if (!tier) {
+    //             this.choosedLossTier4ValByAdd = '';
+    //             return;
+    //         }
 
-            this.lossFourLevStructId = tier;
-        },
-        addLoss: function(name) {
-            if (!this.openCeremonyStatus) {
-                this.$Message.error("请先选择开班时间");
-                return;
-            }
-            this.lossTwoLevName = name;
-            this.showLosstier3({
-                "twolevName": name,
-            });
-            this.editLossDirFlag = false;
-            this.showLossFlag = true;
-        },
-        addProductInfo: function(name) {
-            if (!this.openCeremonyStatus) {
-                this.$Message.error("请先选择开班时间");
-                return;
-            }
-            this.editProductInfoFlag = false;
-            this.showProductInfoFlag = true;
-            this.showProductName({
-                "linebodyId": this.lineBodys[0]
-            })
-        },
-        deleteLoss(params) {
-            this.lossParams = params;
-            let _this = this;
-            Ewin.confirm({
-                message: "确认删除？"
-            }).on(function(e) {
-                if (!e) {
-                return;
-                }
-                for (let i = 0; i < _this.datainputLossTableData.length; i++) {
-                console.log(_this.datainputLossTableData[i]);
-                for (let key in _this.datainputLossTableData[i]) {
-                    /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    console.log(_this.datainputLossTableData[i][key][_this.lossParams.index]);
-                    if (_this.datainputLossTableData[i][key].length > 0) {
-                    if (_this.datainputLossTableData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
-                        _this.deleteLoss4data({
-                        "losstier4DataidList": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
-                        })
-                    }
-                    }
-                }
-                }
-            });
-        },
-        deleteProductClick(index) {
-            const productIdList = this.productInfoData[index].productid;
-            let _this = this;
-            Ewin.confirm({
-                message: "确认删除？"
-            }).on(function(e) {
-                if (!e) {
-                return;
-                }
-                _this.deleteProduct({
-                "productIdList": productIdList,
-                "classinfIdList": _this.classInfoIdList,
-                "linebodyId": _this.lineBodys[0]
-                });
-            });
-        },
-        editProduct(index) {
-            this.editProductInfoFlag = true;
-            let editInfo = this.productInfoData.slice(index, index + 1);
-            this.productNameBeingEditedVal = editInfo[0].productname;
-            this.conformProductValue = parseInt(editInfo[0].conformproduct);
-            this.editProductIndex = index;
-        },
-        editLoss(params) {
-            this.editLossDirFlag = true;
-            this.lossTier3BeingEditedVal = params.row["losstier3name"];
-            this.lossTier4BeingEditedVal = params.row["losstier4name"];
-            this.startTimeValue = new Date(params.row["starttime"]);
-            this.endTimeValue = new Date(params.row["endtime"]);
-            this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
-            this.lossParams = params;
-        },
-        lengthShiftTimeClear() {
-            this.lengthShiftTimeValue = [];
-        },
-        timeFormat: function(mss) {
-            var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
-            var sec = (mss % (1000 * 60)) / 1000;
-            return `${hour}:${min}:${sec}`;
-        },
-        timeTranslateDateMs: function(dateObj) {
-            if (dateObj) {
-                const hour = dateObj.getHours();
-                const min = dateObj.getMinutes();
-                const sec = dateObj.getSeconds();
-                return (hour * 3600 + min * 60 + sec) * 1000;
-            }
-        },
-        timeTranslateArrayMs: function(durationArray) {
-            if (durationArray.length > 0) {
-                const hour = parseInt(durationArray[0]);
-                const min = parseInt(durationArray[1]);
-                const sec = parseInt(durationArray[2]);
-                return (hour * 3600 + min * 60 + sec) * 1000;
-            }
-        },
-        startTimeChooseOk: function() {
-            if (!this.startTimeValue) {
-                this.durationTimeValue = '';
-                this.endTimeValue = '';
-                return;
-            }
-            const startMs = this.startTimeValue.getTime();
-            if (this.durationTimeValue !== '') {
-                const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
-                this.endTimeValue = new Date(startMs + durationMs);
-            } else if (this.endTimeValue !== '') {
-                const end = this.endTimeValue;
-                const endMs = end.getTime();
-                const durationMs = endMs - startMs;
-                this.durationTimeValue = this.timeFormat(durationMs);
-            }
-        },
-        durationTimeValueChange: function(val) {
-            if (!val) {
-                this.startTimeValue = '';
-                this.endTimeValue = '';
-                return;
-            }
-            const durationArray = val.split(":");
-            const durationMs = this.timeTranslateArrayMs(durationArray);
-            if (this.startTimeValue !== '') {
-                const start = this.startTimeValue;
-                const startMs = start.getTime();
-                this.endTimeValue = new Date(startMs + durationMs);
-            } else if (this.endTimeValue !== '') {
-                const end = this.endTimeValue;
-                const endMs = end.getTime();
-                this.startTimeValue = new Date(endMs - durationMs);
-            }
-        },
-        endTimeChooseOk() {
-            if (!this.endTimeValue) {
-                this.startTimeValue = '';
-                this.durationTimeValue = '';
-                return;
-            }
-            const endMs = this.endTimeValue.getTime();
-            if (this.durationTimeValue !== '') {
-                const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
-                this.startTimeValue = new Date(endMs - durationMs);
-            } else if (this.startTimeValue !== '') {
-                const start = this.startTimeValue;
-                const startMs = start.getTime();
-                const durationMs = endMs - startMs;
-                this.durationTimeValue = this.timeFormat(durationMs);
-            }
-        },
-        addClassInfoClick() {
-            if (!(this.lengthShiftTimeValue.length === 2 && this.shouldNumAttendanceValue && this.actualNumAttendanceValue)) {
-                this.$Message.error("请将班次信息填写完整");
-                return;
-            }
+    //         this.lossFourLevStructId = tier;
+    //     },
+    //     addLoss: function(name) {
+    //         if (!this.openCeremonyStatus) {
+    //             this.$Message.error("请先选择开班时间");
+    //             return;
+    //         }
+    //         this.lossTwoLevName = name;
+    //         this.showLosstier3({
+    //             "twolevName": name,
+    //         });
+    //         this.editLossDirFlag = false;
+    //         this.showLossFlag = true;
+    //     },
+    //     addProductInfo: function(name) {
+    //         if (!this.openCeremonyStatus) {
+    //             this.$Message.error("请先选择开班时间");
+    //             return;
+    //         }
+    //         this.editProductInfoFlag = false;
+    //         this.showProductInfoFlag = true;
+    //         this.showProductName({
+    //             "linebodyId": this.lineBodys[0]
+    //         })
+    //     },
+    //     deleteLoss(params) {
+    //         this.lossParams = params;
+    //         let _this = this;
+    //         Ewin.confirm({
+    //             message: "确认删除？"
+    //         }).on(function(e) {
+    //             if (!e) {
+    //             return;
+    //             }
+    //             for (let i = 0; i < _this.datainputLossTableData.length; i++) {
+    //             console.log(_this.datainputLossTableData[i]);
+    //             for (let key in _this.datainputLossTableData[i]) {
+    //                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+    //                 console.log(_this.datainputLossTableData[i][key][_this.lossParams.index]);
+    //                 if (_this.datainputLossTableData[i][key].length > 0) {
+    //                 if (_this.datainputLossTableData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
+    //                     _this.deleteLoss4data({
+    //                     "losstier4DataidList": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
+    //                     })
+    //                 }
+    //                 }
+    //             }
+    //             }
+    //         });
+    //     },
+    //     deleteProductClick(index) {
+    //         const productIdList = this.productInfoData[index].productid;
+    //         let _this = this;
+    //         Ewin.confirm({
+    //             message: "确认删除？"
+    //         }).on(function(e) {
+    //             if (!e) {
+    //             return;
+    //             }
+    //             _this.deleteProduct({
+    //             "productIdList": productIdList,
+    //             "classinfIdList": _this.classInfoIdList,
+    //             "linebodyId": _this.lineBodys[0]
+    //             });
+    //         });
+    //     },
+    //     editProduct(index) {
+    //         this.editProductInfoFlag = true;
+    //         let editInfo = this.productInfoData.slice(index, index + 1);
+    //         this.productNameBeingEditedVal = editInfo[0].productname;
+    //         this.conformProductValue = parseInt(editInfo[0].conformproduct);
+    //         this.editProductIndex = index;
+    //     },
+    //     editLoss(params) {
+    //         this.editLossDirFlag = true;
+    //         this.lossTier3BeingEditedVal = params.row["losstier3name"];
+    //         this.lossTier4BeingEditedVal = params.row["losstier4name"];
+    //         this.startTimeValue = new Date(params.row["starttime"]);
+    //         this.endTimeValue = new Date(params.row["endtime"]);
+    //         this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
+    //         this.lossParams = params;
+    //     },
+    //     lengthShiftTimeClear() {
+    //         this.lengthShiftTimeValue = [];
+    //     },
+    //     timeFormat: function(mss) {
+    //         var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    //         var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
+    //         var sec = (mss % (1000 * 60)) / 1000;
+    //         return `${hour}:${min}:${sec}`;
+    //     },
+    //     timeTranslateDateMs: function(dateObj) {
+    //         if (dateObj) {
+    //             const hour = dateObj.getHours();
+    //             const min = dateObj.getMinutes();
+    //             const sec = dateObj.getSeconds();
+    //             return (hour * 3600 + min * 60 + sec) * 1000;
+    //         }
+    //     },
+    //     timeTranslateArrayMs: function(durationArray) {
+    //         if (durationArray.length > 0) {
+    //             const hour = parseInt(durationArray[0]);
+    //             const min = parseInt(durationArray[1]);
+    //             const sec = parseInt(durationArray[2]);
+    //             return (hour * 3600 + min * 60 + sec) * 1000;
+    //         }
+    //     },
+    //     startTimeChooseOk: function() {
+    //         if (!this.startTimeValue) {
+    //             this.durationTimeValue = '';
+    //             this.endTimeValue = '';
+    //             return;
+    //         }
+    //         const startMs = this.startTimeValue.getTime();
+    //         if (this.durationTimeValue !== '') {
+    //             const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
+    //             this.endTimeValue = new Date(startMs + durationMs);
+    //         } else if (this.endTimeValue !== '') {
+    //             const end = this.endTimeValue;
+    //             const endMs = end.getTime();
+    //             const durationMs = endMs - startMs;
+    //             this.durationTimeValue = this.timeFormat(durationMs);
+    //         }
+    //     },
+    //     durationTimeValueChange: function(val) {
+    //         if (!val) {
+    //             this.startTimeValue = '';
+    //             this.endTimeValue = '';
+    //             return;
+    //         }
+    //         const durationArray = val.split(":");
+    //         const durationMs = this.timeTranslateArrayMs(durationArray);
+    //         if (this.startTimeValue !== '') {
+    //             const start = this.startTimeValue;
+    //             const startMs = start.getTime();
+    //             this.endTimeValue = new Date(startMs + durationMs);
+    //         } else if (this.endTimeValue !== '') {
+    //             const end = this.endTimeValue;
+    //             const endMs = end.getTime();
+    //             this.startTimeValue = new Date(endMs - durationMs);
+    //         }
+    //     },
+    //     endTimeChooseOk() {
+    //         if (!this.endTimeValue) {
+    //             this.startTimeValue = '';
+    //             this.durationTimeValue = '';
+    //             return;
+    //         }
+    //         const endMs = this.endTimeValue.getTime();
+    //         if (this.durationTimeValue !== '') {
+    //             const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
+    //             this.startTimeValue = new Date(endMs - durationMs);
+    //         } else if (this.startTimeValue !== '') {
+    //             const start = this.startTimeValue;
+    //             const startMs = start.getTime();
+    //             const durationMs = endMs - startMs;
+    //             this.durationTimeValue = this.timeFormat(durationMs);
+    //         }
+    //     },
+    //     addClassInfoClick() {
+    //         if (!(this.lengthShiftTimeValue.length === 2 && this.shouldNumAttendanceValue && this.actualNumAttendanceValue)) {
+    //             this.$Message.error("请将班次信息填写完整");
+    //             return;
+    //         }
 
-            if (!this.openCeremonyStatus) {
-                this.addClassinf({
-                "classStarttime": this.lengthShiftTimeValue[0],
-                "classEndtime": this.lengthShiftTimeValue[1],
-                "shouldAttendance": this.shouldNumAttendanceValue,
-                "actualAttendance": this.actualNumAttendanceValue
-                });
-            } else {
-                this.$Message.error("请勿重复添加班次信息");
-            }
-        },
-        clearClassInfoClick() {
-            if (!this.classInfoIdList) {
-                this.$Message.error("当前并无班次");
-                return;
-            }
-            let _this = this;
-            Ewin.confirm({
-                message: "确认清空当前班次信息？"
-            }).on(function(e) {
-                if (!e) {
-                return;
-                }
-                _this.lengthShiftTimeValue = [];
-                _this.shouldNumAttendanceValue = null;
-                _this.actualNumAttendanceValue = null;
-                _this.showKpitwolev({
-                userId: sessionStorage.getItem("userid")
-                });
-                _this.classInfoIdList = '';
-                _this.openCeremonyStatus = false;
-                _this.$Message.success("清空成功");
-            });
+    //         if (!this.openCeremonyStatus) {
+    //             this.addClassinf({
+    //             "classStarttime": this.lengthShiftTimeValue[0],
+    //             "classEndtime": this.lengthShiftTimeValue[1],
+    //             "shouldAttendance": this.shouldNumAttendanceValue,
+    //             "actualAttendance": this.actualNumAttendanceValue
+    //             });
+    //         } else {
+    //             this.$Message.error("请勿重复添加班次信息");
+    //         }
+    //     },
+    //     clearClassInfoClick() {
+    //         if (!this.classInfoIdList) {
+    //             this.$Message.error("当前并无班次");
+    //             return;
+    //         }
+    //         let _this = this;
+    //         Ewin.confirm({
+    //             message: "确认清空当前班次信息？"
+    //         }).on(function(e) {
+    //             if (!e) {
+    //             return;
+    //             }
+    //             _this.lengthShiftTimeValue = [];
+    //             _this.shouldNumAttendanceValue = null;
+    //             _this.actualNumAttendanceValue = null;
+    //             _this.showKpitwolev({
+    //             userId: sessionStorage.getItem("userid")
+    //             });
+    //             _this.classInfoIdList = '';
+    //             _this.openCeremonyStatus = false;
+    //             _this.$Message.success("清空成功");
+    //         });
 
-        },
-        lossConfirmClick: function() {
-            if (this.editLossDirFlag) {
-                if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue)) {
-                this.lossTwoLevName = '';
-                this.lossThreeLevStructId = '';
-                this.lossFourLevStructId = '';
-                this.choosedLossTier3ValByAdd = '';
-                this.choosedLossTier4ValByAdd = '';
-                this.startTimeValue = '';
-                this.durationTimeValue = '';
-                this.endTimeValue = '';
-                this.$Message.error("请将需要修改的loss信息填写完整");
-                return;
-                }
-                this.showLossFlag = false;
-                for (let i = 0; i < this.datainputLossTableData.length; i++) {
-                for (var key in this.datainputLossTableData[i]) {
-                    /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    if (this.datainputLossTableData[i][key].length > 0) {
-                    if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
-                        this.updateObjectimeAfteradd({
-                        "losstier4Dataid": this.datainputLossTableData[i][key][this.lossParams.index].losstier4Dataid,
-                        "starttime": this.startTimeValue,
-                        "endtime": this.endTimeValue
-                        });
-                    }
-                    }
-                }
-                }
-            } else {
-                if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue && this.choosedLossTier3ValByAdd &&
-                    this.choosedLossTier4ValByAdd)) {
-                this.lossTwoLevName = '';
-                this.lossThreeLevStructId = '';
-                this.lossFourLevStructId = '';
-                this.choosedLossTier3ValByAdd = '';
-                this.choosedLossTier4ValByAdd = '';
-                this.startTimeValue = '';
-                this.durationTimeValue = '';
-                this.endTimeValue = '';
-                this.$Message.error("请将需要添加的loss相关信息填写完整");
-                return;
-                }
-                this.showLossFlag = false;
-                this.addLosstier4time2({
-                "classinfIdList": this.classInfoIdList,
-                "twolevName": this.lossTwoLevName,
-                "losstier3Id": this.lossThreeLevStructId,
-                "losstier4Id": this.lossFourLevStructId,
-                "linebodyId": this.lineBodys[0],
-                "starttime": this.startTimeValue,
-                "endtime": this.endTimeValue
-                });
-            }
-        },
-        lossCancelClick: function() {
-            this.showLossFlag = false;
-            this.lossTwoLevName = '';
-            this.lossThreeLevStructId = '';
-            this.lossFourLevStructId = '';
-            this.choosedLossTier3ValByAdd = '';
-            this.choosedLossTier4ValByAdd = '';
-            this.durationTimeValue = '';
-            this.startTimeValue = '';
-            this.endTimeValue = '';
-            this.lossParams = null;
-        },
-        productInfoConfirmClick() {
-            if (this.editProductInfoFlag) {
-                if (!this.conformProductValue) {
-                this.choosedProductValByAdd = [];
-                this.conformProductValue = null;
-                this.$Message.error("请将需要修改的产品信息填写完整");
-                return;
-                }
-                this.showProductInfoFlag = false;
-                this.updateProduct({
-                "productIdList": this.productInfoData[this.editProductIndex].productid,
-                "conformProduct": this.conformProductValue,
-                "classinfIdList": this.classInfoIdList,
-                "linebodyId": this.lineBodys[0]
-                })
-            } else {
-                if (!(this.choosedProductValByAdd && this.conformProductValue && this.choosedProductValByAdd.length === 3)) {
-                this.choosedProductValByAdd = [];
-                this.conformProductValue = null;
-                this.$Message.error("请将需要添加的产品信息填写完整");
-                return;
-                }
-                this.showProductInfoFlag = false;
-                this.addProduct({
-                "classinfIdList": this.classInfoIdList,
-                "productNameId": this.choosedProductValByAdd[2],
-                "conformProduct": this.conformProductValue,
-                "linebodyId": this.lineBodys[0]
-                });
-            }
-            },
-            productInfoCancelClick() {
-            this.showProductInfoFlag = false;
-            this.choosedProductValByAdd = [];
-            this.conformProductValue = null;
-            this.editProductIndex = null;
-        },
-    },
-    watch: {
-        lossTier3(newVal) {
-            if (newVal.status === "0") {
-                this.optionalLossTier3ListByAdd = newVal.data.losstier3;
-            }
-        },
-        kpiTwoLev(newVal) {},
-        addLosstier4time2Res(newVal) {
-            if (newVal.status === "0") {
-                let addLossData = newVal.data;
-                addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
-                addLossData.endtime = new Date(addLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
+    //     },
+    //     lossConfirmClick: function() {
+    //         if (this.editLossDirFlag) {
+    //             if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue)) {
+    //             this.lossTwoLevName = '';
+    //             this.lossThreeLevStructId = '';
+    //             this.lossFourLevStructId = '';
+    //             this.choosedLossTier3ValByAdd = '';
+    //             this.choosedLossTier4ValByAdd = '';
+    //             this.startTimeValue = '';
+    //             this.durationTimeValue = '';
+    //             this.endTimeValue = '';
+    //             this.$Message.error("请将需要修改的loss信息填写完整");
+    //             return;
+    //             }
+    //             this.showLossFlag = false;
+    //             for (let i = 0; i < this.datainputLossTableData.length; i++) {
+    //             for (var key in this.datainputLossTableData[i]) {
+    //                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+    //                 if (this.datainputLossTableData[i][key].length > 0) {
+    //                 if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+    //                     this.updateObjectimeAfteradd({
+    //                     "losstier4Dataid": this.datainputLossTableData[i][key][this.lossParams.index].losstier4Dataid,
+    //                     "starttime": this.startTimeValue,
+    //                     "endtime": this.endTimeValue
+    //                     });
+    //                 }
+    //                 }
+    //             }
+    //             }
+    //         } else {
+    //             if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue && this.choosedLossTier3ValByAdd &&
+    //                 this.choosedLossTier4ValByAdd)) {
+    //             this.lossTwoLevName = '';
+    //             this.lossThreeLevStructId = '';
+    //             this.lossFourLevStructId = '';
+    //             this.choosedLossTier3ValByAdd = '';
+    //             this.choosedLossTier4ValByAdd = '';
+    //             this.startTimeValue = '';
+    //             this.durationTimeValue = '';
+    //             this.endTimeValue = '';
+    //             this.$Message.error("请将需要添加的loss相关信息填写完整");
+    //             return;
+    //             }
+    //             this.showLossFlag = false;
+    //             this.addLosstier4time2({
+    //             "classinfIdList": this.classInfoIdList,
+    //             "twolevName": this.lossTwoLevName,
+    //             "losstier3Id": this.lossThreeLevStructId,
+    //             "losstier4Id": this.lossFourLevStructId,
+    //             "linebodyId": this.lineBodys[0],
+    //             "starttime": this.startTimeValue,
+    //             "endtime": this.endTimeValue
+    //             });
+    //         }
+    //     },
+    //     lossCancelClick: function() {
+    //         this.showLossFlag = false;
+    //         this.lossTwoLevName = '';
+    //         this.lossThreeLevStructId = '';
+    //         this.lossFourLevStructId = '';
+    //         this.choosedLossTier3ValByAdd = '';
+    //         this.choosedLossTier4ValByAdd = '';
+    //         this.durationTimeValue = '';
+    //         this.startTimeValue = '';
+    //         this.endTimeValue = '';
+    //         this.lossParams = null;
+    //     },
+    //     productInfoConfirmClick() {
+    //         if (this.editProductInfoFlag) {
+    //             if (!this.conformProductValue) {
+    //             this.choosedProductValByAdd = [];
+    //             this.conformProductValue = null;
+    //             this.$Message.error("请将需要修改的产品信息填写完整");
+    //             return;
+    //             }
+    //             this.showProductInfoFlag = false;
+    //             this.updateProduct({
+    //             "productIdList": this.productInfoData[this.editProductIndex].productid,
+    //             "conformProduct": this.conformProductValue,
+    //             "classinfIdList": this.classInfoIdList,
+    //             "linebodyId": this.lineBodys[0]
+    //             })
+    //         } else {
+    //             if (!(this.choosedProductValByAdd && this.conformProductValue && this.choosedProductValByAdd.length === 3)) {
+    //             this.choosedProductValByAdd = [];
+    //             this.conformProductValue = null;
+    //             this.$Message.error("请将需要添加的产品信息填写完整");
+    //             return;
+    //             }
+    //             this.showProductInfoFlag = false;
+    //             this.addProduct({
+    //             "classinfIdList": this.classInfoIdList,
+    //             "productNameId": this.choosedProductValByAdd[2],
+    //             "conformProduct": this.conformProductValue,
+    //             "linebodyId": this.lineBodys[0]
+    //             });
+    //         }
+    //         },
+    //         productInfoCancelClick() {
+    //         this.showProductInfoFlag = false;
+    //         this.choosedProductValByAdd = [];
+    //         this.conformProductValue = null;
+    //         this.editProductIndex = null;
+    //     },
+    // },
+    // watch: {
+    //     lossTier3(newVal) {
+    //         if (newVal.status === "0") {
+    //             this.optionalLossTier3ListByAdd = newVal.data.losstier3;
+    //         }
+    //     },
+    //     kpiTwoLev(newVal) {},
+    //     addLosstier4time2Res(newVal) {
+    //         if (newVal.status === "0") {
+    //             let addLossData = newVal.data;
+    //             addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
+    //             addLossData.endtime = new Date(addLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
 
-                for (let i = 0; i < this.datainputLossTableData.length; i++) {
-                for (let key in this.datainputLossTableData[i]) {
-                    if (key === addLossData.losstier2name) {
-                    this.datainputLossTableData[i][key].push(addLossData);
-                    this.$Message.success("添加成功");
-                    }
-                }
-                }
-            } else {
-                this.$Message.error("添加失败");
-            }
-            this.lossTwoLevName = '';
-            this.lossThreeLevStructId = '';
-            this.lossFourLevStructId = '';
-            this.choosedLossTier3ValByAdd = '';
-            this.choosedLossTier4ValByAdd = '';
-            this.startTimeValue = '';
-            this.durationTimeValue = '';
-            this.endTimeValue = '';
-        },
-        addClassinfRes(newVal) {
-            let classInfoIdArr = [];
-            if (newVal.status === "0") {
-                this.$Message.success("班次信息添加成功");
-                this.openCeremonyStatus = true;
-                for (let i = 0; i < newVal.data.length; i++) {
-                classInfoIdArr.push(newVal.data[i].classinfid);
-                }
-                this.classInfoIdList = classInfoIdArr.join(",");
-                this.openCeremonyStatus = true;
-            } else {
-                this.$Message.error("班次信息添加失败");
-                this.classInfoIdList = '';
-                this.openCeremonyStatus = false;
-            }
-        },
-        addProductRes(newVal) {
-            if (newVal.status === "0") {
-                this.productInfoData = newVal.data;
-                this.$Message.success("添加成功");
-            } else {
-                this.$Message.error("添加失败");
-            }
-            this.choosedProductValByAdd = [];
-            this.conformProductValue = null;
-        },
-        showProductRes(newVal) {
-            console.log("showProductRes:" + newVal);
-        },
-        updateObjectimeAfteraddRes(newVal) {
-            let editLossData = newVal.data;
-            const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
-            const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
-            if (newVal.status === "0") {
-                for (let i = 0; i < this.datainputLossTableData.length; i++) {
-                for (let key in this.datainputLossTableData[i]) {
-                    if (key === editLossData.losstier2name) {
-                    /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
-                        this.datainputLossTableData[i][key][this.lossParams.index].starttime = editLossStartTime;
-                        this.datainputLossTableData[i][key][this.lossParams.index].endtime = editLossEndTime;
-                        this.$Message.success("修改成功");
-                    }
-                    }
-                }
-                }
-            } else {
-                this.$Message.error("修改失败");
-            }
-            this.startTimeValue = '';
-            this.durationTimeValue = '';
-            this.endTimeValue = '';
-            this.lossParams = null;
-        },
-        showProductNameRes(newVal) {
-            console.log("showProductNameRes:" + newVal);
-            if (newVal.status === "0") {
-                this.optionalProductListByAdd = newVal.data;
-            }
-        },
-        deleteProductRes(newVal) {
-            if (newVal.status === "0") {
-                this.productInfoData = newVal.data;
-                this.$Message.success("删除成功");
-            } else {
-                this.$Message.error("删除失败");
-            }
-        },
-    },
+    //             for (let i = 0; i < this.datainputLossTableData.length; i++) {
+    //             for (let key in this.datainputLossTableData[i]) {
+    //                 if (key === addLossData.losstier2name) {
+    //                 this.datainputLossTableData[i][key].push(addLossData);
+    //                 this.$Message.success("添加成功");
+    //                 }
+    //             }
+    //             }
+    //         } else {
+    //             this.$Message.error("添加失败");
+    //         }
+    //         this.lossTwoLevName = '';
+    //         this.lossThreeLevStructId = '';
+    //         this.lossFourLevStructId = '';
+    //         this.choosedLossTier3ValByAdd = '';
+    //         this.choosedLossTier4ValByAdd = '';
+    //         this.startTimeValue = '';
+    //         this.durationTimeValue = '';
+    //         this.endTimeValue = '';
+    //     },
+    //     addClassinfRes(newVal) {
+    //         let classInfoIdArr = [];
+    //         if (newVal.status === "0") {
+    //             this.$Message.success("班次信息添加成功");
+    //             this.openCeremonyStatus = true;
+    //             for (let i = 0; i < newVal.data.length; i++) {
+    //             classInfoIdArr.push(newVal.data[i].classinfid);
+    //             }
+    //             this.classInfoIdList = classInfoIdArr.join(",");
+    //             this.openCeremonyStatus = true;
+    //         } else {
+    //             this.$Message.error("班次信息添加失败");
+    //             this.classInfoIdList = '';
+    //             this.openCeremonyStatus = false;
+    //         }
+    //     },
+    //     addProductRes(newVal) {
+    //         if (newVal.status === "0") {
+    //             this.productInfoData = newVal.data;
+    //             this.$Message.success("添加成功");
+    //         } else {
+    //             this.$Message.error("添加失败");
+    //         }
+    //         this.choosedProductValByAdd = [];
+    //         this.conformProductValue = null;
+    //     },
+    //     showProductRes(newVal) {
+    //         console.log("showProductRes:" + newVal);
+    //     },
+    //     updateObjectimeAfteraddRes(newVal) {
+    //         let editLossData = newVal.data;
+    //         const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
+    //         const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
+    //         if (newVal.status === "0") {
+    //             for (let i = 0; i < this.datainputLossTableData.length; i++) {
+    //             for (let key in this.datainputLossTableData[i]) {
+    //                 if (key === editLossData.losstier2name) {
+    //                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+    //                 if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
+    //                     this.datainputLossTableData[i][key][this.lossParams.index].starttime = editLossStartTime;
+    //                     this.datainputLossTableData[i][key][this.lossParams.index].endtime = editLossEndTime;
+    //                     this.$Message.success("修改成功");
+    //                 }
+    //                 }
+    //             }
+    //             }
+    //         } else {
+    //             this.$Message.error("修改失败");
+    //         }
+    //         this.startTimeValue = '';
+    //         this.durationTimeValue = '';
+    //         this.endTimeValue = '';
+    //         this.lossParams = null;
+    //     },
+    //     showProductNameRes(newVal) {
+    //         console.log("showProductNameRes:" + newVal);
+    //         if (newVal.status === "0") {
+    //             this.optionalProductListByAdd = newVal.data;
+    //         }
+    //     },
+    //     deleteProductRes(newVal) {
+    //         if (newVal.status === "0") {
+    //             this.productInfoData = newVal.data;
+    //             this.$Message.success("删除成功");
+    //         } else {
+    //             this.$Message.error("删除失败");
+    //         }
+    //     },
+    // },
     mounted() {
-        if (sessionStorage.getItem("userid")) {
-            this.classInfoIdList = '';
-            this.selectUserById({
-                userid: sessionStorage.getItem("userid")
-            });
-            this.showKpitwolev({
-                userId: sessionStorage.getItem("userid")
-            });
-        } else {
-            console.log(this.$route);
-        }
+        // if (sessionStorage.getItem("userid")) {
+        //     this.classInfoIdList = '';
+        //     this.selectUserById({
+        //         userid: sessionStorage.getItem("userid")
+        //     });
+        //     this.showKpitwolev({
+        //         userId: sessionStorage.getItem("userid")
+        //     });
+        // } else {
+        //     console.log(this.$route);
+        // }
     }
 }
 </script>

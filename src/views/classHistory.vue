@@ -4,46 +4,42 @@
         <div class="history_data" v-for="(item,index) in historyData" :key = "index">
             <span class="history_date">{{item.year}}</span>
             <ul class="history_time">
-                <li class="history_detail" v-for="(time,index) in item.time" :key= "index">{{time}}</li>
+                <li class="history_detail" v-for="(time,index) in item.time" :key= "index">
+                    <span class="detail_time">{{time}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <i class="icon-edit"></i>&nbsp;&nbsp;
+                    <i class="icon-delete_2"></i>
+                </li>
+                
             </ul>
-            <!-- <span class="history_date">2017/12/29</span>
-            <ul class="history_time">
-                <li class="history_detail">08:30:00-11:30:00</li>
-                <li class="history_detail">08:30:00-11:30:00</li>
-                <li class="history_detail">08:30:00-11:30:00</li>
-                <li class="history_detail">08:30:00-11:30:00</li>
-            </ul> -->
         </div>
     </div>
     <div class="history_infor">
         <div class="basicInfo">
-        <div class="classInfo">
-            <span class="classInfoTitle">
-                Basic Info
-            </span>
-            <div class="classInfoTimeContainer">
-                <span class="classInfoTimeTitle">本班次时间：</span>
-                <DatePicker v-model="lengthShiftTimeValue" :readonly="openCeremonyStatus" type="datetimerange" placeholder="Select date and time" style="width: calc(100% - 80px)" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
+            <div class="classInfo">
+                <span class="classInfoTitle">
+                    Basic Info
+                </span>
+                <div class="classInfoTimeContainer">
+                    <span class="classInfoTime">本班次时间：2017-12-20 14:30:00至2017-12-20 14:30:00</span>
+                    <!-- <span class="classInfoTimeStart">2017-12-20 14:30:00</span>
+
+                    <span class="classInfoTimeEnd">2017-12-20 14:30:00</span> -->
+                </div>
+                <div class="classInfoNumAttendance">
+                    <span class="shouldAttendenceValue">应出勤人数：10人</span>
+                    <!-- <span class="shouldNumAttendanceValue">10人</span> -->
+                    <span class="actualAttendance">实出勤人数：9人</span>
+                    <!-- <span class="actualNumAttendanceValue">9人</span> -->
+                </div>
             </div>
-            <div class="classInfoNumAttendance">
-                <span>应出勤人数：</span>
-                <InputNumber v-model="shouldNumAttendanceValue" :min="1" placeholder="人" :readonly="openCeremonyStatus"></InputNumber>
-                <span class="classInfoActualAttendance">实出勤人数：</span>
-                <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="openCeremonyStatus"></InputNumber>
+            <div class="productInfo">
+                <Table height='218' border :columns="productInfoCols" :data="productInfoData"></Table>
             </div>
-            <div class="classInfoSubmit">
-                <!-- <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span> -->
-                <span class="classInfoConfirmBtn classInfoBtn" @click="addClassInfoClick">确定</span>
+            <div class="addProductInfo">
+                <i class="icon-add_add flex-item" @click="addProductInfo"></i>
             </div>
-        </div>
-        <div class="productInfo">
-            <Table height='218' border :columns="productInfoCols" :data="productInfoData"></Table>
-        </div>
-        <div class="addProductInfo">
-            <i class="icon-add_add flex-item" @click="addProductInfo"></i>
-        </div>
     </div>
-    <div class="lossContainer">
+    <!-- <div class="lossContainer">
         <div class="lossRow" v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
             <div class="lossName">
                 <span class="flex-item">{{ d }}</span>
@@ -55,9 +51,9 @@
                 <span class="addLossBtn flex-item" @click="addLoss(d)">添加loss</span>
             </div>
         </div>
-    </div>
+    </div> -->
   
-    <Modal class="lossChoose" v-model="showLossFlag" @on-ok="lossConfirmClick" @on-cancel="lossCancelClick" :closable="false" class-name="loss-vertical-center-modal" width="400">
+    <!-- <Modal class="lossChoose" v-model="showLossFlag" @on-ok="lossConfirmClick" @on-cancel="lossCancelClick" :closable="false" class-name="loss-vertical-center-modal" width="400">
         <div v-if="editLossDirFlag" class="editLossDir">
             <span>Tier3：</span>
             <span>{{ this.lossTier3BeingEditedVal }}</span>
@@ -89,8 +85,8 @@
             <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
             </DatePicker>
         </div>
-    </Modal>
-    <Modal v-model="showProductInfoFlag" @on-ok="productInfoConfirmClick" @on-cancel="productInfoCancelClick" class-name="product-vertical-center-modal" :closable="false" width="400">
+    </Modal> -->
+     <Modal v-model="showProductInfoFlag" @on-ok="productInfoConfirmClick" @on-cancel="productInfoCancelClick" class-name="product-vertical-center-modal" :closable="false" width="400">
         <div class="productChoose">
             <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
                 <span>产品：</span>
@@ -101,13 +97,11 @@
         <div class="productInfoSetting">
             <span>良品数量：</span>
             <InputNumber v-model="conformProductValue" :min="0"></InputNumber>
-            <!-- <span class="cycleTitle">Cycle：</span>
-            <InputNumber v-model="normalCycletimeValue" :min="0"></InputNumber> -->
+             <span class="cycleTitle">Cycle：</span>
+            <InputNumber v-model="normalCycletimeValue" :min="0"></InputNumber>
         </div>
-    </Modal>
-
+    </Modal> 
     </div>
-    
 </div>
 </template>
 <script>
@@ -134,46 +128,46 @@ export default {
             },{
                 year:"2017/12/23",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
             },],
-            optionsOpenCeremony: {
-                disabledDate(date) {}
-            },
-            optionsStart: {
-                disabledDate: (date) => {
-                if (!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
-                let end = this.lengthShiftTimeValue[1];
-                let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
-                let begin = new Date(beginFormat + ' 00:00:00');
-                if (begin && end) {
-                    return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
-                }
-                }
-            },
-            optionsEnd: {
-                disabledDate: (date) => {
-                if (!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
-                let end = this.lengthShiftTimeValue[1];
-                let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
-                let begin = new Date(beginFormat + ' 00:00:00');
-                if (begin && end) {
-                    if (this.startTimeValue) {
-                    let hour = this.startTimeValue.getHours();
-                    let min = this.startTimeValue.getMinutes();
-                    let sec = this.startTimeValue.getSeconds();
-                    let ms;
-                    if (hour + min + sec === 0) {
-                        begin = this.startTimeValue;
-                        ms = begin.getTime() + ((23 * 60 * 60 + 59 * 60 + 59) * 1000);
-                    } else {
-                        let startFormat = this.startTimeValue.format('yyyy-MM-dd');
-                        begin = new Date(startFormat + ' 00:00:00');
-                        ms = begin.getTime() + (24 * 60 * 60 * 1000);
-                    }
-                    end = new Date(ms);
-                    }
-                    return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
-                }
-                }
-            },
+            // optionsOpenCeremony: {
+            //     disabledDate(date) {}
+            // },
+            // optionsStart: {
+            //     disabledDate: (date) => {
+            //     if (!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
+            //     let end = this.lengthShiftTimeValue[1];
+            //     let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
+            //     let begin = new Date(beginFormat + ' 00:00:00');
+            //     if (begin && end) {
+            //         return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
+            //     }
+            //     }
+            // },
+            // optionsEnd: {
+            //     disabledDate: (date) => {
+            //     if (!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
+            //     let end = this.lengthShiftTimeValue[1];
+            //     let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
+            //     let begin = new Date(beginFormat + ' 00:00:00');
+            //     if (begin && end) {
+            //         if (this.startTimeValue) {
+            //         let hour = this.startTimeValue.getHours();
+            //         let min = this.startTimeValue.getMinutes();
+            //         let sec = this.startTimeValue.getSeconds();
+            //         let ms;
+            //         if (hour + min + sec === 0) {
+            //             begin = this.startTimeValue;
+            //             ms = begin.getTime() + ((23 * 60 * 60 + 59 * 60 + 59) * 1000);
+            //         } else {
+            //             let startFormat = this.startTimeValue.format('yyyy-MM-dd');
+            //             begin = new Date(startFormat + ' 00:00:00');
+            //             ms = begin.getTime() + (24 * 60 * 60 * 1000);
+            //         }
+            //         end = new Date(ms);
+            //         }
+            //         return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
+            //     }
+            //     }
+            // },
             openCeremonyFlag: false,
             validareaList: [],
             lineBodys: [],
@@ -323,7 +317,7 @@ export default {
     computed: {
         ...mapState([
             // "lossTier3",
-            // "kpiTwoLev",
+            "kpiTwoLev",
             // "addLosstier4time2Res",
             // "datainputLossTableData",
             // "addClassinfRes",
@@ -336,21 +330,21 @@ export default {
             // "deleteLoss4dataRes"
         ])
     },
-    // methods: {
-    //     ...mapActions([
-    //         // "selectUserById",
-    //         // "showLosstier3",
-    //         // "showKpitwolev",
-    //         // "addLosstier4time2",
-    //         // "addClassinf",
-    //         // "addProduct",
-    //         // "showProduct",
-    //         // "updateObjectimeAfteradd",
-    //         // "showProductName",
-    //         // "deleteProduct",
-    //         // "updateProduct",
-    //         // "deleteLoss4data"
-    //     ]),
+    methods: {
+        ...mapActions([
+            // "selectUserById",
+            // "showLosstier3",
+            // "showKpitwolev",
+            // "addLosstier4time2",
+            // "addClassinf",
+            // "addProduct",
+            // "showProduct",
+            // "updateObjectimeAfteradd",
+            "showProductName",
+            // "deleteProduct",
+            // "updateProduct",
+            // "deleteLoss4data"
+        ]),
     //     getTier3: function(tier) {
     //         if (!tier) {
     //             this.choosedLossTier3ValByAdd = '';
@@ -391,17 +385,17 @@ export default {
     //         this.editLossDirFlag = false;
     //         this.showLossFlag = true;
     //     },
-    //     addProductInfo: function(name) {
-    //         if (!this.openCeremonyStatus) {
-    //             this.$Message.error("请先选择开班时间");
-    //             return;
-    //         }
-    //         this.editProductInfoFlag = false;
-    //         this.showProductInfoFlag = true;
-    //         this.showProductName({
-    //             "linebodyId": this.lineBodys[0]
-    //         })
-    //     },
+        addProductInfo: function(name) {
+            // if (!this.openCeremonyStatus) {
+            //     this.$Message.error("请先选择开班时间");
+            //     return;
+            // }
+            this.editProductInfoFlag = false;
+            this.showProductInfoFlag = true;
+            this.showProductName({
+                "linebodyId": this.lineBodys[0]
+            })
+        },
     //     deleteLoss(params) {
     //         this.lossParams = params;
     //         let _this = this;
@@ -681,8 +675,24 @@ export default {
     //         this.conformProductValue = null;
     //         this.editProductIndex = null;
     //     },
-    // },
-    // watch: {
+    },
+    watch: {
+        validarea(newVal) {
+            const _this = this;
+            this.validareaList = []
+            this.validarea.forEach(item => {
+                if (item.checked) {
+                this.validareaList.push(item)
+                }
+            });
+            _this.lineBodys = [];
+            this.validareaList.forEach(function(node) {
+                let reg = /^l/g;
+                if (reg.test(node.id)) {
+                _this.lineBodys.push(node.id.substring(1));
+                }
+            });
+        },
     //     lossTier3(newVal) {
     //         if (newVal.status === "0") {
     //             this.optionalLossTier3ListByAdd = newVal.data.losstier3;
@@ -783,7 +793,7 @@ export default {
     //             this.$Message.error("删除失败");
     //         }
     //     },
-    // },
+    },
     mounted() {
         // if (sessionStorage.getItem("userid")) {
         //     this.classInfoIdList = '';

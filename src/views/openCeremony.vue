@@ -284,6 +284,7 @@ export default {
     },
     computed: {
         ...mapState([
+            "validarea",
             "lossTier3",
             "kpiTwoLev",
             "addLosstier4time2Res",
@@ -592,7 +593,6 @@ export default {
                 "starttime": this.startTimeValue,
                 "endtime": this.endTimeValue
                 });
-                console.log(this.lineBodys)
             }
         },
         lossCancelClick: function() {
@@ -646,6 +646,22 @@ export default {
         },
     },
     watch: {
+        validarea(newVal) {
+            const _this = this;
+            this.validareaList = []
+            this.validarea.forEach(item => {
+                if (item.checked) {
+                this.validareaList.push(item)
+                }
+            });
+            _this.lineBodys = [];
+            this.validareaList.forEach(function(node) {
+                let reg = /^l/g;
+                if (reg.test(node.id)) {
+                _this.lineBodys.push(node.id.substring(1));
+                }
+            });
+        },
         lossTier3(newVal) {
             if (newVal.status === "0") {
                 this.optionalLossTier3ListByAdd = newVal.data.losstier3;

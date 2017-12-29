@@ -284,7 +284,6 @@ export default {
     },
     computed: {
         ...mapState([
-            "validarea",
             "lossTier3",
             "kpiTwoLev",
             "addLosstier4time2Res",
@@ -326,10 +325,10 @@ export default {
             this.choosedLossTier4ValByAdd = '';
             for (let val of this.lossTier3.data.losstier4) {
                 if (tier === val.losstier3Lossid) {
-                    tempTier.push({
-                        "tier4id": val.tier4id,
-                        "name": val.name
-                    });
+                tempTier.push({
+                    "tier4id": val.tier4id,
+                    "name": val.name
+                });
                 }
             }
             this.optionalLossTier4ListByAdd = tempTier;
@@ -339,6 +338,7 @@ export default {
                 this.choosedLossTier4ValByAdd = '';
                 return;
             }
+
             this.lossFourLevStructId = tier;
         },
         addLoss: function(name) {
@@ -381,7 +381,7 @@ export default {
                     if (_this.datainputLossTableData[i][key].length > 0) {
                     if (_this.datainputLossTableData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
                         _this.deleteLoss4data({
-                        "losstier4Dataid": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
+                        "losstier4DataidList": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
                         })
                     }
                     }
@@ -429,8 +429,8 @@ export default {
             var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
             var sec = (mss % (1000 * 60)) / 1000;
             return `${hour}:${min}:${sec}`;
-            },
-            timeTranslateDateMs: function(dateObj) {
+        },
+        timeTranslateDateMs: function(dateObj) {
             if (dateObj) {
                 const hour = dateObj.getHours();
                 const min = dateObj.getMinutes();
@@ -537,6 +537,7 @@ export default {
                 _this.openCeremonyStatus = false;
                 _this.$Message.success("清空成功");
             });
+
         },
         lossConfirmClick: function() {
             if (this.editLossDirFlag) {
@@ -570,26 +571,26 @@ export default {
             } else {
                 if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue && this.choosedLossTier3ValByAdd &&
                     this.choosedLossTier4ValByAdd)) {
-                        this.lossTwoLevName = '';
-                        this.lossThreeLevStructId = '';
-                        this.lossFourLevStructId = '';
-                        this.choosedLossTier3ValByAdd = '';
-                        this.choosedLossTier4ValByAdd = '';
-                        this.startTimeValue = '';
-                        this.durationTimeValue = '';
-                        this.endTimeValue = '';
-                        this.$Message.error("请将需要添加的loss相关信息填写完整");
-                    return;
-                    }
-                    this.showLossFlag = false;
-                    this.addLosstier4time2({
-                    "classinfIdList": this.classInfoIdList,
-                    "twolevName": this.lossTwoLevName,
-                    "losstier3Id": this.lossThreeLevStructId,
-                    "losstier4Id": this.lossFourLevStructId,
-                    "linebodyId": this.lineBodys[0],
-                    "starttime": this.startTimeValue,
-                    "endtime": this.endTimeValue
+                this.lossTwoLevName = '';
+                this.lossThreeLevStructId = '';
+                this.lossFourLevStructId = '';
+                this.choosedLossTier3ValByAdd = '';
+                this.choosedLossTier4ValByAdd = '';
+                this.startTimeValue = '';
+                this.durationTimeValue = '';
+                this.endTimeValue = '';
+                this.$Message.error("请将需要添加的loss相关信息填写完整");
+                return;
+                }
+                this.showLossFlag = false;
+                this.addLosstier4time2({
+                "classinfIdList": this.classInfoIdList,
+                "twolevName": this.lossTwoLevName,
+                "losstier3Id": this.lossThreeLevStructId,
+                "losstier4Id": this.lossFourLevStructId,
+                "linebodyId": this.lineBodys[0],
+                "starttime": this.startTimeValue,
+                "endtime": this.endTimeValue
                 });
             }
         },
@@ -644,22 +645,6 @@ export default {
         },
     },
     watch: {
-        validarea(newVal) {
-            const _this = this;
-            this.validareaList = []
-            this.validarea.forEach(item => {
-                if (item.checked) {
-                this.validareaList.push(item)
-                }
-            });
-            _this.lineBodys = [];
-            this.validareaList.forEach(function(node) {
-                let reg = /^l/g;
-                if (reg.test(node.id)) {
-                _this.lineBodys.push(node.id.substring(1));
-                }
-            });
-        },
         lossTier3(newVal) {
             if (newVal.status === "0") {
                 this.optionalLossTier3ListByAdd = newVal.data.losstier3;
@@ -760,34 +745,6 @@ export default {
                 this.$Message.error("删除失败");
             }
         },
-        updateProductRes(newVal) {
-            if (newVal.status === "0") {
-                this.productInfoData = newVal.data;
-                this.$Message.success("修改成功");
-            } else {
-                this.$Message.error("修改失败");
-            }
-            this.editProductIndex = null;
-            this.conformProductValue = null;
-        },
-        deleteLoss4dataRes(newVal) {
-            if (newVal.status === "0") {
-                for (let i = 0; i < this.datainputLossTableData.length; i++) {
-                for (let key in this.datainputLossTableData[i]) {
-                    /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    if (this.datainputLossTableData[i][key].length > 0) {
-                    if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
-                        this.datainputLossTableData[i][key].splice(this.lossParams.index, 1);
-                        this.$Message.success("删除成功");
-                    }
-                    }
-                }
-                }
-            } else {
-                this.$Message.error("删除失败");
-            }
-            this.lossParams = null;
-        }
     },
     mounted() {
         if (sessionStorage.getItem("userid")) {

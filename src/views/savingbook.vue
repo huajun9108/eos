@@ -31,34 +31,34 @@ export default {
         "v-timearea": timearea,
         "chart":chart
     },
-   data(){
-       return{
-        isShow:false,
-        savingData:[],
-       }
-   },
-   methods:{
-        showlDialog(){
-            this.isShow = !this.isShow
-        },
-        clearCharts() {
-          this.savingData = [];
+    data(){
+        return{
+            isShow:false,
+            savingData:[],
         }
-   },
-   computed: {
-     ...mapState([
-       "selectSavingBookByTimesAndLinebodysRes"
-     ])
-   },
-   watch: {
-     selectSavingBookByTimesAndLinebodysRes(newVal) {
-       if(newVal.status === "0") {
-         this.savingData = newVal.data;
-       }
-     }
-   },
-   mounted () {
-   }
+    },
+    methods:{
+            showlDialog(){
+                this.isShow = !this.isShow
+            },
+            clearCharts() {
+                this.savingData = [];
+            }
+    },
+    computed: {
+        ...mapState([
+        "selectSavingBookByTimesAndLinebodysRes"
+        ])
+    },
+    watch: {
+        selectSavingBookByTimesAndLinebodysRes(newVal) {
+            if(newVal.status === "0") {
+                this.savingData = newVal.data;
+            }
+        }
+    },
+    mounted () {
+    }
 }
 </script>
 <style lang="sass" scoped>

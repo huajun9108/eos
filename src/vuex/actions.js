@@ -1,6 +1,6 @@
 import axios from "axios"
 import qs from 'qs'
-
+import iView from 'iview'
 axios.defaults.baseURL = "http://116.62.10.199:3002";
 
 export default {
@@ -676,11 +676,13 @@ export default {
         })
     },
     selectOverviewByTimesAndLinebodys({ commit }, obj) {
+        // iView.Spin.show()
         axios.post("/overview/selectOverviewByTimesAndLinebodys", qs.stringify({
             "startTime": obj.startTime,
             "endTime": obj.endTime,
             "linebodyIds": obj.linebodyIds
         })).then(res => {
+            // iView.Spin.hide()
             console.log(res.data);
             return res.data
         }).then(json => {

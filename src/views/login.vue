@@ -93,10 +93,13 @@ export default{
         loginResult(newVal){
             if(newVal.status=="0"){
                 if(this.picked=="0"){
+                    console.log(newVal.flag)
                     localStorage.setItem("user",newVal.data.adminname);
+                    sessionStorage.setItem('adminAccessToken' ,newVal.flag)
                     this.$router.push({name:"area"})
                 }else{
                     sessionStorage.setItem("userid",newVal.data.userid);
+                    sessionStorage.setItem('userAccessToken' , newVal.flag)
                     this.$router.push({name:"Account",params:{userid:sessionStorage.getItem("userid")}}) 
                 }
             }else if(newVal.status=="2"){

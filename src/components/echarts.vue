@@ -16,7 +16,7 @@
 
 <script>
     import echarts from 'echarts';
-    var barChart,lineOrBarChart,lineChart;
+    var barChart,lineOrBarChart,lineChart,LineAndBarChart;
     var LineAndBarData
     export default {
     data() {
@@ -152,7 +152,20 @@
         })
     }
     function drawLineAndBar(chartData,id,titleText,xText,yText) {
-        var chart = echarts.init(document.getElementById(id))
+        if (LineAndBarChart != null && LineAndBarChart != "" && LineAndBarChart != undefined) {
+            LineAndBarChart.dispose();
+        }
+        if(!chartData){
+            return
+        }
+        LineAndBarChart = echarts.init(document.getElementById(id))
+        
+        // if(chartData){
+        //     LineAndBarChart.hideLoading();
+        // }else{
+        //     LineAndBarChart.showLoading('default', {text:'统计中，请稍候...',maskColor: '#404a59',textColor:
+        //     '#fff',});
+        // }
         var xAxisData = chartData.map(function (item) {return item[0]})
         var currentData = chartData.map(function (item) {return item[1]})
         var targetData = chartData.map(function (item) {return item[2]})
@@ -283,13 +296,14 @@
             }
             ]
         }
-        chart.setOption(option)
+        LineAndBarChart.setOption(option)
+        
         window.addEventListener("resize", function () {
             setTimeout(function () {
-                chart.resize();
+                LineAndBarChart.resize();
             }, 10)
         });
-        chart.on('click',function(params){ // 控制台打印数据的名称
+        LineAndBarChart.on('click',function(params){ // 控制台打印数据的名称
             console.log(id)
             let arr=[]
             option.series.forEach(item=>{

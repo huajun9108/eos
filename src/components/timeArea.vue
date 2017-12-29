@@ -40,7 +40,7 @@ export default {
           if (beginDateVal) {
             return date && date.valueOf() > beginDateVal;
           } else {
-            return date && date.valueOf() > Date.now();
+            // return date && date.valueOf() > Date.now();
           }
         }
       },
@@ -49,11 +49,12 @@ export default {
           let beginDateVal = this.startTime;
           if(beginDateVal) {
             return (
-              (date && date.valueOf() < beginDateVal) ||
-              (date && date.valueOf() > Date.now())
+              (date && date.valueOf() < beginDateVal) 
+              // ||
+              // (date && date.valueOf() > Date.now())
             );
           } else {
-            return date && date.valueOf() > Date.now();
+            // return date && date.valueOf() > Date.now();
           }
         }
       },
@@ -275,7 +276,7 @@ export default {
       });
       if (this.routeIsroute("lossmaping") || this.routeIsroute("overview")) {
         this.endTime = new Date();
-        this.startTime = new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000);
+        this.startTime = new Date(new Date().getTime() -1 * 24 * 60 * 60 * 1000);
       }
     }
     if (this.routeIsroute("summary")) {

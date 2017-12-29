@@ -234,6 +234,19 @@
                     }
                 }
             }
+            .classHistory {
+                display: flex;
+                flex-direction: space-between;
+                .history_left {
+                    width: 30%;
+                    height: auto;
+                    overflow: auto;
+                    border-right: 1px solid #bdbdbd;
+                }
+                .history_infor {
+                    width: 70%;
+                }
+            }
         }
     }
 }

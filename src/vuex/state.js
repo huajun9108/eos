@@ -68,4 +68,6 @@ export default {
     addLinebodyProductByLinebodyIdRes: '',
     deleteLinebodyProductByIdRes: '',
     updateLinebodyProductByIdRes: '',
+    selectSavingBookByTimesAndLinebodysRes: '',
+    selectOverviewByTimesAndLinebodys: null,
 }

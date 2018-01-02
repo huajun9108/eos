@@ -1,283 +1,435 @@
 @import "./mobile.scss";
-
 .datainput {
-  .datainputContainer {
-    .openCeremony {
-      height: 7%;
-      padding-top: 1%;
-      padding-bottom: 1%;
-      border-bottom: 1px solid #BDBDBD;
-
-      .inputBtn {
-        margin-left: P(28);
-        font-size: P(14);
-        display: inline-block;
-        line-height: P(30);
-        text-align: center;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-
-      .openCeremonyButton {
-        color: #FFF;
-        width: P(76);
-        background-color: #164380;
-      }
-
-      .historyButton {
-        color: #040404;
-        width: P(142);
-        background-color: #e1e1e1;
-      }
+    .datainputContainer {
+        display: flex;
+        flex-direction: column;
+        .datainput_top {
+            line-height: P(56);
+            border-bottom: 1px solid #bdbdbd;
+            .inputBtn {
+                color: #040404;
+                margin-left: P(28);
+                font-size: P(14);
+                display: inline-block;
+                line-height: P(30);
+                padding: 0 P(25);
+                text-align: center;
+                border-radius: 4px;
+                cursor: pointer;
+                background-color: #e1e1e1;
+            }
+            .activeBtn {
+                color: #FFF;
+                background-color: #164380;
+            }
+        }
+        .datainput_content {
+            width: 100%;
+            flex: 1;
+            overflow: hidden;
+            .openCeremony {
+                width: 100%;
+                height: 100%;
+                .basicInfo {
+                    width: 100%;
+                    height: 220px;
+                    font-size: 0;
+                    box-sizing: border-box;
+                    border-bottom: 1px solid #BDBDBD;
+                    .classInfo {
+                        font-size: P(16);
+                        vertical-align: top;
+                        width: 40%;
+                        height: 100%;
+                        padding-left: P(28);
+                        padding-right: P(28);
+                        padding-top: P(32);
+                        display: inline-block;
+                        color: #040404;
+                        .classInfoTitle {
+                            display: inline-block;
+                            padding-bottom: P(39);
+                        }
+                        .classInfoTimeContainer {
+                            padding-bottom: P(26);
+                            font-size: 0;
+                            .classInfoTimeTitle {
+                                display: inline-block;
+                                vertical-align: middle;
+                                font-size: P(16);
+                                width: 80px;
+                            }
+                            .ivu-input {
+                                font-size: P(14);
+                            }
+                            .ivu-select-dropdown {
+                                font-size: P(14);
+                            }
+                            span {
+                                font-size: P(16);
+                            }
+                        }
+                        .classInfoNumAttendance {
+                            padding-bottom: P(26);
+                            font-size: 0;
+                            width: 100%;
+                            span {
+                                display: inline-block;
+                                vertical-align: middle;
+                                font-size: P(16);
+                                width: 80px;
+                            }
+                            .ivu-input-number {
+                                width: calc(50% - 98px);
+                                .ivu-input-number-handler {
+                                    text-align: right;
+                                    .ivu-icon-ios-arrow-up:before {
+                                        margin-right: P(4);
+                                    }
+                                    .ivu-icon-ios-arrow-down:before {
+                                        margin-right: P(4);
+                                    }
+                                }
+                            }
+                            .classInfoActualAttendance {
+                                margin-left: 36px;
+                            }
+                        }
+                        .classInfoSubmit {
+                            text-align: right;
+                            padding-bottom: P(36);
+                            .classInfoClearBtn {
+                                margin-right: P(16);
+                                background-color: #e1e1e1;
+                            }
+                            .classInfoConfirmBtn {
+                                background-color: #dbe9ff;
+                            }
+                            .classInfoBtn {
+                                display: inline-block;
+                                text-align: center;
+                                font-size: P(14);
+                                color: #040404;
+                                width: P(60);
+                                line-height: P(24);
+                                border-radius: P(10);
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                    .productInfo {
+                        box-sizing: border-box;
+                        vertical-align: top;
+                        width: 50%;
+                        height: 100%;
+                        display: inline-block;
+                        .ivu-table-wrapper {
+                            border: none;
+                            border-left: 1px solid #BDBDBD;
+                            border-right: 1px solid #BDBDBD;
+                            .ivu-table-body {
+                                overflow-x: hidden;
+                            }
+                            .ivu-table td,
+                            .ivu-table th {
+                                height: P(30);
+                                border-bottom: 1px solid #BDBDBD;
+                            }
+                            .ivu-table-border td,
+                            .ivu-table-border th {
+                                border-right: 1px solid #BDBDBD;
+                            }
+                            .ivu-table-border td:last-child,
+                            .ivu-table-border th:last-child {
+                                border-right: none;
+                            }
+                            div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::before {
+                                height: 0;
+                            }
+                            div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::after {
+                                width: 0;
+                            }
+                        }
+                    }
+                    .addProductInfo {
+                        vertical-align: top;
+                        width: 10%;
+                        height: 100%;
+                        display: inline-flex;
+                        .flex-item {
+                            color: #e1e1e1;
+                            font-size: P(32);
+                            margin: auto;
+                            cursor: pointer;
+                        }
+                    }
+                }
+                .lossContainer {
+                    width: 100%;
+                    height: calc(100% - 220px);
+                    overflow-y: scroll;
+                    font-size: 0;
+                    .lossRow {
+                        font-size: 0;
+                        height: 201px;
+                        width: 100%;
+                        border-bottom: 1px solid #BDBDBD;
+                        .lossName {
+                            width: 15%;
+                            height: 100%;
+                            display: inline-flex;
+                            vertical-align: top;
+                            .flex-item {
+                                margin: auto;
+                                font-size: P(16);
+                                color: #040404;
+                            }
+                        }
+                        .lossTable {
+                            width: calc(75% + 13px);
+                            display: inline-block;
+                            .ivu-table-wrapper {
+                                border: none;
+                                border-left: 1px solid #BDBDBD;
+                                border-right: 1px solid #BDBDBD;
+                                .ivu-table-body {
+                                    overflow-x: hidden;
+                                }
+                                .ivu-table td,
+                                .ivu-table th {
+                                    height: P(30);
+                                    border-bottom: 1px solid #BDBDBD;
+                                }
+                                .ivu-table-border td,
+                                .ivu-table-border th {
+                                    border-right: 1px solid #BDBDBD;
+                                }
+                                .ivu-table-border td:last-child,
+                                .ivu-table-border th:last-child {
+                                    border-right: none;
+                                }
+                                div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::before {
+                                    height: 0;
+                                }
+                                div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::after {
+                                    width: 0;
+                                }
+                            }
+                        }
+                        .lossBtnContainer {
+                            width: calc(10% - 13px);
+                            height: 100%;
+                            display: inline-flex;
+                            vertical-align: top;
+                            .flex-item {
+                                margin: auto;
+                                text-align: center;
+                                font-size: P(12);
+                                color: #040404;
+                                display: inline-block;
+                                width: P(80);
+                                line-height: 24px;
+                                background-color: #e1e1e1;
+                                border-radius: P(4);
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+            }
+            .classHistory {
+                display: flex;
+                justify-content: space-between;
+                .history_left {
+                    width: 20%;
+                    height: auto;
+                    overflow-y: scroll;
+                    .history_data {
+                        margin: 10px auto;
+                        box-sizing: border-box;
+                        .history_date {
+                            padding-left: 10%;
+                            line-height: P(36);
+                            font-size: P(20);
+                        }
+                        .history_time {
+                            text-align: center;
+                            .history_detail {
+                                line-height: P(34);
+                            }
+                        }
+                    }
+                }
+                .history_infor {
+                    width: 80%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    .basicInfo {
+                        width: 100%;
+                        height: 218px;
+                        font-size: 0;
+                        box-sizing: border-box;
+                        border-bottom: 1px solid #BDBDBD;
+                        .classInfo {
+                            font-size: P(16);
+                            vertical-align: top;
+                            width: 40%;
+                            height: 100%;
+                            padding-left: P(26);
+                            padding-top: P(32);
+                            display: inline-block;
+                            color: #040404;
+                            .classInfoTitle {
+                                display: inline-block;
+                                padding-bottom: P(39);
+                            }
+                            .classInfoTimeContainer {
+                                padding-bottom: P(26);
+                                font-size: 0;
+                                .classInfoTime {
+                                    display: inline-block;
+                                    vertical-align: middle;
+                                    font-size: P(16);
+                                }
+                            }
+                            .classInfoNumAttendance {
+                                padding-bottom: P(26);
+                                font-size: 0;
+                                width: 100%;
+                                display: flex;
+                                justify-content: space-between;
+                                .shouldAttendenceValue {
+                                    width: 50%
+                                }
+                                .actualAttendance {
+                                    width: 50%
+                                }
+                            }
+                        }
+                        .productInfo {
+                            box-sizing: border-box;
+                            vertical-align: top;
+                            width: 50%;
+                            height: 100%;
+                            display: inline-block;
+                            overflow: hidden;
+                            .ivu-table-wrapper {
+                                border: none;
+                                border-left: 1px solid #BDBDBD;
+                                border-right: 1px solid #BDBDBD;
+                                .ivu-table-body {
+                                    overflow-x: hidden;
+                                }
+                                .ivu-table td,
+                                .ivu-table th {
+                                    height: P(30);
+                                    border-bottom: 1px solid #BDBDBD;
+                                }
+                                .ivu-table-border td,
+                                .ivu-table-border th {
+                                    border-right: 1px solid #BDBDBD;
+                                }
+                                .ivu-table-border td:last-child,
+                                .ivu-table-border th:last-child {
+                                    border-right: none;
+                                }
+                                div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::before {
+                                    height: 0;
+                                }
+                                div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::after {
+                                    width: 0;
+                                }
+                            }
+                        }
+                        .addProductInfo {
+                            vertical-align: top;
+                            width: 10%;
+                            height: 100%;
+                            display: inline-flex;
+                            .flex-item {
+                                color: #e1e1e1;
+                                font-size: P(32);
+                                margin: auto;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                    .lossContainer {
+                        width: 100%;
+                        height: calc(100% - 220px);
+                        overflow-y: scroll;
+                        font-size: 0;
+                        .lossRow {
+                            font-size: 0;
+                            height: 201px;
+                            width: 100%;
+                            border-bottom: 1px solid #BDBDBD;
+                            .lossName {
+                                width: 15%;
+                                height: 100%;
+                                display: inline-flex;
+                                vertical-align: top;
+                                .flex-item {
+                                    margin: auto;
+                                    font-size: P(16);
+                                    color: #040404;
+                                }
+                            }
+                            .lossTable {
+                                width: calc(75% + 13px);
+                                display: inline-block;
+                                .ivu-table-wrapper {
+                                    border: none;
+                                    border-left: 1px solid #BDBDBD;
+                                    border-right: 1px solid #BDBDBD;
+                                    .ivu-table-body {
+                                        overflow-x: hidden;
+                                    }
+                                    .ivu-table td,
+                                    .ivu-table th {
+                                        height: P(30);
+                                        border-bottom: 1px solid #BDBDBD;
+                                    }
+                                    .ivu-table-border td,
+                                    .ivu-table-border th {
+                                        border-right: 1px solid #BDBDBD;
+                                    }
+                                    .ivu-table-border td:last-child,
+                                    .ivu-table-border th:last-child {
+                                        border-right: none;
+                                    }
+                                    div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::before {
+                                        height: 0;
+                                    }
+                                    div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::after {
+                                        width: 0;
+                                    }
+                                }
+                            }
+                            .lossBtnContainer {
+                                width: calc(10% - 13px);
+                                height: 100%;
+                                display: inline-flex;
+                                vertical-align: top;
+                                .flex-item {
+                                    margin: auto;
+                                    text-align: center;
+                                    font-size: P(12);
+                                    color: #040404;
+                                    display: inline-block;
+                                    width: P(80);
+                                    line-height: 24px;
+                                    background-color: #e1e1e1;
+                                    border-radius: P(4);
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-
-    .basicInfo {
-      width: 100%;
-      height: 220px;
-      font-size: 0;
-      box-sizing: border-box;
-      border-bottom: 1px solid #BDBDBD;
-
-      .classInfo {
-        font-size: P(16);
-        vertical-align: top;
-        width: 40%;
-        height: 100%;
-        padding-left: P(28);
-        padding-right: P(28);
-        padding-top: P(32);
-        display: inline-block;
-        color: #040404;
-
-        .classInfoTitle {
-          display: inline-block;
-          padding-bottom: P(39);
-        }
-
-        .classInfoTimeContainer {
-          padding-bottom: P(26);
-          font-size: 0;
-
-          .classInfoTimeTitle {
-            display: inline-block;
-            vertical-align: middle;
-            font-size: P(16);
-            width: 80px;
-          }
-          .ivu-input {
-            font-size: P(14);
-          }
-          span {
-            font-size: P(16);
-          }
-        }
-
-        .classInfoNumAttendance {
-          padding-bottom: P(26);
-          font-size: 0;
-          width: 100%;
-
-          span {
-            display: inline-block;
-            vertical-align: middle;
-            font-size: P(16);
-            width: 80px;
-          }
-
-          .ivu-input-number {
-            width: calc(50% - 98px);
-            .ivu-input-number-handler {
-              text-align: right;
-              .ivu-icon-ios-arrow-up:before {
-                margin-right: P(4);
-              }
-              .ivu-icon-ios-arrow-down:before {
-                margin-right: P(4);
-              }
-            }
-          }
-
-          .classInfoActualAttendance {
-            margin-left: 36px;
-          }
-        }
-
-        .classInfoSubmit {
-          text-align: right;
-          padding-bottom: P(36);
-
-          .classInfoClearBtn {
-            margin-right: P(16);
-            background-color: #e1e1e1;
-          }
-
-          .classInfoConfirmBtn {
-            background-color: #dbe9ff;
-          }
-
-          .classInfoBtn {
-            display: inline-block;
-            text-align: center;
-            font-size: P(14);
-            color: #040404;
-            width: P(60);
-            line-height: P(24);
-            border-radius: P(10);
-            cursor:pointer;
-          }
-        }
-      }
-
-      .productInfo {
-        box-sizing: border-box;
-        vertical-align: top;
-        width: 50%;
-        height: 100%;
-        display: inline-block;
-
-        .ivu-table-wrapper {
-          border: none;
-          border-left: 1px solid #BDBDBD;
-          border-right: 1px solid #BDBDBD;
-
-
-          .ivu-table-body {
-            overflow-x: hidden;
-          }
-
-          .ivu-table td,
-          .ivu-table th {
-            height: P(30);
-            border-bottom: 1px solid #BDBDBD;
-          }
-
-          .ivu-table-border td,
-          .ivu-table-border th {
-            border-right: 1px solid #BDBDBD;
-          }
-
-          .ivu-table-border td:last-child,
-          .ivu-table-border th:last-child {
-            border-right: none;
-          }
-
-          div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::before {
-            height: 0;
-          }
-
-          div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::after {
-            width: 0;
-          }
-        }
-      }
-
-      .addProductInfo {
-        vertical-align: top;
-        width: 10%;
-        height: 100%;
-        display: inline-flex;
-
-        .flex-item {
-          color: #e1e1e1;
-          font-size: P(32);
-          margin: auto;
-          cursor: pointer;
-        }
-      }
-    }
-
-    .lossContainer {
-      width: 100%;
-      height: calc(93% - 220px);
-      overflow-y: scroll;
-      font-size: 0;
-
-      .lossRow {
-        font-size: 0;
-        height: 201px;
-        width: 100%;
-        border-bottom: 1px solid #BDBDBD;
-
-        .lossName {
-          width: 15%;
-          height: 100%;
-          display: inline-flex;
-          vertical-align: top;
-
-          .flex-item {
-            margin: auto;
-            font-size: P(16);
-            color: #040404;
-          }
-        }
-
-        .lossTable {
-          width: calc(75% + 13px);
-          display: inline-block;
-
-          .ivu-table-wrapper {
-            border: none;
-            border-left: 1px solid #BDBDBD;
-            border-right: 1px solid #BDBDBD;
-
-            .ivu-table-body {
-              overflow-x: hidden;
-            }
-
-            .ivu-table td,
-            .ivu-table th {
-              height: P(30);
-              border-bottom: 1px solid #BDBDBD;
-            }
-
-            .ivu-table-border td,
-            .ivu-table-border th {
-              border-right: 1px solid #BDBDBD;
-            }
-
-            .ivu-table-border td:last-child,
-            .ivu-table-border th:last-child {
-              border-right: none;
-            }
-
-            div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::before {
-              height: 0;
-            }
-
-            div.ivu-table.ivu-table-border.ivu-table-with-fixed-top::after {
-              width: 0;
-            }
-          }
-        }
-
-        .lossBtnContainer {
-          width: calc(10% - 13px);
-          height: 100%;
-          display: inline-flex;
-          vertical-align: top;
-
-          .flex-item {
-            margin: auto;
-            text-align: center;
-            font-size: P(12);
-            color: #040404;
-            display: inline-block;
-            width: P(80);
-            line-height: 24px;
-            background-color: #e1e1e1;
-            border-radius: P(4);
-            cursor: pointer;
-          }
-        }
-      }
-    }
-
-    .showOpenCeremony {
-      visibility: visible;
-    }
-
-    .hideOpenCeremony{
-      visibility: hidden;
-    }
-  }
 }

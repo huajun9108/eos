@@ -1,5 +1,4 @@
 //接收store 发送来的action  commit
-import { stageRes, statusRes } from "../assets/js/tip"
 export default {
     adminLogin(state, json) {
         state.loginResult = json
@@ -187,5 +186,11 @@ export default {
     },
     updateLinebodyProductById(state, json) {
         state.updateLinebodyProductByIdRes = json
-    }
+    },
+    selectSavingBookByTimesAndLinebodys(state, json) {
+        state.selectSavingBookByTimesAndLinebodysRes = json
+    },
+    selectOverviewByTimesAndLinebodys(state, json) {
+        state.selectOverviewByTimesAndLinebodys = json
+    },
 }

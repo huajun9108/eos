@@ -96,8 +96,6 @@
       </div>
       </div>
     </div>
-    </div>
-    </div>
 </template>
 <script type="text/javascript">
 import mySwitch from 'vue-switch/switch-2.vue';

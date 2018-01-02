@@ -17,9 +17,9 @@
                     <input type="radio"  id="admin-radio" value="0" v-model="picked" class="myradio"><label for="admin-radio">管理员</label>
                     <input type="radio"  id="user-radio" value="1" v-model="picked" class="myradio"><label for="user-radio">用户</label>
                 
-                <button type="button" @click="tologin" class="btn" ref="btn" >登&nbsp&nbsp录</button>
+                <button type="button" @click="tologin" class="btn" ref="btn" >登&nbsp;&nbsp;录</button>
                 <div class="hint hide" ref="hint">
-                    <i class="iconfont icon-hint"></i><span class="tips" ref="tip"/></span>
+                    <i class="iconfont icon-hint"></i><span class="tips" ref="tip"/>
                 </div>
             </div>		          
 		</div> 
@@ -93,10 +93,13 @@ export default{
         loginResult(newVal){
             if(newVal.status=="0"){
                 if(this.picked=="0"){
+                    console.log(newVal.flag)
                     localStorage.setItem("user",newVal.data.adminname);
+                    sessionStorage.setItem('adminAccessToken' ,newVal.flag)
                     this.$router.push({name:"area"})
                 }else{
                     sessionStorage.setItem("userid",newVal.data.userid);
+                    sessionStorage.setItem('userAccessToken' , newVal.flag)
                     this.$router.push({name:"Account",params:{userid:sessionStorage.getItem("userid")}}) 
                 }
             }else if(newVal.status=="2"){

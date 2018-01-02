@@ -89,7 +89,7 @@ export default {
   methods: {
     ...mapActions([
       "selectUserById",
-      "selectAllByUserIdAndLinebodyIds",
+      "selectLossmappingByTimesAndLinebodys",
       "selectProjectStateByTimeAndLinebodyIds",
       "selectSavingBookByTimesAndLinebodys",
       "selectOverviewByTimesAndLinebodys"
@@ -146,7 +146,7 @@ export default {
       this.changeFlag = false
       if (!data) return;
       this.savingbook(this.startTime,data)
-      this.end = new Date(data + " 23:59:59");
+      this.end = new Date(data + " 24:00:00");
       if (!this.startTime) return;
       this.start = new Date(this.startTime.format("yyyy-MM-dd") + " 00:00:00");
       this.lossmapingAndOverview()
@@ -159,12 +159,13 @@ export default {
         this.end
       ) {
         if(this.routeIsroute("lossmaping")){
-          this.selectAllByUserIdAndLinebodyIds({
-          userId: sessionStorage.getItem("userid"),
-          linebodyIds: this.lineBodystr,
-          startTime: this.start,
-          endTime: this.end
-        });
+          console.log("loss")
+          this.selectLossmappingByTimesAndLinebodys({
+            userId: sessionStorage.getItem("userid"),
+            linebodyIds: this.lineBodystr,
+            startTime: this.start,
+            endTime: this.end
+          })
         }else if(this.routeIsroute("overview")){
           this.selectOverviewByTimesAndLinebodys({
           linebodyIds: this.lineBodystr,
@@ -276,7 +277,7 @@ export default {
       });
       if (this.routeIsroute("lossmaping") || this.routeIsroute("overview")) {
         this.endTime = new Date();
-        this.startTime = new Date(new Date().getTime() -30 * 24 * 60 * 60 * 1000);
+        this.startTime = new Date(new Date().getTime() -5 * 24 * 60 * 60 * 1000);
       }
     }
     if (this.routeIsroute("summary")) {

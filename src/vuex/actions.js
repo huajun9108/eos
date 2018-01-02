@@ -1,7 +1,9 @@
 import axios from "axios"
 import qs from 'qs'
 import iView from 'iview'
-axios.defaults.baseURL = "http://116.62.10.199:3002";
+axios.defaults.baseURL = "http://116.62.10.199:3001";
+axios.defaults.timeout = 100000000;
+
 
 export default {
     adminLogin({ commit }, obj) {
@@ -402,8 +404,8 @@ export default {
             console.log(err)
         })
     },
-    selectAllByUserIdAndLinebodyIds({ commit }, obj) {
-        axios.post("/lossmapping/selectAllByUserIdAndLinebodyIds", qs.stringify({
+    selectLossmappingByTimesAndLinebodys({ commit }, obj) {
+        axios.post("/lossmapping/selectLossmappingByTimesAndLinebodys", qs.stringify({
             "userId": obj.userId,
             "linebodyIds": obj.linebodyIds,
             "startTime": obj.startTime,
@@ -411,7 +413,7 @@ export default {
         })).then(res => {
             return res.data
         }).then(json => {
-            commit("selectAllByUserIdAndLinebodyIds", json)
+            commit("selectLossmappingByTimesAndLinebodys", json)
         })
     },
     updateLinebodyWeightById({ commit }, obj) {

@@ -49,7 +49,7 @@ export default {
           let beginDateVal = this.startTime;
           if(beginDateVal) {
             return (
-              (date && date.valueOf() < beginDateVal) 
+              (date && date.valueOf() < beginDateVal)
               // ||
               // (date && date.valueOf() > Date.now())
             );
@@ -276,8 +276,8 @@ export default {
         userid: sessionStorage.getItem("userid")
       });
       if (this.routeIsroute("lossmaping") || this.routeIsroute("overview")) {
-        this.endTime = new Date();
-        this.startTime = new Date(new Date().getTime() -5 * 24 * 60 * 60 * 1000);
+        // this.endTime = new Date();
+        // this.startTime = new Date(new Date().getTime() -5 * 24 * 60 * 60 * 1000);
       }
     }
     if (this.routeIsroute("summary")) {

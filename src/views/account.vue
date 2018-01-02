@@ -24,7 +24,7 @@
             <td width="15%">密码</td>
             <td width="10%">职位</td>
             <td width="15%">上司</td>
-            <td width="15%" colspan="2">操作</td>
+            <td width="15%" colspan="2">操作</td>
         </tr>
         </thead>
         <tbody>
@@ -147,12 +147,8 @@ export default {
         this.$Message.warning('请选择需要删除的数据');
       }else{
         Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
-          // for (var i = _this.checkedUserArr.length - 1; i >= 0; i--) {
-          //     var userId = _this.checkedUserArr[i];
-              //that.userAll.splice(userId, 1);
-              _this.massDeleteUserByUserIds({ userIds:_this.checkedUserArr.join(",") });
-              _this.loadList();
-          // }
+            _this.massDeleteUserByUserIds({ userIds:_this.checkedUserArr.join(",") });
+            _this.loadList();
         });
       }
       

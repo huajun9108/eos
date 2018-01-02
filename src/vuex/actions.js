@@ -1,7 +1,9 @@
 import axios from "axios"
 import qs from 'qs'
-
+import iView from 'iview'
 axios.defaults.baseURL = "http://116.62.10.199:3002";
+axios.defaults.timeout = 100000000;
+
 
 export default {
     adminLogin({ commit }, obj) {
@@ -402,8 +404,8 @@ export default {
             console.log(err)
         })
     },
-    selectAllByUserIdAndLinebodyIds({ commit }, obj) {
-        axios.post("/lossmapping/selectAllByUserIdAndLinebodyIds", qs.stringify({
+    selectLossmappingByTimesAndLinebodys({ commit }, obj) {
+        axios.post("/lossmapping/selectLossmappingByTimesAndLinebodys", qs.stringify({
             "userId": obj.userId,
             "linebodyIds": obj.linebodyIds,
             "startTime": obj.startTime,
@@ -411,7 +413,7 @@ export default {
         })).then(res => {
             return res.data
         }).then(json => {
-            commit("selectAllByUserIdAndLinebodyIds", json)
+            commit("selectLossmappingByTimesAndLinebodys", json)
         })
     },
     updateLinebodyWeightById({ commit }, obj) {
@@ -664,15 +666,29 @@ export default {
         })
     },
     selectSavingBookByTimesAndLinebodys({ commit }, obj) {
-      axios.post("/savingbook/selectSavingBookByTimesAndLinebodys", qs.stringify({
-        "startTime": obj.startTime,
-        "endTime": obj.endTime,
-        "linebodyIds": obj.linebodyIds
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("selectSavingBookByTimesAndLinebodys", json)
-      })
+        axios.post("/savingbook/selectSavingBookByTimesAndLinebodys", qs.stringify({
+            "startTime": obj.startTime,
+            "endTime": obj.endTime,
+            "linebodyIds": obj.linebodyIds
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("selectSavingBookByTimesAndLinebodys", json)
+        })
+    },
+    selectOverviewByTimesAndLinebodys({ commit }, obj) {
+        // iView.Spin.show()
+        axios.post("/overview/selectOverviewByTimesAndLinebodys", qs.stringify({
+            "startTime": obj.startTime,
+            "endTime": obj.endTime,
+            "linebodyIds": obj.linebodyIds
+        })).then(res => {
+            // iView.Spin.hide()
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("selectOverviewByTimesAndLinebodys", json)
+        })
     }
 }

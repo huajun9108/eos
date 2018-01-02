@@ -218,13 +218,6 @@ export default {
           delete newNode.isNew;
           zTree.updateNode(newNode);
           _this.$Message.success("添加成功");
-          let reg=/^n/g;
-          if(reg.test(newVal.data.id)){
-            this.picked=1
-            this.removeEvent(false,_this.tip)
-          }else{
-            this.picked=null
-          }
         } else {
           this.selectProductAll();
           _this.$Message.error("添加失败");

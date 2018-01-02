@@ -11,6 +11,7 @@
                             placeholder="input here"
                             class="target_con"
                             :disabled="targetFlag"
+                            @on-change="datacheck(targetNo)"
                             >
                             <Option v-for="item in targetList" :value="item" :key="item">{{ item }}</Option>
                         </AutoComplete>
@@ -27,7 +28,7 @@
                 <ul class="target_setting clearfix">
                     <li class="target_set">
                         <span class="target_tit">Vision</span>
-                        <Input :disabled="targetFlag" v-model="vision" size="small" class="target_con"></Input>
+                        <Input :disabled="targetFlag" v-model="vision" size="small" class="target_con" @on-blur="datacheck(vision)"></Input>
                     </li>
                     <li class="target_set">
                         <span class="target_tit">开始时间</span>
@@ -42,7 +43,7 @@
                 <ul class="target_setting clearfix">
                     <li class="target_set">
                         <span class="target_tit">Ideal</span>
-                        <Input :disabled="targetFlag" v-model="ideal" size="small" class="target_con"></Input>
+                        <Input :disabled="targetFlag" v-model="ideal" size="small" class="target_con" @on-blur="datacheck(ideal)"></Input>
                     </li>
                     <li class="target_set">
                         <span class="target_tit">开始时间</span>
@@ -56,7 +57,6 @@
             </div>
             <div class="area_button text-right">
                 <span class="button_confirm button" @click="confirm">确认</span>
-                
             </div>
         </div>
     </div>
@@ -155,7 +155,7 @@ export default{
             return str;
         },
         toPercent(point){
-            var str=Number(point*100).toFixed();
+            var str=Number(point*100).toFixed(2);
             str+="%";
             return str;
         },
@@ -165,7 +165,7 @@ export default{
             if(!reg.test(this.nodeId)){
                 this.$Message.error('请选择对应的线体进行操作');
             }else{
-                if(this.validateData()){
+                if(this.validateData()&&this.datacheck(this.targetNo)&&this.datacheck(this.vision)&&this.datacheck(this.ideal)){
                     this.updateLinebodyInfById({
                         "id": this.nodeId,
                         "targetValue": this.toPoint(this.targetNo),
@@ -178,7 +178,21 @@ export default{
                         "idealStrattime": this.idealStart,
                         "idealEndtime":this.idealEnd
                     })
+
+                }else{
                 }
+            }
+            
+        },
+        datacheck(data){
+            console.log(data)
+            let reg = /^([1-9]{1}[0-9]{0,1}|0|100)(.\d{1,2}){0,1}%$/;
+            if(reg.test(data)){
+                console.log("true")
+                return true
+            }else{
+                this.$Message.error('请输入正确的百分数信息');
+                return false
             }
         },
         validateData() {
@@ -225,7 +239,6 @@ export default{
             }
         },
         nodeId(newVal){
-            console.log(newVal)
             let reg=/^l/g;
             if(reg.test(newVal)){
                 this.targetFlag = false
@@ -247,7 +260,6 @@ export default{
         }
     },
     mounted() {
-        // this.selectAreaAll()
 	}
 
 }

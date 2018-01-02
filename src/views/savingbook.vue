@@ -31,35 +31,34 @@ export default {
         "v-timearea": timearea,
         "chart":chart
     },
-   data(){
-       return{
-        isShow:false,
-        savingData:[],
-        // savingData:[["2013/1/24","1000000","3000000"],["2013/1/25","1500000","2500000"],["2013/1/26","900000","900000"]],
-       }
-   },
-   methods:{
-        showlDialog(){
-            this.isShow = !this.isShow
-        },
-        clearCharts() {
-          this.savingData = [];
+    data(){
+        return{
+            isShow:false,
+            savingData:[],
         }
-   },
-   computed: {
-     ...mapState([
-       "selectSavingBookByTimesAndLinebodysRes"
-     ])
-   },
-   watch: {
-     selectSavingBookByTimesAndLinebodysRes(newVal) {
-       if(newVal.status === "0") {
-         this.savingData = newVal.data;
-       }
-     }
-   },
-   mounted () {
-   }
+    },
+    methods:{
+            showlDialog(){
+                this.isShow = !this.isShow
+            },
+            clearCharts() {
+                this.savingData = [];
+            }
+    },
+    computed: {
+        ...mapState([
+        "selectSavingBookByTimesAndLinebodysRes"
+        ])
+    },
+    watch: {
+        selectSavingBookByTimesAndLinebodysRes(newVal) {
+            if(newVal.status === "0") {
+                this.savingData = newVal.data;
+            }
+        }
+    },
+    mounted () {
+    }
 }
 </script>
 <style lang="sass" scoped>

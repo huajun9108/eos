@@ -146,7 +146,6 @@ export default {
   },
   watch: {
     nodeId(newVal) {
-      console.log(newVal)
       let reg = /^l/g;
       if (reg.test(newVal)) {
         this.productFlag = false

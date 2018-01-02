@@ -26,13 +26,8 @@
 </transition>
 </template>
 <script>
-import {
-  mapState,
-  mapActions
-} from "vuex";
-import {
-  GetDateStr
-} from "../assets/js/tip"
+import { mapState,mapActions} from "vuex";
+import {GetDateStr} from "../assets/js/tip"
 export default {
   data() {
     return {
@@ -45,7 +40,7 @@ export default {
           if (beginDateVal) {
             return date && date.valueOf() > beginDateVal;
           } else {
-            return date && date.valueOf() > Date.now();
+            // return date && date.valueOf() > Date.now();
           }
         }
       },
@@ -54,11 +49,12 @@ export default {
           let beginDateVal = this.startTime;
           if(beginDateVal) {
             return (
-              (date && date.valueOf() < beginDateVal) ||
-              (date && date.valueOf() > Date.now())
+              (date && date.valueOf() < beginDateVal)
+              // ||
+              // (date && date.valueOf() > Date.now())
             );
           } else {
-            return date && date.valueOf() > Date.now();
+            // return date && date.valueOf() > Date.now();
           }
         }
       },
@@ -87,14 +83,16 @@ export default {
       start: null,
       end: null,
       datePickerTypeVal: "date",
+      changeFlag:false
     }
   },
   methods: {
     ...mapActions([
       "selectUserById",
-      "selectAllByUserIdAndLinebodyIds",
+      "selectLossmappingByTimesAndLinebodys",
       "selectProjectStateByTimeAndLinebodyIds",
-      "selectSavingBookByTimesAndLinebodys"
+      "selectSavingBookByTimesAndLinebodys",
+      "selectOverviewByTimesAndLinebodys"
     ]),
     zTreeOnCheck(event, treeId, treeNode) {
       const _this = this;
@@ -115,16 +113,13 @@ export default {
         return;
       }
       if (this.routeIsroute("summary")) {
-        console.log("selectProjectStateByTimeAndLinebodyIds");
         _this.selectProjectStateByTimeAndLinebodyIds({
           linebodyIds: _this.lineBodystr,
           time: this.time,
         });
         return;
       }
-
       if(this.routeIsroute("savingbook")) {
-        console.log("selectSavingBookByTimesAndLinebodys");
         if(!this.start || !this.end) return;
         _this.selectSavingBookByTimesAndLinebodys({
           "startTime": this.start,
@@ -133,77 +128,71 @@ export default {
         });
         return;
       }
-
       if (!this.startTime || !this.endTime) return
       this.start = new Date(this.startTime.format("yyyy-MM-dd") + " 00:00:00");
-      this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
-      this.lossmaping();
+      this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 24:00:00");
+      this.lossmapingAndOverview();
     },
     startChange(data) {
+      this.changeFlag = true
       if (!data) return;
-      if (this.routeIsroute("savingbook")) {
-        if(!this.endTime) return;
-        this.start = new Date(data + '-01 00:00:00');
-
-        const endFormat = this.endTime.format("yyyy-MM");
-        const endArr = endFormat.split("-");
-        const year = endArr[0];
-        const month = endArr[1];
-        const days = this.getDaysInMonth(year, month);
-        this.end = new Date(endFormat + '-' + days.toString() + " 23:59:59.999");
-        this.selectSavingBookByTimesAndLinebodys({
-          "startTime": this.start,
-          "endTime": this.end,
-          "linebodyIds": this.lineBodystr
-        });
-      } else {
-        this.start = new Date(data + " 00:00:00");
-        if (!this.endTime) return;
-        this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
-        this.lossmaping()
-      }
+      this.savingbook(this.endTime,data)
+      this.start = new Date(data + " 00:00:00");
+      if (!this.endTime) return;
+      this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 24:00:00");
+      this.lossmapingAndOverview()
     },
     endChange(data) {
+      this.changeFlag = false
       if (!data) return;
-      if (this.routeIsroute("savingbook")) {
-        if(!this.startTime) return;
-        const startFormat = this.startTime.format('yyyy-MM');
-        this.start = new Date(startFormat + '-01 00:00:00');
-
-        const endArr = data.split("-");
-        const year = endArr[0];
-        const month = endArr[1];
-        const days = this.getDaysInMonth(year, month);
-        console.log(days);
-        this.end = new Date(data + '-' + days.toString() + " 23:59:59.999");
-        this.selectSavingBookByTimesAndLinebodys({
-          "startTime": this.start,
-          "endTime": this.end,
-          "linebodyIds": this.lineBodystr
-        });
-        console.log("endChange");
-      } else {
-        this.end = new Date(data + " 23:59:59");
-        if (!this.startTime) return;
-        this.start = new Date(this.startTime.format("yyyy-MM-dd") + " 00:00:00");
-        this.lossmaping()
-      }
+      this.savingbook(this.startTime,data)
+      this.end = new Date(data + " 24:00:00");
+      if (!this.startTime) return;
+      this.start = new Date(this.startTime.format("yyyy-MM-dd") + " 00:00:00");
+      this.lossmapingAndOverview()
     },
-    lossmaping() {
-      if (this.routeIsroute("lossmaping")) {
-        if (
-          sessionStorage.getItem("userid") &&
-          this.lineBodystr &&
-          this.start &&
-          this.end
-        ) {
-          this.selectAllByUserIdAndLinebodyIds({
+    lossmapingAndOverview() {
+      if (
+        sessionStorage.getItem("userid") &&
+        this.lineBodystr &&
+        this.start &&
+        this.end
+      ) {
+        if(this.routeIsroute("lossmaping")){
+          console.log("loss")
+          this.selectLossmappingByTimesAndLinebodys({
             userId: sessionStorage.getItem("userid"),
             linebodyIds: this.lineBodystr,
             startTime: this.start,
             endTime: this.end
-          });
+          })
+        }else if(this.routeIsroute("overview")){
+          this.selectOverviewByTimesAndLinebodys({
+          linebodyIds: this.lineBodystr,
+          startTime: this.start,
+          endTime: this.end
+        })
         }
+      }
+    },
+    savingbook(starttime,data){
+      if (this.routeIsroute("savingbook")) {
+        if(!this.changeFlag){
+          if(!starttime) return
+          this.start = new Date(starttime.format('yyyy-MM') + '-01 00:00:00');
+          const days = this.getEndDays(data);
+          this.end = new Date(data + '-' + days.toString() + " 24:00:00");
+        }else{
+          if(!starttime) return
+          this.start = new Date(data + '-01 00:00:00');
+          const days = this.getEndDays(starttime.format("yyyy-MM"));
+          this.end = new Date(starttime.format("yyyy-MM") + '-' + days.toString() + " 24:00:00");
+        }
+        this.selectSavingBookByTimesAndLinebodys({
+          "startTime": this.start,
+          "endTime": this.end,
+          "linebodyIds": this.lineBodystr
+        })
       }
     },
     clearCharts() {
@@ -220,9 +209,15 @@ export default {
     },
     getDaysInMonth(year, month) {
       const nextMonth = parseInt(month, 10);
-      console.log(nextMonth);
       const temp = new Date(year, nextMonth, 0);
       return temp.getDate();
+    },
+    getEndDays(data){
+      const endArr = data.split("-");
+      const year = endArr[0];
+      const month = endArr[1];
+      const days = this.getDaysInMonth(year, month)
+      return days;
     }
   },
   computed: {
@@ -271,8 +266,8 @@ export default {
 
       if (!this.startTime || !this.endTime) return
       this.start = new Date(this.startTime.format("yyyy-MM-dd") + " 00:00:00");
-      this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 23:59:59");
-      this.lossmaping()
+      this.end = new Date(this.endTime.format("yyyy-MM-dd") + " 24:00:00");
+      this.lossmapingAndOverview()
     }
   },
   mounted() {
@@ -281,8 +276,8 @@ export default {
         userid: sessionStorage.getItem("userid")
       });
       if (this.routeIsroute("lossmaping") || this.routeIsroute("overview")) {
-        this.endTime = new Date();
-        this.startTime = new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000);
+        // this.endTime = new Date();
+        // this.startTime = new Date(new Date().getTime() -5 * 24 * 60 * 60 * 1000);
       }
     }
     if (this.routeIsroute("summary")) {
@@ -299,8 +294,7 @@ export default {
       const month = parseInt(arr[1]);
       this.endTime = new Date(currentDate + "-01 00:00:00");
       const days = this.getDaysInMonth(year, month);
-      console.log(days);
-      this.end = new Date(currentDate + "-" + days.toString() + " 23:59:59.999");
+      this.end = new Date(currentDate + "-" + days.toString() + " 24:00:00");
       if(month === 12) {
         this.startTime = new Date(year.toString() + '-01-01 00:00:00');
       } else {
@@ -381,7 +375,6 @@ export default {
 .slide-fade-leave-active {
     transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
-/* .slide-fade-leave-active for below version 2.1.8 */
 .slide-fade-enter,
 .slide-fade-leave-to {
     transform: translateX(10px);

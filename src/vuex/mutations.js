@@ -106,7 +106,7 @@ export default {
     deleteObjectnowBylossid(state, json) {
         state.deleteObject = json
     },
-    selectAllByUserIdAndLinebodyIds(state, json) {
+    selectLossmappingByTimesAndLinebodys(state, json) {
         state.lossmappingLinebodyAll = json
     },
     updateLinebodyWeightById(state, json) {

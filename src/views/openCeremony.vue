@@ -40,7 +40,7 @@
             </div>
         </div>
     </div>
-  
+
     <Modal class="lossChoose" v-model="showLossFlag" @on-ok="lossConfirmClick" @on-cancel="lossCancelClick" :closable="false" class-name="loss-vertical-center-modal" width="400">
         <div v-if="editLossDirFlag" class="editLossDir">
             <span>Tier3：</span>
@@ -762,6 +762,13 @@ export default {
                 this.$Message.error("删除失败");
             }
         },
+        deleteLoss4dataRes(newVal) {
+          if(newVal.status === "0") {
+            this.$Message.success("删除成功");
+          } else {
+            this.$Message.error("删除失败");
+          }
+        }
     },
     mounted() {
         if (sessionStorage.getItem("userid")) {

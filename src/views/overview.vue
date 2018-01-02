@@ -21,10 +21,10 @@
                                 :_chartData="item.data"
                                 :_type="item.type"
                                 @recieveData="showData"></chart>
-                                <Spin fix  class="demo-spin-col" v-if="spinShow">
+                                <!-- <Spin fix  class="demo-spin-col" v-if="spinShow">
                                     <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
                                     <div>Loading</div>
-                                </Spin>
+                                </Spin> -->
                             </td>
                             <td width="35%" class="text-left item_td">
                                 <div class="item_table item_top">
@@ -124,7 +124,7 @@ export default {
        return{
         data:null,
         isShow:false,
-        spinShow: true,
+        // spinShow: true,
         dataList:[
             {
                 name:"OEE",
@@ -193,10 +193,10 @@ export default {
         clearCharts() {
             this.dataList[0].data = [];
         },
-        overviewData(){
-            this.spinShow = true;
+        // overviewData(){
+        //     this.spinShow = true;
             
-        }
+        // }
         
    },
    computed: {
@@ -213,7 +213,7 @@ export default {
             deep:true
         },
         selectOverviewByTimesAndLinebodys(newVal){
-            this.spinShow = false;
+            // this.spinShow = false;
             this.dataList[0].data = newVal
         }
    },
@@ -222,18 +222,18 @@ export default {
    }
 }
 </script>
-<style lang="scss" scoped>
-.demo-spin-icon-load{
-    animation: ani-demo-spin 1s linear infinite;
-}
-.demo-spin-col{
-    // height: 100px;
-    position: relative;
-    // border: 1px solid #eee;
-}
-@keyframes ani-demo-spin {
-    from { transform: rotate(0deg);}
-    50%  { transform: rotate(180deg);}
-    to   { transform: rotate(360deg);}
-}
-</style>
+// <style lang="scss" scoped>
+// .demo-spin-icon-load{
+//     animation: ani-demo-spin 1s linear infinite;
+// }
+// .demo-spin-col{
+//     // height: 100px;
+//     position: relative;
+//     // border: 1px solid #eee;
+// }
+// @keyframes ani-demo-spin {
+//     from { transform: rotate(0deg);}
+//     50%  { transform: rotate(180deg);}
+//     to   { transform: rotate(360deg);}
+// }
+// </style>

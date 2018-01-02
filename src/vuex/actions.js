@@ -1,8 +1,8 @@
 import axios from "axios"
 import qs from 'qs'
 import iView from 'iview'
-axios.defaults.baseURL = "http://116.62.10.199:3001";
-axios.defaults.timeout = 100000000;
+axios.defaults.baseURL = "http://116.62.10.199:3002";
+// axios.defaults.timeout = 1000000000000000;
 
 
 export default {
@@ -405,16 +405,17 @@ export default {
         })
     },
     selectLossmappingByTimesAndLinebodys({ commit }, obj) {
-        axios.post("/lossmapping/selectLossmappingByTimesAndLinebodys", qs.stringify({
+        axios.post('/lossmapping/selectLossmappingByTimesAndLinebodys', qs.stringify({
             "userId": obj.userId,
             "linebodyIds": obj.linebodyIds,
             "startTime": obj.startTime,
             "endTime": obj.endTime
-        })).then(res => {
+        }), { timeout: 1000000000000000 }).then(res => {
             return res.data
         }).then(json => {
             commit("selectLossmappingByTimesAndLinebodys", json)
         })
+
     },
     updateLinebodyWeightById({ commit }, obj) {
         axios.post("/linebodySet/updateLinebodyWeightById", qs.stringify({

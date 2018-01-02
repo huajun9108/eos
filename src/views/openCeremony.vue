@@ -762,12 +762,33 @@ export default {
                 this.$Message.error("删除失败");
             }
         },
+        updateProductRes(newVal) {
+          if (newVal.status === "0") {
+            this.productInfoData = newVal.data;
+            this.$Message.success("修改成功");
+          } else {
+            this.$Message.error("修改失败");
+          }
+          this.editProductIndex = null;
+          this.conformProductValue = null;
+        },
         deleteLoss4dataRes(newVal) {
-          if(newVal.status === "0") {
-            this.$Message.success("删除成功");
+          if (newVal.status === "0") {
+            for (let i = 0; i < this.datainputLossTableData.length; i++) {
+              for (let key in this.datainputLossTableData[i]) {
+                /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+                if (this.datainputLossTableData[i][key].length > 0) {
+                  if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                    this.datainputLossTableData[i][key].splice(this.lossParams.index, 1);
+                    this.$Message.success("删除成功");
+                  }
+                }
+              }
+            }
           } else {
             this.$Message.error("删除失败");
           }
+          this.lossParams = null;
         }
     },
     mounted() {

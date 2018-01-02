@@ -2,7 +2,7 @@ import axios from "axios"
 import qs from 'qs'
 import iView from 'iview'
 axios.defaults.baseURL = "http://116.62.10.199:3002";
-// axios.defaults.timeout = 1000000000000000;
+axios.defaults.timeout = 100000000;
 
 
 export default {

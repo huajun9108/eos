@@ -4,12 +4,11 @@
         <div class="history_data" v-for="(item,index) in historyData" :key = "index">
             <span class="history_date">{{item.year}}</span>
             <ul class="history_time">
-                <li class="history_detail" v-for="(time,index) in item.time" :key= "index">
+                <li :class="history_detail_class" v-for="(time,index) in item.time" :key= "index" @click="test2(item.year, time)">
                     <span class="detail_time">{{time}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <i class="icon-edit"></i>&nbsp;&nbsp;
                     <i class="icon-delete_2"></i>
                 </li>
-                
             </ul>
         </div>
     </div>
@@ -22,7 +21,6 @@
                 <div class="classInfoTimeContainer">
                     <span class="classInfoTime">本班次时间：2017-12-20 14:30:00至2017-12-20 14:30:00</span>
                     <!-- <span class="classInfoTimeStart">2017-12-20 14:30:00</span>
-
                     <span class="classInfoTimeEnd">2017-12-20 14:30:00</span> -->
                 </div>
                 <div class="classInfoNumAttendance">
@@ -52,7 +50,7 @@
             </div>
         </div>
     </div> -->
-  
+
     <!-- <Modal class="lossChoose" v-model="showLossFlag" @on-ok="lossConfirmClick" @on-cancel="lossCancelClick" :closable="false" class-name="loss-vertical-center-modal" width="400">
         <div v-if="editLossDirFlag" class="editLossDir">
             <span>Tier3：</span>
@@ -97,10 +95,10 @@
         <div class="productInfoSetting">
             <span>良品数量：</span>
             <InputNumber v-model="conformProductValue" :min="0"></InputNumber>
-             <span class="cycleTitle">Cycle：</span>
-            <InputNumber v-model="normalCycletimeValue" :min="0"></InputNumber>
+             <!-- <span class="cycleTitle">Cycle：</span>
+            <InputNumber v-model="normalCycletimeValue" :min="0"></InputNumber> -->
         </div>
-    </Modal> 
+    </Modal>
     </div>
 </div>
 </template>
@@ -312,6 +310,7 @@ export default {
             lossTier3BeingEditedVal: '',
             lossTier4BeingEditedVal: '',
             lossParams: null,
+            history_detail_class: 'history_detail'
         }
     },
     computed: {
@@ -345,6 +344,14 @@ export default {
             // "updateProduct",
             // "deleteLoss4data"
         ]),
+        test1(year) {
+          console.log(year);
+        },
+        test2(year, time) {
+          console.log(year);
+          console.log(time);
+          this.history_detail_class = this.history_detail_class === "history_detail" ? "history_detail_selected" : "history_detail";
+        },
     //     getTier3: function(tier) {
     //         if (!tier) {
     //             this.choosedLossTier3ValByAdd = '';

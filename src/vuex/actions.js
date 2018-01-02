@@ -507,7 +507,7 @@ export default {
     },
     updateObjectimeAfteradd({ commit }, obj) {
         axios.post("/datainput/updateObjectimeAfteradd", qs.stringify({
-            "losstier4Dataid": obj.losstier4Dataid,
+            "losstier4DataidList": obj.losstier4Dataid,
             "starttime": obj.starttime,
             "endtime": obj.endtime
         })).then(res => {

@@ -193,4 +193,10 @@ export default {
     selectOverviewByTimesAndLinebodys(state, json) {
         state.selectOverviewByTimesAndLinebodys = json
     },
+    showClassinfHistory(state, json) {
+      state.showClassinfHistoryRes = json
+    },
+    deleteClassinfHistory(state, json) {
+      state.deleteClassinfHistoryRes = json
+    }
 }

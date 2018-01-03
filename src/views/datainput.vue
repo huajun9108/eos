@@ -13,6 +13,7 @@
 </div>
 </template>
 <script>
+import {mapState,mapActions} from "vuex";
 import ceremony from "./openCeremony.vue"
 import history from "./classHistory.vue"
 export default {
@@ -27,6 +28,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+        "selectUserById",
+    ]),
     openCeremonyClick(){
       if (this.ceremonyFlag) {
         this.$Message.error("请勿重复点击开班");
@@ -37,8 +41,30 @@ export default {
     openHistoryClick(){
       this.ceremonyFlag =false
       this.historyFlag =true
+      console.log("start");
+      if (sessionStorage.getItem("userid")) {
+        this.selectUserById({
+            userid: sessionStorage.getItem("userid")
+        });
+        // this.showClassinfHistory({
+        //   linebodyId: this.lineBodys[0],
+        // })
+      } else {
+          console.log(this.$route);
+      }
+      console.log("end");
     }
   },
+  mounted() {
+      if (sessionStorage.getItem("userid")) {
+          // this.classInfoIdList = '';
+          this.selectUserById({
+              userid: sessionStorage.getItem("userid")
+          });
+      } else {
+          console.log(this.$route);
+      }
+  }
 }
 </script>
 <style lang="sass" scoped>

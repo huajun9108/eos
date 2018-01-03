@@ -70,4 +70,6 @@ export default {
     updateLinebodyProductByIdRes: '',
     selectSavingBookByTimesAndLinebodysRes: '',
     selectOverviewByTimesAndLinebodys: null,
+    showClassinfHistoryRes: '',
+    deleteClassinfHistoryRes: ''
 }

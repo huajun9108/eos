@@ -692,5 +692,25 @@ export default {
         }).then(json => {
             commit("selectOverviewByTimesAndLinebodys", json)
         })
+    },
+    showClassinfHistory({ commit }, obj) {
+      axios.post("/datainput/showClassinfHistory", qs.stringify({
+        "linebodyId": obj.linebodyId,
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("showClassinfHistory", json)
+      })
+    },
+    deleteClassinfHistory({ commit }, obj) {
+      axios.post("/datainput/deleteClassinfHistory", qs.stringify({
+        "classinfId": obj.classinfId
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("deleteClassinfHistory", json)
+      })
     }
 }

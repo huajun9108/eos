@@ -4,11 +4,11 @@
         <div class="history_data" v-for="(item,idx) in historyData" :key = "idx">
             <span class="history_date">{{item.year}}</span>
             <ul class="history_time">
-                <li  v-for="(option,$index) in item.time" :key= "$index" :class="{'active':option.active,'unactive':!option.active}" @click="selectStyle (option, option.id) ">
-                    {{option.times}}
+                <li  v-for="(option,index) in item.timeInfo" :key= "index" :class="{'active':option.active,'unactive':!option.active}" @click="selectStyle (item.year, option, option.id) ">
+                    {{option.time}}
                     <span >&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <i class="icon-edit" @click="test2(item.year,option.times)"></i>&nbsp;&nbsp;
-                    <i class="icon-delete_2" @click="test3(option.id)"></i>
+                    <i class="icon-edit"></i>&nbsp;&nbsp;
+                    <i class="icon-delete_2" @click="deleteClassInfo(option, idx, index)"></i>
                 </li>
             </ul>
         </div>
@@ -110,51 +110,52 @@ export default {
     data(){
         return {
             active: false,
-            historyData:[{
-                year:"2017/12/29",time:[
-                    {
-                        times:"08:30:00-11:30:00",
-                        id:1
-                    }, 
-                    {
-                        times:"08:30:00-11:30:00",
-                        id:2
-                    }, 
-                    {
-                        times:"08:30:00-11:30:00",
-                        id:3
-                    },
-                    {
-                        times:"08:30:00-11:30:00",
-                        id:4
-                    }, 
-                    {
-                        times:"08:30:00-11:30:00",
-                        id:5
-                        }]
-            },{
-                year:"2017/12/30",time:[
-                    {
-                        times:"08:30:00-11:30:00",
-                        id:6
-                    }, 
-                    {
-                        times:"08:30:00-11:30:00",
-                        id:7
-                    }, 
-                    {
-                        times:"08:30:00-11:30:00",
-                        id:8
-                    },
-                    {
-                        times:"08:30:00-11:30:00",
-                        id:9
-                    }, 
-                    {
-                        times:"08:30:00-11:30:00",
-                        id:10
-                        }]
-            }],
+            historyData: [],
+            // historyData:[{
+            //     year:"2017/12/29",timeInfo:[
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:1
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:2
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:3
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:4
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:5
+            //             }]
+            // },{
+            //     year:"2017/12/30",timeInfo:[
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:6
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:7
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:8
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:9
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:10
+            //             }]
+            // }],
             // optionsOpenCeremony: {
             //     disabledDate(date) {}
             // },
@@ -340,13 +341,13 @@ export default {
             lossTier4BeingEditedVal: '',
             lossParams: null,
 
-            //用于取消之前选择的li的背景
-            oldIdx: null,
-            oldIndex: null
+            classIdx: null,
+            classIndex: null,
         }
     },
     computed: {
         ...mapState([
+          "validarea",
             // "lossTier3",
             "kpiTwoLev",
             // "addLosstier4time2Res",
@@ -359,11 +360,13 @@ export default {
             // "deleteProductRes",
             // "updateProductRes",
             // "deleteLoss4dataRes"
+            "showClassinfHistoryRes",
+            "deleteClassinfHistoryRes"
         ])
     },
     methods: {
         ...mapActions([
-            // "selectUserById",
+            "selectUserById",
             // "showLosstier3",
             // "showKpitwolev",
             // "addLosstier4time2",
@@ -375,31 +378,34 @@ export default {
             // "deleteProduct",
             // "updateProduct",
             // "deleteLoss4data"
+            "showClassinfHistory",
+            "deleteClassinfHistory"
         ]),
-        test1(year) {
-          console.log(year);
-        },
-        selectStyle (item, index) {
+        selectStyle (year, item, index) {
             let _this = this
 　　　　　　　　this.historyData.forEach(function (item) {
                 _this.$nextTick(function () {
-                    item.time.forEach(item=>{
+                    item.timeInfo.forEach(item=>{
                         Vue.set(item,'active',false);
                         if(item.id==index){
                             Vue.set(item,'active',true);
                         }
-
                     })
 　　　　　　　　  });
 　　　　　　});
 　　　　},
-        test2(year,time){
-            console.log(year)
-            console.log(time)
-        },
-        test3(item){
-            console.log(item)
-        },
+       deleteClassInfo(item, idx, index) {
+         console.log(item);
+         console.log(idx);
+         console.log(index);
+         this.classIdx = idx;
+         this.classIndex = index;
+         if(item.id) {
+           this.deleteClassinfHistory({
+             "classinfId": item.id
+           })
+         }
+       },
     //     getTier3: function(tier) {
     //         if (!tier) {
     //             this.choosedLossTier3ValByAdd = '';
@@ -747,7 +753,26 @@ export default {
                 _this.lineBodys.push(node.id.substring(1));
                 }
             });
+            this.showClassinfHistory({
+              linebodyId: this.lineBodys[0],
+            })
         },
+        showClassinfHistoryRes(newVal) {
+          if(newVal.status === "0") {
+            this.historyData = newVal.data;
+          }
+        },
+        deleteClassinfHistoryRes(newVal) {
+          console.log(1);
+          if(newVal.status === "0") {
+            this.historyData[this.classIdx].timeInfo.splice(this.classIndex, 1);
+            if(this.historyData[this.classIdx].timeInfo.length === 0) {
+              this.historyData.splice(this.classIdx, 1);
+            }
+          }
+          this.classIdx = null;
+          this.classIndex = null;
+        }
     //     lossTier3(newVal) {
     //         if (newVal.status === "0") {
     //             this.optionalLossTier3ListByAdd = newVal.data.losstier3;
@@ -853,18 +878,7 @@ export default {
         console.log(2)
     },
     mounted() {
-        console.log(1)
-        // if (sessionStorage.getItem("userid")) {
-        //     this.classInfoIdList = '';
-        //     this.selectUserById({
-        //         userid: sessionStorage.getItem("userid")
-        //     });
-        //     this.showKpitwolev({
-        //         userId: sessionStorage.getItem("userid")
-        //     });
-        // } else {
-        //     console.log(this.$route);
-        // }
+ 
     }
 }
 </script>

@@ -16,7 +16,7 @@
                 <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="openCeremonyStatus"></InputNumber>
             </div>
             <div class="classInfoSubmit">
-                <!-- <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span> -->
+                <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
                 <span class="classInfoConfirmBtn classInfoBtn" @click="addClassInfoClick">确定</span>
             </div>
         </div>
@@ -536,6 +536,7 @@ export default {
                 userId: sessionStorage.getItem("userid")
                 });
                 _this.classInfoIdList = '';
+                _this.productInfoData = [];
                 _this.openCeremonyStatus = false;
                 _this.$Message.success("清空成功");
             });

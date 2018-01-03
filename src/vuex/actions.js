@@ -680,13 +680,13 @@ export default {
         })
     },
     selectOverviewByTimesAndLinebodys({ commit }, obj) {
-        // iView.Spin.show()
+        iView.Spin.show()
         axios.post("/overview/selectOverviewByTimesAndLinebodys", qs.stringify({
             "startTime": obj.startTime,
             "endTime": obj.endTime,
             "linebodyIds": obj.linebodyIds
         })).then(res => {
-            // iView.Spin.hide()
+            iView.Spin.hide()
             console.log(res.data);
             return res.data
         }).then(json => {

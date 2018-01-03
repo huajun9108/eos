@@ -8,7 +8,7 @@
                     {{option.times}}
                     <span >&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <i class="icon-edit" @click="test2(item.year,option.times)"></i>&nbsp;&nbsp;
-                    <i class="icon-delete_2"></i>
+                    <i class="icon-delete_2" @click="test3(option.id)"></i>
                 </li>
             </ul>
         </div>
@@ -396,6 +396,9 @@ export default {
         test2(year,time){
             console.log(year)
             console.log(time)
+        },
+        test3(item){
+            console.log(item)
         },
     //     getTier3: function(tier) {
     //         if (!tier) {
@@ -846,7 +849,11 @@ export default {
     //         }
     //     },
     },
+    created () {
+        console.log(2)
+    },
     mounted() {
+        console.log(1)
         // if (sessionStorage.getItem("userid")) {
         //     this.classInfoIdList = '';
         //     this.selectUserById({

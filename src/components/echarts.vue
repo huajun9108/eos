@@ -159,13 +159,6 @@
             return
         }
         LineAndBarChart = echarts.init(document.getElementById(id))
-        
-        // if(chartData){
-        //     LineAndBarChart.hideLoading();
-        // }else{
-        //     LineAndBarChart.showLoading('default', {text:'统计中，请稍候...',maskColor: '#404a59',textColor:
-        //     '#fff',});
-        // }
         var xAxisData = chartData.map(function (item) {return item[0]})
         var currentData = chartData.map(function (item) {return item[1]})
         var targetData = chartData.map(function (item) {return item[2]})
@@ -174,11 +167,12 @@
         var option = {
         tooltip: {
             trigger: 'axis',
+            show:true,  
             axisPointer: {
-            type: 'shadow',
-            label: {
-                show: true,
-            }
+                type: 'shadow',
+                label: {
+                    show: false,
+                }
             }
         },
         xAxis: {

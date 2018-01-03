@@ -4,9 +4,10 @@
         <div class="history_data" v-for="(item,index) in historyData" :key = "index">
             <span class="history_date">{{item.year}}</span>
             <ul class="history_time">
-                <li :class="history_detail_class" v-for="(time,index) in item.time" :key= "index" @click="test2(item.year, time)">
-                    <span class="detail_time">{{time}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <i class="icon-edit"></i>&nbsp;&nbsp;
+                <li  v-for="(option,$index) in item.time" :key= "$index" :class="{'active':option.active,'unactive':!option.active}" @click="selectStyle (option, option.id) ">
+                    {{option.times}}
+                    <span >&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <i class="icon-edit" @click="test2(item.year,option.times)"></i>&nbsp;&nbsp;
                     <i class="icon-delete_2"></i>
                 </li>
             </ul>
@@ -104,28 +105,56 @@
 </template>
 <script>
 import {mapState,mapActions} from "vuex";
+import Vue from 'vue'
 export default {
     data(){
         return {
+            active: false,
             historyData:[{
-                year:"2017/12/29",time:["08:30:00-11:30:00","09:30:00-11:30:00","10:30:00-11:30:00","06:30:00-11:30:00","07:30:00-11:30:00"]
+                year:"2017/12/29",time:[
+                    {
+                        times:"08:30:00-11:30:00",
+                        id:1
+                    }, 
+                    {
+                        times:"08:30:00-11:30:00",
+                        id:2
+                    }, 
+                    {
+                        times:"08:30:00-11:30:00",
+                        id:3
+                    },
+                    {
+                        times:"08:30:00-11:30:00",
+                        id:4
+                    }, 
+                    {
+                        times:"08:30:00-11:30:00",
+                        id:5
+                        }]
             },{
-                year:"2017/12/30",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            },{
-                year:"2017/12/31",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            },{
-                year:"2017/12/28",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            },{
-                year:"2017/12/27",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            },{
-                year:"2017/12/26",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            },{
-                year:"2017/12/25",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            },{
-                year:"2017/12/24",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            },{
-                year:"2017/12/23",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            },],
+                year:"2017/12/30",time:[
+                    {
+                        times:"08:30:00-11:30:00",
+                        id:6
+                    }, 
+                    {
+                        times:"08:30:00-11:30:00",
+                        id:7
+                    }, 
+                    {
+                        times:"08:30:00-11:30:00",
+                        id:8
+                    },
+                    {
+                        times:"08:30:00-11:30:00",
+                        id:9
+                    }, 
+                    {
+                        times:"08:30:00-11:30:00",
+                        id:10
+                        }]
+            }],
             // optionsOpenCeremony: {
             //     disabledDate(date) {}
             // },
@@ -347,10 +376,23 @@ export default {
         test1(year) {
           console.log(year);
         },
-        test2(year, time) {
-          console.log(year);
-          console.log(time);
-          this.history_detail_class = this.history_detail_class === "history_detail" ? "history_detail_selected" : "history_detail";
+        selectStyle (item, index) {
+            let _this = this
+　　　　　　　　this.historyData.forEach(function (item) {
+                _this.$nextTick(function () {
+                    item.time.forEach(item=>{
+                        Vue.set(item,'active',false);
+                        if(item.id==index){
+                            Vue.set(item,'active',true);
+                        }
+
+                    })
+　　　　　　　　  });
+　　　　　　});
+　　　　},
+        test2(year,time){
+            console.log(year)
+            console.log(time)
         },
     //     getTier3: function(tier) {
     //         if (!tier) {
@@ -816,5 +858,11 @@ export default {
     }
 }
 </script>
-<style lang="sass" scoped>
+<style lang="scss" scoped>
+　　.active{
+        color:#bdbdbd
+　　}
+　　.unactive{
+        color:#fff
+　　}
 </style>

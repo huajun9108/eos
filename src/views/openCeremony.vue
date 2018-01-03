@@ -798,9 +798,9 @@ export default {
     mounted() {
         if (sessionStorage.getItem("userid")) {
             this.classInfoIdList = '';
-            this.selectUserById({
-                userid: sessionStorage.getItem("userid")
-            });
+            // this.selectUserById({
+            //     userid: sessionStorage.getItem("userid")
+            // });
             this.showKpitwolev({
                 userId: sessionStorage.getItem("userid")
             });

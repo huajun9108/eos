@@ -4,11 +4,11 @@
         <div class="history_data" v-for="(item,idx) in historyData" :key = "idx">
             <span class="history_date">{{item.year}}</span>
             <ul class="history_time">
-                <li class="history_detail" v-for="(time,index) in item.timeInfo" :key= "index"
-                @click="selectedClassHistoryClick(item.year, time, idx, index)" :ref="'classHistoryList_' + idx + '_' + index">
-                    <span class="detail_time">{{time.time}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <li  v-for="(option,index) in item.timeInfo" :key= "index" :class="{'active':option.active,'unactive':!option.active}" @click="selectStyle (item.year, option, option.id) ">
+                    {{option.time}}
+                    <span >&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <i class="icon-edit"></i>&nbsp;&nbsp;
-                    <i class="icon-delete_2"></i>
+                    <i class="icon-delete_2" @click="deleteClassInfo(option, idx, index)"></i>
                 </li>
             </ul>
         </div>
@@ -105,31 +105,57 @@
 </template>
 <script>
 import {mapState,mapActions} from "vuex";
+import Vue from 'vue'
 export default {
     data(){
         return {
-            historyData:[{
-                year:"2017/12/29",timeInfo:[{time:"08:30:00-11:30:00", id: 1},{time:"08:30:00-11:30:00", id: 1},{time:"08:30:00-11:30:00", id: 1},{time:"08:30:00-11:30:00", id: 1},{time:"08:30:00-11:30:00", id: 1}]
-            }],
+            active: false,
+            historyData: [],
+            // historyData:[{
+            //     year:"2017/12/29",timeInfo:[
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:1
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:2
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:3
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:4
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:5
+            //             }]
             // },{
-            //     year:"2017/12/29",time:["08:30:00-11:30:00","09:30:00-11:30:00","10:30:00-11:30:00","06:30:00-11:30:00","07:30:00-11:30:00"]
-            // },{
-            //     year:"2017/12/30",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            // },{
-            //     year:"2017/12/31",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            // },{
-            //     year:"2017/12/28",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            // },{
-            //     year:"2017/12/27",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            // },{
-            //     year:"2017/12/26",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            // },{
-            //     year:"2017/12/25",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            // },{
-            //     year:"2017/12/24",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            // },{
-            //     year:"2017/12/23",time:["08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00","08:30:00-11:30:00"]
-            // },],
+            //     year:"2017/12/30",timeInfo:[
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:6
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:7
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:8
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:9
+            //         },
+            //         {
+            //             time:"08:30:00-11:30:00",
+            //             id:10
+            //             }]
+            // }],
             // optionsOpenCeremony: {
             //     disabledDate(date) {}
             // },
@@ -315,13 +341,13 @@ export default {
             lossTier4BeingEditedVal: '',
             lossParams: null,
 
-            //用于取消之前选择的li的背景
-            oldIdx: null,
-            oldIndex: null
+            classIdx: null,
+            classIndex: null,
         }
     },
     computed: {
         ...mapState([
+          "validarea",
             // "lossTier3",
             "kpiTwoLev",
             // "addLosstier4time2Res",
@@ -334,11 +360,13 @@ export default {
             // "deleteProductRes",
             // "updateProductRes",
             // "deleteLoss4dataRes"
+            "showClassinfHistoryRes",
+            "deleteClassinfHistoryRes"
         ])
     },
     methods: {
         ...mapActions([
-            // "selectUserById",
+            "selectUserById",
             // "showLosstier3",
             // "showKpitwolev",
             // "addLosstier4time2",
@@ -350,19 +378,34 @@ export default {
             // "deleteProduct",
             // "updateProduct",
             // "deleteLoss4data"
+            "showClassinfHistory",
+            "deleteClassinfHistory"
         ]),
-        selectedClassHistoryClick(year, time, idx, index) {
-          console.log(year);
-          console.log(time);
-          console.log(idx);
-          console.log(index);
-          if(this.$refs['classHistoryList_' + this.oldIdx + '_' + this.oldIndex]) {
-            this.$refs['classHistoryList_' + this.oldIdx + '_' + this.oldIndex][0].style.backgroundColor = "transparent";
-          }
-          this.$refs['classHistoryList_' + idx + '_' + index][0].style.backgroundColor="#e1e1e1";
-          this.oldIdx = idx;
-          this.oldIndex = index;
-        },
+        selectStyle (year, item, index) {
+            let _this = this
+　　　　　　　　this.historyData.forEach(function (item) {
+                _this.$nextTick(function () {
+                    item.timeInfo.forEach(item=>{
+                        Vue.set(item,'active',false);
+                        if(item.id==index){
+                            Vue.set(item,'active',true);
+                        }
+                    })
+　　　　　　　　  });
+　　　　　　});
+　　　　},
+       deleteClassInfo(item, idx, index) {
+         console.log(item);
+         console.log(idx);
+         console.log(index);
+         this.classIdx = idx;
+         this.classIndex = index;
+         if(item.id) {
+           this.deleteClassinfHistory({
+             "classinfId": item.id
+           })
+         }
+       },
     //     getTier3: function(tier) {
     //         if (!tier) {
     //             this.choosedLossTier3ValByAdd = '';
@@ -710,7 +753,26 @@ export default {
                 _this.lineBodys.push(node.id.substring(1));
                 }
             });
+            this.showClassinfHistory({
+              linebodyId: this.lineBodys[0],
+            })
         },
+        showClassinfHistoryRes(newVal) {
+          if(newVal.status === "0") {
+            this.historyData = newVal.data;
+          }
+        },
+        deleteClassinfHistoryRes(newVal) {
+          console.log(1);
+          if(newVal.status === "0") {
+            this.historyData[this.classIdx].timeInfo.splice(this.classIndex, 1);
+            if(this.historyData[this.classIdx].timeInfo.length === 0) {
+              this.historyData.splice(this.classIdx, 1);
+            }
+          }
+          this.classIdx = null;
+          this.classIndex = null;
+        }
     //     lossTier3(newVal) {
     //         if (newVal.status === "0") {
     //             this.optionalLossTier3ListByAdd = newVal.data.losstier3;
@@ -813,19 +875,25 @@ export default {
     //     },
     },
     mounted() {
-        // if (sessionStorage.getItem("userid")) {
-        //     this.classInfoIdList = '';
-        //     this.selectUserById({
-        //         userid: sessionStorage.getItem("userid")
-        //     });
-        //     this.showKpitwolev({
-        //         userId: sessionStorage.getItem("userid")
-        //     });
-        // } else {
-        //     console.log(this.$route);
-        // }
+      // if (sessionStorage.getItem("userid")) {
+      //   this.selectUserById({
+      //       userid: sessionStorage.getItem("userid")
+      //   });
+      //   console.log(this.lineBodys[0]);
+      //   // this.showClassinfHistory({
+      //   //   linebodyId: this.lineBodys[0],
+      //   // })
+      // } else {
+      //     console.log(this.$route);
+      // }
     }
 }
 </script>
-<style lang="sass" scoped>
+<style lang="scss" scoped>
+　　.active{
+        color:#bdbdbd
+　　}
+　　.unactive{
+        color:#fff
+　　}
 </style>

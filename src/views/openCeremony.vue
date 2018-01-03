@@ -510,7 +510,8 @@ export default {
                 "classStarttime": this.lengthShiftTimeValue[0],
                 "classEndtime": this.lengthShiftTimeValue[1],
                 "shouldAttendance": this.shouldNumAttendanceValue,
-                "actualAttendance": this.actualNumAttendanceValue
+                "actualAttendance": this.actualNumAttendanceValue,
+                "linebodyId": this.lineBodys[0]
                 });
             } else {
                 this.$Message.error("请勿重复添加班次信息");

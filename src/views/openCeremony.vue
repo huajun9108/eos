@@ -519,8 +519,10 @@ export default {
         },
         clearClassInfoClick() {
             if (!this.classInfoIdList) {
-                this.$Message.error("当前并无班次");
-                return;
+              this.lengthShiftTimeValue = [];
+              this.shouldNumAttendanceValue = null;
+              this.actualNumAttendanceValue = null;
+              return;
             }
             let _this = this;
             Ewin.confirm({

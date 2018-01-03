@@ -1,10 +1,11 @@
 <template>
 <div class="classHistory openCeremony">
     <div class="history_left">
-        <div class="history_data" v-for="(item,index) in historyData" :key = "index">
+        <div class="history_data" v-for="(item,idx) in historyData" :key = "idx">
             <span class="history_date">{{item.year}}</span>
             <ul class="history_time">
-                <li :class="history_detail_class" v-for="(time,index) in item.time" :key= "index" @click="test2(item.year, time)">
+                <li class="history_detail" v-for="(time,index) in item.time" :key= "index"
+                @click="selectedClassHistoryClick(item.year, time, idx, index)" :ref="'classHistoryList_' + idx + '_' + index">
                     <span class="detail_time">{{time}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <i class="icon-edit"></i>&nbsp;&nbsp;
                     <i class="icon-delete_2"></i>
@@ -310,7 +311,10 @@ export default {
             lossTier3BeingEditedVal: '',
             lossTier4BeingEditedVal: '',
             lossParams: null,
-            history_detail_class: 'history_detail'
+
+            //用于取消之前选择的li的背景
+            oldIdx: null,
+            oldIndex: null
         }
     },
     computed: {
@@ -344,13 +348,17 @@ export default {
             // "updateProduct",
             // "deleteLoss4data"
         ]),
-        test1(year) {
-          console.log(year);
-        },
-        test2(year, time) {
+        selectedClassHistoryClick(year, time, idx, index) {
           console.log(year);
           console.log(time);
-          this.history_detail_class = this.history_detail_class === "history_detail" ? "history_detail_selected" : "history_detail";
+          console.log(idx);
+          console.log(index);
+          if(this.$refs['classHistoryList_' + this.oldIdx + '_' + this.oldIndex]) {
+            this.$refs['classHistoryList_' + this.oldIdx + '_' + this.oldIndex][0].style.backgroundColor = "transparent";
+          }
+          this.$refs['classHistoryList_' + idx + '_' + index][0].style.backgroundColor="#e1e1e1";
+          this.oldIdx = idx;
+          this.oldIndex = index;
         },
     //     getTier3: function(tier) {
     //         if (!tier) {

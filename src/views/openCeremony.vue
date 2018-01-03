@@ -16,7 +16,7 @@
                 <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="openCeremonyStatus"></InputNumber>
             </div>
             <div class="classInfoSubmit">
-                <!-- <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span> -->
+                <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
                 <span class="classInfoConfirmBtn classInfoBtn" @click="addClassInfoClick">确定</span>
             </div>
         </div>
@@ -510,7 +510,8 @@ export default {
                 "classStarttime": this.lengthShiftTimeValue[0],
                 "classEndtime": this.lengthShiftTimeValue[1],
                 "shouldAttendance": this.shouldNumAttendanceValue,
-                "actualAttendance": this.actualNumAttendanceValue
+                "actualAttendance": this.actualNumAttendanceValue,
+                "linebodyId": this.lineBodys[0]
                 });
             } else {
                 this.$Message.error("请勿重复添加班次信息");
@@ -518,8 +519,10 @@ export default {
         },
         clearClassInfoClick() {
             if (!this.classInfoIdList) {
-                this.$Message.error("当前并无班次");
-                return;
+              this.lengthShiftTimeValue = [];
+              this.shouldNumAttendanceValue = null;
+              this.actualNumAttendanceValue = null;
+              return;
             }
             let _this = this;
             Ewin.confirm({
@@ -535,6 +538,7 @@ export default {
                 userId: sessionStorage.getItem("userid")
                 });
                 _this.classInfoIdList = '';
+                _this.productInfoData = [];
                 _this.openCeremonyStatus = false;
                 _this.$Message.success("清空成功");
             });

@@ -1,7 +1,7 @@
 <template>
 <div class="classHistory openCeremony">
     <div class="history_left">
-        <div class="history_data" v-for="(item,index) in historyData" :key = "index">
+        <div class="history_data" v-for="(item,idx) in historyData" :key = "idx">
             <span class="history_date">{{item.year}}</span>
             <ul class="history_time">
                 <li  v-for="(option,$index) in item.time" :key= "$index" :class="{'active':option.active,'unactive':!option.active}" @click="selectStyle (option, option.id) ">
@@ -339,7 +339,10 @@ export default {
             lossTier3BeingEditedVal: '',
             lossTier4BeingEditedVal: '',
             lossParams: null,
-            history_detail_class: 'history_detail'
+
+            //用于取消之前选择的li的背景
+            oldIdx: null,
+            oldIndex: null
         }
     },
     computed: {

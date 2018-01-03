@@ -477,7 +477,8 @@ export default {
             "classStarttime": obj.classStarttime,
             "classEndtime": obj.classEndtime,
             "shouldAttendance": obj.shouldAttendance,
-            "actualAttendance": obj.actualAttendance
+            "actualAttendance": obj.actualAttendance,
+            "linebodyId": obj.linebodyId
         })).then(res => {
             return res.data
         }).then(json => {

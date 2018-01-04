@@ -43,7 +43,7 @@
                 <span class="flex-item">{{ d }}</span>
             </div>
             <div class="lossTable">
-                <Table border height="200" :columns="lossChildTableCols" :data="datainputLossTableData[idx][d]"></Table>
+                <Table border height="200" :columns="lossChildTableCols" :data="datainputHistoryLossTableData[idx][d]"></Table>
             </div>
             <div class="lossBtnContainer">
                 <span class="addLossBtn flex-item" @click="addLoss(d)">添加loss</span>
@@ -109,59 +109,11 @@ export default {
         return {
             active: false,
             historyData: [],
-            // historyData:[{
-            //     year:"2017/12/29",timeInfo:[
-            //         {
-            //             time:"2017/12/29 08:30:00-2017/12/29 11:30:00",
-            //             id:1
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:2
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:3
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:4
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:5
-            //             }]
-            // },{
-            //     year:"2017/12/30",timeInfo:[
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:6
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:7
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:8
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:9
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:10
-            //             }]
-            // }],
-            // optionsOpenCeremony: {
-            //     disabledDate(date) {}
-            // },
             // optionsStart: {
             //     disabledDate: (date) => {
-            //     if (!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
-            //     let end = this.lengthShiftTimeValue[1];
-            //     let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
+            //     if (!(this.lengthShiftStartTime && this.lengthShiftEndTime)) return false;
+            //     let end = this.this.lengthShiftEndTime;
+            //     let beginFormat = this.lengthShiftStartTime.format('yyyy-MM-dd');
             //     let begin = new Date(beginFormat + ' 00:00:00');
             //     if (begin && end) {
             //         return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
@@ -170,9 +122,9 @@ export default {
             // },
             // optionsEnd: {
             //     disabledDate: (date) => {
-            //     if (!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
-            //     let end = this.lengthShiftTimeValue[1];
-            //     let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
+            //     if (!(this.lengthShiftStartTime && this.lengthShiftEndTime)) return false;
+            //     let end = this.lengthShiftEndTime;
+            //     let beginFormat = this.lengthShiftStartTime.format('yyyy-MM-dd');
             //     let begin = new Date(beginFormat + ' 00:00:00');
             //     if (begin && end) {
             //         if (this.startTimeValue) {
@@ -343,6 +295,7 @@ export default {
             lossTier3BeingEditedVal: '',
             lossTier4BeingEditedVal: '',
             lossParams: null,
+            datainputHistoryLossTableData: [],
         }
     },
     computed: {
@@ -352,7 +305,6 @@ export default {
             "kpiTwoLev",
             // "addLosstier4time2Res",
             "datainputLossTableData",
-            // "addClassinfRes",
             "addProductRes",
             "showProductRes",
             // "updateObjectimeAfteraddRes",
@@ -371,7 +323,6 @@ export default {
             "showLosstier3",
             "showKpitwolev",
             // "addLosstier4time2",
-            // "addClassinf",
             "addProduct",
             "showProduct",
             // "updateObjectimeAfteradd",
@@ -385,6 +336,7 @@ export default {
         ]),
         selectStyle (item, index) {
           console.log("selectStyle");
+          this.datainputHistoryLossTableData = [{"OEE": []}];
             let _this = this
 　　　　　　　　this.historyData.forEach(function (item) {
                 _this.$nextTick(function () {
@@ -412,8 +364,6 @@ export default {
 　　　　　　});
 　　　　},
        deleteClassInfo(item, idx, index) {
-         console.log("deleteClassInfo");
-         return;
          this.classIdx = idx;
          this.classIndex = index;
          if(item.id) {
@@ -482,15 +432,15 @@ export default {
     //             if (!e) {
     //             return;
     //             }
-    //             for (let i = 0; i < _this.datainputLossTableData.length; i++) {
-    //             console.log(_this.datainputLossTableData[i]);
-    //             for (let key in _this.datainputLossTableData[i]) {
+    //             for (let i = 0; i < _this.datainputHistoryLossTableData.length; i++) {
+    //             console.log(_this.datainputHistoryLossTableData[i]);
+    //             for (let key in _this.datainputHistoryLossTableData[i]) {
     //                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-    //                 console.log(_this.datainputLossTableData[i][key][_this.lossParams.index]);
-    //                 if (_this.datainputLossTableData[i][key].length > 0) {
-    //                 if (_this.datainputLossTableData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
+    //                 console.log(_this.datainputHistoryLossTableData[i][key][_this.lossParams.index]);
+    //                 if (_this.datainputHistoryLossTableData[i][key].length > 0) {
+    //                 if (_this.datainputHistoryLossTableData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
     //                     _this.deleteLoss4data({
-    //                     "losstier4DataidList": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
+    //                     "losstier4DataidList": _this.datainputHistoryLossTableData[i][key][_this.lossParams.index].losstier4Dataid
     //                     })
     //                 }
     //                 }
@@ -530,123 +480,83 @@ export default {
     //         this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
     //         this.lossParams = params;
     //     },
-    //     lengthShiftTimeClear() {
-    //         this.lengthShiftTimeValue = [];
-    //     },
-    //     timeFormat: function(mss) {
-    //         var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    //         var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
-    //         var sec = (mss % (1000 * 60)) / 1000;
-    //         return `${hour}:${min}:${sec}`;
-    //     },
-    //     timeTranslateDateMs: function(dateObj) {
-    //         if (dateObj) {
-    //             const hour = dateObj.getHours();
-    //             const min = dateObj.getMinutes();
-    //             const sec = dateObj.getSeconds();
-    //             return (hour * 3600 + min * 60 + sec) * 1000;
-    //         }
-    //     },
-    //     timeTranslateArrayMs: function(durationArray) {
-    //         if (durationArray.length > 0) {
-    //             const hour = parseInt(durationArray[0]);
-    //             const min = parseInt(durationArray[1]);
-    //             const sec = parseInt(durationArray[2]);
-    //             return (hour * 3600 + min * 60 + sec) * 1000;
-    //         }
-    //     },
-    //     startTimeChooseOk: function() {
-    //         if (!this.startTimeValue) {
-    //             this.durationTimeValue = '';
-    //             this.endTimeValue = '';
-    //             return;
-    //         }
-    //         const startMs = this.startTimeValue.getTime();
-    //         if (this.durationTimeValue !== '') {
-    //             const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
-    //             this.endTimeValue = new Date(startMs + durationMs);
-    //         } else if (this.endTimeValue !== '') {
-    //             const end = this.endTimeValue;
-    //             const endMs = end.getTime();
-    //             const durationMs = endMs - startMs;
-    //             this.durationTimeValue = this.timeFormat(durationMs);
-    //         }
-    //     },
-    //     durationTimeValueChange: function(val) {
-    //         if (!val) {
-    //             this.startTimeValue = '';
-    //             this.endTimeValue = '';
-    //             return;
-    //         }
-    //         const durationArray = val.split(":");
-    //         const durationMs = this.timeTranslateArrayMs(durationArray);
-    //         if (this.startTimeValue !== '') {
-    //             const start = this.startTimeValue;
-    //             const startMs = start.getTime();
-    //             this.endTimeValue = new Date(startMs + durationMs);
-    //         } else if (this.endTimeValue !== '') {
-    //             const end = this.endTimeValue;
-    //             const endMs = end.getTime();
-    //             this.startTimeValue = new Date(endMs - durationMs);
-    //         }
-    //     },
-    //     endTimeChooseOk() {
-    //         if (!this.endTimeValue) {
-    //             this.startTimeValue = '';
-    //             this.durationTimeValue = '';
-    //             return;
-    //         }
-    //         const endMs = this.endTimeValue.getTime();
-    //         if (this.durationTimeValue !== '') {
-    //             const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
-    //             this.startTimeValue = new Date(endMs - durationMs);
-    //         } else if (this.startTimeValue !== '') {
-    //             const start = this.startTimeValue;
-    //             const startMs = start.getTime();
-    //             const durationMs = endMs - startMs;
-    //             this.durationTimeValue = this.timeFormat(durationMs);
-    //         }
-    //     },
-    //     addClassInfoClick() {
-    //         if (!(this.lengthShiftTimeValue.length === 2 && this.shouldNumAttendanceValue && this.actualNumAttendanceValue)) {
-    //             this.$Message.error("请将班次信息填写完整");
-    //             return;
-    //         }
-
-    //         if (!this.classInfoIdList) {
-    //             this.addClassinf({
-    //             "classStarttime": this.lengthShiftTimeValue[0],
-    //             "classEndtime": this.lengthShiftTimeValue[1],
-    //             "shouldAttendance": this.shouldNumAttendanceValue,
-    //             "actualAttendance": this.actualNumAttendanceValue
-    //             });
-    //         } else {
-    //             this.$Message.error("请勿重复添加班次信息");
-    //         }
-    //     },
-    //     clearClassInfoClick() {
-    //         if (!this.classInfoIdList) {
-    //             this.$Message.error("当前并无班次");
-    //             return;
-    //         }
-    //         let _this = this;
-    //         Ewin.confirm({
-    //             message: "确认清空当前班次信息？"
-    //         }).on(function(e) {
-    //             if (!e) {
-    //             return;
-    //             }
-    //             _this.lengthShiftTimeValue = [];
-    //             _this.shouldNumAttendanceValue = null;
-    //             _this.actualNumAttendanceValue = null;
-    //             _this.showKpitwolev({
-    //             userId: sessionStorage.getItem("userid")
-    //             });
-    //             _this.classInfoIdList = '';
-    //             _this.$Message.success("清空成功");
-    //         });
-
-    //     },
+        lengthShiftTimeClear() {
+            this.lengthShiftTimeValue = [];
+        },
+        timeFormat: function(mss) {
+            var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
+            var sec = (mss % (1000 * 60)) / 1000;
+            return `${hour}:${min}:${sec}`;
+        },
+        timeTranslateDateMs: function(dateObj) {
+            if (dateObj) {
+                const hour = dateObj.getHours();
+                const min = dateObj.getMinutes();
+                const sec = dateObj.getSeconds();
+                return (hour * 3600 + min * 60 + sec) * 1000;
+            }
+        },
+        timeTranslateArrayMs: function(durationArray) {
+            if (durationArray.length > 0) {
+                const hour = parseInt(durationArray[0]);
+                const min = parseInt(durationArray[1]);
+                const sec = parseInt(durationArray[2]);
+                return (hour * 3600 + min * 60 + sec) * 1000;
+            }
+        },
+        startTimeChooseOk: function() {
+            if (!this.startTimeValue) {
+                this.durationTimeValue = '';
+                this.endTimeValue = '';
+                return;
+            }
+            const startMs = this.startTimeValue.getTime();
+            if (this.durationTimeValue !== '') {
+                const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
+                this.endTimeValue = new Date(startMs + durationMs);
+            } else if (this.endTimeValue !== '') {
+                const end = this.endTimeValue;
+                const endMs = end.getTime();
+                const durationMs = endMs - startMs;
+                this.durationTimeValue = this.timeFormat(durationMs);
+            }
+        },
+        durationTimeValueChange: function(val) {
+            if (!val) {
+                this.startTimeValue = '';
+                this.endTimeValue = '';
+                return;
+            }
+            const durationArray = val.split(":");
+            const durationMs = this.timeTranslateArrayMs(durationArray);
+            if (this.startTimeValue !== '') {
+                const start = this.startTimeValue;
+                const startMs = start.getTime();
+                this.endTimeValue = new Date(startMs + durationMs);
+            } else if (this.endTimeValue !== '') {
+                const end = this.endTimeValue;
+                const endMs = end.getTime();
+                this.startTimeValue = new Date(endMs - durationMs);
+            }
+        },
+        endTimeChooseOk() {
+            if (!this.endTimeValue) {
+                this.startTimeValue = '';
+                this.durationTimeValue = '';
+                return;
+            }
+            const endMs = this.endTimeValue.getTime();
+            if (this.durationTimeValue !== '') {
+                const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
+                this.startTimeValue = new Date(endMs - durationMs);
+            } else if (this.startTimeValue !== '') {
+                const start = this.startTimeValue;
+                const startMs = start.getTime();
+                const durationMs = endMs - startMs;
+                this.durationTimeValue = this.timeFormat(durationMs);
+            }
+        },
     //     lossConfirmClick: function() {
     //         if (this.editLossDirFlag) {
     //             if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue)) {
@@ -662,13 +572,13 @@ export default {
     //             return;
     //             }
     //             this.showLossFlag = false;
-    //             for (let i = 0; i < this.datainputLossTableData.length; i++) {
-    //             for (var key in this.datainputLossTableData[i]) {
+    //             for (let i = 0; i < this.datainputHistoryLossTableData.length; i++) {
+    //             for (var key in this.datainputHistoryLossTableData[i]) {
     //                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-    //                 if (this.datainputLossTableData[i][key].length > 0) {
-    //                 if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+    //                 if (this.datainputHistoryLossTableData[i][key].length > 0) {
+    //                 if (this.datainputHistoryLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
     //                     this.updateObjectimeAfteradd({
-    //                     "losstier4Dataid": this.datainputLossTableData[i][key][this.lossParams.index].losstier4Dataid,
+    //                     "losstier4Dataid": this.datainputHistoryLossTableData[i][key][this.lossParams.index].losstier4Dataid,
     //                     "starttime": this.startTimeValue,
     //                     "endtime": this.endTimeValue
     //                     });
@@ -793,6 +703,9 @@ export default {
             if(this.historyData[this.classIdx].timeInfo.length === 0) {
               this.historyData.splice(this.classIdx, 1);
             }
+            this.$Message.success("删除班次成功");
+          } else {
+            this.$Message.success("删除失败");
           }
           this.classIdx = null;
           this.classIndex = null;
@@ -809,10 +722,10 @@ export default {
     //             addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
     //             addLossData.endtime = new Date(addLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
 
-    //             for (let i = 0; i < this.datainputLossTableData.length; i++) {
-    //             for (let key in this.datainputLossTableData[i]) {
+    //             for (let i = 0; i < this.datainputHistoryLossTableData.length; i++) {
+    //             for (let key in this.datainputHistoryLossTableData[i]) {
     //                 if (key === addLossData.losstier2name) {
-    //                 this.datainputLossTableData[i][key].push(addLossData);
+    //                 this.datainputHistoryLossTableData[i][key].push(addLossData);
     //                 this.$Message.success("添加成功");
     //                 }
     //             }
@@ -841,13 +754,13 @@ export default {
     //         const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
     //         const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
     //         if (newVal.status === "0") {
-    //             for (let i = 0; i < this.datainputLossTableData.length; i++) {
-    //             for (let key in this.datainputLossTableData[i]) {
+    //             for (let i = 0; i < this.datainputHistoryLossTableData.length; i++) {
+    //             for (let key in this.datainputHistoryLossTableData[i]) {
     //                 if (key === editLossData.losstier2name) {
     //                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-    //                 if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
-    //                     this.datainputLossTableData[i][key][this.lossParams.index].starttime = editLossStartTime;
-    //                     this.datainputLossTableData[i][key][this.lossParams.index].endtime = editLossEndTime;
+    //                 if (this.datainputHistoryLossTableData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
+    //                     this.datainputHistoryLossTableData[i][key][this.lossParams.index].starttime = editLossStartTime;
+    //                     this.datainputHistoryLossTableData[i][key][this.lossParams.index].endtime = editLossEndTime;
     //                     this.$Message.success("修改成功");
     //                 }
     //                 }
@@ -879,24 +792,24 @@ export default {
           this.editProductIndex = null;
           this.conformProductValue = null;
         },
-        deleteLoss4dataRes(newVal) {
-          if (newVal.status === "0") {
-            for (let i = 0; i < this.datainputLossTableData.length; i++) {
-              for (let key in this.datainputLossTableData[i]) {
-                /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                if (this.datainputLossTableData[i][key].length > 0) {
-                  if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
-                    this.datainputLossTableData[i][key].splice(this.lossParams.index, 1);
-                    this.$Message.success("删除成功");
-                  }
-                }
-              }
-            }
-          } else {
-            this.$Message.error("删除失败");
-          }
-          this.lossParams = null;
-        },
+        // deleteLoss4dataRes(newVal) {
+        //   if (newVal.status === "0") {
+        //     for (let i = 0; i < this.datainputHistoryLossTableData.length; i++) {
+        //       for (let key in this.datainputHistoryLossTableData[i]) {
+        //         /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+        //         if (this.datainputHistoryLossTableData[i][key].length > 0) {
+        //           if (this.datainputHistoryLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+        //             this.datainputHistoryLossTableData[i][key].splice(this.lossParams.index, 1);
+        //             this.$Message.success("删除成功");
+        //           }
+        //         }
+        //       }
+        //     }
+        //   } else {
+        //     this.$Message.error("删除失败");
+        //   }
+        //   this.lossParams = null;
+        // },
           showClassinfHisRightRes(newVal) {
             if(newVal.status === "0") {
               this.lengthShiftStartTime = new Date(newVal.data.classstarttime).format("yyyy-MM-dd hh:mm:ss");
@@ -909,6 +822,12 @@ export default {
           showProductRes(newVal) {
             if(newVal.status === "0") {
               this.productInfoData = newVal.data;
+            }
+          },
+          datainputLossTableData(newVal) {
+            console.log(newVal);
+            if(newVal) {
+              this.datainputHistoryLossTableData = newVal;
             }
           }
     },

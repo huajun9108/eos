@@ -414,7 +414,6 @@ export default {
 　　　　},
        deleteClassInfo(item, idx, index) {
          console.log("deleteClassInfo");
-         return;
          this.classIdx = idx;
          this.classIndex = index;
          if(item.id) {

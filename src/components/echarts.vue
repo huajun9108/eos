@@ -167,13 +167,16 @@
         var option = {
         tooltip: {
             trigger: 'axis',
-            show:true,  
+            show:true,
             axisPointer: {
                 type: 'shadow',
                 label: {
                     show: false,
                 }
-            }
+            },
+            textStyle:{
+              align:'left'
+            },
         },
         xAxis: {
             data: xAxisData,
@@ -291,7 +294,7 @@
             ]
         }
         LineAndBarChart.setOption(option)
-        
+
         window.addEventListener("resize", function () {
             setTimeout(function () {
                 LineAndBarChart.resize();

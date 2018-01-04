@@ -13,7 +13,7 @@
                 <span>应出勤人数：</span>
                 <InputNumber v-model="shouldNumAttendanceValue" :min="1" placeholder="人" :readonly="openCeremonyStatus"></InputNumber>
                 <span class="classInfoActualAttendance">实出勤人数：</span>
-                <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="openCeremonyStatus"></InputNumber>
+                <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="openCeremonyStatus" :max="shouldNumAttendanceValue"></InputNumber>
             </div>
             <div class="classInfoSubmit">
                 <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
@@ -94,6 +94,7 @@
 <script>
 import {mapState,mapActions} from "vuex";
 export default {
+    props: ['clearMsg'],
     data(){
         return {
             optionsOpenCeremony: {
@@ -542,7 +543,6 @@ export default {
                 _this.openCeremonyStatus = false;
                 _this.$Message.success("清空成功");
             });
-
         },
         lossConfirmClick: function() {
             if (this.editLossDirFlag) {
@@ -648,8 +648,28 @@ export default {
             this.conformProductValue = null;
             this.editProductIndex = null;
         },
+        clearClassInfo() {
+          this.lengthShiftTimeValue = [];
+          this.shouldNumAttendanceValue = null;
+          this.actualNumAttendanceValue = null;
+          this.productInfoData = [];
+          this.showKpitwolev({
+          userId: sessionStorage.getItem("userid")
+          });
+        }
     },
     watch: {
+        clearMsg(newVal) {
+          if(newVal) {
+            if (!this.classInfoIdList) {
+              this.clearClassInfo();
+            } else {
+              this.clearClassInfo();
+              this.classInfoIdList = '';
+              this.openCeremonyStatus = false;
+            }
+          }
+        },
         validarea(newVal) {
             const _this = this;
             this.validareaList = []
@@ -798,9 +818,6 @@ export default {
     mounted() {
         if (sessionStorage.getItem("userid")) {
             this.classInfoIdList = '';
-            // this.selectUserById({
-            //     userid: sessionStorage.getItem("userid")
-            // });
             this.showKpitwolev({
                 userId: sessionStorage.getItem("userid")
             });

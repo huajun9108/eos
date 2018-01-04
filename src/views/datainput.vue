@@ -6,8 +6,8 @@
       <span :class="historyFlag?'inputBtn activeBtn':'inputBtn'" @click="openHistoryClick">班次历史记录</span>
     </div>
     <div class="datainput_content">
-      <v-ceremony v-show="ceremonyFlag"></v-ceremony>
-      <v-history v-show="historyFlag"></v-history>
+      <v-ceremony v-show="ceremonyFlag" :clearMsg="ceremonyFlag"></v-ceremony>
+      <v-history v-show="historyFlag" :clearMsg="historyFlag"></v-history>
     </div>
   </div>
 </div>
@@ -24,7 +24,7 @@ export default {
   data(){
     return{
       ceremonyFlag:false,
-      historyFlag:false
+      historyFlag:false,
     }
   },
   methods: {
@@ -41,18 +41,13 @@ export default {
     openHistoryClick(){
       this.ceremonyFlag =false
       this.historyFlag =true
-      console.log("start");
       if (sessionStorage.getItem("userid")) {
         this.selectUserById({
             userid: sessionStorage.getItem("userid")
         });
-        // this.showClassinfHistory({
-        //   linebodyId: this.lineBodys[0],
-        // })
       } else {
           console.log(this.$route);
       }
-      console.log("end");
     }
   },
   mounted() {

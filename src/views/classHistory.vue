@@ -4,8 +4,8 @@
         <div class="history_data" v-for="(item,idx) in historyData" :key = "idx">
             <span class="history_date">{{item.year}}</span>
             <ul class="history_time">
-                <li  v-for="(option,index) in item.timeInfo" :key= "index" :class="{'active':option.active,'unactive':!option.active}" @click="selectStyle (item.year, option, option.id) ">
-                    {{option.time}}
+                <li  v-for="(option,index) in item.timeInfo" :key= "index" :class="{'active':option.active,'unactive':!option.active}">
+                    <span @click="selectStyle (option, option.id)">{{option.time}}</span>
                     <span >&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <i class="icon-edit"></i>&nbsp;&nbsp;
                     <i class="icon-delete_2" @click="deleteClassInfo(option, idx, index)"></i>
@@ -15,21 +15,20 @@
     </div>
     <div class="history_infor">
         <div class="basicInfo">
-            <div class="classInfo">
+            <div v-if="selectedClassStatus" class="classInfo">
                 <span class="classInfoTitle">
                     Basic Info
                 </span>
                 <div class="classInfoTimeContainer">
-                    <span class="classInfoTime">本班次时间：2017-12-20 14:30:00至2017-12-20 14:30:00</span>
-                    <!-- <span class="classInfoTimeStart">2017-12-20 14:30:00</span>
-                    <span class="classInfoTimeEnd">2017-12-20 14:30:00</span> -->
+                    <span class="classInfoTime">本班次时间：{{lengthShiftStartTime}}至{{lengthShiftEndTime}}</span>
                 </div>
                 <div class="classInfoNumAttendance">
-                    <span class="shouldAttendenceValue">应出勤人数：10人</span>
-                    <!-- <span class="shouldNumAttendanceValue">10人</span> -->
-                    <span class="actualAttendance">实出勤人数：9人</span>
-                    <!-- <span class="actualNumAttendanceValue">9人</span> -->
+                    <span class="shouldAttendence">应出勤人数：{{shouldNumAttendanceValue}}人</span>
+                    <span class="actualAttendance">实出勤人数：{{actualNumAttendanceValue}}人</span>
                 </div>
+            </div>
+            <div class="classInfoFlex" v-else>
+              <span class="flex-item">暂未选择班次</span>
             </div>
             <div class="productInfo">
                 <Table height='218' border :columns="productInfoCols" :data="productInfoData"></Table>
@@ -38,7 +37,7 @@
                 <i class="icon-add_add flex-item" @click="addProductInfo"></i>
             </div>
     </div>
-    <!-- <div class="lossContainer">
+    <div class="lossContainer">
         <div class="lossRow" v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
             <div class="lossName">
                 <span class="flex-item">{{ d }}</span>
@@ -50,9 +49,9 @@
                 <span class="addLossBtn flex-item" @click="addLoss(d)">添加loss</span>
             </div>
         </div>
-    </div> -->
+    </div>
 
-    <!-- <Modal class="lossChoose" v-model="showLossFlag" @on-ok="lossConfirmClick" @on-cancel="lossCancelClick" :closable="false" class-name="loss-vertical-center-modal" width="400">
+    <Modal class="lossChoose" v-model="showLossFlag" @on-ok="lossConfirmClick" @on-cancel="lossCancelClick" :closable="false" class-name="loss-vertical-center-modal" width="400">
         <div v-if="editLossDirFlag" class="editLossDir">
             <span>Tier3：</span>
             <span>{{ this.lossTier3BeingEditedVal }}</span>
@@ -84,7 +83,7 @@
             <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
             </DatePicker>
         </div>
-    </Modal> -->
+    </Modal>
      <Modal v-model="showProductInfoFlag" @on-ok="productInfoConfirmClick" @on-cancel="productInfoCancelClick" class-name="product-vertical-center-modal" :closable="false" width="400">
         <div class="productChoose">
             <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
@@ -96,8 +95,6 @@
         <div class="productInfoSetting">
             <span>良品数量：</span>
             <InputNumber v-model="conformProductValue" :min="0"></InputNumber>
-             <!-- <span class="cycleTitle">Cycle：</span>
-            <InputNumber v-model="normalCycletimeValue" :min="0"></InputNumber> -->
         </div>
     </Modal>
     </div>
@@ -107,6 +104,7 @@
 import {mapState,mapActions} from "vuex";
 import Vue from 'vue'
 export default {
+    props: ['clearMsg'],
     data(){
         return {
             active: false,
@@ -114,7 +112,7 @@ export default {
             // historyData:[{
             //     year:"2017/12/29",timeInfo:[
             //         {
-            //             time:"08:30:00-11:30:00",
+            //             time:"2017/12/29 08:30:00-2017/12/29 11:30:00",
             //             id:1
             //         },
             //         {
@@ -201,10 +199,16 @@ export default {
             lineBodys: [],
             /*班次信息变量*/
             lengthShiftTimeValue: [],
+            lengthShiftStartTime: '',
+            lengthShiftEndTime: '',
             shouldNumAttendanceValue: null,
             actualNumAttendanceValue: null,
             openCeremonyStatus: false,
             classInfoIdList: '',
+
+            classIdx: null, //用于删除班次历史
+            classIndex: null,
+            selectedClassStatus: false,
             /*产品变量*/
             showProductInfoFlag: false,
             editProductInfoFlag: false,
@@ -340,48 +344,48 @@ export default {
             lossTier3BeingEditedVal: '',
             lossTier4BeingEditedVal: '',
             lossParams: null,
-
-            classIdx: null,
-            classIndex: null,
         }
     },
     computed: {
         ...mapState([
           "validarea",
-            // "lossTier3",
+            "lossTier3",
             "kpiTwoLev",
             // "addLosstier4time2Res",
-            // "datainputLossTableData",
+            "datainputLossTableData",
             // "addClassinfRes",
-            // "addProductRes",
-            // "showProductRes",
+            "addProductRes",
+            "showProductRes",
             // "updateObjectimeAfteraddRes",
-            // "showProductNameRes",
-            // "deleteProductRes",
-            // "updateProductRes",
+            "showProductNameRes",
+            "deleteProductRes",
+            "updateProductRes",
             // "deleteLoss4dataRes"
             "showClassinfHistoryRes",
-            "deleteClassinfHistoryRes"
+            "deleteClassinfHistoryRes",
+            "showClassinfHisRightRes"
         ])
     },
     methods: {
         ...mapActions([
             "selectUserById",
-            // "showLosstier3",
-            // "showKpitwolev",
+            "showLosstier3",
+            "showKpitwolev",
             // "addLosstier4time2",
             // "addClassinf",
-            // "addProduct",
-            // "showProduct",
+            "addProduct",
+            "showProduct",
             // "updateObjectimeAfteradd",
             "showProductName",
-            // "deleteProduct",
-            // "updateProduct",
+            "deleteProduct",
+            "updateProduct",
             // "deleteLoss4data"
             "showClassinfHistory",
-            "deleteClassinfHistory"
+            "deleteClassinfHistory",
+            "showClassinfHisRight"
         ]),
-        selectStyle (year, item, index) {
+        selectStyle (item, index) {
+          console.log("selectStyle");
             let _this = this
 　　　　　　　　this.historyData.forEach(function (item) {
                 _this.$nextTick(function () {
@@ -389,15 +393,28 @@ export default {
                         Vue.set(item,'active',false);
                         if(item.id==index){
                             Vue.set(item,'active',true);
+                            this.selectedClassStatus = true;
+                            console.log(index);
+                            console.log(sessionStorage.getItem("userid"));
+                            console.log(this.lineBodys[0]);
+                            this.classInfoIdList = index;
+                            this.showClassinfHisRight({
+                              "classinfId": index,
+                              "userId": sessionStorage.getItem("userid"),
+                              "linebodyId": this.lineBodys[0]
+                            });
+                            this.showProduct({
+                              "classinfIdList": index,
+                              "linebodyId": this.lineBodys[0]
+                            })
                         }
                     })
 　　　　　　　　  });
 　　　　　　});
 　　　　},
        deleteClassInfo(item, idx, index) {
-         console.log(item);
-         console.log(idx);
-         console.log(index);
+         console.log("deleteClassInfo");
+         return;
          this.classIdx = idx;
          this.classIndex = index;
          if(item.id) {
@@ -406,46 +423,46 @@ export default {
            })
          }
        },
-    //     getTier3: function(tier) {
-    //         if (!tier) {
-    //             this.choosedLossTier3ValByAdd = '';
-    //             this.choosedLossTier4ValByAdd = '';
-    //             return;
-    //         }
-    //         this.lossThreeLevStructId = tier;
-    //         let tempTier = [];
-    //         this.optionalLossTier4ListByAdd = [];
-    //         this.choosedLossTier4ValByAdd = '';
-    //         for (let val of this.lossTier3.data.losstier4) {
-    //             if (tier === val.losstier3Lossid) {
-    //             tempTier.push({
-    //                 "tier4id": val.tier4id,
-    //                 "name": val.name
-    //             });
-    //             }
-    //         }
-    //         this.optionalLossTier4ListByAdd = tempTier;
-    //     },
-    //     getTier4(tier) {
-    //         if (!tier) {
-    //             this.choosedLossTier4ValByAdd = '';
-    //             return;
-    //         }
+        getTier3: function(tier) {
+            if (!tier) {
+                this.choosedLossTier3ValByAdd = '';
+                this.choosedLossTier4ValByAdd = '';
+                return;
+            }
+            this.lossThreeLevStructId = tier;
+            let tempTier = [];
+            this.optionalLossTier4ListByAdd = [];
+            this.choosedLossTier4ValByAdd = '';
+            for (let val of this.lossTier3.data.losstier4) {
+                if (tier === val.losstier3Lossid) {
+                tempTier.push({
+                    "tier4id": val.tier4id,
+                    "name": val.name
+                });
+                }
+            }
+            this.optionalLossTier4ListByAdd = tempTier;
+        },
+        getTier4(tier) {
+            if (!tier) {
+                this.choosedLossTier4ValByAdd = '';
+                return;
+            }
 
-    //         this.lossFourLevStructId = tier;
-    //     },
-    //     addLoss: function(name) {
-    //         if (!this.openCeremonyStatus) {
-    //             this.$Message.error("请先选择开班时间");
-    //             return;
-    //         }
-    //         this.lossTwoLevName = name;
-    //         this.showLosstier3({
-    //             "twolevName": name,
-    //         });
-    //         this.editLossDirFlag = false;
-    //         this.showLossFlag = true;
-    //     },
+            this.lossFourLevStructId = tier;
+        },
+        addLoss: function(name) {
+            // if (!this.openCeremonyStatus) {
+            //     this.$Message.error("请先选择开班时间");
+            //     return;
+            // }
+            this.lossTwoLevName = name;
+            this.showLosstier3({
+                "twolevName": name,
+            });
+            this.editLossDirFlag = false;
+            this.showLossFlag = true;
+        },
         addProductInfo: function(name) {
             // if (!this.openCeremonyStatus) {
             //     this.$Message.error("请先选择开班时间");
@@ -482,29 +499,29 @@ export default {
     //             }
     //         });
     //     },
-    //     deleteProductClick(index) {
-    //         const productIdList = this.productInfoData[index].productid;
-    //         let _this = this;
-    //         Ewin.confirm({
-    //             message: "确认删除？"
-    //         }).on(function(e) {
-    //             if (!e) {
-    //             return;
-    //             }
-    //             _this.deleteProduct({
-    //             "productIdList": productIdList,
-    //             "classinfIdList": _this.classInfoIdList,
-    //             "linebodyId": _this.lineBodys[0]
-    //             });
-    //         });
-    //     },
-    //     editProduct(index) {
-    //         this.editProductInfoFlag = true;
-    //         let editInfo = this.productInfoData.slice(index, index + 1);
-    //         this.productNameBeingEditedVal = editInfo[0].productname;
-    //         this.conformProductValue = parseInt(editInfo[0].conformproduct);
-    //         this.editProductIndex = index;
-    //     },
+        deleteProductClick(index) {
+            const productIdList = this.productInfoData[index].productid;
+            let _this = this;
+            Ewin.confirm({
+                message: "确认删除？"
+            }).on(function(e) {
+                if (!e) {
+                return;
+                }
+                _this.deleteProduct({
+                "productIdList": productIdList,
+                "classinfIdList": _this.classInfoIdList,
+                "linebodyId": _this.lineBodys[0]
+                });
+            });
+        },
+        editProduct(index) {
+            this.editProductInfoFlag = true;
+            let editInfo = this.productInfoData.slice(index, index + 1);
+            this.productNameBeingEditedVal = editInfo[0].productname;
+            this.conformProductValue = parseInt(editInfo[0].conformproduct);
+            this.editProductIndex = index;
+        },
     //     editLoss(params) {
     //         this.editLossDirFlag = true;
     //         this.lossTier3BeingEditedVal = params.row["losstier3name"];
@@ -699,45 +716,54 @@ export default {
     //         this.endTimeValue = '';
     //         this.lossParams = null;
     //     },
-    //     productInfoConfirmClick() {
-    //         if (this.editProductInfoFlag) {
-    //             if (!this.conformProductValue) {
-    //             this.choosedProductValByAdd = [];
-    //             this.conformProductValue = null;
-    //             this.$Message.error("请将需要修改的产品信息填写完整");
-    //             return;
-    //             }
-    //             this.showProductInfoFlag = false;
-    //             this.updateProduct({
-    //             "productIdList": this.productInfoData[this.editProductIndex].productid,
-    //             "conformProduct": this.conformProductValue,
-    //             "classinfIdList": this.classInfoIdList,
-    //             "linebodyId": this.lineBodys[0]
-    //             })
-    //         } else {
-    //             if (!(this.choosedProductValByAdd && this.conformProductValue && this.choosedProductValByAdd.length === 3)) {
-    //             this.choosedProductValByAdd = [];
-    //             this.conformProductValue = null;
-    //             this.$Message.error("请将需要添加的产品信息填写完整");
-    //             return;
-    //             }
-    //             this.showProductInfoFlag = false;
-    //             this.addProduct({
-    //             "classinfIdList": this.classInfoIdList,
-    //             "productNameId": this.choosedProductValByAdd[2],
-    //             "conformProduct": this.conformProductValue,
-    //             "linebodyId": this.lineBodys[0]
-    //             });
-    //         }
-    //         },
-    //         productInfoCancelClick() {
-    //         this.showProductInfoFlag = false;
-    //         this.choosedProductValByAdd = [];
-    //         this.conformProductValue = null;
-    //         this.editProductIndex = null;
-    //     },
+        productInfoConfirmClick() {
+            if (this.editProductInfoFlag) {
+                if (!this.conformProductValue) {
+                this.choosedProductValByAdd = [];
+                this.conformProductValue = null;
+                this.$Message.error("请将需要修改的产品信息填写完整");
+                return;
+                }
+                this.showProductInfoFlag = false;
+                this.updateProduct({
+                "productIdList": this.productInfoData[this.editProductIndex].productid,
+                "conformProduct": this.conformProductValue,
+                "classinfIdList": this.classInfoIdList,
+                "linebodyId": this.lineBodys[0]
+                })
+            } else {
+                if (!(this.choosedProductValByAdd && this.conformProductValue && this.choosedProductValByAdd.length === 3)) {
+                this.choosedProductValByAdd = [];
+                this.conformProductValue = null;
+                this.$Message.error("请将需要添加的产品信息填写完整");
+                return;
+                }
+                this.showProductInfoFlag = false;
+                this.addProduct({
+                "classinfIdList": this.classInfoIdList,
+                "productNameId": this.choosedProductValByAdd[2],
+                "conformProduct": this.conformProductValue,
+                "linebodyId": this.lineBodys[0]
+                });
+            }
+            },
+            productInfoCancelClick() {
+            this.showProductInfoFlag = false;
+            this.choosedProductValByAdd = [];
+            this.conformProductValue = null;
+            this.editProductIndex = null;
+        },
     },
     watch: {
+        clearMsg(newVal) {
+          if(newVal) {
+              this.showKpitwolev({
+              userId: sessionStorage.getItem("userid")
+              });
+              this.selectedClassStatus = false;
+              this.productInfoData = [];
+            }
+        },
         validarea(newVal) {
             const _this = this;
             this.validareaList = []
@@ -772,12 +798,12 @@ export default {
           }
           this.classIdx = null;
           this.classIndex = null;
-        }
-    //     lossTier3(newVal) {
-    //         if (newVal.status === "0") {
-    //             this.optionalLossTier3ListByAdd = newVal.data.losstier3;
-    //         }
-    //     },
+        },
+        lossTier3(newVal) {
+            if (newVal.status === "0") {
+                this.optionalLossTier3ListByAdd = newVal.data.losstier3;
+            }
+        },
     //     kpiTwoLev(newVal) {},
     //     addLosstier4time2Res(newVal) {
     //         if (newVal.status === "0") {
@@ -821,19 +847,13 @@ export default {
     //             this.openCeremonyStatus = false;
     //         }
     //     },
-    //     addProductRes(newVal) {
-    //         if (newVal.status === "0") {
-    //             this.productInfoData = newVal.data;
-    //             this.$Message.success("添加成功");
-    //         } else {
-    //             this.$Message.error("添加失败");
-    //         }
-    //         this.choosedProductValByAdd = [];
-    //         this.conformProductValue = null;
-    //     },
-    //     showProductRes(newVal) {
-    //         console.log("showProductRes:" + newVal);
-    //     },
+        addProductRes(newVal) {
+            if (newVal.status === "0") {
+                this.productInfoData = newVal.data;
+            }
+            this.choosedProductValByAdd = [];
+            this.conformProductValue = null;
+        },
     //     updateObjectimeAfteraddRes(newVal) {
     //         let editLossData = newVal.data;
     //         const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
@@ -859,26 +879,68 @@ export default {
     //         this.endTimeValue = '';
     //         this.lossParams = null;
     //     },
-    //     showProductNameRes(newVal) {
-    //         console.log("showProductNameRes:" + newVal);
-    //         if (newVal.status === "0") {
-    //             this.optionalProductListByAdd = newVal.data;
-    //         }
-    //     },
-    //     deleteProductRes(newVal) {
-    //         if (newVal.status === "0") {
-    //             this.productInfoData = newVal.data;
-    //             this.$Message.success("删除成功");
-    //         } else {
-    //             this.$Message.error("删除失败");
-    //         }
-    //     },
+        showProductNameRes(newVal) {
+            console.log("showProductNameRes:" + newVal);
+            if (newVal.status === "0") {
+                this.optionalProductListByAdd = newVal.data;
+            }
+        },
+        deleteProductRes(newVal) {
+            if (newVal.status === "0") {
+                this.productInfoData = newVal.data;
+            }
+        },
+        updateProductRes(newVal) {
+          if (newVal.status === "0") {
+            this.productInfoData = newVal.data;
+          }
+          this.editProductIndex = null;
+          this.conformProductValue = null;
+        },
+        deleteLoss4dataRes(newVal) {
+          if (newVal.status === "0") {
+            for (let i = 0; i < this.datainputLossTableData.length; i++) {
+              for (let key in this.datainputLossTableData[i]) {
+                /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+                if (this.datainputLossTableData[i][key].length > 0) {
+                  if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                    this.datainputLossTableData[i][key].splice(this.lossParams.index, 1);
+                    this.$Message.success("删除成功");
+                  }
+                }
+              }
+            }
+          } else {
+            this.$Message.error("删除失败");
+          }
+          this.lossParams = null;
+        },
+          showClassinfHisRightRes(newVal) {
+            if(newVal.status === "0") {
+              this.lengthShiftStartTime = new Date(newVal.data.classstarttime).format("yyyy-MM-dd hh:mm:ss");
+              this.lengthShiftEndTime = new Date(newVal.data.classendtime).format("yyyy-MM-dd hh:mm:ss");
+              this.shouldNumAttendanceValue = newVal.data.shouldattendance;
+              this.actualNumAttendanceValue = newVal.data.actualattendance;
+
+            }
+          },
+          showProductRes(newVal) {
+            if(newVal.status === "0") {
+              this.productInfoData = newVal.data;
+            }
+          }
     },
     created () {
-        console.log(2)
     },
     mounted() {
- 
+      if (sessionStorage.getItem("userid")) {
+          this.classInfoIdList = '';
+          this.showKpitwolev({
+              userId: sessionStorage.getItem("userid")
+          });
+      } else {
+          console.log(this.$route);
+      }
     }
 }
 </script>

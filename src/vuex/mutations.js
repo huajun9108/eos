@@ -198,5 +198,8 @@ export default {
     },
     deleteClassinfHistory(state, json) {
       state.deleteClassinfHistoryRes = json
+    },
+    showClassinfHisRight(state, json) {
+      state.showClassinfHisRightRes = json
     }
 }

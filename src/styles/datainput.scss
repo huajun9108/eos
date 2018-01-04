@@ -36,6 +36,15 @@
                     font-size: 0;
                     box-sizing: border-box;
                     border-bottom: 1px solid #BDBDBD;
+                    .classInfoFlex {
+                      font-size: P(16);
+                      display: inline-flex;
+                      width: 40%;
+                      height: 100%;
+                      .flex-item {
+                        margin: auto;
+                      }
+                    }
                     .classInfo {
                         font-size: P(16);
                         vertical-align: top;
@@ -304,7 +313,7 @@
                                 width: 100%;
                                 display: flex;
                                 justify-content: space-between;
-                                .shouldAttendenceValue {
+                                .shouldAttendence {
                                     width: 50%
                                 }
                                 .actualAttendance {

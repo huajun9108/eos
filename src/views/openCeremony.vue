@@ -281,6 +281,7 @@ export default {
             lossTier3BeingEditedVal: '',
             lossTier4BeingEditedVal: '',
             lossParams: null,
+            datainputLossData: [],
         }
     },
     computed: {
@@ -289,7 +290,6 @@ export default {
             "lossTier3",
             "kpiTwoLev",
             "addLosstier4time2Res",
-            "datainputLossTableData",
             "addClassinfRes",
             "addProductRes",
             "showProductRes",
@@ -691,7 +691,16 @@ export default {
                 this.optionalLossTier3ListByAdd = newVal.data.losstier3;
             }
         },
-        kpiTwoLev(newVal) {},
+        kpiTwoLev(newVal) {
+          if(newVal) {
+            this.datainputLossData = [];
+            newVal.data.forEach(item => {
+                let obj = {};
+                obj[item] = []
+                this.datainputLossData.push(obj)
+            })
+          }
+        },
         addLosstier4time2Res(newVal) {
             if (newVal.status === "0") {
                 let addLossData = newVal.data;
@@ -703,6 +712,7 @@ export default {
                     if (key === addLossData.losstier2name) {
                     this.datainputLossData[i][key].push(addLossData);
                     this.$Message.success("添加成功");
+                    console.log(this.datainputLossData);
                     }
                 }
                 }
@@ -814,11 +824,6 @@ export default {
           }
           this.lossParams = null;
         },
-        datainputLossTableData(newVal) {
-          if(newVal) {
-            this.datainputLossData = newVal;
-          }
-        }
     },
     mounted() {
         if (sessionStorage.getItem("userid")) {
@@ -826,7 +831,7 @@ export default {
             this.showKpitwolev({
                 userId: sessionStorage.getItem("userid")
             });
-            console.log(Boolean(this.classInfoIdList));
+            this.productInfoData = [];
         } else {
             console.log(this.$route);
         }

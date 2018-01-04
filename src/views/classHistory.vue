@@ -723,6 +723,8 @@ export default {
                 for (let key in this.datainputLossData[i]) {
                     if (key === addLossData.losstier2name) {
                     this.datainputLossData[i][key].push(addLossData);
+                    console.log(this.datainputLossData);
+
                     }
                 }
                 }
@@ -829,6 +831,7 @@ export default {
           this.showKpitwolev({
               userId: sessionStorage.getItem("userid")
           });
+          this.productInfoData = [];
       } else {
           console.log(this.$route);
       }

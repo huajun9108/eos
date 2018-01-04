@@ -295,11 +295,11 @@
         }
         LineAndBarChart.setOption(option)
 
-        window.addEventListener("resize", function () {
-            setTimeout(function () {
-                LineAndBarChart.resize();
-            }, 10)
-        });
+        // window.addEventListener("resize", function () {
+        //     setTimeout(function () {
+        //         LineAndBarChart.resize();
+        //     }, 10)
+        // });
         LineAndBarChart.on('click',function(params){ // 控制台打印数据的名称
             console.log(id)
             let arr=[]

@@ -94,6 +94,7 @@
 <script>
 import {mapState,mapActions} from "vuex";
 export default {
+    props: ['clearMsg'],
     data(){
         return {
             optionsOpenCeremony: {
@@ -542,7 +543,6 @@ export default {
                 _this.openCeremonyStatus = false;
                 _this.$Message.success("清空成功");
             });
-
         },
         lossConfirmClick: function() {
             if (this.editLossDirFlag) {
@@ -650,6 +650,25 @@ export default {
         },
     },
     watch: {
+        clearMsg(newVal) {
+          if(newVal) {
+            if (!this.classInfoIdList) {
+              this.lengthShiftTimeValue = [];
+              this.shouldNumAttendanceValue = null;
+              this.actualNumAttendanceValue = null;
+            } else {
+              this.lengthShiftTimeValue = [];
+              this.shouldNumAttendanceValue = null;
+              this.actualNumAttendanceValue = null;
+              this.showKpitwolev({
+              userId: sessionStorage.getItem("userid")
+              });
+              this.classInfoIdList = '';
+              this.productInfoData = [];
+              this.openCeremonyStatus = false;
+            }
+          }
+        },
         validarea(newVal) {
             const _this = this;
             this.validareaList = []
@@ -798,9 +817,6 @@ export default {
     mounted() {
         if (sessionStorage.getItem("userid")) {
             this.classInfoIdList = '';
-            // this.selectUserById({
-            //     userid: sessionStorage.getItem("userid")
-            // });
             this.showKpitwolev({
                 userId: sessionStorage.getItem("userid")
             });

@@ -15,7 +15,7 @@
     </div>
     <div class="history_infor">
         <div class="basicInfo">
-            <div class="classInfo">
+            <div v-if="selectedClassStatus" class="classInfo">
                 <span class="classInfoTitle">
                     Basic Info
                 </span>
@@ -31,6 +31,9 @@
                     <!-- <span class="actualNumAttendanceValue">9人</span> -->
                 </div>
             </div>
+            <div class="classInfoFlex" v-else>
+              <span class="flex-item">暂未选择班次</span>
+            </div>
             <div class="productInfo">
                 <Table height='218' border :columns="productInfoCols" :data="productInfoData"></Table>
             </div>
@@ -38,7 +41,7 @@
                 <i class="icon-add_add flex-item" @click="addProductInfo"></i>
             </div>
     </div>
-    <!-- <div class="lossContainer">
+    <div class="lossContainer">
         <div class="lossRow" v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
             <div class="lossName">
                 <span class="flex-item">{{ d }}</span>
@@ -50,9 +53,9 @@
                 <span class="addLossBtn flex-item" @click="addLoss(d)">添加loss</span>
             </div>
         </div>
-    </div> -->
+    </div>
 
-    <!-- <Modal class="lossChoose" v-model="showLossFlag" @on-ok="lossConfirmClick" @on-cancel="lossCancelClick" :closable="false" class-name="loss-vertical-center-modal" width="400">
+    <Modal class="lossChoose" v-model="showLossFlag" @on-ok="lossConfirmClick" @on-cancel="lossCancelClick" :closable="false" class-name="loss-vertical-center-modal" width="400">
         <div v-if="editLossDirFlag" class="editLossDir">
             <span>Tier3：</span>
             <span>{{ this.lossTier3BeingEditedVal }}</span>
@@ -84,7 +87,7 @@
             <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
             </DatePicker>
         </div>
-    </Modal> -->
+    </Modal>
      <Modal v-model="showProductInfoFlag" @on-ok="productInfoConfirmClick" @on-cancel="productInfoCancelClick" class-name="product-vertical-center-modal" :closable="false" width="400">
         <div class="productChoose">
             <div v-if="editProductInfoFlag" class="editProductInfoNameContainer">
@@ -107,6 +110,7 @@
 import {mapState,mapActions} from "vuex";
 import Vue from 'vue'
 export default {
+    props: ['clearMsg'],
     data(){
         return {
             active: false,
@@ -114,7 +118,7 @@ export default {
             // historyData:[{
             //     year:"2017/12/29",timeInfo:[
             //         {
-            //             time:"08:30:00-11:30:00",
+            //             time:"2017/12/29 08:30:00-2017/12/29 11:30:00",
             //             id:1
             //         },
             //         {
@@ -205,6 +209,10 @@ export default {
             actualNumAttendanceValue: null,
             openCeremonyStatus: false,
             classInfoIdList: '',
+
+            classIdx: null, //用于删除班次历史
+            classIndex: null,
+            selectedClassStatus: false,
             /*产品变量*/
             showProductInfoFlag: false,
             editProductInfoFlag: false,
@@ -340,18 +348,15 @@ export default {
             lossTier3BeingEditedVal: '',
             lossTier4BeingEditedVal: '',
             lossParams: null,
-
-            classIdx: null,
-            classIndex: null,
         }
     },
     computed: {
         ...mapState([
           "validarea",
-            // "lossTier3",
+            "lossTier3",
             "kpiTwoLev",
             // "addLosstier4time2Res",
-            // "datainputLossTableData",
+            "datainputLossTableData",
             // "addClassinfRes",
             // "addProductRes",
             // "showProductRes",
@@ -367,8 +372,8 @@ export default {
     methods: {
         ...mapActions([
             "selectUserById",
-            // "showLosstier3",
-            // "showKpitwolev",
+            "showLosstier3",
+            "showKpitwolev",
             // "addLosstier4time2",
             // "addClassinf",
             // "addProduct",
@@ -389,15 +394,13 @@ export default {
                         Vue.set(item,'active',false);
                         if(item.id==index){
                             Vue.set(item,'active',true);
+                            this.selectedClassStatus = true;
                         }
                     })
 　　　　　　　　  });
 　　　　　　});
 　　　　},
        deleteClassInfo(item, idx, index) {
-         console.log(item);
-         console.log(idx);
-         console.log(index);
          this.classIdx = idx;
          this.classIndex = index;
          if(item.id) {
@@ -406,46 +409,46 @@ export default {
            })
          }
        },
-    //     getTier3: function(tier) {
-    //         if (!tier) {
-    //             this.choosedLossTier3ValByAdd = '';
-    //             this.choosedLossTier4ValByAdd = '';
-    //             return;
-    //         }
-    //         this.lossThreeLevStructId = tier;
-    //         let tempTier = [];
-    //         this.optionalLossTier4ListByAdd = [];
-    //         this.choosedLossTier4ValByAdd = '';
-    //         for (let val of this.lossTier3.data.losstier4) {
-    //             if (tier === val.losstier3Lossid) {
-    //             tempTier.push({
-    //                 "tier4id": val.tier4id,
-    //                 "name": val.name
-    //             });
-    //             }
-    //         }
-    //         this.optionalLossTier4ListByAdd = tempTier;
-    //     },
-    //     getTier4(tier) {
-    //         if (!tier) {
-    //             this.choosedLossTier4ValByAdd = '';
-    //             return;
-    //         }
+        getTier3: function(tier) {
+            if (!tier) {
+                this.choosedLossTier3ValByAdd = '';
+                this.choosedLossTier4ValByAdd = '';
+                return;
+            }
+            this.lossThreeLevStructId = tier;
+            let tempTier = [];
+            this.optionalLossTier4ListByAdd = [];
+            this.choosedLossTier4ValByAdd = '';
+            for (let val of this.lossTier3.data.losstier4) {
+                if (tier === val.losstier3Lossid) {
+                tempTier.push({
+                    "tier4id": val.tier4id,
+                    "name": val.name
+                });
+                }
+            }
+            this.optionalLossTier4ListByAdd = tempTier;
+        },
+        getTier4(tier) {
+            if (!tier) {
+                this.choosedLossTier4ValByAdd = '';
+                return;
+            }
 
-    //         this.lossFourLevStructId = tier;
-    //     },
-    //     addLoss: function(name) {
-    //         if (!this.openCeremonyStatus) {
-    //             this.$Message.error("请先选择开班时间");
-    //             return;
-    //         }
-    //         this.lossTwoLevName = name;
-    //         this.showLosstier3({
-    //             "twolevName": name,
-    //         });
-    //         this.editLossDirFlag = false;
-    //         this.showLossFlag = true;
-    //     },
+            this.lossFourLevStructId = tier;
+        },
+        addLoss: function(name) {
+            // if (!this.openCeremonyStatus) {
+            //     this.$Message.error("请先选择开班时间");
+            //     return;
+            // }
+            this.lossTwoLevName = name;
+            this.showLosstier3({
+                "twolevName": name,
+            });
+            this.editLossDirFlag = false;
+            this.showLossFlag = true;
+        },
         addProductInfo: function(name) {
             // if (!this.openCeremonyStatus) {
             //     this.$Message.error("请先选择开班时间");
@@ -738,6 +741,15 @@ export default {
     //     },
     },
     watch: {
+        clearMsg(newVal) {
+          if(newVal) {
+              this.showKpitwolev({
+              userId: sessionStorage.getItem("userid")
+              });
+              this.selectedClassStatus = false;
+              this.productInfoData = [];
+            }
+        },
         validarea(newVal) {
             const _this = this;
             this.validareaList = []
@@ -772,12 +784,12 @@ export default {
           }
           this.classIdx = null;
           this.classIndex = null;
-        }
-    //     lossTier3(newVal) {
-    //         if (newVal.status === "0") {
-    //             this.optionalLossTier3ListByAdd = newVal.data.losstier3;
-    //         }
-    //     },
+        },
+        lossTier3(newVal) {
+            if (newVal.status === "0") {
+                this.optionalLossTier3ListByAdd = newVal.data.losstier3;
+            }
+        },
     //     kpiTwoLev(newVal) {},
     //     addLosstier4time2Res(newVal) {
     //         if (newVal.status === "0") {
@@ -875,17 +887,14 @@ export default {
     //     },
     },
     mounted() {
-      // if (sessionStorage.getItem("userid")) {
-      //   this.selectUserById({
-      //       userid: sessionStorage.getItem("userid")
-      //   });
-      //   console.log(this.lineBodys[0]);
-      //   // this.showClassinfHistory({
-      //   //   linebodyId: this.lineBodys[0],
-      //   // })
-      // } else {
-      //     console.log(this.$route);
-      // }
+      if (sessionStorage.getItem("userid")) {
+          this.classInfoIdList = '';
+          this.showKpitwolev({
+              userId: sessionStorage.getItem("userid")
+          });
+      } else {
+          console.log(this.$route);
+      }
     }
 }
 </script>

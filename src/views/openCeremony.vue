@@ -13,7 +13,7 @@
                 <span>应出勤人数：</span>
                 <InputNumber v-model="shouldNumAttendanceValue" :min="1" placeholder="人" :readonly="openCeremonyStatus"></InputNumber>
                 <span class="classInfoActualAttendance">实出勤人数：</span>
-                <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="openCeremonyStatus"></InputNumber>
+                <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="openCeremonyStatus" :max="shouldNumAttendanceValue"></InputNumber>
             </div>
             <div class="classInfoSubmit">
                 <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
@@ -648,23 +648,24 @@ export default {
             this.conformProductValue = null;
             this.editProductIndex = null;
         },
+        clearClassInfo() {
+          this.lengthShiftTimeValue = [];
+          this.shouldNumAttendanceValue = null;
+          this.actualNumAttendanceValue = null;
+          this.productInfoData = [];
+          this.showKpitwolev({
+          userId: sessionStorage.getItem("userid")
+          });
+        }
     },
     watch: {
         clearMsg(newVal) {
           if(newVal) {
             if (!this.classInfoIdList) {
-              this.lengthShiftTimeValue = [];
-              this.shouldNumAttendanceValue = null;
-              this.actualNumAttendanceValue = null;
+              this.clearClassInfo();
             } else {
-              this.lengthShiftTimeValue = [];
-              this.shouldNumAttendanceValue = null;
-              this.actualNumAttendanceValue = null;
-              this.showKpitwolev({
-              userId: sessionStorage.getItem("userid")
-              });
+              this.clearClassInfo();
               this.classInfoIdList = '';
-              this.productInfoData = [];
               this.openCeremonyStatus = false;
             }
           }

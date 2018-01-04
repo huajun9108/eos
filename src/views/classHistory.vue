@@ -4,8 +4,8 @@
         <div class="history_data" v-for="(item,idx) in historyData" :key = "idx">
             <span class="history_date">{{item.year}}</span>
             <ul class="history_time">
-                <li  v-for="(option,index) in item.timeInfo" :key= "index" :class="{'active':option.active,'unactive':!option.active}" @click="selectStyle (item.year, option, option.id) ">
-                    {{option.time}}
+                <li  v-for="(option,index) in item.timeInfo" :key= "index" :class="{'active':option.active,'unactive':!option.active}">
+                    <span @click="selectStyle (option, option.id)">{{option.time}}</span>
                     <span >&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <i class="icon-edit"></i>&nbsp;&nbsp;
                     <i class="icon-delete_2" @click="deleteClassInfo(option, idx, index)"></i>
@@ -20,15 +20,11 @@
                     Basic Info
                 </span>
                 <div class="classInfoTimeContainer">
-                    <span class="classInfoTime">本班次时间：2017-12-20 14:30:00至2017-12-20 14:30:00</span>
-                    <!-- <span class="classInfoTimeStart">2017-12-20 14:30:00</span>
-                    <span class="classInfoTimeEnd">2017-12-20 14:30:00</span> -->
+                    <span class="classInfoTime">本班次时间：{{lengthShiftStartTime}}至{{lengthShiftEndTime}}</span>
                 </div>
                 <div class="classInfoNumAttendance">
-                    <span class="shouldAttendenceValue">应出勤人数：10人</span>
-                    <!-- <span class="shouldNumAttendanceValue">10人</span> -->
-                    <span class="actualAttendance">实出勤人数：9人</span>
-                    <!-- <span class="actualNumAttendanceValue">9人</span> -->
+                    <span class="shouldAttendence">应出勤人数：{{shouldNumAttendanceValue}}人</span>
+                    <span class="actualAttendance">实出勤人数：{{actualNumAttendanceValue}}人</span>
                 </div>
             </div>
             <div class="classInfoFlex" v-else>
@@ -99,8 +95,6 @@
         <div class="productInfoSetting">
             <span>良品数量：</span>
             <InputNumber v-model="conformProductValue" :min="0"></InputNumber>
-             <!-- <span class="cycleTitle">Cycle：</span>
-            <InputNumber v-model="normalCycletimeValue" :min="0"></InputNumber> -->
         </div>
     </Modal>
     </div>
@@ -205,6 +199,8 @@ export default {
             lineBodys: [],
             /*班次信息变量*/
             lengthShiftTimeValue: [],
+            lengthShiftStartTime: '',
+            lengthShiftEndTime: '',
             shouldNumAttendanceValue: null,
             actualNumAttendanceValue: null,
             openCeremonyStatus: false,
@@ -358,15 +354,16 @@ export default {
             // "addLosstier4time2Res",
             "datainputLossTableData",
             // "addClassinfRes",
-            // "addProductRes",
-            // "showProductRes",
+            "addProductRes",
+            "showProductRes",
             // "updateObjectimeAfteraddRes",
-            // "showProductNameRes",
-            // "deleteProductRes",
-            // "updateProductRes",
+            "showProductNameRes",
+            "deleteProductRes",
+            "updateProductRes",
             // "deleteLoss4dataRes"
             "showClassinfHistoryRes",
-            "deleteClassinfHistoryRes"
+            "deleteClassinfHistoryRes",
+            "showClassinfHisRightRes"
         ])
     },
     methods: {
@@ -376,17 +373,19 @@ export default {
             "showKpitwolev",
             // "addLosstier4time2",
             // "addClassinf",
-            // "addProduct",
-            // "showProduct",
+            "addProduct",
+            "showProduct",
             // "updateObjectimeAfteradd",
             "showProductName",
-            // "deleteProduct",
-            // "updateProduct",
+            "deleteProduct",
+            "updateProduct",
             // "deleteLoss4data"
             "showClassinfHistory",
-            "deleteClassinfHistory"
+            "deleteClassinfHistory",
+            "showClassinfHisRight"
         ]),
-        selectStyle (year, item, index) {
+        selectStyle (item, index) {
+          console.log("selectStyle");
             let _this = this
 　　　　　　　　this.historyData.forEach(function (item) {
                 _this.$nextTick(function () {
@@ -395,12 +394,27 @@ export default {
                         if(item.id==index){
                             Vue.set(item,'active',true);
                             this.selectedClassStatus = true;
+                            console.log(index);
+                            console.log(sessionStorage.getItem("userid"));
+                            console.log(this.lineBodys[0]);
+                            this.classInfoIdList = index;
+                            this.showClassinfHisRight({
+                              "classinfId": index,
+                              "userId": sessionStorage.getItem("userid"),
+                              "linebodyId": this.lineBodys[0]
+                            });
+                            this.showProduct({
+                              "classinfIdList": index,
+                              "linebodyId": this.lineBodys[0]
+                            })
                         }
                     })
 　　　　　　　　  });
 　　　　　　});
 　　　　},
        deleteClassInfo(item, idx, index) {
+         console.log("deleteClassInfo");
+         return;
          this.classIdx = idx;
          this.classIndex = index;
          if(item.id) {
@@ -485,29 +499,29 @@ export default {
     //             }
     //         });
     //     },
-    //     deleteProductClick(index) {
-    //         const productIdList = this.productInfoData[index].productid;
-    //         let _this = this;
-    //         Ewin.confirm({
-    //             message: "确认删除？"
-    //         }).on(function(e) {
-    //             if (!e) {
-    //             return;
-    //             }
-    //             _this.deleteProduct({
-    //             "productIdList": productIdList,
-    //             "classinfIdList": _this.classInfoIdList,
-    //             "linebodyId": _this.lineBodys[0]
-    //             });
-    //         });
-    //     },
-    //     editProduct(index) {
-    //         this.editProductInfoFlag = true;
-    //         let editInfo = this.productInfoData.slice(index, index + 1);
-    //         this.productNameBeingEditedVal = editInfo[0].productname;
-    //         this.conformProductValue = parseInt(editInfo[0].conformproduct);
-    //         this.editProductIndex = index;
-    //     },
+        deleteProductClick(index) {
+            const productIdList = this.productInfoData[index].productid;
+            let _this = this;
+            Ewin.confirm({
+                message: "确认删除？"
+            }).on(function(e) {
+                if (!e) {
+                return;
+                }
+                _this.deleteProduct({
+                "productIdList": productIdList,
+                "classinfIdList": _this.classInfoIdList,
+                "linebodyId": _this.lineBodys[0]
+                });
+            });
+        },
+        editProduct(index) {
+            this.editProductInfoFlag = true;
+            let editInfo = this.productInfoData.slice(index, index + 1);
+            this.productNameBeingEditedVal = editInfo[0].productname;
+            this.conformProductValue = parseInt(editInfo[0].conformproduct);
+            this.editProductIndex = index;
+        },
     //     editLoss(params) {
     //         this.editLossDirFlag = true;
     //         this.lossTier3BeingEditedVal = params.row["losstier3name"];
@@ -702,43 +716,43 @@ export default {
     //         this.endTimeValue = '';
     //         this.lossParams = null;
     //     },
-    //     productInfoConfirmClick() {
-    //         if (this.editProductInfoFlag) {
-    //             if (!this.conformProductValue) {
-    //             this.choosedProductValByAdd = [];
-    //             this.conformProductValue = null;
-    //             this.$Message.error("请将需要修改的产品信息填写完整");
-    //             return;
-    //             }
-    //             this.showProductInfoFlag = false;
-    //             this.updateProduct({
-    //             "productIdList": this.productInfoData[this.editProductIndex].productid,
-    //             "conformProduct": this.conformProductValue,
-    //             "classinfIdList": this.classInfoIdList,
-    //             "linebodyId": this.lineBodys[0]
-    //             })
-    //         } else {
-    //             if (!(this.choosedProductValByAdd && this.conformProductValue && this.choosedProductValByAdd.length === 3)) {
-    //             this.choosedProductValByAdd = [];
-    //             this.conformProductValue = null;
-    //             this.$Message.error("请将需要添加的产品信息填写完整");
-    //             return;
-    //             }
-    //             this.showProductInfoFlag = false;
-    //             this.addProduct({
-    //             "classinfIdList": this.classInfoIdList,
-    //             "productNameId": this.choosedProductValByAdd[2],
-    //             "conformProduct": this.conformProductValue,
-    //             "linebodyId": this.lineBodys[0]
-    //             });
-    //         }
-    //         },
-    //         productInfoCancelClick() {
-    //         this.showProductInfoFlag = false;
-    //         this.choosedProductValByAdd = [];
-    //         this.conformProductValue = null;
-    //         this.editProductIndex = null;
-    //     },
+        productInfoConfirmClick() {
+            if (this.editProductInfoFlag) {
+                if (!this.conformProductValue) {
+                this.choosedProductValByAdd = [];
+                this.conformProductValue = null;
+                this.$Message.error("请将需要修改的产品信息填写完整");
+                return;
+                }
+                this.showProductInfoFlag = false;
+                this.updateProduct({
+                "productIdList": this.productInfoData[this.editProductIndex].productid,
+                "conformProduct": this.conformProductValue,
+                "classinfIdList": this.classInfoIdList,
+                "linebodyId": this.lineBodys[0]
+                })
+            } else {
+                if (!(this.choosedProductValByAdd && this.conformProductValue && this.choosedProductValByAdd.length === 3)) {
+                this.choosedProductValByAdd = [];
+                this.conformProductValue = null;
+                this.$Message.error("请将需要添加的产品信息填写完整");
+                return;
+                }
+                this.showProductInfoFlag = false;
+                this.addProduct({
+                "classinfIdList": this.classInfoIdList,
+                "productNameId": this.choosedProductValByAdd[2],
+                "conformProduct": this.conformProductValue,
+                "linebodyId": this.lineBodys[0]
+                });
+            }
+            },
+            productInfoCancelClick() {
+            this.showProductInfoFlag = false;
+            this.choosedProductValByAdd = [];
+            this.conformProductValue = null;
+            this.editProductIndex = null;
+        },
     },
     watch: {
         clearMsg(newVal) {
@@ -833,19 +847,13 @@ export default {
     //             this.openCeremonyStatus = false;
     //         }
     //     },
-    //     addProductRes(newVal) {
-    //         if (newVal.status === "0") {
-    //             this.productInfoData = newVal.data;
-    //             this.$Message.success("添加成功");
-    //         } else {
-    //             this.$Message.error("添加失败");
-    //         }
-    //         this.choosedProductValByAdd = [];
-    //         this.conformProductValue = null;
-    //     },
-    //     showProductRes(newVal) {
-    //         console.log("showProductRes:" + newVal);
-    //     },
+        addProductRes(newVal) {
+            if (newVal.status === "0") {
+                this.productInfoData = newVal.data;
+            }
+            this.choosedProductValByAdd = [];
+            this.conformProductValue = null;
+        },
     //     updateObjectimeAfteraddRes(newVal) {
     //         let editLossData = newVal.data;
     //         const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
@@ -871,20 +879,58 @@ export default {
     //         this.endTimeValue = '';
     //         this.lossParams = null;
     //     },
-    //     showProductNameRes(newVal) {
-    //         console.log("showProductNameRes:" + newVal);
-    //         if (newVal.status === "0") {
-    //             this.optionalProductListByAdd = newVal.data;
-    //         }
-    //     },
-    //     deleteProductRes(newVal) {
-    //         if (newVal.status === "0") {
-    //             this.productInfoData = newVal.data;
-    //             this.$Message.success("删除成功");
-    //         } else {
-    //             this.$Message.error("删除失败");
-    //         }
-    //     },
+        showProductNameRes(newVal) {
+            console.log("showProductNameRes:" + newVal);
+            if (newVal.status === "0") {
+                this.optionalProductListByAdd = newVal.data;
+            }
+        },
+        deleteProductRes(newVal) {
+            if (newVal.status === "0") {
+                this.productInfoData = newVal.data;
+            }
+        },
+        updateProductRes(newVal) {
+          if (newVal.status === "0") {
+            this.productInfoData = newVal.data;
+          }
+          this.editProductIndex = null;
+          this.conformProductValue = null;
+        },
+        deleteLoss4dataRes(newVal) {
+          if (newVal.status === "0") {
+            for (let i = 0; i < this.datainputLossTableData.length; i++) {
+              for (let key in this.datainputLossTableData[i]) {
+                /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+                if (this.datainputLossTableData[i][key].length > 0) {
+                  if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                    this.datainputLossTableData[i][key].splice(this.lossParams.index, 1);
+                    this.$Message.success("删除成功");
+                  }
+                }
+              }
+            }
+          } else {
+            this.$Message.error("删除失败");
+          }
+          this.lossParams = null;
+        },
+          showClassinfHisRightRes(newVal) {
+            if(newVal.status === "0") {
+              this.lengthShiftStartTime = new Date(newVal.data.classstarttime).format("yyyy-MM-dd hh:mm:ss");
+              this.lengthShiftEndTime = new Date(newVal.data.classendtime).format("yyyy-MM-dd hh:mm:ss");
+              this.shouldNumAttendanceValue = newVal.data.shouldattendance;
+              this.actualNumAttendanceValue = newVal.data.actualattendance;
+
+            }
+          },
+          showProductRes(newVal) {
+            if(newVal.status === "0") {
+              this.productInfoData = newVal.data;
+            }
+          }
+    },
+    created () {
     },
     mounted() {
       if (sessionStorage.getItem("userid")) {

@@ -71,5 +71,6 @@ export default {
     selectSavingBookByTimesAndLinebodysRes: '',
     selectOverviewByTimesAndLinebodys: null,
     showClassinfHistoryRes: '',
-    deleteClassinfHistoryRes: ''
+    deleteClassinfHistoryRes: '',
+    showClassinfHisRightRes: ''
 }

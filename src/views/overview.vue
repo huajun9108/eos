@@ -21,6 +21,7 @@
                                 :_chartData="item.data"
                                 :_type="item.type"
                                 @recieveData="showData"></chart>
+                                <div class="data_tip" v-if = "item.data==null||item.data==''">暂无数据</div>
                                 <!-- <Spin fix  class="demo-spin-col" v-if="spinShow">
                                     <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
                                     <div>Loading</div>
@@ -34,28 +35,28 @@
                                                 <i class="current_color"></i>
                                             </div>
                                             <span class="item_table_deno">Current</span>
-                                            <span class="item_table_devalue">{{item.datasList[0]}}</span>
+                                            <span class="item_table_devalue">{{item.dataDetail?item.dataDetail[0]:"无"}}</span>
                                         </li>
                                         <li class="item_table_de">
                                             <div class="item_img">
                                                 <img src="../assets/images/yellow.png"  />
                                             </div>
                                             <span class="item_table_deno">Target</span>
-                                            <span class="item_table_devalue">{{item.datasList[1]}}</span>
+                                            <span class="item_table_devalue">{{item.dataDetail?item.dataDetail[1]:"无"}}</span>
                                         </li>
                                         <li class="item_table_de">
                                             <div class="item_img">
                                                 <img src="../assets/images/red.png"  />
                                             </div>
                                             <span class="item_table_deno">Vision</span>
-                                            <span class="item_table_devalue">{{item.datasList[2]}}</span>
+                                            <span class="item_table_devalue">{{item.dataDetail?item.dataDetail[2]:"无"}}</span>
                                         </li>
                                         <li class="item_table_de">
                                             <div class="item_img">
                                                 <img src="../assets/images/blue.png"  />
                                             </div>
                                             <span class="item_table_deno">Ideal</span>
-                                            <span class="item_table_devalue">{{item.datasList[3]}}</span>
+                                            <span class="item_table_devalue">{{item.dataDetail?item.dataDetail[3]:"无"}}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -129,19 +130,8 @@ export default {
             {
                 name:"OEE",
                 data:null,
-                // [
-                //         ["2013/1/24","10","30","20","10"],["2013/1/25","20","40","22","33"],["2013/1/26","15","22","19","60"],
-                //         ["2013/1/27","22","40","19","20"],["2013/1/28","10","30","20","10"],["2013/1/29","20","40","22","33"],
-                //         ["2013/1/30","15","22","19","60"],["2013/1/31","22","40","19","20"],["2013/2/1","10","30","20","10"],["2013/2/2","20","40","22","33"],
-                //         ["2013/2/3","15","22","19","60"],["2013/2/4","22","40","19","20"],["2013/2/5","10","30","20","10"],["2013/2/6","20","40","22","33"],
-                //         ["2013/2/7","15","22","19","60"],["2013/2/8","22","40","19","20"],["2013/2/9","10","30","20","10"],["2013/2/10","20","40","22","33"],
-                //         ["2013/2/11","15","22","19","60"],["2013/2/12","22","40","19","20"],["2013/2/13","10","30","20","10"],["2013/2/14","20","40","22","33"],
-                //         ["2013/2/15","15","22","19","60"],["2013/2/16","22","40","19","20"],["2013/2/17","10","30","20","10"],["2013/2/18","20","40","22","33"],
-                //         ["2013/2/19","15","22","19","60"],["2013/2/20","22","40","19","20"],["2013/2/21","10","30","20","10"],["2013/2/22","20","40","22","33"],
-                //         ["2013/2/23","15","22","19","60"],["2013/2/24","22","40","19","20"]
-                //     ],
                 type:"LineAndBar",
-                datasList:["22","40","19","11"]
+                dataDetail:null
 
 
 
@@ -187,16 +177,15 @@ export default {
             this.isShow = !this.isShow 
         },
         showData(data){
-            this.data = data.split(",")
-            console.log(this.data)
+            console.log(data.split)
+            if(isNaN(data.split(",")[0])) return;
+            this.dataList[0].dataDetail= data.split(",")
+            console.log(data)
         },  
         clearCharts() {
-            this.dataList[0].data = [];
+            this.dataList[0].data = null;
+            this.dataList[0].dataDetail=null
         },
-        // overviewData(){
-        //     this.spinShow = true;
-            
-        // }
         
    },
    computed: {
@@ -206,15 +195,16 @@ export default {
         data:{
             handler:function(val, oldVal){
                 if(val[val.length-1]=="OEE"){
-                    this.dataList[0].datasList = val
+                    this.dataList[0].dataDetail = val
                 }
-            console.log(this.dataList[0].datasList)
+            console.log(this.dataList[0].dataDetail)
             },
             deep:true
         },
         selectOverviewByTimesAndLinebodys(newVal){
             // this.spinShow = false;
-            this.dataList[0].data = newVal
+            this.dataList[0].data = newVal.data
+            this.dataList[0].dataDetail = newVal.value
         }
    },
    mounted () {

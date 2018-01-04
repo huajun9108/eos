@@ -499,7 +499,8 @@ export default {
     },
     showProduct({ commit }, obj) {
         axios.post("/datainput/showProduct", qs.stringify({
-            "classinfIdList": obj.classinfIdList
+            "classinfIdList": obj.classinfIdList,
+            "linebodyId": obj.linebodyId
         })).then(res => {
             return res.data
         }).then(json => {
@@ -680,13 +681,13 @@ export default {
         })
     },
     selectOverviewByTimesAndLinebodys({ commit }, obj) {
-        // iView.Spin.show()
+        iView.Spin.show()
         axios.post("/overview/selectOverviewByTimesAndLinebodys", qs.stringify({
             "startTime": obj.startTime,
             "endTime": obj.endTime,
             "linebodyIds": obj.linebodyIds
         })).then(res => {
-            // iView.Spin.hide()
+            iView.Spin.hide()
             console.log(res.data);
             return res.data
         }).then(json => {
@@ -711,6 +712,18 @@ export default {
         return res.data
       }).then(json => {
         commit("deleteClassinfHistory", json)
+      })
+    },
+    showClassinfHisRight({ commit }, obj) {
+      axios.post("/datainput/showClassinfHisRight", qs.stringify({
+        "classinfId": obj.classinfId,
+        "userId": obj.userId,
+        "linebodyId": obj.linebodyId
+      })).then(res => {
+        console.log(res.data);
+        return res.data
+      }).then(json => {
+        commit("showClassinfHisRight", json)
       })
     }
 }

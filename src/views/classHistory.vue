@@ -203,7 +203,6 @@ export default {
             lengthShiftEndTime: '',
             shouldNumAttendanceValue: null,
             actualNumAttendanceValue: null,
-            openCeremonyStatus: false,
             classInfoIdList: '',
 
             classIdx: null, //用于删除班次历史
@@ -452,10 +451,10 @@ export default {
             this.lossFourLevStructId = tier;
         },
         addLoss: function(name) {
-            // if (!this.openCeremonyStatus) {
-            //     this.$Message.error("请先选择开班时间");
-            //     return;
-            // }
+            if (!this.classInfoIdList) {
+                this.$Message.error("请先选择一个班次");
+                return;
+            }
             this.lossTwoLevName = name;
             this.showLosstier3({
                 "twolevName": name,
@@ -464,10 +463,10 @@ export default {
             this.showLossFlag = true;
         },
         addProductInfo: function(name) {
-            // if (!this.openCeremonyStatus) {
-            //     this.$Message.error("请先选择开班时间");
-            //     return;
-            // }
+            if (!this.classInfoIdList) {
+                this.$Message.error("请先选择一个班次");
+                return;
+            }
             this.editProductInfoFlag = false;
             this.showProductInfoFlag = true;
             this.showProductName({
@@ -614,7 +613,7 @@ export default {
     //             return;
     //         }
 
-    //         if (!this.openCeremonyStatus) {
+    //         if (!this.classInfoIdList) {
     //             this.addClassinf({
     //             "classStarttime": this.lengthShiftTimeValue[0],
     //             "classEndtime": this.lengthShiftTimeValue[1],
@@ -644,7 +643,6 @@ export default {
     //             userId: sessionStorage.getItem("userid")
     //             });
     //             _this.classInfoIdList = '';
-    //             _this.openCeremonyStatus = false;
     //             _this.$Message.success("清空成功");
     //         });
 
@@ -830,22 +828,6 @@ export default {
     //         this.startTimeValue = '';
     //         this.durationTimeValue = '';
     //         this.endTimeValue = '';
-    //     },
-    //     addClassinfRes(newVal) {
-    //         let classInfoIdArr = [];
-    //         if (newVal.status === "0") {
-    //             this.$Message.success("班次信息添加成功");
-    //             this.openCeremonyStatus = true;
-    //             for (let i = 0; i < newVal.data.length; i++) {
-    //             classInfoIdArr.push(newVal.data[i].classinfid);
-    //             }
-    //             this.classInfoIdList = classInfoIdArr.join(",");
-    //             this.openCeremonyStatus = true;
-    //         } else {
-    //             this.$Message.error("班次信息添加失败");
-    //             this.classInfoIdList = '';
-    //             this.openCeremonyStatus = false;
-    //         }
     //     },
         addProductRes(newVal) {
             if (newVal.status === "0") {

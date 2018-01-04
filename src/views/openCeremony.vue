@@ -7,13 +7,13 @@
             </span>
             <div class="classInfoTimeContainer">
                 <span class="classInfoTimeTitle">本班次时间：</span>
-                <DatePicker v-model="lengthShiftTimeValue" :readonly="openCeremonyStatus" type="datetimerange" placeholder="Select date and time" style="width: calc(100% - 80px)" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
+                <DatePicker v-model="lengthShiftTimeValue" :readonly="Boolean(classInfoIdList)" type="datetimerange" placeholder="Select date and time" style="width: calc(100% - 80px)" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
             </div>
             <div class="classInfoNumAttendance">
                 <span>应出勤人数：</span>
-                <InputNumber v-model="shouldNumAttendanceValue" :min="1" placeholder="人" :readonly="openCeremonyStatus"></InputNumber>
+                <InputNumber v-model="shouldNumAttendanceValue" :min="1" placeholder="人" :readonly="Boolean(classInfoIdList)"></InputNumber>
                 <span class="classInfoActualAttendance">实出勤人数：</span>
-                <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="openCeremonyStatus" :max="shouldNumAttendanceValue"></InputNumber>
+                <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="Boolean(classInfoIdList)" :max="shouldNumAttendanceValue"></InputNumber>
             </div>
             <div class="classInfoSubmit">
                 <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
@@ -144,7 +144,7 @@ export default {
             lengthShiftTimeValue: [],
             shouldNumAttendanceValue: null,
             actualNumAttendanceValue: null,
-            openCeremonyStatus: false,
+            // openCeremonyStatus: false,
             classInfoIdList: '',
             /*产品变量*/
             showProductInfoFlag: false,
@@ -344,7 +344,7 @@ export default {
             this.lossFourLevStructId = tier;
         },
         addLoss: function(name) {
-            if (!this.openCeremonyStatus) {
+            if (!this.classInfoIdList) {
                 this.$Message.error("请先选择开班时间");
                 return;
             }
@@ -356,7 +356,7 @@ export default {
             this.showLossFlag = true;
         },
         addProductInfo: function(name) {
-            if (!this.openCeremonyStatus) {
+            if (!this.classInfoIdList) {
                 this.$Message.error("请先选择开班时间");
                 return;
             }
@@ -506,7 +506,7 @@ export default {
                 return;
             }
 
-            if (!this.openCeremonyStatus) {
+            if (!this.classInfoIdList) {
                 this.addClassinf({
                 "classStarttime": this.lengthShiftTimeValue[0],
                 "classEndtime": this.lengthShiftTimeValue[1],
@@ -540,7 +540,7 @@ export default {
                 });
                 _this.classInfoIdList = '';
                 _this.productInfoData = [];
-                _this.openCeremonyStatus = false;
+                // _this.openCeremonyStatus = false;
                 _this.$Message.success("清空成功");
             });
         },
@@ -666,7 +666,7 @@ export default {
             } else {
               this.clearClassInfo();
               this.classInfoIdList = '';
-              this.openCeremonyStatus = false;
+              // this.openCeremonyStatus = false;
             }
           }
         },
@@ -722,16 +722,16 @@ export default {
             let classInfoIdArr = [];
             if (newVal.status === "0") {
                 this.$Message.success("班次信息添加成功");
-                this.openCeremonyStatus = true;
+                // this.openCeremonyStatus = true;
                 for (let i = 0; i < newVal.data.length; i++) {
                 classInfoIdArr.push(newVal.data[i].classinfid);
                 }
                 this.classInfoIdList = classInfoIdArr.join(",");
-                this.openCeremonyStatus = true;
+                // this.openCeremonyStatus = true;
             } else {
                 this.$Message.error("班次信息添加失败");
                 this.classInfoIdList = '';
-                this.openCeremonyStatus = false;
+                // this.openCeremonyStatus = false;
             }
         },
         addProductRes(newVal) {
@@ -821,6 +821,7 @@ export default {
             this.showKpitwolev({
                 userId: sessionStorage.getItem("userid")
             });
+            console.log(Boolean(this.classInfoIdList));
         } else {
             console.log(this.$route);
         }

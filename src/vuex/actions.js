@@ -2,7 +2,7 @@ import axios from "axios"
 import qs from 'qs'
 import iView from 'iview'
 axios.defaults.baseURL = "http://116.62.10.199:3002";
-axios.defaults.timeout = 100000000;
+axios.defaults.timeout = 1000000000000;
 
 
 export default {
@@ -405,12 +405,14 @@ export default {
         })
     },
     selectLossmappingByTimesAndLinebodys({ commit }, obj) {
+        iView.Spin.show()
         axios.post('/lossmapping/selectLossmappingByTimesAndLinebodys', qs.stringify({
             "userId": obj.userId,
             "linebodyIds": obj.linebodyIds,
             "startTime": obj.startTime,
             "endTime": obj.endTime
-        }), { timeout: 1000000000000000 }).then(res => {
+        })).then(res => {
+            iView.Spin.hide()
             return res.data
         }).then(json => {
             commit("selectLossmappingByTimesAndLinebodys", json)
@@ -694,23 +696,23 @@ export default {
         })
     },
     showClassinfHistory({ commit }, obj) {
-      axios.post("/datainput/showClassinfHistory", qs.stringify({
-        "linebodyId": obj.linebodyId,
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("showClassinfHistory", json)
-      })
+        axios.post("/datainput/showClassinfHistory", qs.stringify({
+            "linebodyId": obj.linebodyId,
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("showClassinfHistory", json)
+        })
     },
     deleteClassinfHistory({ commit }, obj) {
-      axios.post("/datainput/deleteClassinfHistory", qs.stringify({
-        "classinfId": obj.classinfId
-      })).then(res => {
-        console.log(res.data);
-        return res.data
-      }).then(json => {
-        commit("deleteClassinfHistory", json)
-      })
+        axios.post("/datainput/deleteClassinfHistory", qs.stringify({
+            "classinfId": obj.classinfId
+        })).then(res => {
+            console.log(res.data);
+            return res.data
+        }).then(json => {
+            commit("deleteClassinfHistory", json)
+        })
     }
 }

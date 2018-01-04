@@ -33,7 +33,7 @@
                 <span class="flex-item">{{ d }}</span>
             </div>
             <div class="lossTable">
-                <Table border height="200" :columns="lossChildTableCols" :data="datainputLossTableData[idx][d]"></Table>
+                <Table border height="200" :columns="lossChildTableCols" :data="datainputLossData[idx][d]"></Table>
             </div>
             <div class="lossBtnContainer">
                 <span class="addLossBtn flex-item" @click="addLoss(d)">添加loss</span>
@@ -375,15 +375,15 @@ export default {
                 if (!e) {
                 return;
                 }
-                for (let i = 0; i < _this.datainputLossTableData.length; i++) {
-                console.log(_this.datainputLossTableData[i]);
-                for (let key in _this.datainputLossTableData[i]) {
+                for (let i = 0; i < _this.datainputLossData.length; i++) {
+                console.log(_this.datainputLossData[i]);
+                for (let key in _this.datainputLossData[i]) {
                     /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    console.log(_this.datainputLossTableData[i][key][_this.lossParams.index]);
-                    if (_this.datainputLossTableData[i][key].length > 0) {
-                    if (_this.datainputLossTableData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
+                    console.log(_this.datainputLossData[i][key][_this.lossParams.index]);
+                    if (_this.datainputLossData[i][key].length > 0) {
+                    if (_this.datainputLossData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
                         _this.deleteLoss4data({
-                        "losstier4DataidList": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
+                        "losstier4DataidList": _this.datainputLossData[i][key][_this.lossParams.index].losstier4Dataid
                         })
                     }
                     }
@@ -559,13 +559,13 @@ export default {
                 return;
                 }
                 this.showLossFlag = false;
-                for (let i = 0; i < this.datainputLossTableData.length; i++) {
-                for (var key in this.datainputLossTableData[i]) {
+                for (let i = 0; i < this.datainputLossData.length; i++) {
+                for (var key in this.datainputLossData[i]) {
                     /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    if (this.datainputLossTableData[i][key].length > 0) {
-                    if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                    if (this.datainputLossData[i][key].length > 0) {
+                    if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
                         this.updateObjectimeAfteradd({
-                        "losstier4Dataid": this.datainputLossTableData[i][key][this.lossParams.index].losstier4Dataid,
+                        "losstier4Dataid": this.datainputLossData[i][key][this.lossParams.index].losstier4Dataid,
                         "starttime": this.startTimeValue,
                         "endtime": this.endTimeValue
                         });
@@ -698,10 +698,10 @@ export default {
                 addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
                 addLossData.endtime = new Date(addLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
 
-                for (let i = 0; i < this.datainputLossTableData.length; i++) {
-                for (let key in this.datainputLossTableData[i]) {
+                for (let i = 0; i < this.datainputLossData.length; i++) {
+                for (let key in this.datainputLossData[i]) {
                     if (key === addLossData.losstier2name) {
-                    this.datainputLossTableData[i][key].push(addLossData);
+                    this.datainputLossData[i][key].push(addLossData);
                     this.$Message.success("添加成功");
                     }
                 }
@@ -752,13 +752,13 @@ export default {
             const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
             const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
             if (newVal.status === "0") {
-                for (let i = 0; i < this.datainputLossTableData.length; i++) {
-                for (let key in this.datainputLossTableData[i]) {
-                    if (key === editLossData.losstier2name) {
+                for (let i = 0; i < this.datainputLossData.length; i++) {
+                for (let key in this.datainputLossData[i]) {
+                    if (key === editLossData.losstier2name && this.lossParams) {
                     /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
-                        this.datainputLossTableData[i][key][this.lossParams.index].starttime = editLossStartTime;
-                        this.datainputLossTableData[i][key][this.lossParams.index].endtime = editLossEndTime;
+                    if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
+                        this.datainputLossData[i][key][this.lossParams.index].starttime = editLossStartTime;
+                        this.datainputLossData[i][key][this.lossParams.index].endtime = editLossEndTime;
                         this.$Message.success("修改成功");
                     }
                     }
@@ -798,12 +798,12 @@ export default {
         },
         deleteLoss4dataRes(newVal) {
           if (newVal.status === "0") {
-            for (let i = 0; i < this.datainputLossTableData.length; i++) {
-              for (let key in this.datainputLossTableData[i]) {
+            for (let i = 0; i < this.datainputLossData.length; i++) {
+              for (let key in this.datainputLossData[i]) {
                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                if (this.datainputLossTableData[i][key].length > 0) {
-                  if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
-                    this.datainputLossTableData[i][key].splice(this.lossParams.index, 1);
+                if (this.datainputLossData[i][key].length > 0  && this.lossParams) {
+                  if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                    this.datainputLossData[i][key].splice(this.lossParams.index, 1);
                     this.$Message.success("删除成功");
                   }
                 }
@@ -813,6 +813,11 @@ export default {
             this.$Message.error("删除失败");
           }
           this.lossParams = null;
+        },
+        datainputLossTableData(newVal) {
+          if(newVal) {
+            this.datainputLossData = newVal;
+          }
         }
     },
     mounted() {

@@ -70,17 +70,17 @@
         </div>
         <div class="startTimeContainer">
             <span class="timeTitle">开始时间：</span>
-            <DatePicker v-model="startTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsStart" @on-ok="startTimeChooseOk">
+            <DatePicker v-model="startTimeValue" type="datetime" placeholder="Loss开始时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsStart" @on-ok="startTimeChooseOk">
             </DatePicker>
         </div>
         <div class="durationTimeContainer">
             <span class="timeTitle">持续时间：</span>
-            <TimePicker v-model="durationTimeValue" placeholder="任意时间点" format="HH:mm:ss" @on-change="durationTimeValueChange">
+            <TimePicker v-model="durationTimeValue" placeholder="Loss持续时间" format="HH:mm:ss" @on-change="durationTimeValueChange">
             </TimePicker>
         </div>
         <div class="endTimeContainer">
             <span class="timeTitle">结束时间：</span>
-            <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk" readonly>
+            <DatePicker v-model="endTimeValue" type="datetime" placeholder="Loss结束时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk" readonly>
             </DatePicker>
         </div>
     </Modal>

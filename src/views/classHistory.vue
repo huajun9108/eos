@@ -109,17 +109,18 @@ export default {
         return {
             active: false,
             historyData: [],
-            // optionsStart: {
-            //     disabledDate: (date) => {
-            //     if (!(this.lengthShiftStartTime && this.lengthShiftEndTime)) return false;
-            //     let end = this.this.lengthShiftEndTime;
-            //     let beginFormat = this.lengthShiftStartTime.format('yyyy-MM-dd');
-            //     let begin = new Date(beginFormat + ' 00:00:00');
-            //     if (begin && end) {
-            //         return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
-            //     }
-            //     }
-            // },
+            optionsStart: {
+                disabledDate: (date) => {
+                if (!(this.lengthShiftStartTime && this.lengthShiftEndTime)) return false;
+                let end = new Date(this.lengthShiftEndTime);
+                let beginFormat = this.lengthShiftStartTime.split(' ');
+                console.log(beginFormat);
+                let begin = new Date(beginFormat[0] + ' 00:00:00');
+                if (begin && end) {
+                    return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
+                }
+                }
+            },
             // optionsEnd: {
             //     disabledDate: (date) => {
             //     if (!(this.lengthShiftStartTime && this.lengthShiftEndTime)) return false;
@@ -363,13 +364,22 @@ export default {
 　　　　　　});
 　　　　},
        deleteClassInfo(item, idx, index) {
-         this.classIdx = idx;
-         this.classIndex = index;
-         if(item.id) {
-           this.deleteClassinfHistory({
-             "classinfId": item.id
-           })
-         }
+         let _this = this;
+         Ewin.confirm({
+             message: "确认删除该班次？"
+         }).on(function(e) {
+             if (!e) {
+             return;
+             }
+             _this.classIdx = idx;
+             _this.classIndex = index;
+             if(item.id) {
+               _this.deleteClassinfHistory({
+                 "classinfId": item.id
+               })
+             }
+         });
+
        },
         getTier3: function(tier) {
             if (!tier) {

@@ -31,40 +31,40 @@ const RouterConfig = {
 };
 // const router = new VueRouter(RouterConfig);
 
-// router.beforeEach((to, from, next) => {
-// console.log(to.path.split("/")[1])
-// if (to.path === '/login') {
-//     console.log(router)
-//     next()
-// } // 如果即将进入登录路由，则直接放行
-// else { //进入的不是登录路由
-//     if (to.path.split("/")[1] === 'user') {
-//         if (to.meta.requiresAuth && (sessionStorage.getItem('userAccessToken') === "001")) {
-//             console.log(router)
-//             next()
-//         } else {
-//             next({ path: '/login' })
-//         }
-//         //下一跳路由需要登录验证，并且还未登录，则路由定向到 登录路由
+router.beforeEach((to, from, next) => {
+    console.log(to.path.split("/")[1])
+    if (to.path === '/login') {
+        console.log(router)
+        next()
+    } // 如果即将进入登录路由，则直接放行
+    else { //进入的不是登录路由
+        if (to.path.split("/")[1] === 'user') {
+            if (to.meta.requiresAuth && (sessionStorage.getItem('userAccessToken') === "001")) {
+                console.log(router)
+                next()
+            } else {
+                next({ path: '/login' })
+            }
+            //下一跳路由需要登录验证，并且还未登录，则路由定向到 登录路由
 
-//     } else if (to.path.split("/")[1] === 'index') {
-//         if (to.meta.requiresAuth && sessionStorage.getItem('adminAccessToken') === "002") {
-//             console.log(router)
-//             next()
-//         } else {
-//             next({ path: '/login' })
-//         }
-//     } else {
-//         console.log(router)
-//         next()
-//     }
-//     //如果不需要登录验证，或者已经登录成功，则直接放行
-// }
-// });
+        } else if (to.path.split("/")[1] === 'index') {
+            if (to.meta.requiresAuth && sessionStorage.getItem('adminAccessToken') === "002") {
+                console.log(router)
+                next()
+            } else {
+                next({ path: '/login' })
+            }
+        } else {
+            console.log(router)
+            next()
+        }
+        //如果不需要登录验证，或者已经登录成功，则直接放行
+    }
+});
 
-// router.afterEach(() => {
-//     window.scrollTo(0, 0);
-// });
+router.afterEach(() => {
+    window.scrollTo(0, 0);
+});
 
 new Vue({
     el: '#app',

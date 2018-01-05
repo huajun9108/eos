@@ -80,7 +80,7 @@
         </div>
         <div class="endTimeContainer">
             <span class="timeTitle">结束时间：</span>
-            <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
+            <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk" readonly>
             </DatePicker>
         </div>
     </Modal>

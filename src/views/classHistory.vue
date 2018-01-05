@@ -43,7 +43,7 @@
                 <span class="flex-item">{{ d }}</span>
             </div>
             <div class="lossTable">
-                <Table border height="200" :columns="lossChildTableCols" :data="datainputLossTableData[idx][d]"></Table>
+                <Table border height="200" :columns="lossChildTableCols" :data="datainputLossData[idx][d]"></Table>
             </div>
             <div class="lossBtnContainer">
                 <span class="addLossBtn flex-item" @click="addLoss(d)">添加loss</span>
@@ -80,7 +80,7 @@
         </div>
         <div class="endTimeContainer">
             <span class="timeTitle">结束时间：</span>
-            <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
+            <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk" readonly>
             </DatePicker>
         </div>
     </Modal>
@@ -109,59 +109,11 @@ export default {
         return {
             active: false,
             historyData: [],
-            // historyData:[{
-            //     year:"2017/12/29",timeInfo:[
-            //         {
-            //             time:"2017/12/29 08:30:00-2017/12/29 11:30:00",
-            //             id:1
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:2
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:3
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:4
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:5
-            //             }]
-            // },{
-            //     year:"2017/12/30",timeInfo:[
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:6
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:7
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:8
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:9
-            //         },
-            //         {
-            //             time:"08:30:00-11:30:00",
-            //             id:10
-            //             }]
-            // }],
-            // optionsOpenCeremony: {
-            //     disabledDate(date) {}
-            // },
             // optionsStart: {
             //     disabledDate: (date) => {
-            //     if (!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
-            //     let end = this.lengthShiftTimeValue[1];
-            //     let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
+            //     if (!(this.lengthShiftStartTime && this.lengthShiftEndTime)) return false;
+            //     let end = this.this.lengthShiftEndTime;
+            //     let beginFormat = this.lengthShiftStartTime.format('yyyy-MM-dd');
             //     let begin = new Date(beginFormat + ' 00:00:00');
             //     if (begin && end) {
             //         return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
@@ -170,9 +122,9 @@ export default {
             // },
             // optionsEnd: {
             //     disabledDate: (date) => {
-            //     if (!(this.lengthShiftTimeValue[0] && this.lengthShiftTimeValue[1])) return false;
-            //     let end = this.lengthShiftTimeValue[1];
-            //     let beginFormat = this.lengthShiftTimeValue[0].format('yyyy-MM-dd');
+            //     if (!(this.lengthShiftStartTime && this.lengthShiftEndTime)) return false;
+            //     let end = this.lengthShiftEndTime;
+            //     let beginFormat = this.lengthShiftStartTime.format('yyyy-MM-dd');
             //     let begin = new Date(beginFormat + ' 00:00:00');
             //     if (begin && end) {
             //         if (this.startTimeValue) {
@@ -203,7 +155,6 @@ export default {
             lengthShiftEndTime: '',
             shouldNumAttendanceValue: null,
             actualNumAttendanceValue: null,
-            openCeremonyStatus: false,
             classInfoIdList: '',
 
             classIdx: null, //用于删除班次历史
@@ -344,6 +295,7 @@ export default {
             lossTier3BeingEditedVal: '',
             lossTier4BeingEditedVal: '',
             lossParams: null,
+            datainputLossData: [],
         }
     },
     computed: {
@@ -351,16 +303,15 @@ export default {
           "validarea",
             "lossTier3",
             "kpiTwoLev",
-            // "addLosstier4time2Res",
+            "addLosstier4time2Res",
             "datainputLossTableData",
-            // "addClassinfRes",
             "addProductRes",
             "showProductRes",
-            // "updateObjectimeAfteraddRes",
+            "updateObjectimeAfteraddRes",
             "showProductNameRes",
             "deleteProductRes",
             "updateProductRes",
-            // "deleteLoss4dataRes"
+            "deleteLoss4dataRes",
             "showClassinfHistoryRes",
             "deleteClassinfHistoryRes",
             "showClassinfHisRightRes"
@@ -371,21 +322,19 @@ export default {
             "selectUserById",
             "showLosstier3",
             "showKpitwolev",
-            // "addLosstier4time2",
-            // "addClassinf",
+            "addLosstier4time2",
             "addProduct",
             "showProduct",
-            // "updateObjectimeAfteradd",
+            "updateObjectimeAfteradd",
             "showProductName",
             "deleteProduct",
             "updateProduct",
-            // "deleteLoss4data"
+            "deleteLoss4data",
             "showClassinfHistory",
             "deleteClassinfHistory",
             "showClassinfHisRight"
         ]),
         selectStyle (item, index) {
-          console.log("selectStyle");
             let _this = this
 　　　　　　　　this.historyData.forEach(function (item) {
                 _this.$nextTick(function () {
@@ -413,7 +362,6 @@ export default {
 　　　　　　});
 　　　　},
        deleteClassInfo(item, idx, index) {
-         console.log("deleteClassInfo");
          this.classIdx = idx;
          this.classIndex = index;
          if(item.id) {
@@ -451,10 +399,10 @@ export default {
             this.lossFourLevStructId = tier;
         },
         addLoss: function(name) {
-            // if (!this.openCeremonyStatus) {
-            //     this.$Message.error("请先选择开班时间");
-            //     return;
-            // }
+            if (!this.classInfoIdList) {
+                this.$Message.error("请先选择一个班次");
+                return;
+            }
             this.lossTwoLevName = name;
             this.showLosstier3({
                 "twolevName": name,
@@ -463,41 +411,41 @@ export default {
             this.showLossFlag = true;
         },
         addProductInfo: function(name) {
-            // if (!this.openCeremonyStatus) {
-            //     this.$Message.error("请先选择开班时间");
-            //     return;
-            // }
+            if (!this.classInfoIdList) {
+                this.$Message.error("请先选择一个班次");
+                return;
+            }
             this.editProductInfoFlag = false;
             this.showProductInfoFlag = true;
             this.showProductName({
                 "linebodyId": this.lineBodys[0]
             })
         },
-    //     deleteLoss(params) {
-    //         this.lossParams = params;
-    //         let _this = this;
-    //         Ewin.confirm({
-    //             message: "确认删除？"
-    //         }).on(function(e) {
-    //             if (!e) {
-    //             return;
-    //             }
-    //             for (let i = 0; i < _this.datainputLossTableData.length; i++) {
-    //             console.log(_this.datainputLossTableData[i]);
-    //             for (let key in _this.datainputLossTableData[i]) {
-    //                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-    //                 console.log(_this.datainputLossTableData[i][key][_this.lossParams.index]);
-    //                 if (_this.datainputLossTableData[i][key].length > 0) {
-    //                 if (_this.datainputLossTableData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
-    //                     _this.deleteLoss4data({
-    //                     "losstier4DataidList": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
-    //                     })
-    //                 }
-    //                 }
-    //             }
-    //             }
-    //         });
-    //     },
+        deleteLoss(params) {
+            this.lossParams = params;
+            let _this = this;
+            Ewin.confirm({
+                message: "确认删除？"
+            }).on(function(e) {
+                if (!e) {
+                return;
+                }
+                for (let i = 0; i < _this.datainputLossData.length; i++) {
+                console.log(_this.datainputLossData[i]);
+                for (let key in _this.datainputLossData[i]) {
+                    /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+                    console.log(_this.datainputLossData[i][key][_this.lossParams.index]);
+                    if (_this.datainputLossData[i][key].length > 0) {
+                    if (_this.datainputLossData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
+                        _this.deleteLoss4data({
+                        "losstier4DataidList": _this.datainputLossData[i][key][_this.lossParams.index].losstier4Dataid
+                        })
+                    }
+                    }
+                }
+                }
+            });
+        },
         deleteProductClick(index) {
             const productIdList = this.productInfoData[index].productid;
             let _this = this;
@@ -521,200 +469,159 @@ export default {
             this.conformProductValue = parseInt(editInfo[0].conformproduct);
             this.editProductIndex = index;
         },
-    //     editLoss(params) {
-    //         this.editLossDirFlag = true;
-    //         this.lossTier3BeingEditedVal = params.row["losstier3name"];
-    //         this.lossTier4BeingEditedVal = params.row["losstier4name"];
-    //         this.startTimeValue = new Date(params.row["starttime"]);
-    //         this.endTimeValue = new Date(params.row["endtime"]);
-    //         this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
-    //         this.lossParams = params;
-    //     },
-    //     lengthShiftTimeClear() {
-    //         this.lengthShiftTimeValue = [];
-    //     },
-    //     timeFormat: function(mss) {
-    //         var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    //         var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
-    //         var sec = (mss % (1000 * 60)) / 1000;
-    //         return `${hour}:${min}:${sec}`;
-    //     },
-    //     timeTranslateDateMs: function(dateObj) {
-    //         if (dateObj) {
-    //             const hour = dateObj.getHours();
-    //             const min = dateObj.getMinutes();
-    //             const sec = dateObj.getSeconds();
-    //             return (hour * 3600 + min * 60 + sec) * 1000;
-    //         }
-    //     },
-    //     timeTranslateArrayMs: function(durationArray) {
-    //         if (durationArray.length > 0) {
-    //             const hour = parseInt(durationArray[0]);
-    //             const min = parseInt(durationArray[1]);
-    //             const sec = parseInt(durationArray[2]);
-    //             return (hour * 3600 + min * 60 + sec) * 1000;
-    //         }
-    //     },
-    //     startTimeChooseOk: function() {
-    //         if (!this.startTimeValue) {
-    //             this.durationTimeValue = '';
-    //             this.endTimeValue = '';
-    //             return;
-    //         }
-    //         const startMs = this.startTimeValue.getTime();
-    //         if (this.durationTimeValue !== '') {
-    //             const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
-    //             this.endTimeValue = new Date(startMs + durationMs);
-    //         } else if (this.endTimeValue !== '') {
-    //             const end = this.endTimeValue;
-    //             const endMs = end.getTime();
-    //             const durationMs = endMs - startMs;
-    //             this.durationTimeValue = this.timeFormat(durationMs);
-    //         }
-    //     },
-    //     durationTimeValueChange: function(val) {
-    //         if (!val) {
-    //             this.startTimeValue = '';
-    //             this.endTimeValue = '';
-    //             return;
-    //         }
-    //         const durationArray = val.split(":");
-    //         const durationMs = this.timeTranslateArrayMs(durationArray);
-    //         if (this.startTimeValue !== '') {
-    //             const start = this.startTimeValue;
-    //             const startMs = start.getTime();
-    //             this.endTimeValue = new Date(startMs + durationMs);
-    //         } else if (this.endTimeValue !== '') {
-    //             const end = this.endTimeValue;
-    //             const endMs = end.getTime();
-    //             this.startTimeValue = new Date(endMs - durationMs);
-    //         }
-    //     },
-    //     endTimeChooseOk() {
-    //         if (!this.endTimeValue) {
-    //             this.startTimeValue = '';
-    //             this.durationTimeValue = '';
-    //             return;
-    //         }
-    //         const endMs = this.endTimeValue.getTime();
-    //         if (this.durationTimeValue !== '') {
-    //             const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
-    //             this.startTimeValue = new Date(endMs - durationMs);
-    //         } else if (this.startTimeValue !== '') {
-    //             const start = this.startTimeValue;
-    //             const startMs = start.getTime();
-    //             const durationMs = endMs - startMs;
-    //             this.durationTimeValue = this.timeFormat(durationMs);
-    //         }
-    //     },
-    //     addClassInfoClick() {
-    //         if (!(this.lengthShiftTimeValue.length === 2 && this.shouldNumAttendanceValue && this.actualNumAttendanceValue)) {
-    //             this.$Message.error("请将班次信息填写完整");
-    //             return;
-    //         }
-
-    //         if (!this.openCeremonyStatus) {
-    //             this.addClassinf({
-    //             "classStarttime": this.lengthShiftTimeValue[0],
-    //             "classEndtime": this.lengthShiftTimeValue[1],
-    //             "shouldAttendance": this.shouldNumAttendanceValue,
-    //             "actualAttendance": this.actualNumAttendanceValue
-    //             });
-    //         } else {
-    //             this.$Message.error("请勿重复添加班次信息");
-    //         }
-    //     },
-    //     clearClassInfoClick() {
-    //         if (!this.classInfoIdList) {
-    //             this.$Message.error("当前并无班次");
-    //             return;
-    //         }
-    //         let _this = this;
-    //         Ewin.confirm({
-    //             message: "确认清空当前班次信息？"
-    //         }).on(function(e) {
-    //             if (!e) {
-    //             return;
-    //             }
-    //             _this.lengthShiftTimeValue = [];
-    //             _this.shouldNumAttendanceValue = null;
-    //             _this.actualNumAttendanceValue = null;
-    //             _this.showKpitwolev({
-    //             userId: sessionStorage.getItem("userid")
-    //             });
-    //             _this.classInfoIdList = '';
-    //             _this.openCeremonyStatus = false;
-    //             _this.$Message.success("清空成功");
-    //         });
-
-    //     },
-    //     lossConfirmClick: function() {
-    //         if (this.editLossDirFlag) {
-    //             if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue)) {
-    //             this.lossTwoLevName = '';
-    //             this.lossThreeLevStructId = '';
-    //             this.lossFourLevStructId = '';
-    //             this.choosedLossTier3ValByAdd = '';
-    //             this.choosedLossTier4ValByAdd = '';
-    //             this.startTimeValue = '';
-    //             this.durationTimeValue = '';
-    //             this.endTimeValue = '';
-    //             this.$Message.error("请将需要修改的loss信息填写完整");
-    //             return;
-    //             }
-    //             this.showLossFlag = false;
-    //             for (let i = 0; i < this.datainputLossTableData.length; i++) {
-    //             for (var key in this.datainputLossTableData[i]) {
-    //                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-    //                 if (this.datainputLossTableData[i][key].length > 0) {
-    //                 if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
-    //                     this.updateObjectimeAfteradd({
-    //                     "losstier4Dataid": this.datainputLossTableData[i][key][this.lossParams.index].losstier4Dataid,
-    //                     "starttime": this.startTimeValue,
-    //                     "endtime": this.endTimeValue
-    //                     });
-    //                 }
-    //                 }
-    //             }
-    //             }
-    //         } else {
-    //             if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue && this.choosedLossTier3ValByAdd &&
-    //                 this.choosedLossTier4ValByAdd)) {
-    //             this.lossTwoLevName = '';
-    //             this.lossThreeLevStructId = '';
-    //             this.lossFourLevStructId = '';
-    //             this.choosedLossTier3ValByAdd = '';
-    //             this.choosedLossTier4ValByAdd = '';
-    //             this.startTimeValue = '';
-    //             this.durationTimeValue = '';
-    //             this.endTimeValue = '';
-    //             this.$Message.error("请将需要添加的loss相关信息填写完整");
-    //             return;
-    //             }
-    //             this.showLossFlag = false;
-    //             this.addLosstier4time2({
-    //             "classinfIdList": this.classInfoIdList,
-    //             "twolevName": this.lossTwoLevName,
-    //             "losstier3Id": this.lossThreeLevStructId,
-    //             "losstier4Id": this.lossFourLevStructId,
-    //             "linebodyId": this.lineBodys[0],
-    //             "starttime": this.startTimeValue,
-    //             "endtime": this.endTimeValue
-    //             });
-    //         }
-    //     },
-    //     lossCancelClick: function() {
-    //         this.showLossFlag = false;
-    //         this.lossTwoLevName = '';
-    //         this.lossThreeLevStructId = '';
-    //         this.lossFourLevStructId = '';
-    //         this.choosedLossTier3ValByAdd = '';
-    //         this.choosedLossTier4ValByAdd = '';
-    //         this.durationTimeValue = '';
-    //         this.startTimeValue = '';
-    //         this.endTimeValue = '';
-    //         this.lossParams = null;
-    //     },
+        editLoss(params) {
+            this.editLossDirFlag = true;
+            this.lossTier3BeingEditedVal = params.row["losstier3name"];
+            this.lossTier4BeingEditedVal = params.row["losstier4name"];
+            this.startTimeValue = new Date(params.row["starttime"]);
+            this.endTimeValue = new Date(params.row["endtime"]);
+            this.durationTimeValue = this.timeFormat(this.endTimeValue.getTime() - this.startTimeValue.getTime());
+            this.lossParams = params;
+        },
+        lengthShiftTimeClear() {
+            this.lengthShiftTimeValue = [];
+        },
+        timeFormat: function(mss) {
+            var hour = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var min = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
+            var sec = (mss % (1000 * 60)) / 1000;
+            return `${hour}:${min}:${sec}`;
+        },
+        timeTranslateDateMs: function(dateObj) {
+            if (dateObj) {
+                const hour = dateObj.getHours();
+                const min = dateObj.getMinutes();
+                const sec = dateObj.getSeconds();
+                return (hour * 3600 + min * 60 + sec) * 1000;
+            }
+        },
+        timeTranslateArrayMs: function(durationArray) {
+            if (durationArray.length > 0) {
+                const hour = parseInt(durationArray[0]);
+                const min = parseInt(durationArray[1]);
+                const sec = parseInt(durationArray[2]);
+                return (hour * 3600 + min * 60 + sec) * 1000;
+            }
+        },
+        startTimeChooseOk: function() {
+            if (!this.startTimeValue) {
+                this.durationTimeValue = '';
+                this.endTimeValue = '';
+                return;
+            }
+            const startMs = this.startTimeValue.getTime();
+            if (this.durationTimeValue !== '') {
+                const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
+                this.endTimeValue = new Date(startMs + durationMs);
+            } else if (this.endTimeValue !== '') {
+                const end = this.endTimeValue;
+                const endMs = end.getTime();
+                const durationMs = endMs - startMs;
+                this.durationTimeValue = this.timeFormat(durationMs);
+            }
+        },
+        durationTimeValueChange: function(val) {
+            if (!val) {
+                this.startTimeValue = '';
+                this.endTimeValue = '';
+                return;
+            }
+            const durationArray = val.split(":");
+            const durationMs = this.timeTranslateArrayMs(durationArray);
+            if (this.startTimeValue !== '') {
+                const start = this.startTimeValue;
+                const startMs = start.getTime();
+                this.endTimeValue = new Date(startMs + durationMs);
+            } else if (this.endTimeValue !== '') {
+                const end = this.endTimeValue;
+                const endMs = end.getTime();
+                this.startTimeValue = new Date(endMs - durationMs);
+            }
+        },
+        endTimeChooseOk() {
+            if (!this.endTimeValue) {
+                this.startTimeValue = '';
+                this.durationTimeValue = '';
+                return;
+            }
+            const endMs = this.endTimeValue.getTime();
+            if (this.durationTimeValue !== '') {
+                const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
+                this.startTimeValue = new Date(endMs - durationMs);
+            } else if (this.startTimeValue !== '') {
+                const start = this.startTimeValue;
+                const startMs = start.getTime();
+                const durationMs = endMs - startMs;
+                this.durationTimeValue = this.timeFormat(durationMs);
+            }
+        },
+        lossConfirmClick: function() {
+            if (this.editLossDirFlag) {
+                if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue)) {
+                this.lossTwoLevName = '';
+                this.lossThreeLevStructId = '';
+                this.lossFourLevStructId = '';
+                this.choosedLossTier3ValByAdd = '';
+                this.choosedLossTier4ValByAdd = '';
+                this.startTimeValue = '';
+                this.durationTimeValue = '';
+                this.endTimeValue = '';
+                this.$Message.error("请将需要修改的loss信息填写完整");
+                return;
+                }
+                this.showLossFlag = false;
+                for (let i = 0; i < this.datainputLossData.length; i++) {
+                for (var key in this.datainputLossData[i]) {
+                    /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+                    if (this.datainputLossData[i][key].length > 0) {
+                    if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                        this.updateObjectimeAfteradd({
+                        "losstier4Dataid": this.datainputLossData[i][key][this.lossParams.index].losstier4Dataid,
+                        "starttime": this.startTimeValue,
+                        "endtime": this.endTimeValue
+                        });
+                    }
+                    }
+                }
+                }
+            } else {
+                if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue && this.choosedLossTier3ValByAdd &&
+                    this.choosedLossTier4ValByAdd)) {
+                this.lossTwoLevName = '';
+                this.lossThreeLevStructId = '';
+                this.lossFourLevStructId = '';
+                this.choosedLossTier3ValByAdd = '';
+                this.choosedLossTier4ValByAdd = '';
+                this.startTimeValue = '';
+                this.durationTimeValue = '';
+                this.endTimeValue = '';
+                this.$Message.error("请将需要添加的loss相关信息填写完整");
+                return;
+                }
+                this.showLossFlag = false;
+                this.addLosstier4time2({
+                "classinfIdList": this.classInfoIdList,
+                "twolevName": this.lossTwoLevName,
+                "losstier3Id": this.lossThreeLevStructId,
+                "losstier4Id": this.lossFourLevStructId,
+                "linebodyId": this.lineBodys[0],
+                "starttime": this.startTimeValue,
+                "endtime": this.endTimeValue
+                });
+            }
+        },
+        lossCancelClick: function() {
+            this.showLossFlag = false;
+            this.lossTwoLevName = '';
+            this.lossThreeLevStructId = '';
+            this.lossFourLevStructId = '';
+            this.choosedLossTier3ValByAdd = '';
+            this.choosedLossTier4ValByAdd = '';
+            this.durationTimeValue = '';
+            this.startTimeValue = '';
+            this.endTimeValue = '';
+            this.lossParams = null;
+        },
         productInfoConfirmClick() {
             if (this.editProductInfoFlag) {
                 if (!this.conformProductValue) {
@@ -788,12 +695,14 @@ export default {
           }
         },
         deleteClassinfHistoryRes(newVal) {
-          console.log(1);
           if(newVal.status === "0") {
             this.historyData[this.classIdx].timeInfo.splice(this.classIndex, 1);
             if(this.historyData[this.classIdx].timeInfo.length === 0) {
               this.historyData.splice(this.classIdx, 1);
             }
+            this.$Message.success("删除班次成功");
+          } else {
+            this.$Message.success("删除失败");
           }
           this.classIdx = null;
           this.classIndex = null;
@@ -804,48 +713,31 @@ export default {
             }
         },
     //     kpiTwoLev(newVal) {},
-    //     addLosstier4time2Res(newVal) {
-    //         if (newVal.status === "0") {
-    //             let addLossData = newVal.data;
-    //             addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
-    //             addLossData.endtime = new Date(addLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
+        addLosstier4time2Res(newVal) {
+            if (newVal.status === "0") {
+                let addLossData = newVal.data;
+                addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
+                addLossData.endtime = new Date(addLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
 
-    //             for (let i = 0; i < this.datainputLossTableData.length; i++) {
-    //             for (let key in this.datainputLossTableData[i]) {
-    //                 if (key === addLossData.losstier2name) {
-    //                 this.datainputLossTableData[i][key].push(addLossData);
-    //                 this.$Message.success("添加成功");
-    //                 }
-    //             }
-    //             }
-    //         } else {
-    //             this.$Message.error("添加失败");
-    //         }
-    //         this.lossTwoLevName = '';
-    //         this.lossThreeLevStructId = '';
-    //         this.lossFourLevStructId = '';
-    //         this.choosedLossTier3ValByAdd = '';
-    //         this.choosedLossTier4ValByAdd = '';
-    //         this.startTimeValue = '';
-    //         this.durationTimeValue = '';
-    //         this.endTimeValue = '';
-    //     },
-    //     addClassinfRes(newVal) {
-    //         let classInfoIdArr = [];
-    //         if (newVal.status === "0") {
-    //             this.$Message.success("班次信息添加成功");
-    //             this.openCeremonyStatus = true;
-    //             for (let i = 0; i < newVal.data.length; i++) {
-    //             classInfoIdArr.push(newVal.data[i].classinfid);
-    //             }
-    //             this.classInfoIdList = classInfoIdArr.join(",");
-    //             this.openCeremonyStatus = true;
-    //         } else {
-    //             this.$Message.error("班次信息添加失败");
-    //             this.classInfoIdList = '';
-    //             this.openCeremonyStatus = false;
-    //         }
-    //     },
+                for (let i = 0; i < this.datainputLossData.length; i++) {
+                for (let key in this.datainputLossData[i]) {
+                    if (key === addLossData.losstier2name) {
+                    this.datainputLossData[i][key].push(addLossData);
+                    console.log(this.datainputLossData);
+
+                    }
+                }
+                }
+            }
+            this.lossTwoLevName = '';
+            this.lossThreeLevStructId = '';
+            this.lossFourLevStructId = '';
+            this.choosedLossTier3ValByAdd = '';
+            this.choosedLossTier4ValByAdd = '';
+            this.startTimeValue = '';
+            this.durationTimeValue = '';
+            this.endTimeValue = '';
+        },
         addProductRes(newVal) {
             if (newVal.status === "0") {
                 this.productInfoData = newVal.data;
@@ -853,31 +745,28 @@ export default {
             this.choosedProductValByAdd = [];
             this.conformProductValue = null;
         },
-    //     updateObjectimeAfteraddRes(newVal) {
-    //         let editLossData = newVal.data;
-    //         const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
-    //         const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
-    //         if (newVal.status === "0") {
-    //             for (let i = 0; i < this.datainputLossTableData.length; i++) {
-    //             for (let key in this.datainputLossTableData[i]) {
-    //                 if (key === editLossData.losstier2name) {
-    //                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-    //                 if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
-    //                     this.datainputLossTableData[i][key][this.lossParams.index].starttime = editLossStartTime;
-    //                     this.datainputLossTableData[i][key][this.lossParams.index].endtime = editLossEndTime;
-    //                     this.$Message.success("修改成功");
-    //                 }
-    //                 }
-    //             }
-    //             }
-    //         } else {
-    //             this.$Message.error("修改失败");
-    //         }
-    //         this.startTimeValue = '';
-    //         this.durationTimeValue = '';
-    //         this.endTimeValue = '';
-    //         this.lossParams = null;
-    //     },
+        updateObjectimeAfteraddRes(newVal) {
+            let editLossData = newVal.data;
+            const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
+            const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
+            if (newVal.status === "0") {
+                for (let i = 0; i < this.datainputLossData.length; i++) {
+                for (let key in this.datainputLossData[i]) {
+                    if (key === editLossData.losstier2name && this.lossParams) {
+                    /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+                    if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
+                        this.datainputLossData[i][key][this.lossParams.index].starttime = editLossStartTime;
+                        this.datainputLossData[i][key][this.lossParams.index].endtime = editLossEndTime;
+                    }
+                    }
+                }
+                }
+            }
+            this.startTimeValue = '';
+            this.durationTimeValue = '';
+            this.endTimeValue = '';
+            this.lossParams = null;
+        },
         showProductNameRes(newVal) {
             console.log("showProductNameRes:" + newVal);
             if (newVal.status === "0") {
@@ -898,12 +787,12 @@ export default {
         },
         deleteLoss4dataRes(newVal) {
           if (newVal.status === "0") {
-            for (let i = 0; i < this.datainputLossTableData.length; i++) {
-              for (let key in this.datainputLossTableData[i]) {
+            for (let i = 0; i < this.datainputLossData.length; i++) {
+              for (let key in this.datainputLossData[i]) {
                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                if (this.datainputLossTableData[i][key].length > 0) {
-                  if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
-                    this.datainputLossTableData[i][key].splice(this.lossParams.index, 1);
+                if (this.datainputLossData[i][key].length > 0 && this.lossParams) {
+                  if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                    this.datainputLossData[i][key].splice(this.lossParams.index, 1);
                     this.$Message.success("删除成功");
                   }
                 }
@@ -920,12 +809,17 @@ export default {
               this.lengthShiftEndTime = new Date(newVal.data.classendtime).format("yyyy-MM-dd hh:mm:ss");
               this.shouldNumAttendanceValue = newVal.data.shouldattendance;
               this.actualNumAttendanceValue = newVal.data.actualattendance;
-
+              this.datainputLossData = newVal.data.loss;
             }
           },
           showProductRes(newVal) {
             if(newVal.status === "0") {
               this.productInfoData = newVal.data;
+            }
+          },
+          datainputLossTableData(newVal) {
+            if(newVal) {
+              this.datainputLossData = newVal;
             }
           }
     },
@@ -937,6 +831,7 @@ export default {
           this.showKpitwolev({
               userId: sessionStorage.getItem("userid")
           });
+          this.productInfoData = [];
       } else {
           console.log(this.$route);
       }

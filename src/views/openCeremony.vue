@@ -7,13 +7,13 @@
             </span>
             <div class="classInfoTimeContainer">
                 <span class="classInfoTimeTitle">本班次时间：</span>
-                <DatePicker v-model="lengthShiftTimeValue" :readonly="openCeremonyStatus" type="datetimerange" placeholder="Select date and time" style="width: calc(100% - 80px)" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
+                <DatePicker v-model="lengthShiftTimeValue" :readonly="Boolean(classInfoIdList)" type="datetimerange" placeholder="Select date and time" style="width: calc(100% - 80px)" :options="optionsOpenCeremony" @on-clear="lengthShiftTimeClear"></DatePicker>
             </div>
             <div class="classInfoNumAttendance">
                 <span>应出勤人数：</span>
-                <InputNumber v-model="shouldNumAttendanceValue" :min="1" placeholder="人" :readonly="openCeremonyStatus"></InputNumber>
+                <InputNumber v-model="shouldNumAttendanceValue" :min="1" placeholder="人" :readonly="Boolean(classInfoIdList)"></InputNumber>
                 <span class="classInfoActualAttendance">实出勤人数：</span>
-                <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="openCeremonyStatus" :max="shouldNumAttendanceValue"></InputNumber>
+                <InputNumber v-model="actualNumAttendanceValue" :min="0" :readonly="Boolean(classInfoIdList)" :max="shouldNumAttendanceValue"></InputNumber>
             </div>
             <div class="classInfoSubmit">
                 <span class="classInfoClearBtn classInfoBtn" @click="clearClassInfoClick">清空</span>
@@ -33,7 +33,7 @@
                 <span class="flex-item">{{ d }}</span>
             </div>
             <div class="lossTable">
-                <Table border height="200" :columns="lossChildTableCols" :data="datainputLossTableData[idx][d]"></Table>
+                <Table border height="200" :columns="lossChildTableCols" :data="datainputLossData[idx][d]"></Table>
             </div>
             <div class="lossBtnContainer">
                 <span class="addLossBtn flex-item" @click="addLoss(d)">添加loss</span>
@@ -70,7 +70,7 @@
         </div>
         <div class="endTimeContainer">
             <span class="timeTitle">结束时间：</span>
-            <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
+            <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk" readonly>
             </DatePicker>
         </div>
     </Modal>
@@ -144,7 +144,7 @@ export default {
             lengthShiftTimeValue: [],
             shouldNumAttendanceValue: null,
             actualNumAttendanceValue: null,
-            openCeremonyStatus: false,
+            // openCeremonyStatus: false,
             classInfoIdList: '',
             /*产品变量*/
             showProductInfoFlag: false,
@@ -281,6 +281,7 @@ export default {
             lossTier3BeingEditedVal: '',
             lossTier4BeingEditedVal: '',
             lossParams: null,
+            datainputLossData: [],
         }
     },
     computed: {
@@ -289,7 +290,6 @@ export default {
             "lossTier3",
             "kpiTwoLev",
             "addLosstier4time2Res",
-            "datainputLossTableData",
             "addClassinfRes",
             "addProductRes",
             "showProductRes",
@@ -344,7 +344,7 @@ export default {
             this.lossFourLevStructId = tier;
         },
         addLoss: function(name) {
-            if (!this.openCeremonyStatus) {
+            if (!this.classInfoIdList) {
                 this.$Message.error("请先选择开班时间");
                 return;
             }
@@ -356,7 +356,7 @@ export default {
             this.showLossFlag = true;
         },
         addProductInfo: function(name) {
-            if (!this.openCeremonyStatus) {
+            if (!this.classInfoIdList) {
                 this.$Message.error("请先选择开班时间");
                 return;
             }
@@ -375,15 +375,15 @@ export default {
                 if (!e) {
                 return;
                 }
-                for (let i = 0; i < _this.datainputLossTableData.length; i++) {
-                console.log(_this.datainputLossTableData[i]);
-                for (let key in _this.datainputLossTableData[i]) {
+                for (let i = 0; i < _this.datainputLossData.length; i++) {
+                console.log(_this.datainputLossData[i]);
+                for (let key in _this.datainputLossData[i]) {
                     /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    console.log(_this.datainputLossTableData[i][key][_this.lossParams.index]);
-                    if (_this.datainputLossTableData[i][key].length > 0) {
-                    if (_this.datainputLossTableData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
+                    console.log(_this.datainputLossData[i][key][_this.lossParams.index]);
+                    if (_this.datainputLossData[i][key].length > 0) {
+                    if (_this.datainputLossData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
                         _this.deleteLoss4data({
-                        "losstier4DataidList": _this.datainputLossTableData[i][key][_this.lossParams.index].losstier4Dataid
+                        "losstier4DataidList": _this.datainputLossData[i][key][_this.lossParams.index].losstier4Dataid
                         })
                     }
                     }
@@ -506,7 +506,7 @@ export default {
                 return;
             }
 
-            if (!this.openCeremonyStatus) {
+            if (!this.classInfoIdList) {
                 this.addClassinf({
                 "classStarttime": this.lengthShiftTimeValue[0],
                 "classEndtime": this.lengthShiftTimeValue[1],
@@ -540,7 +540,7 @@ export default {
                 });
                 _this.classInfoIdList = '';
                 _this.productInfoData = [];
-                _this.openCeremonyStatus = false;
+                // _this.openCeremonyStatus = false;
                 _this.$Message.success("清空成功");
             });
         },
@@ -559,13 +559,13 @@ export default {
                 return;
                 }
                 this.showLossFlag = false;
-                for (let i = 0; i < this.datainputLossTableData.length; i++) {
-                for (var key in this.datainputLossTableData[i]) {
+                for (let i = 0; i < this.datainputLossData.length; i++) {
+                for (var key in this.datainputLossData[i]) {
                     /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    if (this.datainputLossTableData[i][key].length > 0) {
-                    if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                    if (this.datainputLossData[i][key].length > 0) {
+                    if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
                         this.updateObjectimeAfteradd({
-                        "losstier4Dataid": this.datainputLossTableData[i][key][this.lossParams.index].losstier4Dataid,
+                        "losstier4Dataid": this.datainputLossData[i][key][this.lossParams.index].losstier4Dataid,
                         "starttime": this.startTimeValue,
                         "endtime": this.endTimeValue
                         });
@@ -666,7 +666,7 @@ export default {
             } else {
               this.clearClassInfo();
               this.classInfoIdList = '';
-              this.openCeremonyStatus = false;
+              // this.openCeremonyStatus = false;
             }
           }
         },
@@ -691,18 +691,28 @@ export default {
                 this.optionalLossTier3ListByAdd = newVal.data.losstier3;
             }
         },
-        kpiTwoLev(newVal) {},
+        kpiTwoLev(newVal) {
+          if(newVal) {
+            this.datainputLossData = [];
+            newVal.data.forEach(item => {
+                let obj = {};
+                obj[item] = []
+                this.datainputLossData.push(obj)
+            })
+          }
+        },
         addLosstier4time2Res(newVal) {
             if (newVal.status === "0") {
                 let addLossData = newVal.data;
                 addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
                 addLossData.endtime = new Date(addLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
 
-                for (let i = 0; i < this.datainputLossTableData.length; i++) {
-                for (let key in this.datainputLossTableData[i]) {
+                for (let i = 0; i < this.datainputLossData.length; i++) {
+                for (let key in this.datainputLossData[i]) {
                     if (key === addLossData.losstier2name) {
-                    this.datainputLossTableData[i][key].push(addLossData);
+                    this.datainputLossData[i][key].push(addLossData);
                     this.$Message.success("添加成功");
+                    console.log(this.datainputLossData);
                     }
                 }
                 }
@@ -722,16 +732,18 @@ export default {
             let classInfoIdArr = [];
             if (newVal.status === "0") {
                 this.$Message.success("班次信息添加成功");
-                this.openCeremonyStatus = true;
+                // this.openCeremonyStatus = true;
                 for (let i = 0; i < newVal.data.length; i++) {
                 classInfoIdArr.push(newVal.data[i].classinfid);
                 }
                 this.classInfoIdList = classInfoIdArr.join(",");
-                this.openCeremonyStatus = true;
+                // this.openCeremonyStatus = true;
+            } else if(newVal.status === "101") {
+              this.$Message.error("该班次时间已存在或与已有班次时间相重合")
             } else {
                 this.$Message.error("班次信息添加失败");
                 this.classInfoIdList = '';
-                this.openCeremonyStatus = false;
+                // this.openCeremonyStatus = false;
             }
         },
         addProductRes(newVal) {
@@ -744,21 +756,21 @@ export default {
             this.choosedProductValByAdd = [];
             this.conformProductValue = null;
         },
-        showProductRes(newVal) {
-            console.log("showProductRes:" + newVal);
-        },
+        // showProductRes(newVal) {
+        //     console.log("showProductRes:" + newVal);
+        // },
         updateObjectimeAfteraddRes(newVal) {
             let editLossData = newVal.data;
             const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
             const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
             if (newVal.status === "0") {
-                for (let i = 0; i < this.datainputLossTableData.length; i++) {
-                for (let key in this.datainputLossTableData[i]) {
-                    if (key === editLossData.losstier2name) {
+                for (let i = 0; i < this.datainputLossData.length; i++) {
+                for (let key in this.datainputLossData[i]) {
+                    if (key === editLossData.losstier2name && this.lossParams) {
                     /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
-                        this.datainputLossTableData[i][key][this.lossParams.index].starttime = editLossStartTime;
-                        this.datainputLossTableData[i][key][this.lossParams.index].endtime = editLossEndTime;
+                    if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
+                        this.datainputLossData[i][key][this.lossParams.index].starttime = editLossStartTime;
+                        this.datainputLossData[i][key][this.lossParams.index].endtime = editLossEndTime;
                         this.$Message.success("修改成功");
                     }
                     }
@@ -798,12 +810,12 @@ export default {
         },
         deleteLoss4dataRes(newVal) {
           if (newVal.status === "0") {
-            for (let i = 0; i < this.datainputLossTableData.length; i++) {
-              for (let key in this.datainputLossTableData[i]) {
+            for (let i = 0; i < this.datainputLossData.length; i++) {
+              for (let key in this.datainputLossData[i]) {
                 /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                if (this.datainputLossTableData[i][key].length > 0) {
-                  if (this.datainputLossTableData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
-                    this.datainputLossTableData[i][key].splice(this.lossParams.index, 1);
+                if (this.datainputLossData[i][key].length > 0  && this.lossParams) {
+                  if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                    this.datainputLossData[i][key].splice(this.lossParams.index, 1);
                     this.$Message.success("删除成功");
                   }
                 }
@@ -813,7 +825,7 @@ export default {
             this.$Message.error("删除失败");
           }
           this.lossParams = null;
-        }
+        },
     },
     mounted() {
         if (sessionStorage.getItem("userid")) {
@@ -821,6 +833,7 @@ export default {
             this.showKpitwolev({
                 userId: sessionStorage.getItem("userid")
             });
+            this.productInfoData = [];
         } else {
             console.log(this.$route);
         }

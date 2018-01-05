@@ -618,7 +618,7 @@ export default {
     },
     showImpItemhistory({ commit }, obj) {
         axios.post("/impobject/showImpItemhistory", qs.stringify({
-            "linebodyId": obj.linebodyId
+            "lossstatusId": obj.lossstatusId
         })).then(res => {
             console.log("history")
             return res.data

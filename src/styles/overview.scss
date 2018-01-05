@@ -116,6 +116,11 @@
                             display: flex;
                             flex-direction: column;
                             height: 100%;
+                            .top_head {
+                                line-height: P(38);
+                                text-align: center;
+                                border-bottom: 1px solid #bdbdbd;
+                            }
                             .top_title {
                                 .title_detail {
                                     float: left;

@@ -238,33 +238,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
             cancel(){
 
             },
-            // updateImpItemstatus(){
-            //      let _this = this;
-            //     this.updateImpItemstatus({
-            //         "id": _this.statusId,
-            //         "linebodyId": _this.linebodyId,
-            //         "projectnumber": _this.projectnumber,
-            //         "projectname":_this.projectname,
-            //         "losscategory": _this.losscategory,
-            //         "status": _this.status,
-            //         "startperformance": _this.startperformance,
-            //         "target": _this.target,
-            //         "performance": _this.performance,
-            //         "objectstarttime": _this.objectstarttime,
-            //         "planendtime": _this.planendtime,
-            //         "stage": _this.stage,
-            //     })
-            //     this.showObjectnowBylinedyid()
-            //     this.showImpItemhistory()
-            // },
-            // showObjectnowBylinedyid(){
-            //      let _this = this;
-            //     this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
-            // },
-            // showImpItemhistory(){
-            //      let _this = this;
-            //     this.showImpItemhistory({linebodyId:_this.linebodyId})
-            // },
             confirm(){
                 let _this = this;
                 if(this.validateData()) {
@@ -287,7 +260,7 @@ import { stageRes, statusRes } from "../assets/js/tip"
                     setTimeout(function(){
                         _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
 
-                        _this.showImpItemhistory({linebodyId:_this.linebodyId})
+                        _this.showImpItemhistory({lossstatusId:_this.statusId})
                     },100)
                     
                 }else{
@@ -334,11 +307,15 @@ import { stageRes, statusRes } from "../assets/js/tip"
                 },100)
             },
             editpro(lossId){
+                let _this = this;
                 this.detailFlag = true
                 this.showImpItemstatus({
                     lossId:lossId,
                     linebodyId:this.linebodyId
                 })
+                setTimeout(function(){
+                    _this.showImpItemhistory({lossstatusId:_this.statusId})
+                },100)
             },
             delpro(obj){
                 var _this= this
@@ -453,7 +430,7 @@ import { stageRes, statusRes } from "../assets/js/tip"
                 setTimeout(function(){
                     _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
                 },10)
-                this.showImpItemhistory({linebodyId:this.linebodyId})
+                // this.showImpItemhistory({linebodyId:this.statusId})
             },
             nowline(newVal){
                 let _this = this;

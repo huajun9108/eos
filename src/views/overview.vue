@@ -68,9 +68,10 @@
                                 </div>
                                 <div class="item_table item_bottom">
                                     <div class="top top_left">
+                                        <div class="top_head">Top3 Loss</div>
                                         <div class="top_title">
-                                            <span class="title_detail">Top3 Loss</span>
-                                            <span class="title_detail">Performance</span>
+                                            <span class="title_detail">名称</span>
+                                            <span class="title_detail">值</span>
                                         </div>
                                         <div class="top_detail" >
                                             <div class="top_item" v-for = "(item,index) in item.topLoss" :key="index">
@@ -83,9 +84,10 @@
                                         </div>
                                     </div>
                                     <div class="top">
+                                        <div class="top_head">Top3 Project</div>
                                         <div class="top_title">
-                                            <span class="title_detail">Top3 Project</span>
-                                            <span class="title_detail">Performance</span>
+                                            <span class="title_detail">名称</span>
+                                            <span class="title_detail">预期每月收益</span>
                                         </div>
                                         <div class="top_detail">
                                             <div class="top_item">

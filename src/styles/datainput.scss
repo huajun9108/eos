@@ -263,12 +263,19 @@
                         }
                         .history_time {
                             text-align: center;
+
                             .unactive {
                                 line-height: P(34);
+                                .classHistoryItem {
+                                  cursor: pointer;
+                                }
                             }
                             .active {
                                 background-color: #ecf0f1;
                                 line-height: P(34);
+                                .classHistoryItem {
+                                  cursor: pointer;
+                                }
                             }
                         }
                     }

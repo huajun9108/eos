@@ -5,7 +5,7 @@
             <span class="history_date">{{item.year}}</span>
             <ul class="history_time">
                 <li  v-for="(option,index) in item.timeInfo" :key= "index" :class="{'active':option.active,'unactive':!option.active}">
-                    <span @click="selectStyle (option, option.id)">{{option.time}}</span>
+                    <span class="classHistoryItem" @click="selectStyle (option, option.id)">{{option.time}}</span>
                     <span >&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <i class="icon-edit"></i>&nbsp;&nbsp;
                     <i class="icon-delete_2" @click="deleteClassInfo(option, idx, index)"></i>

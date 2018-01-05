@@ -70,7 +70,7 @@
         </div>
         <div class="endTimeContainer">
             <span class="timeTitle">结束时间：</span>
-            <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk">
+            <DatePicker v-model="endTimeValue" type="datetime" placeholder="选择日期时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsEnd" @on-ok="endTimeChooseOk" readonly>
             </DatePicker>
         </div>
     </Modal>
@@ -738,6 +738,8 @@ export default {
                 }
                 this.classInfoIdList = classInfoIdArr.join(",");
                 // this.openCeremonyStatus = true;
+            } else if(newVal.status === "101") {
+              this.$Message.error("该班次时间已存在或与已有班次时间相重合")
             } else {
                 this.$Message.error("班次信息添加失败");
                 this.classInfoIdList = '';
@@ -754,9 +756,9 @@ export default {
             this.choosedProductValByAdd = [];
             this.conformProductValue = null;
         },
-        showProductRes(newVal) {
-            console.log("showProductRes:" + newVal);
-        },
+        // showProductRes(newVal) {
+        //     console.log("showProductRes:" + newVal);
+        // },
         updateObjectimeAfteraddRes(newVal) {
             let editLossData = newVal.data;
             const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');

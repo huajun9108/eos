@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="lossContainer">
-        <div class="lossRow" v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
+        <div class="lossRow" v-for="(d,idx) in this.kpiTableData" :key="idx">
             <div class="lossName">
                 <span class="flex-item">{{ d }}</span>
             </div>
@@ -206,6 +206,7 @@ export default {
             conformProductValue: null,
             editProductIndex: null,
             /*loss变量*/
+            kpiTableData: [],
             showLossFlag: false,
             editLossDirFlag: false,
             choosedLossTier3ValByAdd: '',
@@ -687,12 +688,15 @@ export default {
             });
         },
         lossTier3(newVal) {
+          if(!this.clearMsg) return;
             if (newVal.status === "0") {
                 this.optionalLossTier3ListByAdd = newVal.data.losstier3;
             }
         },
         kpiTwoLev(newVal) {
-          if(newVal) {
+          if(!this.clearMsg) return;
+          if(newVal.status === "0") {
+            this.kpiTableData = newVal.data;
             this.datainputLossData = [];
             newVal.data.forEach(item => {
                 let obj = {};
@@ -702,6 +706,7 @@ export default {
           }
         },
         addLosstier4time2Res(newVal) {
+          if(!this.clearMsg) return;
             if (newVal.status === "0") {
                 let addLossData = newVal.data;
                 addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
@@ -712,7 +717,6 @@ export default {
                     if (key === addLossData.losstier2name) {
                     this.datainputLossData[i][key].push(addLossData);
                     this.$Message.success("添加成功");
-                    console.log(this.datainputLossData);
                     }
                 }
                 }
@@ -747,6 +751,7 @@ export default {
             }
         },
         addProductRes(newVal) {
+          if(!this.clearMsg) return;
             if (newVal.status === "0") {
                 this.productInfoData = newVal.data;
                 this.$Message.success("添加成功");
@@ -760,6 +765,7 @@ export default {
         //     console.log("showProductRes:" + newVal);
         // },
         updateObjectimeAfteraddRes(newVal) {
+          if(!this.clearMsg) return;
             let editLossData = newVal.data;
             const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
             const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
@@ -785,12 +791,14 @@ export default {
             this.lossParams = null;
         },
         showProductNameRes(newVal) {
+          if(!this.clearMsg) return;
             console.log("showProductNameRes:" + newVal);
             if (newVal.status === "0") {
                 this.optionalProductListByAdd = newVal.data;
             }
         },
         deleteProductRes(newVal) {
+          if(!this.clearMsg) return;
             if (newVal.status === "0") {
                 this.productInfoData = newVal.data;
                 this.$Message.success("删除成功");
@@ -799,6 +807,7 @@ export default {
             }
         },
         updateProductRes(newVal) {
+          if(!this.clearMsg) return;
           if (newVal.status === "0") {
             this.productInfoData = newVal.data;
             this.$Message.success("修改成功");
@@ -809,6 +818,7 @@ export default {
           this.conformProductValue = null;
         },
         deleteLoss4dataRes(newVal) {
+          if(!this.clearMsg) return;
           if (newVal.status === "0") {
             for (let i = 0; i < this.datainputLossData.length; i++) {
               for (let key in this.datainputLossData[i]) {
@@ -830,9 +840,9 @@ export default {
     mounted() {
         if (sessionStorage.getItem("userid")) {
             this.classInfoIdList = '';
-            this.showKpitwolev({
-                userId: sessionStorage.getItem("userid")
-            });
+            // this.showKpitwolev({
+            //     userId: sessionStorage.getItem("userid")
+            // });
             this.productInfoData = [];
         } else {
             console.log(this.$route);

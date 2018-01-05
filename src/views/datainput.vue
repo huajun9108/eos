@@ -30,6 +30,7 @@ export default {
   methods: {
     ...mapActions([
         "selectUserById",
+        "showKpitwolev",
     ]),
     openCeremonyClick(){
       if (this.ceremonyFlag) {
@@ -52,7 +53,6 @@ export default {
   },
   mounted() {
       if (sessionStorage.getItem("userid")) {
-          // this.classInfoIdList = '';
           this.selectUserById({
               userid: sessionStorage.getItem("userid")
           });

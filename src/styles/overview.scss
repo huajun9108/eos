@@ -146,19 +146,20 @@
                                         display: inline-block;
                                         text-align: center;
                                         border-right: 1px solid #bdbdbd;
-                                        line-height: P(50);
+                                        line-height: P(42);
                                     }
                                     .item_value {
                                         flex: 1;
                                         display: inline-block;
                                         text-align: center;
-                                        line-height: P(50);
+                                        line-height: P(42);
                                     }
                                     .item_no_project {
+                                        overflow: hidden;
                                         width: 50%;
                                         display: inline-block;
                                         text-align: center;
-                                        height: P(50);
+                                        height: P(42);
                                         border-right: 1px solid #bdbdbd;
                                     }
                                 }
@@ -168,7 +169,7 @@
                                 .top_empty {
                                     .item_empty {
                                         width: 100%;
-                                        line-height: P(150);
+                                        line-height: P(126);
                                         display: inline-block;
                                         text-align: center;
                                     }
@@ -176,6 +177,7 @@
                             }
                         }
                         .top_left {
+                            width: 50%;
                             border-right: 1px solid #bdbdbd;
                         }
                     }

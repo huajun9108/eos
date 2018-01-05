@@ -12,7 +12,7 @@
                     <tbody class="over_body">
                         <tr v-for="(item,index) in dataList" :key = "index">
                             <td class="firstCol" width="10%">{{item.name}}</td>
-                            <td id="toee" class="secordCol" width="50%">
+                            <td id="toee" class="secordCol" width="55%">
                                 <chart
                                 :_id="item.name"
                                 :_titleText="'访问量统计'"
@@ -23,7 +23,7 @@
                                 @recieveData="showData"></chart>
                                 <div class="data_tip" v-if = "item.data==null||item.data==''">暂无数据</div>
                             </td>
-                            <td width="40%" class="text-left item_td">
+                            <td width="35%" class="text-left item_td">
                                 <div class="item_table item_top">
                                     <ul class="item_table_detail">
                                         <!-- <li class="item_table_de" v-for="(item,index) in item.dataDetail" :key="index">
@@ -90,15 +90,23 @@
                                             <span class="title_detail">预期每月收益</span>
                                         </div>
                                         <div class="top_detail">
-                                            <div class="top_item">
-                                                <span class="item_no_project">总拼线Dimension out of Spec2018-01-05</span><span class="item_value">12%</span>
+                                            <!-- <div class="top_item">
+                                                <span class="item_no_project" title="总拼线Dimension out of Spec2018-01-05">总拼线Dimension out of Spec2018-01-05</span>
+                                                <span class="item_value">12%</span>
                                             </div> 
                                             <div class="top_item">
-                                                <span class="item_no">Short Stops</span><span class="item_value">8%</span>
+                                                <span class="item_no_project">Short Stops</span><span class="item_value">8%</span>
                                             </div> 
                                             <div class="top_item last_ltem">
-                                                <span class="item_no">Speed Loss</span><span class="item_value">12%</span>
-                                            </div>  
+                                                <span class="item_no_project">Speed Loss</span><span class="item_value">12%</span>
+                                            </div>   -->
+                                            <div class="top_item" v-for = "(item,index) in item.topProject" :key="index">
+                                                <span class="item_no_project" :title="item.name">{{item.name}}</span><span class="item_value">{{item.value}}</span>
+                                                <span class="item_no" v-if="item==null||item==undefined||item==''">无</span>
+                                            </div> 
+                                            <div class="top_empty" v-if="item.topProject==null||item.topProject==undefined||item.topProject==''">
+                                                <span class="item_empty">暂无数据</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -130,6 +138,7 @@ export default {
                 type:"LineAndBar",
                 dataDetail:null,
                 topLoss:null,
+                topProject:null
 
 
 
@@ -152,6 +161,7 @@ export default {
             this.dataList[0].data = null;
             this.dataList[0].dataDetail=null;
             this.dataList[0].topLoss =null
+            this.dataList[0].topProject =null
         },  
     },
     computed: {
@@ -171,6 +181,7 @@ export default {
             this.dataList[0].data = newVal.data
             this.dataList[0].dataDetail = newVal.value
             this.dataList[0].topLoss =newVal.losstier3
+            this.dataList[0].topProject=newVal.impprojectTop
         }
     },
     mounted () {

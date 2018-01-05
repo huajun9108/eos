@@ -141,17 +141,25 @@
                                     border-bottom: 1px solid #bdbdbd;
                                     width: 100%;
                                     display: flex;
-                                    line-height: P(38);
                                     .item_no {
                                         width: 50%;
                                         display: inline-block;
                                         text-align: center;
                                         border-right: 1px solid #bdbdbd;
+                                        line-height: P(50);
                                     }
                                     .item_value {
                                         flex: 1;
                                         display: inline-block;
                                         text-align: center;
+                                        line-height: P(50);
+                                    }
+                                    .item_no_project {
+                                        width: 50%;
+                                        display: inline-block;
+                                        text-align: center;
+                                        height: P(50);
+                                        border-right: 1px solid #bdbdbd;
                                     }
                                 }
                                 .top_item:last-child {
@@ -160,7 +168,7 @@
                                 .top_empty {
                                     .item_empty {
                                         width: 100%;
-                                        line-height: P(114);
+                                        line-height: P(150);
                                         display: inline-block;
                                         text-align: center;
                                     }

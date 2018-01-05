@@ -12,7 +12,7 @@
                     <tbody class="over_body">
                         <tr v-for="(item,index) in dataList" :key = "index">
                             <td class="firstCol" width="10%">{{item.name}}</td>
-                            <td id="toee" class="secordCol" width="55%">
+                            <td id="toee" class="secordCol" width="50%">
                                 <chart
                                 :_id="item.name"
                                 :_titleText="'访问量统计'"
@@ -23,7 +23,7 @@
                                 @recieveData="showData"></chart>
                                 <div class="data_tip" v-if = "item.data==null||item.data==''">暂无数据</div>
                             </td>
-                            <td width="35%" class="text-left item_td">
+                            <td width="40%" class="text-left item_td">
                                 <div class="item_table item_top">
                                     <ul class="item_table_detail">
                                         <!-- <li class="item_table_de" v-for="(item,index) in item.dataDetail" :key="index">
@@ -91,7 +91,7 @@
                                         </div>
                                         <div class="top_detail">
                                             <div class="top_item">
-                                                <span class="item_no">Breakdowns</span><span class="item_value">12%</span>
+                                                <span class="item_no_project">总拼线Dimension out of Spec2018-01-05</span><span class="item_value">12%</span>
                                             </div> 
                                             <div class="top_item">
                                                 <span class="item_no">Short Stops</span><span class="item_value">8%</span>

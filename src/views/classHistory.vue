@@ -38,7 +38,7 @@
             </div>
     </div>
     <div class="lossContainer">
-        <div class="lossRow" v-for="(d,idx) in this.kpiTwoLev.data" :key="idx">
+        <div class="lossRow" v-for="(d,idx) in this.kpiTableData" :key="idx">
             <div class="lossName">
                 <span class="flex-item">{{ d }}</span>
             </div>
@@ -220,6 +220,7 @@ export default {
             conformProductValue: null,
             editProductIndex: null,
             /*loss变量*/
+            kpiTableData: [],
             showLossFlag: false,
             editLossDirFlag: false,
             choosedLossTier3ValByAdd: '',
@@ -690,11 +691,13 @@ export default {
             })
         },
         showClassinfHistoryRes(newVal) {
+          if(!this.clearMsg) return;
           if(newVal.status === "0") {
             this.historyData = newVal.data;
           }
         },
         deleteClassinfHistoryRes(newVal) {
+          if(!this.clearMsg) return;
           if(newVal.status === "0") {
             this.historyData[this.classIdx].timeInfo.splice(this.classIndex, 1);
             if(this.historyData[this.classIdx].timeInfo.length === 0) {
@@ -708,12 +711,26 @@ export default {
           this.classIndex = null;
         },
         lossTier3(newVal) {
+          if(!this.clearMsg) return;
             if (newVal.status === "0") {
                 this.optionalLossTier3ListByAdd = newVal.data.losstier3;
             }
         },
-    //     kpiTwoLev(newVal) {},
+        kpiTwoLev(newVal) {
+          if(!this.clearMsg) return;
+          if(newVal.status === "0") {
+            this.kpiTableData = newVal.data;
+            this.datainputLossData = [];
+            newVal.data.forEach(item => {
+                let obj = {};
+                obj[item] = []
+                this.datainputLossData.push(obj)
+            })
+          }
+        },
         addLosstier4time2Res(newVal) {
+          if(!this.clearMsg) return;
+
             if (newVal.status === "0") {
                 let addLossData = newVal.data;
                 addLossData.starttime = new Date(addLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
@@ -723,11 +740,12 @@ export default {
                 for (let key in this.datainputLossData[i]) {
                     if (key === addLossData.losstier2name) {
                     this.datainputLossData[i][key].push(addLossData);
-                    console.log(this.datainputLossData);
-
+                    this.$Message.success("添加成功");
                     }
                 }
                 }
+            } else {
+                this.$Message.error("添加失败");
             }
             this.lossTwoLevName = '';
             this.lossThreeLevStructId = '';
@@ -739,13 +757,20 @@ export default {
             this.endTimeValue = '';
         },
         addProductRes(newVal) {
+          if(!this.clearMsg) return;
+
             if (newVal.status === "0") {
                 this.productInfoData = newVal.data;
+                this.$Message.success("添加成功");
+            } else {
+                this.$Message.error("添加失败");
             }
             this.choosedProductValByAdd = [];
             this.conformProductValue = null;
         },
         updateObjectimeAfteraddRes(newVal) {
+          if(!this.clearMsg) return;
+
             let editLossData = newVal.data;
             const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
             const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
@@ -757,10 +782,13 @@ export default {
                     if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
                         this.datainputLossData[i][key][this.lossParams.index].starttime = editLossStartTime;
                         this.datainputLossData[i][key][this.lossParams.index].endtime = editLossEndTime;
+                        this.$Message.success("修改成功");
                     }
                     }
                 }
                 }
+            } else {
+                this.$Message.error("修改失败");
             }
             this.startTimeValue = '';
             this.durationTimeValue = '';
@@ -768,24 +796,34 @@ export default {
             this.lossParams = null;
         },
         showProductNameRes(newVal) {
+          if(!this.clearMsg) return;
             console.log("showProductNameRes:" + newVal);
             if (newVal.status === "0") {
                 this.optionalProductListByAdd = newVal.data;
             }
         },
         deleteProductRes(newVal) {
+          if(!this.clearMsg) return;
             if (newVal.status === "0") {
                 this.productInfoData = newVal.data;
+                this.$Message.success("删除成功");
+            } else {
+                this.$Message.error("删除失败");
             }
         },
         updateProductRes(newVal) {
+          if(!this.clearMsg) return;
           if (newVal.status === "0") {
             this.productInfoData = newVal.data;
+            this.$Message.success("修改成功");
+          } else {
+            this.$Message.error("修改失败");
           }
           this.editProductIndex = null;
           this.conformProductValue = null;
         },
         deleteLoss4dataRes(newVal) {
+          if(!this.clearMsg) return;
           if (newVal.status === "0") {
             for (let i = 0; i < this.datainputLossData.length; i++) {
               for (let key in this.datainputLossData[i]) {
@@ -804,6 +842,7 @@ export default {
           this.lossParams = null;
         },
           showClassinfHisRightRes(newVal) {
+            if(!this.clearMsg) return;
             if(newVal.status === "0") {
               this.lengthShiftStartTime = new Date(newVal.data.classstarttime).format("yyyy-MM-dd hh:mm:ss");
               this.lengthShiftEndTime = new Date(newVal.data.classendtime).format("yyyy-MM-dd hh:mm:ss");
@@ -813,24 +852,26 @@ export default {
             }
           },
           showProductRes(newVal) {
+            if(!this.clearMsg) return;
             if(newVal.status === "0") {
               this.productInfoData = newVal.data;
             }
           },
-          datainputLossTableData(newVal) {
-            if(newVal) {
-              this.datainputLossData = newVal;
-            }
-          }
+          // datainputLossTableData(newVal) {
+          //   if(!this.clearMsg) return;
+          //   if(newVal) {
+          //     this.datainputLossData = newVal;
+          //   }
+          // }
     },
     created () {
     },
     mounted() {
       if (sessionStorage.getItem("userid")) {
           this.classInfoIdList = '';
-          this.showKpitwolev({
-              userId: sessionStorage.getItem("userid")
-          });
+          // this.showKpitwolev({
+          //     userId: sessionStorage.getItem("userid")
+          // });
           this.productInfoData = [];
       } else {
           console.log(this.$route);

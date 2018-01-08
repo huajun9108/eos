@@ -12,13 +12,14 @@
       <div class="tableContainer">
         <table class="tableBody">
           <tbody>
-            <tr v-for="(title,idx) in this.lossmappingDataList.data" :key="idx">
-              <td class="firstCol">{{ title.title }}</td>
-              <td :id='title.title' class="secordCol" style="width: 600px;height:220px;">
-              </td>
-            </tr>
             <tr v-if = "this.lossmappingDataList.data==null||this.lossmappingDataList.data==''">
               <td>暂无数据</td>
+            </tr>
+            <tr  v-else v-for="(title,idx) in this.lossmappingDataList.data" :key="idx">
+              <td class="firstCol">{{ title.title }}</td>
+              <td :id='title.title' class="secordCol" style="width: 600px;height:220px;" v-if="title.data.length > 0">
+              </td>
+              <td v-else>暂无数据</td>
             </tr>
           </tbody>
         </table>
@@ -62,6 +63,9 @@
         }
         this.chartList = [];
         for(let i = 0; i < this.lossmappingDataList.data.length; i++) {
+            if(this.lossmappingDataList.data[i].data.length <= 0 || this.lossmappingDataList.data[i].link.length <= 0) {
+              continue;
+            }
             var myChart = echarts.init(document.getElementById(this.lossmappingDataList.data[i].title));
             this.chartList.push(myChart);
             var option = {
@@ -111,7 +115,7 @@
 
     },
     mounted() {
-      
+
     }
   }
   </script>

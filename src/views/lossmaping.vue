@@ -62,6 +62,9 @@
         }
         this.chartList = [];
         for(let i = 0; i < this.lossmappingDataList.data.length; i++) {
+            if(this.lossmappingDataList.data[i].data.length <= 0 || this.lossmappingDataList.data[i].link.length <= 0) {
+              continue;
+            }
             var myChart = echarts.init(document.getElementById(this.lossmappingDataList.data[i].title));
             this.chartList.push(myChart);
             var option = {
@@ -111,7 +114,7 @@
 
     },
     mounted() {
-      
+
     }
   }
   </script>

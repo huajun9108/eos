@@ -1,7 +1,7 @@
 import axios from "axios"
 import qs from 'qs'
 import iView from 'iview'
-axios.defaults.baseURL = "http://116.62.10.199:3001";
+axios.defaults.baseURL = "http://116.62.10.199:3002";
 axios.defaults.timeout = 1000000000000;
 
 
@@ -687,7 +687,8 @@ export default {
         axios.post("/overview/selectOverviewByTimesAndLinebodys", qs.stringify({
             "startTime": obj.startTime,
             "endTime": obj.endTime,
-            "linebodyIds": obj.linebodyIds
+            "linebodyIds": obj.linebodyIds,
+            "userId": obj.userId
         })).then(res => {
             iView.Spin.hide()
             console.log(res.data);

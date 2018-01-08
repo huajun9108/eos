@@ -19,7 +19,9 @@
             }
             .tableBody tr {
                 border-bottom: 1px solid #BDBDBD;
-                line-height: 200px
+                .emptydata {
+                    line-height: 200px
+                }
             }
             .tableBody td {
                 font-size: P(16);

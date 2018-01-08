@@ -168,6 +168,7 @@ export default {
           })
         }else if(this.routeIsroute("overview")){
           this.selectOverviewByTimesAndLinebodys({
+          userId: sessionStorage.getItem("userid"),
           linebodyIds: this.lineBodystr,
           startTime: this.start,
           endTime: this.end

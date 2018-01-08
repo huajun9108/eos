@@ -18,7 +18,7 @@
               </td>
             </tr>
             <tr v-if = "this.lossmappingDataList.data==null||this.lossmappingDataList.data==''">
-              <td>暂无数据</td>
+              <td class="emptydata">暂无数据</td>
             </tr>
           </tbody>
         </table>

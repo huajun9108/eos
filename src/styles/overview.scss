@@ -14,6 +14,7 @@
         .over_table {
             width: 100%;
             flex: 1;
+            overflow: auto;
             .table>tbody>tr>td {
                 border-top: 0;
                 border-left: 0;
@@ -30,12 +31,19 @@
                         width: 100%;
                         height: 33.33%;
                     }
+                    .emptytd {
+                        .emptydata {
+                            padding: 0;
+                            line-height: 200px;
+                            border-right: 0
+                        }
+                    }
                 }
                 .secordCol {
                     height: 100%;
                     overflow: hidden;
                     position: relative;
-                    #oee {
+                    #OEE {
                         width: 100%;
                         height: 100%;
                     }

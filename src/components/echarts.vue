@@ -16,7 +16,7 @@
 
 <script>
     import echarts from 'echarts';
-    var barChart,lineOrBarChart,lineChart,LineAndBarChart=[],test=[];
+    var barChart,lineOrBarChart,lineChart,LineAndBarChart=[];
     var LineAndBarData
     export default {
     data() {
@@ -158,12 +158,10 @@
         }
         if(index === 0) {
         LineAndBarChart=[];
-        test = [];
         }
         var charts = echarts.init(document.getElementById(id));
         LineAndBarChart.push(charts)
         if(chartData.length<=0){
-            charts.dispose();
             console.log(LineAndBarChart)
             return
         }

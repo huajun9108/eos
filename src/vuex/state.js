@@ -72,5 +72,6 @@ export default {
     selectOverviewByTimesAndLinebodys: null,
     showClassinfHistoryRes: '',
     deleteClassinfHistoryRes: '',
-    showClassinfHisRightRes: ''
+    showClassinfHisRightRes: '',
+    updateUserKpiTwolveByIdRes: null
 }

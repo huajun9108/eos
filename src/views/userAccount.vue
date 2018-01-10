@@ -79,17 +79,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,idx) in tier2" :key="idx">
-                  <td class="text-center num" width="5%">{{idx+1}}</td>
-                  <td width="80%" class="tier2item">{{item.name}}</td>
-                  <td width="15%" class="text-center img_td" :data="item.name" >
-                    <div class="move_click">
-                      <img class="move up" src="../assets/images/move_up.png" @click="moveUp({'userId':userinfor.userid,
-                      'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx,'changedOrder':item.userKpitwolev.sequence-1})"/>
-                      <img class="move down" src="../assets/images/move_down.png" @click="moveDown({'userId':userinfor.userid,
-                      'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx,'changedOrder':item.userKpitwolev.sequence+1})"/>
-                    </div>
-                  </td>
+              <tr v-for="(item,idx) in this.tier2List" :key="idx">
+                <td class="text-center num" width="5%">{{idx+1}}</td>
+                <td width="80%" class="tier2item">{{item.name}}</td>
+                <td width="15%" class="text-center img_td" :data="item.name" >
+                  <div class="move_click">
+                    <img class="move up" src="../assets/images/move_up.png" @click="moveUp({'userId':userinfor.userid,
+                    'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx})"/>
+                    <img class="move down" src="../assets/images/move_down.png" @click="moveDown({'userId':userinfor.userid,
+                    'changeId':item.kpitwoid,'changeOrder':item.userKpitwolev.sequence,'index':idx})"/>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -126,7 +126,7 @@ export default {
         },
       },
       validareaList:[],
-  
+      tier2List:null
     } 
   },
   computed:{
@@ -134,7 +134,8 @@ export default {
       "userinfor",
       "validarea",
       'updatePwdResult',
-      'tier2'
+      'tier2',
+      'updateUserKpiTwolveByIdRes'
       ])
   },
   methods: {
@@ -215,19 +216,20 @@ export default {
       if(obj.index == 0) { 
         this.$Message.warning("到顶啦！"); 
       }else{
-        let changedid = this.tier2[obj.index-1].kpitwoid
+        let changedid = this.tier2List[obj.index-1].kpitwoid
+        let changedOrder = this.tier2List[obj.index-1].userKpitwolev.sequence
         this.updateUserKpiTwolveById({
           "userId":obj.userId,
           "changeId":obj.changeId,
           "changeOrder":obj.changeOrder,
           "changedId":changedid,
-          "changedOrder":obj.changedOrder
+          "changedOrder":changedOrder
 
         })
-        this.tier2.splice(obj.index-1,0,(this.tier2[obj.index])); 
-        //删除后一项 
-        this.tier2.splice(obj.index+1,1); 
-        console.log(obj.changeId+","+obj.changeOrder+","+changedid+","+obj.changedOrder)
+        // this.tier2.splice(obj.index-1,0,(this.tier2[obj.index])); 
+        // //删除后一项 
+        // this.tier2.splice(obj.index+1,1); 
+        // console.log(obj.changeId+","+obj.changeOrder+","+changedid+","+obj.changedOrder)
       } 
     },
     moveDown:function(obj) { 
@@ -235,41 +237,52 @@ export default {
         this.$Message.warning("已经是最后一项啦！"); 
         return
       }
-      let changedid = this.tier2[obj.index+1].kpitwoid
+      let changedid = this.tier2List[obj.index+1].kpitwoid
+      let changedOrder = this.tier2List[obj.index+1].userKpitwolev.sequence
       this.updateUserKpiTwolveById({
           "userId":obj.userId,
           "changeId":obj.changeId,
           "changeOrder":obj.changeOrder,
           "changedId":changedid,
-          "changedOrder":obj.changedOrder
+          "changedOrder":changedOrder
 
         })
     //在下一项插入该项 
-    this.tier2.splice(obj.index+2,0,(this.tier2[obj.index])); 
-    // 删除前一项 
-    this.tier2.splice(obj.index,1); 
-      
+    // this.tier2.splice(obj.index+2,0,(this.tier2[obj.index])); 
+    // // 删除前一项 
+    // this.tier2.splice(obj.index,1); 
     }
     
   },
   watch: {
-     validarea(newVal){
-        this.validareaList=[]
-        this.validarea.forEach(item=> {
-         if(item.checked){
-          this.validareaList.push(item)
-         }
-       });
-       $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
+    validarea(newVal){
+      this.validareaList=[]
+      this.validarea.forEach(item=> {
+        if(item.checked){
+        this.validareaList.push(item)
+        }
+      });
+      $.fn.zTree.init($("#treeDemo"), this.setting, this.validareaList);
     },
     updatePwdResult(newVal){
       if(newVal.status==2){
-          this.$Message.error('原密码输入不一致');
+        this.$Message.error('原密码输入不一致');
       }else if(newVal.status==0){
-          this.$Message.success('密码修改成功');
-          this.showFlag = false
+        this.$Message.success('密码修改成功');
+        this.showFlag = false
       }
     },
+    updateUserKpiTwolveByIdRes(newVal){
+      if(newVal.status=="0"){
+        this.tier2List = newVal.data
+        this.$Message.success('顺序修改成功');
+      }else{
+        this.$Message.error('顺序修改失败，请稍后再试');
+      }
+    },
+    tier2(newVal){
+      this.tier2List = newVal
+    }
   },
   mounted() {
     if (sessionStorage.getItem("userid")) {

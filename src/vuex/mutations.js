@@ -86,7 +86,7 @@ export default {
         state.updatelineBodyRes = json
     },
     updateUserKpiTwolveById(state, json) {
-
+        state.updateUserKpiTwolveByIdRes = json
     },
     showImpItempool(state, json) {
         state.improList = json
@@ -194,12 +194,12 @@ export default {
         state.selectOverviewByTimesAndLinebodys = json
     },
     showClassinfHistory(state, json) {
-      state.showClassinfHistoryRes = json
+        state.showClassinfHistoryRes = json
     },
     deleteClassinfHistory(state, json) {
-      state.deleteClassinfHistoryRes = json
+        state.deleteClassinfHistoryRes = json
     },
     showClassinfHisRight(state, json) {
-      state.showClassinfHisRightRes = json
+        state.showClassinfHisRightRes = json
     }
 }

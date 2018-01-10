@@ -16,7 +16,7 @@
 
 <script>
     import echarts from 'echarts';
-    var barChart,lineOrBarChart,lineChart,LineAndBarChart=[];
+    var barChart,lineOrBarChart,lineChart,LineAndBarChart=[],oldLineAndBarChart=[],oldIndex=-1;
     var LineAndBarData
     export default {
     data() {
@@ -153,14 +153,19 @@
         })
     }
     function drawLineAndBar(chartData,id,titleText,xText,yText,index) {
-        if (LineAndBarChart[index] != null && LineAndBarChart[index]!= "" && LineAndBarChart[index] != undefined) {
-            LineAndBarChart[index].dispose();
+        if(index === 0 && oldIndex === 2) {
+            oldLineAndBarChart = LineAndBarChart;
+            LineAndBarChart = [];
         }
-        if(index === 0) {
-        LineAndBarChart=[];
+        if (oldLineAndBarChart[index] != null && oldLineAndBarChart[index]!= "" && oldLineAndBarChart[index] != undefined) {
+            oldLineAndBarChart[index].dispose();
+        }
+        if(index === 2 ) {
+            oldLineAndBarChart=[];
         }
         var charts = echarts.init(document.getElementById(id));
-        LineAndBarChart.push(charts)
+        LineAndBarChart.push(charts);
+        oldIndex = index;
         if(chartData.length<=0){
             console.log(LineAndBarChart)
             return

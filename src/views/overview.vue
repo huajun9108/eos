@@ -144,9 +144,15 @@ export default {
             this.isShow = !this.isShow 
         },
         showData(data){
+            console.log(data)
             console.log(data.split)
             if(isNaN(data.split(",")[0])) return;
-            this.dataList[0].dataDetail= data.split(",")
+            for(let i = 0; i < this.dataList.length; i++ ){
+                if(this.dataList[i].title == "OEE"){
+                    this.dataList[i].value= data.split(",")
+                }
+            }
+            
             console.log(data)
         },  
         clearCharts() {

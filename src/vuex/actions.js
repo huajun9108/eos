@@ -4,7 +4,6 @@ import iView from 'iview'
 axios.defaults.baseURL = "http://116.62.10.199:3002";
 axios.defaults.timeout = 1000000000000;
 
-
 export default {
     adminLogin({ commit }, obj) {
         axios.post("/admin/adminLogin", qs.stringify({
@@ -533,8 +532,8 @@ export default {
     },
     deleteProduct({ commit }, obj) {
         axios.post("/datainput/deleteProduct", qs.stringify({
-            "productIdList": obj.productIdList,
-            "classinfIdList": obj.classinfIdList,
+            "productId": obj.productId,
+            "classinfId": obj.classinfId,
             "linebodyId": obj.linebodyId
         })).then(res => {
             return res.data
@@ -544,9 +543,9 @@ export default {
     },
     updateProduct({ commit }, obj) {
         axios.post("/datainput/updateProduct", qs.stringify({
-            "productIdList": obj.productIdList,
+            "productId": obj.productId,
             "conformProduct": obj.conformProduct,
-            "classinfIdList": obj.classinfIdList,
+            "classinfId": obj.classinfId,
             "linebodyId": obj.linebodyId
         })).then(res => {
             return res.data

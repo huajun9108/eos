@@ -476,8 +476,8 @@ export default {
           return;
         }
         _this.deleteProduct({
-          "productIdList": productIdList,
-          "classinfIdList": _this.classInfoIdList,
+          "productId": productIdList,
+          "classinfId": _this.classInfoIdList,
           "linebodyId": _this.lineBodys[0]
         });
       });
@@ -670,9 +670,9 @@ export default {
         }
         this.showProductInfoFlag = false;
         this.updateProduct({
-          "productIdList": this.productInfoData[this.editProductIndex].productid,
+          "productId": this.productInfoData[this.editProductIndex].productid,
           "conformProduct": this.conformProductValue,
-          "classinfIdList": this.classInfoIdList,
+          "classinfId": this.classInfoIdList,
           "linebodyId": this.lineBodys[0]
         })
       } else {

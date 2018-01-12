@@ -39,10 +39,18 @@
                     .classInfoFlex {
                       font-size: P(16);
                       display: inline-flex;
+                      flex-direction: column;
                       width: 40%;
                       height: 100%;
+                      .classInfoTitle {
+                        display: inline-block;
+                        padding-left: P(28);
+                        padding-top: P(32);
+                      }
                       .flex-item {
                         margin: auto;
+                        color: #495060;
+                        font-size: 12px;
                       }
                     }
                     .classInfo {
@@ -250,13 +258,14 @@
                 display: flex;
                 justify-content: space-between;
                 .historyClassFlex {
-                  font-size: P(16);
                   display: inline-flex;
                   width: 20%;
                   height: 100%;
                   border-right: 1px solid #BDBDBD;
                   .flex-item {
                     margin: auto;
+                    color: #495060;
+                    font-size: 12px;
                   }
                 }
                 .history_left {

@@ -20,8 +20,8 @@
     <div class="basicInfo">
       <div v-if="selectedClassStatus" class="classInfo">
         <span class="classInfoTitle">
-                    Basic Info
-                </span>
+            Basic Info
+        </span>
         <div class="classInfoTimeContainer">
           <span class="classInfoTime">本班次时间：{{lengthShiftStartTime}}至{{lengthShiftEndTime}}</span>
         </div>
@@ -31,6 +31,9 @@
         </div>
       </div>
       <div class="classInfoFlex" v-else>
+        <span class="classInfoTitle">
+            Basic Info
+        </span>
         <span class="flex-item">暂未选择班次</span>
       </div>
       <div class="productInfo">
@@ -120,7 +123,6 @@ export default {
           if (!(this.lengthShiftStartTime && this.lengthShiftEndTime)) return false;
           let end = new Date(this.lengthShiftEndTime);
           let beginFormat = this.lengthShiftStartTime.split(' ');
-          // console.log(beginFormat);
           let begin = new Date(beginFormat[0] + ' 00:00:00');
           if (begin && end) {
             return (date && date.valueOf() > end) || (date && date.valueOf() < begin);
@@ -342,7 +344,8 @@ export default {
       "showClassinfHisRight"
     ]),
     selectStyle(item, index) {
-      let _this = this;　　　　　　　　 this.historyData.forEach(function(item) {
+      let _this = this;　　　　　　　　
+      this.historyData.forEach(function(item) {
         _this.$nextTick(function() {
           item.timeInfo.forEach(item => {
             Vue.set(item, 'active', false);
@@ -521,7 +524,6 @@ export default {
       }
     },
     startTimeClear() {
-      console.log("startTimeClear");
       this.durationTimeValue = '';
       this.endTimeValue = '';
     },

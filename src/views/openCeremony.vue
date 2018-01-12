@@ -144,7 +144,6 @@ export default {
             lengthShiftTimeValue: [],
             shouldNumAttendanceValue: null,
             actualNumAttendanceValue: null,
-            // openCeremonyStatus: false,
             classInfoIdList: '',
             /*产品变量*/
             showProductInfoFlag: false,
@@ -450,7 +449,6 @@ export default {
             }
         },
         startTimeClear() {
-          console.log("startTimeClear");
           this.durationTimeValue = '';
           this.endTimeValue = '';
         },
@@ -546,7 +544,6 @@ export default {
                 });
                 _this.classInfoIdList = '';
                 _this.productInfoData = [];
-                // _this.openCeremonyStatus = false;
                 _this.$Message.success("清空成功");
             });
         },
@@ -688,7 +685,6 @@ export default {
             } else {
               this.clearClassInfo();
               this.classInfoIdList = '';
-              // this.openCeremonyStatus = false;
             }
           }
         },
@@ -780,9 +776,6 @@ export default {
             this.choosedProductValByAdd = [];
             this.conformProductValue = null;
         },
-        // showProductRes(newVal) {
-        //     console.log("showProductRes:" + newVal);
-        // },
         updateObjectimeAfteraddRes(newVal) {
           if(!this.clearMsg) return;
             if (newVal.status === "0") {
@@ -854,9 +847,6 @@ export default {
     mounted() {
         if (sessionStorage.getItem("userid")) {
             this.classInfoIdList = '';
-            // this.showKpitwolev({
-            //     userId: sessionStorage.getItem("userid")
-            // });
             this.productInfoData = [];
         } else {
             console.log(this.$route);

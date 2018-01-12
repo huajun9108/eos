@@ -13,6 +13,10 @@
                     font-size: P(18);
                     box-sizing: border-box;
                     padding-left: P(2);
+                    .exchange {
+                        color: #6291d3;
+                        cursor: pointer;
+                    }
                 }
                 .info-content {
                     width: 100%;

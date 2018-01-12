@@ -61,14 +61,11 @@
                     }
                 }
             }
-            // i {
-            //     display: inline-block;
-            //     line-height: P(80);
-            // }
-            a {
+            .logout {
                 color: #fff;
                 margin-left: P(30);
                 line-height: P(80);
+                cursor: pointer;
             }
         }
     }

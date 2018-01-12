@@ -178,10 +178,8 @@ export default {
       let _this = this
       this.nodeId = treeNode.id
       if(reg.test(this.nodeId)){
-        // this.picked="1"
         this.selectLinebodyById({id:this.nodeId})
         this.selectLinebodyProductsByLinebodyId({linebodyId: this.nodeId.substring(1)})
-        // console.log(this.picked)
         this.removeEvent(false,_this.tip)
       }else{
         let _this = this

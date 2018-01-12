@@ -93,7 +93,6 @@ export default {
       "massDeleteUserByUserIds"
       ]),
       onPagechange:function(currentPage){
-       console.log(currentPage);
        // 请求, 向后台发送 currentPage, 来获取对应的数据
        axios.get("/user/findAndCount?page="+currentPage).then(res => {
         this.total=res.data.data.count;
@@ -105,13 +104,11 @@ export default {
             })
         );
       }).catch(error => {
-        console.log(error);
       });
 
      },
     changeAllChecked(){
       var _this = this;
-      console.log(_this.checkedUserArr);
       //alert(this.checked);
       if (this.checkedAll) {//实现反
         _this.checkedUserArr = [];
@@ -164,7 +161,6 @@ export default {
             })
         );
       }).catch(error => {
-        console.log(error);
       });
     },
   },

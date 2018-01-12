@@ -144,16 +144,12 @@ export default {
             this.isShow = !this.isShow 
         },
         showData(data){
-            console.log(data)
-            console.log(data.split)
             if(isNaN(data.split(",")[0])) return;
             for(let i = 0; i < this.dataList.length; i++ ){
                 if(this.dataList[i].title == "OEE"){
                     this.dataList[i].value= data.split(",")
                 }
             }
-            
-            console.log(data)
         },  
         clearCharts() {
             // this.dataList[0].data = null;
@@ -172,7 +168,6 @@ export default {
                 if(val[val.length-1]=="OEE"){
                     this.dataList[0].dataDetail = val
                 }
-            console.log(this.dataList[0].dataDetail)
             },
             deep:true
         },
@@ -180,11 +175,6 @@ export default {
             if(newVal.status=="0"){
                 this.dataList=newVal.data
             }
-            console.log(newVal)
-            
-            // this.dataList[0].dataDetail = newVal.value
-            // this.dataList[0].topLoss =newVal.losstier3
-            // this.dataList[0].topProject=newVal.impprojectTop
         }
     },
     mounted () {

@@ -148,7 +148,6 @@ export default {
         return false;
       }
       /*新增节点回车弹框*/
-      console.log(treeNode.pId);
       if (!isCancel && treeNode.isNew) {
         if (!confirm("确认添加？")) {
           setTimeout(function() {

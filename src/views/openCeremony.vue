@@ -377,10 +377,8 @@ export default {
                 return;
                 }
                 for (let i = 0; i < _this.datainputLossData.length; i++) {
-                console.log(_this.datainputLossData[i]);
                 for (let key in _this.datainputLossData[i]) {
                     /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    console.log(_this.datainputLossData[i][key][_this.lossParams.index]);
                     if (_this.datainputLossData[i][key].length > 0) {
                     if (_this.datainputLossData[i][key][_this.lossParams.index].losstier3name === params.row["losstier3name"]) {
                         _this.deleteLoss4data({

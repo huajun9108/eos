@@ -336,7 +336,6 @@ export default {
         axios.post("/impobject/showObjectnowBylinedyid", qs.stringify({
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log("show")
             return res.data.data
         }).then(json => {
             commit("showObjectnowBylinedyid", json)
@@ -349,7 +348,7 @@ export default {
             "lossId": obj.lossId,
             "linebodyId": obj.linebodyId
         })).then(res => {
-            return res.data.data
+            return res.data
         }).then(json => {
             commit("showImpItemstatus", json)
         }).catch(err => {
@@ -371,8 +370,7 @@ export default {
             "planendtime": obj.planendtime,
             "stage": obj.stage,
         })).then(res => {
-            console.log("update")
-            return res.data.data
+            return res.data
         }).then(json => {
             commit("updateImpItemstatus", json)
         }).catch(err => {
@@ -384,7 +382,6 @@ export default {
             "lossIdList": obj.lossId,
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log("add")
             return res.data
         }).then(json => {
             commit("addObjectnowBylossid", json)
@@ -620,7 +617,6 @@ export default {
         axios.post("/impobject/showImpItemhistory", qs.stringify({
             "lossstatusId": obj.lossstatusId
         })).then(res => {
-            console.log("history")
             return res.data
         }).then(json => {
             commit("showImpItemhistory", json)
@@ -630,7 +626,6 @@ export default {
         axios.post("/areaAllSet/selectLinebodyProductsByLinebodyId", qs.stringify({
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("selectLinebodyProductsByLinebodyId", json)
@@ -642,7 +637,6 @@ export default {
             "productId": obj.productId,
             "cTime": obj.cTime
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("addLinebodyProductByLinebodyId", json)
@@ -652,7 +646,6 @@ export default {
         axios.post("/areaAllSet/deleteLinebodyProductById", qs.stringify({
             "id": obj.id
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("deleteLinebodyProductById", json)
@@ -664,7 +657,6 @@ export default {
             "productId": obj.productId,
             "cTime": obj.cTime
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("updateLinebodyProductById", json)
@@ -676,7 +668,6 @@ export default {
             "endTime": obj.endTime,
             "linebodyIds": obj.linebodyIds
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("selectSavingBookByTimesAndLinebodys", json)
@@ -691,7 +682,6 @@ export default {
             "userId": obj.userId
         })).then(res => {
             iView.Spin.hide()
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("selectOverviewByTimesAndLinebodys", json)
@@ -701,7 +691,6 @@ export default {
         axios.post("/datainput/showClassinfHistory", qs.stringify({
             "linebodyId": obj.linebodyId,
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("showClassinfHistory", json)
@@ -711,7 +700,6 @@ export default {
         axios.post("/datainput/deleteClassinfHistory", qs.stringify({
             "classinfId": obj.classinfId
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("deleteClassinfHistory", json)
@@ -723,7 +711,6 @@ export default {
             "userId": obj.userId,
             "linebodyId": obj.linebodyId
         })).then(res => {
-            console.log(res.data);
             return res.data
         }).then(json => {
             commit("showClassinfHisRight", json)

@@ -113,6 +113,12 @@
                                 .ivu-input-icon-normal+.ivu-input {
                                     padding-right: 1px
                                 }
+                                .ivu-input-number-input {
+                                    text-align: right;
+                                }
+                                .ivu-input-number-handler-wrap {
+                                    display: none;
+                                }
                             }
                         }
                         .item_li:last-child {

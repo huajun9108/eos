@@ -114,7 +114,6 @@ export default {
                 if (!(this.lengthShiftStartTime && this.lengthShiftEndTime)) return false;
                 let end = new Date(this.lengthShiftEndTime);
                 let beginFormat = this.lengthShiftStartTime.split(' ');
-                console.log(beginFormat);
                 let begin = new Date(beginFormat[0] + ' 00:00:00');
                 if (begin && end) {
                     return (date && date.valueOf() > end) || (date && date.valueOf() < begin);

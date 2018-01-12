@@ -40,11 +40,11 @@
                 </li>
                 <li class="item_li">
                     <span class="item_title">项目名称</span>
-                    <input v-model= "projectname" class="item_detail" />
+                    <input v-model= "projectname" class="item_detail" readonly/>
                 </li>
                 <li class="item_li">
                     <span class="item_title">Tier3损失类别</span>
-                    <input v-model= "losscategory" class="item_detail" />
+                    <input v-model= "losscategory" class="item_detail" readonly/>
                 </li>
                 <li class="item_li">
                     <span class="item_title">项目状态</span>
@@ -60,25 +60,25 @@
                 </li>
                 <li class="item_li">
                     <span class="item_title">实施运行开始起点值</span>
-                    <input v-model="startperformance" class="item_detail" />
+                    <InputNumber v-model="startperformance" class="item_detail" size="small" :min="0"></InputNumber>
                 </li>
                 <li class="item_li">
                     <span class="item_title">实施运行结束目标值</span>
-                    <input  v-model="target" class="item_detail" />
+                    <InputNumber  v-model="target" class="item_detail" size="small" :min="0"></InputNumber>
                 </li>
                 <li class="item_li">
                     <span class="item_title">实施运行当前值</span>
-                    <input v-model="performance" class="item_detail" />
+                    <InputNumber type = "number" v-model="performance" class="item_detail" size="small" :min="0"></InputNumber>
                 </li>
                 <li class="item_li">
                     <span class="item_title">实施运行开始日期</span>
-                    <DatePicker size="small" v-model="objectstarttime" :options="optionsStart" placement="bottom-end"
+                    <DatePicker size="small" v-model="objectstarttime" :options="optionsStart" placement="top-end"
                     class="item_detail" placeholder="Select date" @on-change="startChange" @on-clear="clearCharts">
                     </DatePicker>
                 </li>
                 <li class="item_li">
                     <span class="item_title">实施运行预期结束日期</span>
-                    <DatePicker size="small" width="90%" v-model="planendtime" :options="optionsStart" placement="bottom-end"
+                    <DatePicker size="small" width="90%" v-model="planendtime" :options="optionsStart" placement="top-end"
                     class="item_detail" placeholder="Select date" @on-change="startChange" @on-clear="clearCharts">
                     </DatePicker>
                 </li>
@@ -241,8 +241,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
             confirm(){
                 let _this = this;
                 if(this.validateData()) {
-                    console.log(1)
-                    // _this.updateImpItemstatus()
                     _this.updateImpItemstatus({
                         "id": _this.statusId,
                         "linebodyId": _this.linebodyId,
@@ -257,14 +255,8 @@ import { stageRes, statusRes } from "../assets/js/tip"
                         "planendtime": _this.planendtime,
                         "stage": _this.stage,
                     })
-                    setTimeout(function(){
-                        _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
-
-                        _this.showImpItemhistory({lossstatusId:_this.statusId})
-                    },100)
-                    
+                    console.log(this.performance)
                 }else{
-                    console.log(2)
                 }
                 
             },
@@ -283,7 +275,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
                 this.proList.push(obj)
                 this.$refs[obj.id][0].className = "pro_active"
                 }else{
-                    console.log(1)
                 }
             },
             add_item(){
@@ -294,7 +285,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
                         this.addObjId.push(item.id)
                     }
                 }, this);
-                console.log( this.addObjId)
                 this.addObjectnowBylossid({
                     lossId:this.addObjId.join(","),
                     linebodyId:this.linebodyId
@@ -303,7 +293,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
                 this.proList=[]
                 setTimeout(function(){
                     _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
-                    // _this.showImpItempool({userid: sessionStorage.getItem("userid")})
                 },100)
             },
             editpro(lossId){
@@ -313,9 +302,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
                     lossId:lossId,
                     linebodyId:this.linebodyId
                 })
-                setTimeout(function(){
-                    _this.showImpItemhistory({lossstatusId:_this.statusId})
-                },100)
             },
             delpro(obj){
                 var _this= this
@@ -336,7 +322,7 @@ import { stageRes, statusRes } from "../assets/js/tip"
             },
             empty(val) {
                 let reg = /^\s+$/gi;
-                if (reg.test(val)||val===null||val===''||val===undefined||val.length==0) {
+                if (reg.test(val)||val===null||val===''||val===undefined||val.length===0) {
                     return true;
                 }
             },
@@ -354,7 +340,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
                     this.empty(this.objectstarttime) ||
                     this.empty(this.planendtime) 
                     ) {
-                        console.log("kong")
                         this.$Message.error('线体相关信息不能为空');
                         return false;
                     }
@@ -371,7 +356,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
                     this.empty(this.objectstarttime) ||
                     this.empty(this.planendtime) 
                     ) {
-                        console.log("kong")
                         this.$Message.error('线体相关信息不能为空');
                         return false;
                     }
@@ -427,10 +411,7 @@ import { stageRes, statusRes } from "../assets/js/tip"
                     _this.linebodyId=node.id.substring(1)
                     }
                 })
-                setTimeout(function(){
-                    _this.showObjectnowBylinedyid({linebodyId:_this.linebodyId})
-                },10)
-                // this.showImpItemhistory({linebodyId:this.statusId})
+                this.showObjectnowBylinedyid({linebodyId:this.linebodyId})
             },
             nowline(newVal){
                 let _this = this;
@@ -450,24 +431,25 @@ import { stageRes, statusRes } from "../assets/js/tip"
                 
             },
             itemstatus(newVal){
-                if(newVal){
-                    this.statusId = newVal.id
-                    this.projectnumber = newVal.projectnumber
-                    this.projectname = newVal.projectname
-                    this.losscategory = newVal.losscategory
-                    this.status = newVal.status
-                    this.startperformance = newVal.startperformance;
-                    this.target = newVal.target
-                    this.performance = newVal.performance
-                    this.objectstarttime = newVal.objectstarttime
-                    this.planendtime = newVal.planendtime
-                    this.stage = newVal.stage
+                if(newVal.status=="0"){
+                    this.statusId = newVal.data.id
+                    this.projectnumber = newVal.data.projectnumber
+                    this.projectname = newVal.data.projectname
+                    this.losscategory = newVal.data.losscategory
+                    this.status = newVal.data.status
+                    this.startperformance = newVal.data.startperformance;
+                    this.target = newVal.data.target
+                    this.performance = newVal.data.performance
+                    this.objectstarttime = newVal.data.objectstarttime
+                    this.planendtime = newVal.data.planendtime
+                    this.stage = newVal.data.stage
+                    this.showImpItemhistory({lossstatusId:this.statusId})
                 }else{
                     this.projectnumber = ''
                     this.projectname = ''
                     this.losscategory = ''
                     this.status =''
-                    this.startperformance = ''
+                    this.startperformance = null
                     this.target = ''
                     this.performance = ''
                     this.objectstarttime = ''
@@ -487,7 +469,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
                     this.stage=""
                 }
             },
-           
             showImpItemhistoryRes(newVal){
                 if(newVal.status==="0"){
                     let arr = []
@@ -508,7 +489,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
                         }
 
                     })
-                    console.log(arr)
                     this.showLog= arr
                 }
 
@@ -528,7 +508,17 @@ import { stageRes, statusRes } from "../assets/js/tip"
                 }else{
                     this.$Message.error("添加失败请稍后再试")
                 }
+            },
+            updateItemResult(newVal){
+                if(newVal.status=="0"){
+                    this.$Message.success("项目信息更新成功")
+                    this.showObjectnowBylinedyid({linebodyId:this.linebodyId})
+                    this.showImpItemhistory({lossstatusId:this.statusId})
+                }else{
+                    this.$Message.error("项目信息更新失败，请稍后再试")
+                }
             }
+            
 
 
 
@@ -538,17 +528,12 @@ import { stageRes, statusRes } from "../assets/js/tip"
         },
         mounted(){
             if (sessionStorage.getItem("userid")) {
-                // let _this = this
                 this.selectUserById({
                     userid: sessionStorage.getItem("userid")
                 })
-                //  setTimeout(function(){
-                    this.showImpItempool({userid: sessionStorage.getItem("userid")})
-                // },10)
-                // this.showImpItempool({userid: sessionStorage.getItem("userid")})
+                this.showImpItempool({userid: sessionStorage.getItem("userid")})
                 
             } else {
-                console.log(this.$route);
             }
         }
 	}

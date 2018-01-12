@@ -2,7 +2,10 @@
     <div class="account user_common">
       <div class="account_content user_maincontent">
       <div class="userinfor acommon">
-        <h1>个人信息</h1>
+        <h1>
+          <span class="personal_infor">个人信息</span>
+          <span @click="logOut" class="exchange pull-right">切换账号</span>
+        </h1>
         <div class="info-content">
         <div class="information">
           <div class="tip">
@@ -226,10 +229,7 @@ export default {
           "changedOrder":changedOrder
 
         })
-        // this.tier2.splice(obj.index-1,0,(this.tier2[obj.index])); 
-        // //删除后一项 
-        // this.tier2.splice(obj.index+1,1); 
-        // console.log(obj.changeId+","+obj.changeOrder+","+changedid+","+obj.changedOrder)
+       
       } 
     },
     moveDown:function(obj) { 
@@ -240,17 +240,17 @@ export default {
       let changedid = this.tier2List[obj.index+1].kpitwoid
       let changedOrder = this.tier2List[obj.index+1].userKpitwolev.sequence
       this.updateUserKpiTwolveById({
-          "userId":obj.userId,
-          "changeId":obj.changeId,
-          "changeOrder":obj.changeOrder,
-          "changedId":changedid,
-          "changedOrder":changedOrder
-
-        })
-    //在下一项插入该项 
-    // this.tier2.splice(obj.index+2,0,(this.tier2[obj.index])); 
-    // // 删除前一项 
-    // this.tier2.splice(obj.index,1); 
+        "userId":obj.userId,
+        "changeId":obj.changeId,
+        "changeOrder":obj.changeOrder,
+        "changedId":changedid,
+        "changedOrder":changedOrder
+      })
+    },
+    logOut(){
+      sessionStorage.removeItem("userAccessToken")
+      this.$router.replace({ path: '/login' })
+      console.log("dengchu")
     }
     
   },
@@ -288,7 +288,6 @@ export default {
     if (sessionStorage.getItem("userid")) {
       this.selectUserById({userid:sessionStorage.getItem("userid")})
     } else {
-      console.log(this.$route);
     }
   }
   

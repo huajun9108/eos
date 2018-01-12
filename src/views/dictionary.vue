@@ -259,7 +259,6 @@ export default {
       $.fn.zTree.init($("#treeKpi"), this.settingKpi, this.kpiAll);
     },
     addKpiRes(newVal){
-      console.log(newVal);
       const _this = this;
       if(newVal.status === "0" && newVal.data.id) {
         const zTree = $.fn.zTree.getZTreeObj("treeKpi");
@@ -284,7 +283,6 @@ export default {
       }
     },
     updateKpiRes(newVal){
-      console.log(newVal);
       const _this = this;
       if(newVal.status === "0") {
         _this.$Message.success("修改成功");
@@ -298,7 +296,6 @@ export default {
       }
     },
     delKpiRes(newVal) {
-      console.log(newVal);
       const _this = this;
       if(newVal.status === "0") {
         _this.$Message.success("删除成功");
@@ -349,7 +346,6 @@ export default {
       }
     },
     deleteLossRes(newVal) {
-      console.log(newVal);
       const _this = this;
       if(newVal.status === "0") {
         _this.$Message.success("删除成功");

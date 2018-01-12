@@ -185,10 +185,8 @@ export default{
             
         },
         datacheck(data){
-            console.log(data)
             let reg = /^([1-9]{1}[0-9]{0,1}|0|100)(.\d{1,2}){0,1}%$/;
             if(reg.test(data)){
-                console.log("true")
                 return true
             }else{
                 this.$Message.error('请输入正确的百分数信息');

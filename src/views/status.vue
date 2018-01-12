@@ -120,7 +120,6 @@ export default {
     methods: {
        ...mapActions([]),
        clearData(){
-         console.log(2);
             this.statusData=null
             this.projectNumber = "无"
             this.beganNumber = "无"
@@ -144,7 +143,6 @@ export default {
     },
     watch: {
         projectStatus(newVal){
-            console.log(newVal)
             if(newVal.status==="0"){
                 if(newVal.data){
                   this.projectData = newVal.data;

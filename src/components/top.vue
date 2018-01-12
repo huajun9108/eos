@@ -30,9 +30,9 @@
                 <Select v-model="selectLan" size="small" style="width:80px">
 				    <Option v-for="(lan,idx) in lans" :value="lan.value" :key="idx">{{lan.name}}</Option>
 			    </Select>
-                <router-link :to="{name:'login'}">
+                <span class="logout" @click="logout">
                     退出
-                </router-link>
+                </span>
             </div>
         </div>
     </div>
@@ -61,6 +61,10 @@ export default {
         choose(e){
             this.$refs.lan.innerHTML = e.target.innerHTML;
             this.lan = !this.lan;
+        },
+        logout(){
+            sessionStorage.removeItem("adminAccessToken")
+            this.$router.replace({ path: '/login' })
         }
     },
     computed:{

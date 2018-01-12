@@ -47,7 +47,6 @@ export default {
             userid: sessionStorage.getItem("userid")
         });
       } else {
-          console.log(this.$route);
       }
     }
   },
@@ -57,7 +56,6 @@ export default {
               userid: sessionStorage.getItem("userid")
           });
       } else {
-          console.log(this.$route);
       }
   }
 }

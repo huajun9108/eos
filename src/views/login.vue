@@ -58,15 +58,15 @@ export default{
             if(this.empty(this.user)){
                 this.$refs.hint.setAttribute("class","hint show")
                 this.$refs.tip.innerHTML="用户名不能为空"
-                 setTimeout(()=>{
+                setTimeout(()=>{
                     this.$refs.hint.setAttribute("class","hint fadeOut hide")
-                },3000) 
+                },2000) 
             }else if(this.empty(this.pwd)){
                 this.$refs.hint.setAttribute("class","hint show")
                 this.$refs.tip.innerHTML="密码不为空"
-                 setTimeout(()=>{
+                setTimeout(()=>{
                     this.$refs.hint.setAttribute("class","hint fadeOut hide")
-                },3000) 
+                },2000) 
             }else if(this.picked=="0"){
                 
                 this.adminLogin({user:this.user,pwd:this.pwd})
@@ -93,7 +93,6 @@ export default{
         loginResult(newVal){
             if(newVal.status=="0"){
                 if(this.picked=="0"){
-                    console.log(newVal.flag)
                     localStorage.setItem("user",newVal.data.adminname);
                     sessionStorage.setItem('adminAccessToken' ,newVal.flag)
                     this.$router.push({name:"area"})
@@ -107,7 +106,7 @@ export default{
                 this.$refs.tip.innerHTML="账号或密码错误"
                 setTimeout(()=>{
                     this.$refs.hint.setAttribute("class","hint fadeOut hide")
-                },3000)
+                },2000)
             }else{
                 this.$Message.error('登录失败,请稍后再试');
             }

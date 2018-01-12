@@ -60,7 +60,7 @@
         </div>
         <div class="startTimeContainer">
             <span class="timeTitle">开始时间：</span>
-            <DatePicker v-model="startTimeValue" type="datetime" placeholder="Loss开始时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsStart" @on-ok="startTimeChooseOk">
+            <DatePicker v-model="startTimeValue" type="datetime" placeholder="Loss开始时间" format="yyyy-MM-dd HH:mm:ss" :options="optionsStart" @on-ok="startTimeChooseOk" @on-clear="startTimeClear">
             </DatePicker>
         </div>
         <div class="durationTimeContainer">
@@ -144,7 +144,6 @@ export default {
             lengthShiftTimeValue: [],
             shouldNumAttendanceValue: null,
             actualNumAttendanceValue: null,
-            // openCeremonyStatus: false,
             classInfoIdList: '',
             /*产品变量*/
             showProductInfoFlag: false,
@@ -400,8 +399,8 @@ export default {
                 return;
                 }
                 _this.deleteProduct({
-                "productIdList": productIdList,
-                "classinfIdList": _this.classInfoIdList,
+                "productId": productIdList,
+                "classinfId": _this.classInfoIdList,
                 "linebodyId": _this.lineBodys[0]
                 });
             });
@@ -446,6 +445,10 @@ export default {
                 const sec = parseInt(durationArray[2]);
                 return (hour * 3600 + min * 60 + sec) * 1000;
             }
+        },
+        startTimeClear() {
+          this.durationTimeValue = '';
+          this.endTimeValue = '';
         },
         startTimeChooseOk: function() {
             if (!this.startTimeValue) {
@@ -539,64 +542,79 @@ export default {
                 });
                 _this.classInfoIdList = '';
                 _this.productInfoData = [];
-                // _this.openCeremonyStatus = false;
                 _this.$Message.success("清空成功");
             });
         },
+        clearLossFormData() {
+          this.lossTwoLevName = '';
+          this.lossThreeLevStructId = '';
+          this.lossFourLevStructId = '';
+          this.choosedLossTier3ValByAdd = '';
+          this.choosedLossTier4ValByAdd = '';
+          this.startTimeValue = '';
+          this.durationTimeValue = '';
+          this.endTimeValue = '';
+        },
         lossConfirmClick: function() {
-            if (this.editLossDirFlag) {
-                if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue)) {
-                this.lossTwoLevName = '';
-                this.lossThreeLevStructId = '';
-                this.lossFourLevStructId = '';
-                this.choosedLossTier3ValByAdd = '';
-                this.choosedLossTier4ValByAdd = '';
-                this.startTimeValue = '';
-                this.durationTimeValue = '';
-                this.endTimeValue = '';
-                this.$Message.error("请将需要修改的loss信息填写完整");
-                return;
-                }
-                this.showLossFlag = false;
-                for (let i = 0; i < this.datainputLossData.length; i++) {
-                for (var key in this.datainputLossData[i]) {
-                    /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    if (this.datainputLossData[i][key].length > 0) {
-                    if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
-                        this.updateObjectimeAfteradd({
-                        "losstier4Dataid": this.datainputLossData[i][key][this.lossParams.index].losstier4Dataid,
-                        "starttime": this.startTimeValue,
-                        "endtime": this.endTimeValue
-                        });
-                    }
-                    }
-                }
-                }
-            } else {
-                if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue && this.choosedLossTier3ValByAdd &&
-                    this.choosedLossTier4ValByAdd)) {
-                this.lossTwoLevName = '';
-                this.lossThreeLevStructId = '';
-                this.lossFourLevStructId = '';
-                this.choosedLossTier3ValByAdd = '';
-                this.choosedLossTier4ValByAdd = '';
-                this.startTimeValue = '';
-                this.durationTimeValue = '';
-                this.endTimeValue = '';
-                this.$Message.error("请将需要添加的loss相关信息填写完整");
-                return;
-                }
-                this.showLossFlag = false;
-                this.addLosstier4time2({
-                "classinfIdList": this.classInfoIdList,
-                "twolevName": this.lossTwoLevName,
-                "losstier3Id": this.lossThreeLevStructId,
-                "losstier4Id": this.lossFourLevStructId,
-                "linebodyId": this.lineBodys[0],
-                "starttime": this.startTimeValue,
-                "endtime": this.endTimeValue
-                });
+          if (this.editLossDirFlag) {
+            if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue)) {
+              this.clearLossFormData();
+              this.$Message.error("请将需要修改的loss信息填写完整");
+              return;
             }
+            const startMs = this.startTimeValue.getTime();
+            const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
+            const endMs = this.endTimeValue.getTime();
+            if (endMs !== startMs + durationMs) {
+              this.$Message.error("loss的开始、持续及结束时间不匹配");
+              return;
+            }
+
+            this.showLossFlag = false;
+            for (let i = 0; i < this.datainputLossData.length; i++) {
+              for (var key in this.datainputLossData[i]) {
+                /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
+                if (this.datainputLossData[i][key].length > 0) {
+                  if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === this.lossParams.row["losstier3name"]) {
+                    this.updateObjectimeAfteradd({
+                      "losstier4Dataid": this.datainputLossData[i][key][this.lossParams.index].losstier4Dataid,
+                      "starttime": this.startTimeValue,
+                      "endtime": this.endTimeValue,
+                      "classinfId": this.classInfoIdList,
+                      "linebodyId": this.lineBodys[0]
+                    });
+                  }
+                }
+              }
+            }
+          } else {
+            if (!(this.startTimeValue && this.endTimeValue && this.durationTimeValue && this.choosedLossTier3ValByAdd &&
+                this.choosedLossTier4ValByAdd)) {
+              this.clearLossFormData();
+
+              this.$Message.error("请将需要添加的loss相关信息填写完整");
+              return;
+            }
+
+            const startMs = this.startTimeValue.getTime();
+            const durationMs = this.timeTranslateDateMs(this.durationTimeValue);
+            const endMs = this.endTimeValue.getTime();
+            if (endMs !== startMs + durationMs) {
+              this.$Message.error("loss的开始、持续及结束时间不匹配");
+              return;
+            }
+
+            this.showLossFlag = false;
+            this.addLosstier4time2({
+              "classinfId": this.classInfoIdList,
+              "twolevName": this.lossTwoLevName,
+              "losstier3Id": this.lossThreeLevStructId,
+              "losstier4Id": this.lossFourLevStructId,
+              "linebodyId": this.lineBodys[0],
+              "starttime": this.startTimeValue,
+              "endtime": this.endTimeValue
+            });
+          }
         },
         lossCancelClick: function() {
             this.showLossFlag = false;
@@ -620,9 +638,9 @@ export default {
                 }
                 this.showProductInfoFlag = false;
                 this.updateProduct({
-                "productIdList": this.productInfoData[this.editProductIndex].productid,
+                "productId": this.productInfoData[this.editProductIndex].productid,
                 "conformProduct": this.conformProductValue,
-                "classinfIdList": this.classInfoIdList,
+                "classinfId": this.classInfoIdList,
                 "linebodyId": this.lineBodys[0]
                 })
             } else {
@@ -634,7 +652,7 @@ export default {
                 }
                 this.showProductInfoFlag = false;
                 this.addProduct({
-                "classinfIdList": this.classInfoIdList,
+                "classinfId": this.classInfoIdList,
                 "productNameId": this.choosedProductValByAdd[2],
                 "conformProduct": this.conformProductValue,
                 "linebodyId": this.lineBodys[0]
@@ -665,7 +683,6 @@ export default {
             } else {
               this.clearClassInfo();
               this.classInfoIdList = '';
-              // this.openCeremonyStatus = false;
             }
           }
         },
@@ -718,6 +735,8 @@ export default {
                     }
                 }
                 }
+            } else if(newVal.status === "202") {
+              this.$Message.error("添加失败,该loss不在开班时间内");
             } else {
                 this.$Message.error("添加失败");
             }
@@ -734,18 +753,12 @@ export default {
             let classInfoIdArr = [];
             if (newVal.status === "0") {
                 this.$Message.success("班次信息添加成功");
-                // this.openCeremonyStatus = true;
-                for (let i = 0; i < newVal.data.length; i++) {
-                classInfoIdArr.push(newVal.data[i].classinfid);
-                }
-                this.classInfoIdList = classInfoIdArr.join(",");
-                // this.openCeremonyStatus = true;
+                this.classInfoIdList = newVal.data.classinfid;
             } else if(newVal.status === "101") {
               this.$Message.error("该班次时间已存在或与已有班次时间相重合")
             } else {
                 this.$Message.error("班次信息添加失败");
                 this.classInfoIdList = '';
-                // this.openCeremonyStatus = false;
             }
         },
         addProductRes(newVal) {
@@ -753,33 +766,27 @@ export default {
             if (newVal.status === "0") {
                 this.productInfoData = newVal.data;
                 this.$Message.success("添加成功");
+            } else if(newVal.status === "101") {
+              this.$Message.error("添加失败，产品已存在");
             } else {
                 this.$Message.error("添加失败");
             }
             this.choosedProductValByAdd = [];
             this.conformProductValue = null;
         },
-        // showProductRes(newVal) {
-        //     console.log("showProductRes:" + newVal);
-        // },
         updateObjectimeAfteraddRes(newVal) {
           if(!this.clearMsg) return;
-            let editLossData = newVal.data;
-            const editLossStartTime = new Date(editLossData.starttime).format('yyyy-MM-dd hh:mm:ss');
-            const editLossEndTime = new Date(editLossData.endtime).format('yyyy-MM-dd hh:mm:ss');
             if (newVal.status === "0") {
                 for (let i = 0; i < this.datainputLossData.length; i++) {
                 for (let key in this.datainputLossData[i]) {
-                    if (key === editLossData.losstier2name && this.lossParams) {
-                    /*此处仅判定了loss3级,若不同的loss2级中有同名的3级时，判断条件需进行修改*/
-                    if (this.datainputLossData[i][key][this.lossParams.index].losstier3name === editLossData.losstier3name) {
-                        this.datainputLossData[i][key][this.lossParams.index].starttime = editLossStartTime;
-                        this.datainputLossData[i][key][this.lossParams.index].endtime = editLossEndTime;
-                        this.$Message.success("修改成功");
-                    }
-                    }
+                  if(newVal.data.length > 0 && newVal.data[0].losstier2name === key) {
+                    this.datainputLossData[i][key] = newVal.data;
+                    this.$Message.success("修改成功");
+                  }
                 }
-                }
+              }
+            } else if (newVal.status === "202") {
+              this.$Message.error("修改失败，更改的loss时间不在开班时间内");
             } else {
                 this.$Message.error("修改失败");
             }
@@ -838,9 +845,6 @@ export default {
     mounted() {
         if (sessionStorage.getItem("userid")) {
             this.classInfoIdList = '';
-            // this.showKpitwolev({
-            //     userId: sessionStorage.getItem("userid")
-            // });
             this.productInfoData = [];
         } else {
             console.log(this.$route);

@@ -35,11 +35,17 @@ export default {
     openCeremonyClick(){
       if (this.ceremonyFlag) {
         this.$Message.error("请勿重复点击开班");
+        return;
       }
       this.ceremonyFlag =true
       this.historyFlag =false
     },
     openHistoryClick(){
+      if (this.historyFlag) {
+        this.$Message.error("请勿重复点击班次历史记录");
+        return;
+      }
+
       this.ceremonyFlag =false
       this.historyFlag =true
       if (sessionStorage.getItem("userid")) {

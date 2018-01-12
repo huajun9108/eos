@@ -442,7 +442,7 @@ export default {
 
     addLosstier4time2({ commit }, obj) {
         axios.post("/datainput/addLosstier4time2", qs.stringify({
-            "classinfIdList": obj.classinfIdList,
+            "classinfId": obj.classinfId,
             "twolevName": obj.twolevName,
             "losstier3Id": obj.losstier3Id,
             "losstier4Id": obj.losstier4Id,
@@ -489,7 +489,7 @@ export default {
     },
     addProduct({ commit }, obj) {
         axios.post("/datainput/addProduct", qs.stringify({
-            "classinfIdList": obj.classinfIdList,
+            "classinfId": obj.classinfId,
             "productNameId": obj.productNameId,
             "conformProduct": obj.conformProduct,
             "linebodyId": obj.linebodyId
@@ -501,7 +501,7 @@ export default {
     },
     showProduct({ commit }, obj) {
         axios.post("/datainput/showProduct", qs.stringify({
-            "classinfIdList": obj.classinfIdList,
+            "classinfId": obj.classinfId,
             "linebodyId": obj.linebodyId
         })).then(res => {
             return res.data
@@ -513,7 +513,9 @@ export default {
         axios.post("/datainput/updateObjectimeAfteradd", qs.stringify({
             "losstier4DataidList": obj.losstier4Dataid,
             "starttime": obj.starttime,
-            "endtime": obj.endtime
+            "endtime": obj.endtime,
+            "classinfId": obj.classinfId,
+            "linebodyId": obj.linebodyId
         })).then(res => {
             return res.data
         }).then(json => {

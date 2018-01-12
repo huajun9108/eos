@@ -249,10 +249,21 @@
             .classHistory {
                 display: flex;
                 justify-content: space-between;
+                .historyClassFlex {
+                  font-size: P(16);
+                  display: inline-flex;
+                  width: 20%;
+                  height: 100%;
+                  border-right: 1px solid #BDBDBD;
+                  .flex-item {
+                    margin: auto;
+                  }
+                }
                 .history_left {
                     width: 20%;
                     height: auto;
                     overflow-y: scroll;
+                    border-right: 1px solid #BDBDBD;
                     .history_data {
                         margin: 10px auto;
                         box-sizing: border-box;

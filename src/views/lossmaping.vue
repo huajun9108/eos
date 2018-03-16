@@ -42,7 +42,7 @@
         chartList:[],
         lossmappingDataList: [],
         sankeyWidth: 600,
-        sankeyHeight: 600,
+        sankeyHeight: 200,
       }
     },
     methods:{
@@ -98,10 +98,12 @@
               }]
             };
             myChart.setOption(option, true);
-            let len = this.lossmappingDataList.data[i].link.length;
-            let canvasHeight = len > 60 ? (len * 20) : 600;
-            this.sankeyHeight = canvasHeight + 100;
-            myChart.resize({height: canvasHeight});
+            let len = this.lossmappingDataList.data[i].loss4_num;
+            if(len * 20 - 50 > 200) {
+              let canvasHeight = len * 20;
+              this.sankeyHeight = canvasHeight + 50;
+              myChart.resize({height: canvasHeight});
+            }
         }
       }
     },

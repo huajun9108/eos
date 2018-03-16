@@ -17,7 +17,7 @@
             </tr>
             <tr  v-else v-for="(title,idx) in this.lossmappingDataList.data" :key="idx">
               <td class="firstCol">{{ title.title }}</td>
-              <td :id='title.title' class="secordCol" style="width: 600px;height:220px;" v-if="title.data.length > 0">
+              <td :id='title.title' class="secordCol" :style="{ width: sankeyWidth + 'px', height: sankeyHeight + 'px' }" v-if="title.data.length > 0">
               </td>
               <td v-else>暂无数据</td>
             </tr>
@@ -31,6 +31,7 @@
   import {mapState,mapActions} from "vuex";
   import echarts from "echarts";
   import timearea from "../components/timeArea";
+
   export default {
     components: {
       "v-timearea": timearea
@@ -39,7 +40,9 @@
       return{
         isShow:false,
         chartList:[],
-        lossmappingDataList:[]
+        lossmappingDataList: [],
+        sankeyWidth: 600,
+        sankeyHeight: 200,
       }
     },
     methods:{
@@ -66,6 +69,7 @@
             if(this.lossmappingDataList.data[i].data.length <= 0 || this.lossmappingDataList.data[i].link.length <= 0) {
               continue;
             }
+
             var myChart = echarts.init(document.getElementById(this.lossmappingDataList.data[i].title));
             this.chartList.push(myChart);
             var option = {
@@ -74,7 +78,7 @@
                 triggerOn: 'mousemove'
               },
               series: [{
-                width:600,
+                width: 600,
                 type: 'sankey',
                 layout: 'none',
                 data: this.lossmappingDataList.data[i].data,
@@ -94,6 +98,12 @@
               }]
             };
             myChart.setOption(option, true);
+            let len = this.lossmappingDataList.data[i].loss4_num;
+            if(len * 20 - 50 > 200) {
+              let canvasHeight = len * 20;
+              this.sankeyHeight = canvasHeight + 50;
+              myChart.resize({height: canvasHeight});
+            }
         }
       }
     },
@@ -106,6 +116,8 @@
       lossmappingLinebodyAll(newVal){
         this.lossmappingDataList = newVal;
         let _this = this
+
+
         setTimeout(function() {
           _this.initCharts();
         }, 800);
@@ -115,7 +127,6 @@
 
     },
     mounted() {
-
     }
   }
   </script>

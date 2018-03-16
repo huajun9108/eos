@@ -8,8 +8,6 @@
         <li :class="{'disabled': current == page}"><a href="javascript:;" @click="setCurrent(page)"> 尾页 </a></li>
     </ul>
     <ul class="pagination pull-right">
-        <!-- <li><span> 共 {{ total }}  条数据 </span></li>             -->
-        <!-- <li><span> 每页显示 {{ display }}  条数据 </span></li> -->
         <li><span> 共 {{ page }} 页 </span></li>
         <li><span> 当前第 {{ current }} 页 </span></li>
     </ul>

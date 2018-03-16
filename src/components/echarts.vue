@@ -306,17 +306,10 @@
             ]
         }
         charts.setOption(option)
-
-        // window.addEventListener("resize", function () {
-        //     setTimeout(function () {
-        //         LineAndBarChart.resize();
-        //     }, 10)
-        // });
         charts.on('click',function(params){ // 控制台打印数据的名称
             console.log(id)
             let arr=[]
             option.series.forEach(item=>{
-                // console.log(item.data[params.dataIndex])
                 arr.push(item.data[params.dataIndex])
             })
             console.log(LineAndBarData)
@@ -611,13 +604,6 @@
                             borderColor0: downBorderColor
                         }
                     },
-                    // markPoint: {
-                    //     tooltip: {
-                    //         formatter: function (param) {
-                    //             return param.name + '<br>' + (param.data.coord || '');
-                    //         }
-                    //     }
-                    // },
                 },
                 {
                     name: 'vision',

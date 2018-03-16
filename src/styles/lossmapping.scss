@@ -13,9 +13,10 @@
         }
         .tableContainer {
             overflow-y: auto;
-            height: 93%;
+            flex: 1;
             .tableBody {
                 width: 100%;
+                height: 100%;
             }
             .tableBody tr {
                 border-bottom: 1px solid #BDBDBD;

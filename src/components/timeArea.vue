@@ -155,7 +155,6 @@ export default {
         this.end
       ) {
         if(this.routeIsroute("lossmaping")){
-          console.log("loss")
           this.selectLossmappingByTimesAndLinebodys({
             userId: sessionStorage.getItem("userid"),
             linebodyIds: this.lineBodystr,
@@ -193,7 +192,6 @@ export default {
       }
     },
     clearCharts() {
-      console.log("clearCharts");
       this.$emit('clear');
     },
     routeIsroute(route) {

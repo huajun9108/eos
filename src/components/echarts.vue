@@ -55,7 +55,6 @@
         }
       },
       listData(newVal) {
-        console.log(newVal);
         _this.dataList = newVal;
       }
     },
@@ -167,7 +166,6 @@
         LineAndBarChart.push(charts);
         oldIndex = index;
         if(chartData.length<=0){
-            console.log(LineAndBarChart)
             return
         }
         var xAxisData = chartData.map(function (item) {return item[0]})
@@ -307,14 +305,11 @@
         }
         charts.setOption(option)
         charts.on('click',function(params){ // 控制台打印数据的名称
-            console.log(id)
             let arr=[]
             option.series.forEach(item=>{
                 arr.push(item.data[params.dataIndex])
             })
-            console.log(LineAndBarData)
             LineAndBarData = arr
-            console.log(LineAndBarData)
         })
     }
     function drawLineOrBar(chartData,id,titleText,xText,yText) {
@@ -378,7 +373,6 @@
     }
     function drawBar(chartData,id,titleText,xText,yText) {
         if (barChart != null && barChart != "" && barChart != undefined) {
-            console.log(1)
             barChart.dispose();
             barChart = null;
         }

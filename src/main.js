@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueRouter from 'vue-router';
 import $ from './assets/js/jquery-1.10.1.min'
 import './assets/bootstrap/js/bootstrap.min.js'
 import './assets/bootstrap/css/bootstrap.min.css'
@@ -19,28 +18,16 @@ import "./assets/js/tip.js"
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 
-Vue.use(VueRouter);
 Vue.use(iView);
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
-
-// 路由配置
-const RouterConfig = {
-    mode: 'history',
-};
-// const router = new VueRouter(RouterConfig);
-
 router.beforeEach((to, from, next) => {
-    console.log(to.path.split("/")[1])
     if (to.path === '/login') {
-        console.log(router)
         next()
     } // 如果即将进入登录路由，则直接放行
     else { //进入的不是登录路由
         if (to.path.split("/")[1] === 'user') {
             if (to.meta.requiresAuth && (sessionStorage.getItem('userAccessToken') === "001")) {
-                console.log(router)
                 next()
             } else {
                 next({ path: '/login' })
@@ -49,20 +36,18 @@ router.beforeEach((to, from, next) => {
 
         } else if (to.path.split("/")[1] === 'index') {
             if (to.meta.requiresAuth && sessionStorage.getItem('adminAccessToken') === "002") {
-                console.log(router)
                 next()
             } else {
                 next({ path: '/login' })
             }
         } else {
-            console.log(router)
             next()
         }
         //如果不需要登录验证，或者已经登录成功，则直接放行
     }
 });
 
-router.afterEach(() => {
+router.afterEach((to, from, next) => {
     window.scrollTo(0, 0);
 });
 

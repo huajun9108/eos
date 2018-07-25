@@ -255,7 +255,6 @@ import { stageRes, statusRes } from "../assets/js/tip"
                         "planendtime": _this.planendtime,
                         "stage": _this.stage,
                     })
-                    console.log(this.performance)
                 }else{
                 }
                 

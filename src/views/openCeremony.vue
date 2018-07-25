@@ -797,7 +797,6 @@ export default {
         },
         showProductNameRes(newVal) {
           if(!this.clearMsg) return;
-            console.log("showProductNameRes:" + newVal);
             if (newVal.status === "0") {
                 this.optionalProductListByAdd = newVal.data;
             }
@@ -847,7 +846,6 @@ export default {
             this.classInfoIdList = '';
             this.productInfoData = [];
         } else {
-            console.log(this.$route);
         }
     }
 }

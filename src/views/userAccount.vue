@@ -250,7 +250,6 @@ export default {
     logOut(){
       sessionStorage.removeItem("userAccessToken")
       this.$router.replace({ path: '/login' })
-      console.log("dengchu")
     }
     
   },

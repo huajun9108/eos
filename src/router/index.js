@@ -1,6 +1,6 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
-Vue.use(VueRouter);
+import Router from "vue-router";
+Vue.use(Router);
 
 import Area from "../views/area.vue";
 import Account from "../views/account.vue";
@@ -144,7 +144,8 @@ var routes = [{
 
 ]
 
-const router = new VueRouter({
-    routes
+const router = new Router({
+    routes,
+    mode: 'history',
 })
 export default router
